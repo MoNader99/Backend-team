@@ -4,7 +4,7 @@ var{artist}= require("./models/Artists.js");  //artists model
 var{followArtist}= require("./models/followArtist.js");  // follow artist model
 var{playlist}= require("./models/playlists.js"); // playlists model
 var{followPlaylist}= require("./models/followPlaylist.js"); // followplaylist model
-var{myPlaylists}= require("./models/myPlaylists.js"); // createplaylist model
+
 
 ///////////////////////
 
@@ -42,9 +42,11 @@ user2.save().then((res)=>{
 });
 
 /////////////////////////////////////////////////
-//CREATING A NEW PLAYLIST
+//CREATING NEW PLAYLISTS
 var playlist1 = new playlist({
-    playlistName:"RecycleBin"
+    userId:user1._id,
+    playlistName:"Dejavu",
+    privacy:true
 });
 
 playlist1.save().then((res)=>{
@@ -53,8 +55,10 @@ playlist1.save().then((res)=>{
     console.log(err);
 });
 
-var playlist2= new playlist({
-    playlistName:"Dejavu",
+///playlist2
+var playlist2 = new playlist({
+    userId:user1._id,
+    playlistName:"Likes",
     privacy:true
 });
 
@@ -64,8 +68,9 @@ playlist2.save().then((res)=>{
     console.log(err);
 });
 
-
-var playlist3= new playlist({
+///playlist3
+var playlist3 = new playlist({
+    userId:user1._id,
     playlistName:"X",
     privacy:false
 });
@@ -76,10 +81,11 @@ playlist3.save().then((res)=>{
     console.log(err);
 });
 
-
-var playlist4= new playlist({
-    playlistName:"Likes",
-    privacy:false
+///playlist4
+var playlist4 = new playlist({
+    userId:user2._id,
+    playlistName:"Likes"
+    
 });
 
 playlist4.save().then((res)=>{
@@ -88,20 +94,14 @@ playlist4.save().then((res)=>{
     console.log(err);
 });
 
-
-//LINKING THE USER WITH HIS CREATED PLAYLIST
-var myPlaylist1= new myPlaylists({
-    userId : user1._id,
-    playlistsArray : [{
-        playlistId : playlist3._id,
-        playlistName : playlist3.playlistName
-    },{
-        playlistId : playlist4._id,
-        playlistName : playlist4.playlistName
-    }]
- 
+///playlist5
+var playlist5 = new playlist({
+    userId:user2._id,
+    playlistName:"RecyleBin"
+    
 });
-myPlaylist1.save().then((res)=>{
+
+playlist5.save().then((res)=>{
     console.log(res._id);
 },(err)=>{
     console.log(err);
@@ -109,14 +109,20 @@ myPlaylist1.save().then((res)=>{
 
 
 
-// MY USER FOLLOWING THE 2 PLAYLISTS I CREATED
+
+
+
+
+
+// User 2 following 2 playlists from user1
 var followPlaylist1= new followPlaylist({
-    userId: user1._id,
+    userId: user2._id,
     playlistInfo:[{
         playlistId:playlist1._id,
-        playlistName:playlist2.playlistName
+        playlistName:playlist1.playlistName
     },{
-        playlistId:playlist2._id,
+        playlistId:playlist3._id,
+        playlistName:playlist3.playlistName
     }]
 })
 
@@ -138,7 +144,8 @@ var artist1= new artist({
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
-    genres:["pop","R&B"]
+    genres:["pop","R&B"],
+    rating:4
 });
 
 //SAVING AND RETURNING ID OF THE NEW ARTIST
@@ -149,7 +156,7 @@ artist1.save().then((res)=>{
 });
 
 
-//CREATING A SECOND ARTIST
+//CREATING A third ARTIST
 
 var artist2= new artist({
     email:"beeka70@hotmail",
@@ -163,6 +170,24 @@ var artist2= new artist({
 });
 
 artist2.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+//CREATING A THIRD ARTIST
+var artist3= new artist({
+    password:"5080",
+    artistName:"Eminem",
+    about:`Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem
+     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer, 
+     record executive and actor. He is one of the most successful musical artists of the 21st century.`,
+    genres:["Trap","Jazz","pop","Rap"],
+    rating:4.6
+});
+
+artist3.save().then((res)=>{
     console.log(res._id);
 },(err)=>{
     console.log(err);
