@@ -1,11 +1,8 @@
-var{mongoose}= require("./db/mongoose.js");  
-var{user}= require("./models/users.js");   //users model
-var{artist}= require("./models/Artists.js");  //artists model
-var{followArtist}= require("./models/followArtist.js");  // follow artist model
-var{playlist}= require("./models/playlists.js"); // playlists model
-var{followPlaylist}= require("./models/followPlaylist.js"); // followplaylist model
-var{myPlaylists}= require("./models/myPlaylists.js"); // createplaylist model
 
+//this demo is for creating the tracks and playlistTracks collections with some data inserted into them
+
+var{mongoose}= require("./db/mongoose.js");  
+var{playlist}= require("./models/playlists.js"); // playlists model
 var{track}=require("./models/track.js");//track model
 var{playlistTracks}=require("./models/playlistTracks.js") //playlist_track model
 
@@ -87,7 +84,7 @@ var track2=new track({
 
 
 //creating Playlist1Tracks
-var id1="5e6b3aa8162e8f2a541060b0";
+var id1="5e6b3aa8162e8f2a541060b0";  //should be cahnged according to the playlist ids for each one individually
 
 var playlist1Tracks= new playlistTracks({
 
@@ -122,8 +119,8 @@ playlist1Tracks.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
-
-var id2='5e6b3aa8162e8f2a541060b2';
+ 
+var id2='5e6b3aa8162e8f2a541060b2';  //should be cahnged according to the playlist ids for each one individually
 
 var playlist2Tracks=new playlistTracks({
 
@@ -159,10 +156,7 @@ var playlist2Tracks=new playlistTracks({
 
     }
 
-]
-    
-    
-    });
+]    });
     
     playlist2Tracks.save().then((res)=>{
         console.log(res._id);
@@ -184,16 +178,6 @@ var playlist2Tracks=new playlistTracks({
 
 
 
-// var track1;
-
-// track.find().then((docs)=>{
-    
-//     console.log(JSON.stringify(docs,undefined,2))
-// track1=docs[0];
-// console.log("testing tracksfffffffffffffffffff" );
-// console.log(JSON.stringify( track1._id));
 
 
-
-//  })
 
