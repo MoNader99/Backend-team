@@ -34,11 +34,18 @@ var DeleteByArtist = function (albumid, artistid) {
    })
     }
 
-    DeleteByArtist("5e6d547b639f2ca419a1c098", "5e6d547b639f2ca419a1c0ab").then((str) => {
-        console.log(str);
-    }).catch((err) => {
-        console.log(err)
-    });
-module.exports = {
-    DeleteByArtist
+var GetAlbumObjectArray = function (wordtosearch) {
+    return album.find({ albumName: wordtosearch });
 }
+var SearchInAlbums = function (wordtosearch) {
+    console.log("D5al");
+    return GetAlbumObjectArray(wordtosearch).then((albums) => {
+        console.log("ijgifjgf" + albums.map(function (value) { return value._id }));
+        return Promise.resolve(albums.map(function (value) { return value._id }));
+    }
+    ).catch((err) => {
+        return Promise.reject(err);
+    })
+
+}
+module.exports = { DeleteByArtist,SearchInAlbums}

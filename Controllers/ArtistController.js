@@ -14,7 +14,6 @@ const app = express();
 
 app.use(bodyparser.json());
 
-
 app.listen(3000, () => { console.log('started on port 3000'); });
 
 app.get('/Artists/:id', (req, res) => {
