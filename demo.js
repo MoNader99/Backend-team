@@ -263,6 +263,7 @@ var track1=new track({
     trackName:"Hello",
     rating:10,
     duration:360000,
+    image:image2,
     url:"cccc"  // until we get real urls 
     });
     track1.save().then((res)=>{
@@ -277,6 +278,7 @@ var track1=new track({
         trackName:"someone like you",
         rating:9,
         duration:285000,
+        image:image1,
         url:"nnnn"  // until we get real urls 
         });
         track2.save().then((res)=>{

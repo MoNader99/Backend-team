@@ -1,10 +1,14 @@
 const express=require('express');
 const bodyParser=require('body-parser');
+const _=require ('lodash');
 const { mongoose } = require("./../db/mongoose.js");
 const{track}=require("./../models/track");
-const{playlistTracks}=require("./../models/playlistTracks");
+//const{playlistTracks}=require("./../models/playlistTracks");
+
+const{playlist}=require("./../models/playlists");
 const{album}=require('./../models/album');
-const{artist}=require('./../models/artists')
+const{artist}=require('./../models/artists');
+var { User } = require("./../models/users.js");
 
 const {ObjectID}=require('mongodb');
 
@@ -117,81 +121,85 @@ if(!ObjectID.isValid(id))
  * 
  */
 
-// app.post('/Playlists/:playlistId/tracks',async (req,res)=>
-// {
- 
-//     var url=req.body.url;
-//     console.log(url);
+app.post('/Playlists/:playlistId/tracks',async (req,res)=>
+{
+    // var userId;
+    // var token = req.header('x-auth');
+    // User.findByToken(token).the((user) => {
+    //     if(!user){
+    //         return Promise.reject();
+    //     }
 
-//     var id=req.params.playlistId;
-//     var tracksarr=[];
+    //    userId=user;
+
+
+    // }).catch((e)=>{return res.status(401).send("auth failed")})
+
+
+
     
-//     for(var i=0;i<url.length;i++)
-//     {
+    var flag=0;
+    var url= req.body.url;
+    console.log(url);
+
+    var id=req.params.playlistId;
+    var tracksarr=[{}];
+    
+ for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
+    {
+        console.log(` loop ${i} flag ${flag} `)
+        await track.find({url: url[i]}).then((tracks)=>
+    {
         
-//         await track.find({url: url[i]}).then((tracks)=>
-//     {
-//        if(!tracks) {return res.status(404).send('the track was not found');}
-//         tracksarr[i]=tracks;
-//         //console.log(tracksarr[i]);
-//     }).catch((e)=>res.status(400).send(e));
+        if(!tracks) 
+       { 
+           flag=1;
+        return res.status(404).send("the track was not found");
+       }
+         tracksarr[i]=tracks;
+        console.log(tracksarr[i]);
+
+    }).catch((e)=>res.status(400).send(e));
 
 
-// }
-
-// setTimeout(()=>console.log(tracksarr),1000);
+     if(flag)
+     {break;}
+         //flag=0;
+    //     return res.status(404).send('the track was not found');
+    // }
     
-// if(!ObjectID.isValid(id))  //validate the playlist id
-// {
-//     return res.status(404).send("invalid id");
-// }
+
+    // console.log(`loop after ${i} flag ${flag} `)
+}
 
 
-// playlistTracks.find({playlistId:id}).then((playlisttracks)=>{
 
+console.log(tracksarr);
 
-//     if(!playlisttracks) {return res.status(404).send("can not find playlist");} // handle the case where it is a created playlist which is not in the collection of playlisttracks}
-//    // res.send(playlisttracks);
-//    console.log(JSON.stringify( playlisttracks))
+    
+if(!ObjectID.isValid(id))  //validate the playlist id
+{
+    return res.status(404).send("invalid id");
+}
+
+playlist.findById(id).then((playlist)=>{
+
+    if(!playlist) {return res.status(404).send("playlist not found")};
+//if(! playlist.userId.toString()=== userId.toString())  {{return res.status(401).send("auth failed")};}
+
+    console.log(playlist)
+for(var i=0;i<tracksarr.length;i++)
+{
+    var trackId= _.map(tracksarr[i],"_id");
    
-// //    track.find({url:url1}).then((tracks)=>{
-     
-// //     console.log(tracks);
-// //     console.log(tracks[0]._id);
-// //     console.log(tracks[0].trackName);
-   
-//      var newTrack=JSON.stringify( tracksarr[0]);
-    
-     
-//      setTimeout(()=>{console.log(newTrack)},2000);
+    playlist.tracks.push(ObjectID(trackId.toString()));
 
-// // for(var i=0;i<tracksarr.length;i++)
-// // {
-// //     setTimeout(()=>{ playlisttracks[0].tracks.push(tracksarr[i]._id)},2000);
-     
-// // }
-// // console.log("testinggg");
-// // console.log(playlisttracks[0].tracks);
-
-//     //  playlistTracks.findByIdAndUpdate((id),{$set:{tracks:playlisttracks.tracks}},{new:true}).then((neww)=>
-//     // {
-//     //     //console.log(neww);
-//     //     //res.send(neww);
-//     //  })
-    
-//    })
-
-
-
-//      //if(!tracks){return res.status(404).send("can not find track")}
-
-//    //playlisttracks.update({$push:{"tracks":tracks }}).then((trackkk)=>{res.send(trackkk)});
-
-//    })
-// //}).catch((e)=>{res.status(400).send("could not add track");
-// //console.log(e)});
-
-// //})
+}
+   console.log(playlist);
+   playlist.save();
+   res.send('tracks added successfully');
+})
+ })
 
 
 

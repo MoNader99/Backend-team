@@ -52,7 +52,12 @@ var UserSchema = new mongoose.Schema({
         required: true,
         min: '1920-12-31',
         max: '2005-12-31'
-    }
+    },
+    resetToken:
+     {
+         type: String,
+         default:undefined
+     }
 
 
 });
@@ -134,7 +139,7 @@ UserSchema.statics.ActivateByToken = function (token) {
 	
     
 };
-var User = mongoose.model('Users', UserSchema);
+
 /*bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
         console.log(hash);
@@ -152,6 +157,58 @@ var User = mongoose.model('Users', UserSchema);
 
     });
 });*/
+////monica////////
+
+UserSchema.methods.generateResetToken=function(){
+    var user=this;
+    var access="reset";
+    var token=jwt.sign({_id:user._id.toHexString(),access},'secretkeyforuser');
+    user.resetToken=token;
+    console.log(token)
+    return user.save().then(()=>{
+        return new Promise((resolve, reject) => {
+            resolve(token);
+    
+        });
+    })
+    
+    }
+
+
+    
+    UserSchema.statics.checkTokenAndFind= function (token) {
+        var User = this;
+        var decoded;
+        var t=token;
+        try {
+            decoded = jwt.verify(token , 'secretkeyforuser');
+        } catch (e) {
+           return Promise.reject();
+        }
+        return User.findOne({
+         _id:decoded._id,
+
+         resetToken:t
+
+        });    
+        
+    };
+
+
+    UserSchema.statics.findByEmail = function (reqEmail) {
+        var User = this;
+        return User.findOne({email:reqEmail});  
+    };
+    
+
+
+
+
+
+
+    var User = mongoose.model('Users', UserSchema);
+
+
 
 module.exports = {
     User
