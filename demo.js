@@ -78,100 +78,6 @@ user2.save().then((res)=>{
     console.log(err);
 });
 
-/////////////////////////////////////////////////
-//CREATING NEW PLAYLISTS
-var playlist1 = new playlist({
-    userId:user1._id,
-    playlistName:"Dejavu",
-    privacy:true,
-    image:image2
-});
-
-playlist1.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-///playlist2
-var playlist2 = new playlist({
-    userId:user1._id,
-    playlistName:"Likes",
-    privacy:true,
-    image:image3
-    
-});
-
-playlist2.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-///playlist3
-var playlist3 = new playlist({
-    userId:user1._id,
-    playlistName:"X",
-    privacy:false,
-    image:image1,
-});
-
-playlist3.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-///playlist4
-var playlist4 = new playlist({
-    userId:user2._id,
-    playlistName:"Likes",
-    image:image3
-    
-});
-
-playlist4.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-///playlist5
-var playlist5 = new playlist({
-    userId:user2._id,
-    playlistName:"RecyleBin",
-    image:image1
-    
-});
-
-playlist5.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-
-
-// User 2 following 2 playlists from user1
-var followPlaylist1= new followPlaylist({
-    userId: user2._id,
-    playlistInfo:[{
-        playlistId:playlist1._id,
-        playlistName:playlist1.playlistName
-    },{
-        playlistId:playlist3._id,
-        playlistName:playlist3.playlistName
-    }]
-})
-
-followPlaylist1.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-
-
 
 
 var artist1= new artist({
@@ -334,47 +240,13 @@ var track1=new track({
     
     
     
-    //creating Playlist1Tracks
-    var id1=playlist1._id;  //should be cahnged according to the playlist ids for each one individually
     
-    var playlist1Tracks= new playlistTracks({
-    
-        playlistId:id1,
-       
-        tracks: [track1._id,track2._id]
-    
-    
-    });
-    
-    playlist1Tracks.save().then((res)=>{
-        console.log(res._id);
-    },(err)=>{
-        console.log(err);
-    });
-     
-    var id2=playlist2._id;  //should be cahnged according to the playlist ids for each one individually
-    
-    var playlist2Tracks=new playlistTracks({
-    
-        playlistId:id2,
-       
-        tracks: [track4._id,track3._id,track5._id]
-    
-
-
-   });
-        
-        playlist2Tracks.save().then((res)=>{
-            console.log(res._id);
-        },(err)=>{
-            console.log(err);
-        });
     
 ///////////Creating Albums//////////////////
     var album1 = new album({
         artistId:artist2._id,
         albumName:"25",
-        tracks: [track1._id,track2._id]
+        tracks: [track1,track2]
             
     });
 
@@ -384,6 +256,101 @@ var track1=new track({
 
         console.log(err);
     });
+
+/////////////////////////////////////////////////
+//CREATING NEW PLAYLISTS
+var playlist1 = new playlist({
+    userId:user1._id,
+    playlistName:"Dejavu",
+    privacy:true,
+    tracks:[track1,track2],
+    image:image2
+});
+
+playlist1.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+///playlist2
+var playlist2 = new playlist({
+    userId:user1._id,
+    playlistName:"Classics",
+    privacy:true,
+    image:image3
+    
+});
+
+playlist2.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+///playlist3
+var playlist3 = new playlist({
+    userId:user1._id,
+    playlistName:"X",
+    privacy:false,
+    image:image1,
+});
+
+playlist3.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+///playlist4
+var playlist4 = new playlist({
+    userId:user2._id,
+    playlistName:"Likes",
+    image:image3
+    
+});
+
+playlist4.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+///playlist5
+var playlist5 = new playlist({
+    userId:user2._id,
+    playlistName:"RecyleBin",
+    image:image1
+    
+});
+
+playlist5.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+// User 2 following 2 playlists from user1
+var followPlaylist1= new followPlaylist({
+    userId: user2._id,
+    playlistInfo:[{
+        playlistId:playlist1._id,
+        playlistName:playlist1.playlistName
+    },{
+        playlistId:playlist3._id,
+        playlistName:playlist3.playlistName
+    }]
+})
+
+followPlaylist1.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
 
 
 

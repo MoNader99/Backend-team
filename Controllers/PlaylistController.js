@@ -12,20 +12,6 @@ const app=express();
 
 app.listen(3000,()=>{console.log('started on port 3000');});
 
-// app.get('/playlists/:id', (req,res)=>{
-//     var id=req.params.id;
-//     if(!ObjectID.isValid(id))
-//     {
-//         return res.status(404).send("invalid id");
-//     }
-    
-//     playlist.findById(id).then((playlists)=>{
-//         if(!playlists){return res.status(404).send("can not find playlist");}
-//         res.send({playlists})
-    
-//     }).catch((e)=>res.status(400).send());
-    
-//     });
 
 //Get a User Playlist Request
 app.get('/playlists/me',(req,res) => {
