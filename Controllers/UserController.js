@@ -148,10 +148,10 @@ app.get('/users/me',(req,res) => {
 
 
 /**
- * Reset password
+ * forgot password
  * ----------------------
  * @api {post} /users/forgot      Request to send email for resetting password
- * @apiName Requesrreset
+ * @apiName RequestForgotPassword
  * @apiGroup User privacy
  * 
  * @apiHeader {json} Content-Type
@@ -232,7 +232,7 @@ app.post('/users/forgot', async (req, res) => {
  * Reset password
  * ----------------------
  * @api {patch} /users/reset      Request to reset password
- * @apiName Requesrreset
+ * @apiName RequestReset
  * @apiGroup User privacy
  * 
  * @apiHeader {json} Content-Type
@@ -256,13 +256,6 @@ app.post('/users/forgot', async (req, res) => {
  *       "Reset Failed""
  *     }  
  */
-
-
-
-
-
-
-
 
 app.patch('/users/reset',async (req,res)=>{
 
