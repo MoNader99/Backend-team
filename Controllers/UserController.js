@@ -288,4 +288,86 @@ app.patch('/users/reset',async (req,res)=>{
     })
 
 
+
+
+//REGULAR ACCOUNT
+/**
+ * @api {patch} api/users/:id/regular    User wants to unsubscribe from premium features
+ * @apiName WithdrawPremiumServies
+ * @apiGroup Users
+ * @apiHeader {string} x-auth    Only users 
+ * @apiParam {String} userId   the id of the user has to be passed
+ * @apiSuccess (200) {string}  
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "Your account has been changed to regular account"
+ *     }
+ * @apiUse MissingUser
+ * @apiUse ErrorUser
+ * 
+ * @apiError (404)  You are  not premium in the firstplace   
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 404 
+ *     {
+ *       "you are not premium , you already have a regular account "
+ *     }
+ * 
+ * @apiError (401)  authentication failed
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 401 
+ *     {
+ *       ""authentication Failed" "
+ *     }
+ * 
+ */
+
+app.patch('/users/:id/regular', async (req, res) => {
+    var userId;
+    var id=req.params.id;
+    console.log(id);
+    var token = req.header('x-auth');
+    User.findByToken(token).then((user) => {
+    if(!user){
+        return Promise.reject();
+    }
+  userId=user._id;
+  console.log(userId);
+  if(! (userId.toString()===id))
+  {
+      return res.status(401).send("authentication Failed")
+  }
+  else if(user.isPremium===false)
+  {
+    return res.status(404).send("you are not premium , you already have a regular account");
+      
+  }
+else
+{
+    user.isPremium=false;
+    user.save();
+    res.status(200).send("Your account has been changed to regular account")
+}
+
+}).catch((e)=>{return res.status(401).send("authentication Failed")}) 
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(3000,()=>{console.log('started on port 3000');});
