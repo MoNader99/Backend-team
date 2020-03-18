@@ -199,7 +199,7 @@ app.post('/users/forgot', async (req, res) => {
     user.generateResetToken().then((token)=>{
     console.log(token);
     var host=req.get('host');
-    var link="http://"+req.get('host')+"/users/reset/"+token;
+    var link="http://"+req.get('host')+"/users/reset/?token= "+token;
     var mailOptions={
         to : reqEmail,
         subject : "Reset the password ",
@@ -264,12 +264,12 @@ app.post('/users/forgot', async (req, res) => {
 
 
 
-app.post('/users/reset/:token',async (req,res)=>{
+app.patch('/users/reset',async (req,res)=>{
 
     var newPassword=req.body.newPassword;
     console.log(newPassword)
     console.log("helloooooo");
-    var token=req.params.token;
+    var token=req.query.token;
 
     const salt = await bcrypt.genSalt();
     const hashedPass = await bcrypt.hash(newPassword, salt);
