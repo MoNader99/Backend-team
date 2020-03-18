@@ -5,6 +5,7 @@ var { User } = require("../models/users.js");
 var _ = require('lodash');
 var bodyparser = require('body-parser');
 const bcrypt = require('bcrypt');
+var nodemailer = require("nodemailer");
 
 const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
@@ -12,11 +13,20 @@ const jwt = require('jsonwebtoken');
 const app = express();
 
 
+var smtpTransport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+        user: "sw.project.verify@gmail.com",
+        pass: "abcd-1234"
+    }
+});
+
+
 app.use(bodyparser.json());
 
 app.listen(3000, () => { console.log('started on port 3000'); });
 
-app.get('/Artists/:id', (req, res) => {
+app.get('/artists/:id', (req, res) => {
     var token = req.header('x-auth');
     try{
         jwt.verify(token, 'secretkeyforuser')
@@ -56,34 +66,80 @@ app.post('/Artists/login', (req, res) => {
     });
 
 });
-    app.post('/Artists/signup', async (req, res) => {
-        try {
-            const salt = await bcrypt.genSalt();
-            const hashedPass = await bcrypt.hash(req.body.password, salt);
-            var newacc = new artist(
-                {
-                    artistName: req.body.artistName,
+
+
+
+ 
+app.post('/artists/signup', async (req, res) => {
+    try {
+        const salt = await bcrypt.genSalt();
+        const hashedPass = await bcrypt.hash(req.body.password, salt);
+      
+        var newacc = new artist(
+            {
+               artistName: req.body.artistName,
                     email: req.body.email,
                     password: hashedPass,
                     about: req.body.about,
 
-                });
-            // console.log('2et3amal');
-            newacc.save().then((doc) => {
-                // console.log("skod");
+            });
+        console.log('2et3amal');
+        newacc.save().then((doc) => {
+            console.log("skod");
+	
+	
+		
+		var access= 'auth';		
+		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforuser',{expiresIn:'1d'});
+		console.log(code);
+		
+		var host=req.get('host');
+		var link="http://"+req.get('host')+"/users/confirm/?code="+code;
+		console.log(link);
+		var mailOptions={
+			to : req.body.email,
+			subject : "Please confirm your Email account",
+			html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+			}
+		console.log(mailOptions);
+		smtpTransport.sendMail(mailOptions, function(error, response){
+		 if(error){
+				console.log(error);
+			res.end("error");
+		 }else{
+				console.log("Message sent: " + response.message);
+			res.end("sent");
+			 }
+			 
+});
 
-                res.status(200).send(hashedPass);
-            },
-                (err) => {
-                    console.log(err);
-                    res.status(403).send(err);
+            res.status(200).send(hashedPass);
+        },
+            (err) => {
+                console.log(err);
+                res.status(403).send(err);
 
-                })
+            })
 
+    }
+
+    catch
+    {
+        res.status(500).send();
+    }
+});
+
+
+app.get('/artists/confirm',(req,res) => {
+   artist.ActivateByToken(req.query.code).then((activated) => {
+        if(!activated){
+			res.status(404).send("not found");
+            return Promise.reject();
         }
+	
+		res.status(200).send("Email confirmed successfully!");
+    }).catch((e) => {
+        res.status(401).send();
+    })
+})		
 
-        catch
-        {
-            res.status(500).send();
-        }
-    });

@@ -100,5 +100,33 @@ ArtistSchema.statics.findByToken = function (token) {
     
 };
 
+ArtistSchema.statics.ActivateByToken = function (token) {
+    var newArtist = this;
+    var decoded;
+
+    try 
+	{
+        decoded = jwt.verify(token , 'secretkeyforartist');
+    }
+
+	catch (e) 
+	{
+       return Promise.reject();
+    }
+			
+
+    return newArtist.findOneAndUpdate(
+	{
+     _id:decoded._id
+    },
+	{
+		isActive:true
+	}
+	); 
+	
+    
+};
+
+
 var artist = mongoose.model('Artists', ArtistSchema);
 module.exports={artist};
