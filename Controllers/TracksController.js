@@ -102,48 +102,48 @@ if(!ObjectID.isValid(id))
  * @apiName AddTracksToAPlaylist
  * @apiGroup Playlists
  *
- * @apiHeader {string} Authorization    Only an Artist can upload a track
+ * @apiHeader {string}  x-auth    
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format. 
  *  
  *
  * 
- * @apiParam {[string]}   uri     a list of Uris to be passed in the body parameters
+ * @apiParam {[string]}   url    a list of Urls to be passed in the body parameters
  * @apiSuccess 200                      [tracks has been successfully added to playlist]
  * 
  * 
- * *@apiError  403                      [Forbidden because you crossed the limiting number of tracks in a playlist which is 10000]
+ * *@apiError  403                      [Forbidden because you crossed the limiting number of tracks in a playlist which is 1000]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 403 Forbidden
  *     {
- *       "error": "Forbidden because you crossed the limiting number of tracks in a playlist which is 10000"
+ *       "Forbidden because you crossed the limiting number of tracks in a playlist which is 1000"
  *     }
- * 
- * 
+ * @apiError 401   [authentication failed]
+ * @apiError 404  [playlist not found]
  */
 
 app.post('/Playlists/:playlistId/tracks',async (req,res)=>
 {
-    // var userId;
-    // var token = req.header('x-auth');
-    // User.findByToken(token).the((user) => {
-    //     if(!user){
-    //         return Promise.reject();
-    //     }
+        var userId;
+         var token = req.header('x-auth');
+         User.findByToken(token).then((user) => {
+         if(!user){
+             return Promise.reject();
+         }
 
-    //    userId=user;
-
-
-    // }).catch((e)=>{return res.status(401).send("auth failed")})
+       userId=user._id;
 
 
-
-    
+    }).catch((e)=>{return res.status(401).send("auth failed")}) 
     var flag=0;
     var url= req.body.url;
     console.log(url);
 
     var id=req.params.playlistId;
     var tracksarr=[{}];
+    if(url.length>1000)
+    {
+        res.status(403).send(" Forbidden because you crossed the limiting number of tracks in a playlist which is 1000");
+    }
     
  for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
     {
@@ -151,19 +151,35 @@ app.post('/Playlists/:playlistId/tracks',async (req,res)=>
         await track.find({url: url[i]}).then((tracks)=>
     {
         
-        if(!tracks) 
-       { 
-           flag=1;
-        return res.status(404).send("the track was not found");
-       }
-         tracksarr[i]=tracks;
+    //     if(!tracks) 
+    //    { 
+    //        flag=1;
+    //     return res.status(404).end("the track was not found");
+    //    }
+    //      tracksarr[i]=tracks;
+    //     console.log(tracksarr[i]);
+     
+        if(tracks)
+        {
+            tracksarr[i]=tracks;
         console.log(tracksarr[i]);
+            
+        }
+        else{
+            flag=1;
+            
+           return Promise.reject("the track was not found");
+        //return res.status(404).end("the track was not found");
+        }
+
+     
+
 
     }).catch((e)=>res.status(400).send(e));
 
 
-     if(flag)
-     {break;}
+    //  if(flag)
+    //  {return res.status(404).end("the track was not found");}
          //flag=0;
     //     return res.status(404).send('the track was not found');
     // }
@@ -185,7 +201,11 @@ if(!ObjectID.isValid(id))  //validate the playlist id
 playlist.findById(id).then((playlist)=>{
 
     if(!playlist) {return res.status(404).send("playlist not found")};
-//if(! playlist.userId.toString()=== userId.toString())  {{return res.status(401).send("auth failed")};}
+    console.log(userId);
+    console.log(playlist);
+    //console.log({playlist:userId});
+
+if(! (playlist.userId.toString()=== userId.toString()))  {return res.status(401).send("auth failed");}
 
     console.log(playlist)
 for(var i=0;i<tracksarr.length;i++)
