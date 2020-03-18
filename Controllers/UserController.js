@@ -231,13 +231,13 @@ app.post('/users/forgot', async (req, res) => {
 /**
  * Reset password
  * ----------------------
- * @api {post} /users/reset/:token      Request to reset password
+ * @api {patch} /users/reset      Request to reset password
  * @apiName Requesrreset
  * @apiGroup User privacy
  * 
  * @apiHeader {json} Content-Type
  * 
- * @apiParam {string} Token  
+ * @apiParam {string} Token    shoulb be passed in query
  * @apiBody {string}  newPassword   in json form
  * 
  * @apiSuccess {string}     The id the user will use to reset his
