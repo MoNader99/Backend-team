@@ -31,14 +31,16 @@ var track=mongoose.model("Tracks",{
   image:{
     type:ImagesSchema,
     //TO BE SET TO REQUIRED AND HAVE A DEFAULT HAVE OF ANY IMAGE IN THE IMAGES COLLECTION
+    required:false
     },
 
 
 
   url:
   { type:String,
-    unique: true ,
-    trim:true
+    unique: true,
+    trim:true,
+    required:true
   }
 });
 
