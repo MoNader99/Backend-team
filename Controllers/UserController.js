@@ -158,12 +158,12 @@ app.get('/users/me',(req,res) => {
  * forgot password
  * ----------------------
  * @api {post} /users/forgot      Request to send email for resetting password
- * @apiName RequestForgotPassword
+ * @apiName ForgotPasswordRequest
  * @apiGroup User privacy
  * 
  * @apiHeader {json} Content-Type
  * 
- * @apiBody {string} userEmail       in json form
+ * @apiParam {string} userEmail       in json form
  * 
  * @apiSuccess {string} emailSent    The email contains a link with a token that should be passed in the resetPassword request
  *                                    
@@ -239,13 +239,13 @@ app.post('/users/forgot', async (req, res) => {
  * Reset password
  * ----------------------
  * @api {patch} /users/reset      Request to reset password
- * @apiName RequestReset
+ * @apiName ResetRequest
  * @apiGroup User privacy
  * 
  * @apiHeader {json} Content-Type
  * 
  * @apiParam {string} Token    shoulb be passed in query
- * @apiBody {string}  newPassword   in json form
+ * @apiParam {string}  newPassword   in json form
  * 
  * @apiSuccess {string}     The id the user will use to reset his
  * 
@@ -354,6 +354,193 @@ else
 }).catch((e)=>{return res.status(401).send("authentication Failed")}) 
 
 });
+
+
+
+
+
+
+ //REQUEST FOR A PREMIUM ACCOUNT
+/**
+ * @api {get} /users/:userId/premium    Send a confirmation mail to be a premium user  
+ * @apiName Join Premium Request 
+ * @apiGroup Users
+ * @apiHeader {string} x-auth            token Only users can request to premium
+ * 
+ * @apiParam {String} userId             the id of the user should be passed in the path
+ * 
+ * @apiSuccess  (200) {string}          show him wether he is premium or not
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       
+ *        "confirmation request has been sent, You will be a premium user soon"
+ *     }
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *      
+ *        "You are already a premium user.Thanks for that"
+ *     }
+ * 
+ * 
+ * @apiError (401)  authentication failed
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 401 
+ *     {
+ *       ""authentication Failed" "
+ *     }
+ * 
+ * @apiError (500) EmailCannotBeSent  A problem while sending email
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 server Error
+ *     {
+ *       "error,failed to send"
+ *     }  
+ * 
+ * 
+*/
+
+
+app.get('/users/:id/premium', async (req, res) => 
+{
+    
+             var id=req.params.id;
+              var userId;
+             var token=req.header('x-auth');
+             User.findByToken(token).then((user) => 
+             {
+                if(!user){
+                    return Promise.reject();
+                }
+              userId=user._id;
+              console.log(userId);
+              if(! (userId.toString()===id))
+              {
+                  return res.status(401).send("authentication Failed")
+              }
+              else if(user.isPremium===true)
+              {
+                return res.status(200).send("you are already a premium user, thanks for that");
+                  
+              }
+            else
+            {
+                var email= user.email;
+                var type= 'premium';		
+                var code = jwt.sign({ _id: user._id, type }, 'secretkeyforuser',{expiresIn:'1d'});
+                console.log(code);
+                
+                var host=req.get('host');
+                var link="http://"+req.get('host')+"/users/confirmPremium/?code= "+code;
+                console.log(link);
+                var mailOptions={
+                    to : email,
+                    subject : "Please confirm your Premium account",
+                    html : "Hello,<br> Please Click on the link to confirm your premium account.<br><a href="+link+">Click here to verify</a>"
+                    }
+                console.log(mailOptions);
+                smtpTransport.sendMail(mailOptions, function(error, response){
+                 if(error) 
+                 {
+                        console.log(error);
+                    res.status(500).send("error,failed to send");
+                 }
+                 
+                 else
+                 {
+                        console.log("Message sent: " + response.message);
+                    res.status(200).send("confirmation request has been sent, You will be a premium user soon");
+                }
+                     
+                      });
+            }
+            
+           
+        }).catch((e)=>{return res.status(401).send("authentication Failed")}) 
+    })   
+            
+	
+	
+  
+
+
+
+
+
+
+
+
+
+
+
+
+//CONFIRMATION OF A PREMIUM ACCOUNT
+/**
+ * @api {patch} /users/confirmPremium     User is confirmed to be a premium user
+ * @apiName Acceptance of Premium Request
+ * @apiGroup Users
+ * @apiParam {String} token               the token that was sent in the link snet to the user's email 
+ * @apiSuccess (200) {string} "Email confirmed successfully,Welcome To Premium Life!"  change of premium status from false to true
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+*              "Email confirmed successfully,Welcome To Premium Life!" 
+ * 
+ * 
+ *     
+ *     }
+ * 
+ * @apiError (401)  authentication failed
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 401 
+ *     {
+ *       ""authentication Failed" "
+ *     }
+ * 
+ * 
+ */
+
+
+
+app.patch('/users/confirmPremium/',async (req,res)=>{
+     var token=req.query.token;
+
+    decoded = jwt.verify(token , 'secretkeyforuser');
+    if (decoded.type==='premium')
+    { User.findById(decoded._id).then((user)=>{
+        if(!user){
+			res.status(404).send("not found");
+            return Promise.reject();
+        }
+
+        user.isPremium=true;
+        user.save()
+        res.status(200).send("Email confirmed successfully,Welcome To Premium Life!");
+    }).catch((e) => {
+        res.status(401).send("authentication failed");
+
+    })
+}
+ 
+ })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
