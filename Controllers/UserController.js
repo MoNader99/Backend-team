@@ -4,10 +4,13 @@
 var { mongoose } = require("./../db/mongoose.js");
 var nodemailer = require("nodemailer");
 var { User } = require("./../models/users.js");
+var{artist}= require("./../models/Artists.js");  //artists model
+
+const {ObjectID}=require("mongodb");
 var bodyparser = require('body-parser');
 var express = require('express');
 var app = express();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 var password = "abc";
 app.use(bodyparser.json());
 var _ = require('lodash');
@@ -531,6 +534,40 @@ app.patch('/users/confirmPremium/',async (req,res)=>{
 
 
 
+//GET ARTIST RELATED ARTISTS
+app.get('/artists',(req,res)=>{
+    var sentId=req.body.artistId; 
+    if(!sentId){
+        return res.status(400).send("Send the artist ID");
+    }
+    if(!ObjectID.isValid(sentId)){
+        return res.status(404).send("Invalid Id");  
+    }
+    artist.findById(sentId).then((myartists)=>{ 
+        if(!myartists){
+            return res.status(404).send('Id not found');
+        }
+        artist.find({genres:{$in:myartists.genres}}).then((suggestedArtists)=>{    
+        for(var count=0;count<suggestedArtists.length;count++)
+        {
+            if(suggestedArtists[count]._id==sentId){
+                var switchvar=suggestedArtists[count];   
+                suggestedArtists[count]=suggestedArtists[(suggestedArtists.length)-1];
+                suggestedArtists[(suggestedArtists.length)-1]=switchvar;
+                suggestedArtists.pop();
+                break;
+            }
+        }
+        res.send(suggestedArtists);
+        },(e)=>{
+            res.status(400).send(e);
+        })
+
+    },(e)=>{
+        
+        res.status(400).send(e);
+    })
+});  
 
 
 

@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const password = "2032";
 const jwt = require('jsonwebtoken');
 

@@ -17,7 +17,7 @@ const Schema = mongoose.Schema;
 //IMAGES OBJECTS
 
 var image1= new images ({
-    url:"dbfdkj vddv",
+    url:"This will be the default image of the created playlists",
     height:34,
     width:12,
 });
@@ -164,13 +164,14 @@ followArtist1.save().then((res)=>{
 
 
 //////////////MONICA
+//////////////MONICA
 var track1=new track({
     artistId:artist1._id,
     trackName:"Hello",
     rating:10,
     duration:360000,
     image:image2,
-    url:"cccc"  // until we get real urls 
+    url:"this is a url"  // until we get real urls 
     });
     track1.save().then((res)=>{
         console.log(res._id);
@@ -183,9 +184,9 @@ var track1=new track({
         artistId:artist1._id,
         trackName:"someone like you",
         rating:9,
-        duration:285000,
-        image:image1,
-        url:"nnnn"  // until we get real urls 
+        duration:360000,
+        image:image2,
+        url:"this is a url"  // until we get real urls 
         });
         track2.save().then((res)=>{
             console.log(res._id);
@@ -198,7 +199,8 @@ var track1=new track({
             trackName:"set fire to the rain",
             rating:8,
             duration:240000,
-            url:"kkkk"  // until we get real urls 
+            image:image3,
+            url:"nnnn"  // until we get real urls 
             });
     
             track3.save().then((res)=>{
@@ -212,6 +214,7 @@ var track1=new track({
                 trackName:"When I'm Gone",
                 rating:10,
                 duration:262000,
+                image:image3,
                 url:"lll"  // until we get real urls 
                 });
         
@@ -226,6 +229,7 @@ var track1=new track({
                     trackName:"Godzilla",
                     rating:9,
                     duration:223000,
+                    image:image3,
                     url:"vvv"  // until we get real urls 
                     });
             
@@ -235,6 +239,7 @@ var track1=new track({
                         console.log(err);
                     });
         
+    
     
     
     
@@ -264,7 +269,8 @@ var playlist1 = new playlist({
     playlistName:"Dejavu",
     privacy:true,
     tracks:[track1,track2],
-    image:image2
+    image:image1
+    
 });
 
 playlist1.save().then((res)=>{
@@ -278,6 +284,7 @@ var playlist2 = new playlist({
     userId:user1._id,
     playlistName:"Classics",
     privacy:true,
+    tracks:[track1,track2,track3,track4],
     image:image3
     
 });
@@ -293,7 +300,9 @@ var playlist3 = new playlist({
     userId:user1._id,
     playlistName:"X",
     privacy:false,
-    image:image1,
+    image:image2,
+    tracks:[track1,track2,track3,track4,track5],
+    //This playlist will have the deafult image of the playlist
 });
 
 playlist3.save().then((res)=>{
@@ -306,7 +315,8 @@ playlist3.save().then((res)=>{
 var playlist4 = new playlist({
     userId:user2._id,
     playlistName:"Likes",
-    image:image3
+    image:image3,
+    tracks:[track5]
     
 });
 
@@ -320,8 +330,7 @@ playlist4.save().then((res)=>{
 var playlist5 = new playlist({
     userId:user2._id,
     playlistName:"RecyleBin",
-    image:image1
-    
+    image:image3
 });
 
 playlist5.save().then((res)=>{
@@ -329,6 +338,7 @@ playlist5.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
+
 
 
 

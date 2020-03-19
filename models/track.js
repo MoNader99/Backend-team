@@ -24,14 +24,13 @@ var track=mongoose.model("Tracks",{
   duration:   //in ms
   { type:Number,  //not sure about the field type
     required:true,
-    default: 120000 //assuming 2 mins (2*60*10^3) 
+    
 
   },
 
   image:{
     type:ImagesSchema,
-    //TO BE SET TO REQUIRED AND HAVE A DEFAULT HAVE OF ANY IMAGE IN THE IMAGES COLLECTION
-    required:false
+    required:true
     },
 
 

@@ -7,6 +7,7 @@ const {ObjectID}=require("mongodb");
 var{mongoose}= require("./../db/mongoose.js");  
 var{track}=require("./../models/track.js");
 var{artist}= require("./../models/Artists.js");  //artists model
+var{images}= require("./../models/images.js"); // images model
 
 
 ///////////
@@ -16,38 +17,76 @@ app.use(bodyParser.json());
 
 //post fn takes the url as first paramter and a call back fn 
 //the user id is to be passed in the url to know whom this playlist belongs to
-app.post('/tracks/me',(req,res)=>{
+app.post('/tracks',(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
         if(!myartist){
             return Promise.reject();
         }
         var atristId2= myartist._id;   
-        console.log("Here "+atristId2); 
-        track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
-            if(trackduplicate.length==0){
-                console.log("empty");
-                var trackInstance = new track({
-                    artistId: atristId2,
-                    trackName: req.body.trackName,
-                    duration:req.body.duration,
-                    url:req.body.url
+        if(!req.body.trackName){
+            return res.status(400).send("Track name is required");
+        }
+        if(!req.body.image){
+           return  res.status(400).send("Track image is required");
+        }
+        if(!req.body.url){
+            return res.status(400).send("Track url is required");
+        }
+        if(!req.body.duration){
+            return res.status(400).send("Track duration is required");
+        }
 
-                },(e)=>{
-                    res.status(401).send("Coult not add Track ("+req.body.trackName+")");
-                });
-            
-                trackInstance.save().then((doc)=>{
-                    res.send(doc._id);  // you can send back the whole document or just the id of the created playlist
-                }).catch((e)=>{
-                    res.status(401).send("Coult not add Track ("+req.body.trackName+")");
-                });
+        track.findOne({url:req.body.url}).then((duptrackurl)=>{
+            if(duptrackurl){
+                return res.status(400).send("This track is already created");
                 
             }
-            else if(trackduplicate.length!=0){
-                return res.status(400).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
-            };
+            var savedImage;
+            images.findOne({url:req.body.image.url}).then((isImage)=>{
+                if(!isImage){
+                        savedImage= new images ({
+                        url:req.body.image.url,
+                        height:req.body.image.height,
+                        width:req.body.image.width,});
+                        savedImage.save();
+                    }
+                    else if(isImage){
+                        savedImage=isImage
+                    }
+            });
+    
+    
+    
+            track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
+                if(trackduplicate.length==0){
+                        var trackInstance = new track({
+                        artistId: atristId2,
+                        trackName: req.body.trackName,
+                        duration:req.body.duration,
+                        url:req.body.url,
+                        image:savedImage,
+    
+                    },(e)=>{
+                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                    });
+                
+                    trackInstance.save().then((doc)=>{
+                        res.send(doc._id);  // you can send back the whole document or just the id of the created playlist
+                    }).catch((e)=>{
+                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                    });
+                    
+                }
+                else if(trackduplicate.length!=0){
+                    return res.status(400).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+                };
+            });
+            
+
         });
+
+
 
     
     }).catch((e)=>{

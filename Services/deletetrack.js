@@ -13,14 +13,18 @@ var app=express();
 //configures the middlewear
 app.use(bodyParser.json());
 
-app.delete('/tracks/:trackname',(req,res)=>{
+app.delete('/tracks',(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
         if(!myartist){
             return Promise.reject();
         }
-    var atristId2= myartist._id;   
-    var trackName1=req.params.trackname ;  //track name
+    var atristId2= myartist._id; 
+    if(!req.body.trackName){
+        return res.status(400).send("Pass the track name to delete");
+    }  
+    var trackName1=req.body.trackName ;  //track name
+    
 
     track.findOneAndRemove({$and:[{artistId: atristId2},{trackName:trackName1 }]}).then((delTracks)=>{
         if(!delTracks){

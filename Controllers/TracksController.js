@@ -9,6 +9,8 @@ const{playlist}=require("./../models/playlists");
 const{album}=require('./../models/album');
 const{artist}=require('./../models/artists');
 var { User } = require("./../models/users.js");
+var{images}= require("./../models/images.js"); // images model
+
 
 const {ObjectID}=require('mongodb');
 
@@ -307,6 +309,122 @@ app.get('/tracks',async (req,res)=>{
     }
 res.send(returnedTrackArray);
     })
+
+
+
+
+
+//DELETE A TRACK
+app.delete('/tracks',(req,res)=>{
+    var token = req.header('x-auth');
+    artist.findByToken(token).then((myartist)=>{
+        if(!myartist){
+            return Promise.reject();
+        }
+    var atristId2= myartist._id; 
+    if(!req.body.trackName){
+        return res.status(400).send("Pass the track name to delete");
+    }  
+    var trackName1=req.body.trackName ;  //track name
+    
+
+    track.findOneAndRemove({$and:[{artistId: atristId2},{trackName:trackName1 }]}).then((delTracks)=>{
+        if(!delTracks){
+            
+            return res.status(404).send('Track not found to be deleted');
+        }
+        
+        res.status(200).send("Track "+trackName1+" was deleted succsesfully");
+
+    }).catch((e)=>{
+        res.status(400).send();
+    })
+    }).catch((e)=>{
+        res.status(401).send('Unauthorized Access');
+    })
+});
+
+
+//ADD A TRACK
+app.post('/tracks',(req,res)=>{
+    var token = req.header('x-auth');
+    artist.findByToken(token).then((myartist)=>{
+        if(!myartist){
+            return Promise.reject();
+        }
+        var atristId2= myartist._id;   
+        if(!req.body.trackName){
+            return res.status(400).send("Track name is required");
+        }
+        if(!req.body.image){
+           return  res.status(400).send("Track image is required");
+        }
+        if(!req.body.url){
+            return res.status(400).send("Track url is required");
+        }
+        if(!req.body.duration){
+            return res.status(400).send("Track duration is required");
+        }
+
+        track.findOne({url:req.body.url}).then((duptrackurl)=>{
+            if(duptrackurl){
+                return res.status(400).send("This track is already created");
+                
+            }
+            var savedImage;
+            images.findOne({url:req.body.image.url}).then((isImage)=>{
+                if(!isImage){
+                        savedImage= new images ({
+                        url:req.body.image.url,
+                        height:req.body.image.height,
+                        width:req.body.image.width,});
+                        savedImage.save();
+                    }
+                    else if(isImage){
+                        savedImage=isImage
+                    }
+            });
+    
+    
+    
+            track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
+                if(trackduplicate.length==0){
+                        var trackInstance = new track({
+                        artistId: atristId2,
+                        trackName: req.body.trackName,
+                        duration:req.body.duration,
+                        url:req.body.url,
+                        image:savedImage,
+    
+                    },(e)=>{
+                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                    });
+                
+                    trackInstance.save().then((doc)=>{
+                        res.send(doc._id);  // you can send back the whole document or just the id of the created playlist
+                    }).catch((e)=>{
+                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                    });
+                    
+                }
+                else if(trackduplicate.length!=0){
+                    return res.status(400).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+                };
+            });
+            
+
+        });
+
+
+
+    
+    }).catch((e)=>{
+        res.status(401).send('Unauthorized Access');
+    })
+});
+
+
+
     
 
     // Add a track

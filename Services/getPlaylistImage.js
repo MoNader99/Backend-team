@@ -12,7 +12,7 @@ var app=express();
 //configures the middlewear
 app.use(bodyParser.json());
 
-app.get('/playlists/:playlistName',(req,res)=>{
+app.get('/playlists',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -20,7 +20,10 @@ app.get('/playlists/:playlistName',(req,res)=>{
             return Promise.reject();
         }
     var userId2=user._id;
-    var pName = req.params.playlistName;
+    if(!req.body.playlistName){
+        return res.status(400).send("Pass the playlistname to get it's image");
+    }
+    var pName = req.body.playlistName;
     playlist.findOne({$and:[{userId:userId2},{playlistName:pName}]}).then((fetched)=>{
         if(!fetched){
             return res.status(404).send('Playlist does not exist');

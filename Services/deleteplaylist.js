@@ -14,14 +14,17 @@ var app=express();
 app.use(bodyParser.json());
 
 //PLaylist name is to bs passsed in the request as playlist name is unique for each user
-app.delete('/playlists/:name',(req,res)=>{
+app.delete('/playlists',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
             return Promise.reject();
         }
     var userId2=user._id;     // id of the owner of the playlist 
-    var playlistName=req.params.name; //playlist name  to be taken from the url  
+    if(!req.body.playlistName){
+        return res.status(400).send("Pass the playlistname to delete");
+    }
+    var playlistName=req.body.playlistName;
     playlist.findOneAndRemove({$and:[{userId:userId2},{playlistName:playlistName }]}).then((delPlaylist)=>{
         if(!delPlaylist){
             

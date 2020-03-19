@@ -17,10 +17,13 @@ app.use(bodyParser.json());
 //and return array of artist objects who play the same genre
 
 //the id is to be sent after artists/"your id" 
-app.get('/artists/:id',(req,res)=>{
-    var sentId=req.params.id; //id to be taken from the url instead of manually giving it here   //"5e6bb55639c4db1454a364cc"
+app.get('/artists',(req,res)=>{
+    var sentId=req.body.artistId; 
+    if(!sentId){
+        return res.status(400).send("Send the artist ID");
+    }
     if(!ObjectID.isValid(sentId)){
-        return res.status(404).send("Invalid Id");   //returning a message
+        return res.status(404).send("Invalid Id");  
     }
     artist.findById(sentId).then((myartists)=>{ 
         if(!myartists){

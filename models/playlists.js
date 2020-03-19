@@ -24,7 +24,7 @@ var playlist=mongoose.model("Playlists",{
   },
   image:{
     type:ImagesSchema,
-    //TO BE SET TO REQUIRED AND HAVE A DEFAULT HAVE OF ANY IMAGE IN THE IMAGES COLLECTION
+    required:true
     },
 
     tracks: [
