@@ -310,39 +310,39 @@ res.send(returnedTrackArray);
     
 
     // Add a track
-    app.post('/tracks',async (req,res)=>
-{
-        var token = req.header('x-auth');
-         artist.findByToken(token).then((artist) => {
-         if(!artist){
-             console.log("you are not authorized to add a track")
-             return Promise.reject();
-         }
-         console.log("you are authorized to add a track");
+//     app.post('/tracks',async (req,res)=>
+// {
+//         var token = req.header('x-auth');
+//          artist.findByToken(token).then((artist) => {
+//          if(!artist){
+//              console.log("you are not authorized to add a track")
+//              return Promise.reject();
+//          }
+//          console.log("you are authorized to add a track");
         
-         var newTrack = new track(
-         {
-             artistId : artist._id,
-             trackName : req.body.trackName,
-             duration : req.body.duration,
-             url : req.body.url
-         })
-         console.log('Recieved info successfully');
-            newTrack.save().then((res)=>{
-                console.log(res._id);
-                console.log('saved')
-            },(err)=>{
-                console.log(err);
-                res.status(500).send('Insertion of new track has failed');
-            }
-            ).catch((e) => {
-                console.log(e);
-                return Promise.reject();
-            })
-        }).catch((e)=>{
-            console.log(e);
-            return Promise.reject();
-           });
+//          var newTrack = new track(
+//          {
+//              artistId : artist._id,
+//              trackName : req.body.trackName,
+//              duration : req.body.duration,
+//              url : req.body.url
+//          })
+//          console.log('Recieved info successfully');
+//             newTrack.save().then((res)=>{
+//                 console.log(res._id);
+//                 console.log('saved')
+//             },(err)=>{
+//                 console.log(err);
+//                 res.status(500).send('Insertion of new track has failed');
+//             }
+//             ).catch((e) => {
+//                 console.log(e);
+//                 return Promise.reject();
+//             })
+//         }).catch((e)=>{
+//             console.log(e);
+//             return Promise.reject();
+//            });
            
-           res.status(200).send('Inserted succesfully');
-        });
+//            res.status(200).send('Inserted succesfully');
+//         });
