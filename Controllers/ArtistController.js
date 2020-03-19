@@ -31,8 +31,8 @@ app.get('/artists/:id', (req, res) => {
     try{
         jwt.verify(token, 'secretkeyforuser')
     }
-    catch {
-        console.log(error);
+    catch(error) {
+        console.log("enta hena ezayyyy");
         return res.status(404).send("Not authorized"); 
     }
 
@@ -48,18 +48,28 @@ app.get('/artists/:id', (req, res) => {
     }).catch((e) => res.status(400).send());
 
 });
-app.post('/Artists/login', (req, res) => {
+app.post('/artists/login', (req, res) => {
     console.log("email");
     console.log(req.body.email);
     var body = _.pick(req.body, ['email', 'password']);
     console.log(2);
-    artist.findByCredentials(body.email, body.password).then((artist) => {
+	
+	
+		artist.findByCredentials(body.email, body.password).then((artist) => {
         console.log(3);
+		if(artist.isActive==true)
+	{
         return artist.generateAuthToken().then((token) => {
             console.log(4);
             res.header('x-auth', token).send(artist);
             console.log(5);
         });
+	}	
+	else
+	{
+		res.status(403).send("Please go to your inbox and click the link to activate your Email.");
+	}
+		
     }).catch((e) => {
         console.log(e);
         res.status(400).send();
@@ -90,11 +100,11 @@ app.post('/artists/signup', async (req, res) => {
 	
 		
 		var access= 'auth';		
-		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforuser',{expiresIn:'1d'});
+		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforartist',{expiresIn:'1d'});
 		console.log(code);
 		
 		var host=req.get('host');
-		var link="http://"+req.get('host')+"/users/confirm/?code="+code;
+		var link="http://"+req.get('host')+"/artists/confirm/"+code;
 		console.log(link);
 		var mailOptions={
 			to : req.body.email,
@@ -130,8 +140,8 @@ app.post('/artists/signup', async (req, res) => {
 });
 
 
-app.get('/artists/confirm',(req,res) => {
-   artist.ActivateByToken(req.query.code).then((activated) => {
+app.get('/artists/confirm/:code',(req,res) => {
+   artist.ActivateByToken(req.params.code).then((activated) => {
         if(!activated){
 			res.status(404).send("not found");
             return Promise.reject();

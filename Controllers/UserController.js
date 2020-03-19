@@ -114,11 +114,18 @@ app.post('/users/login', async (req, res) => {
     console.log(2);
     User.findByCredentials(body.email, body.password).then((user) => {
         console.log(3);
-        return user.generateAuthToken().then((token) => {
+		if(user.isActive==true)
+		{	
+			return user.generateAuthToken().then((token) => {
             console.log(4);
             res.header('x-auth', token).send(user);
-            console.log(5);
-        });
+		    console.log(5);
+			});
+		}
+		else
+		{
+			res.status(403).send("Please go to your inbox and click the link to activate your Email.");
+		}
     }).catch((e) => {
         console.log(e);
         res.status(400).send();

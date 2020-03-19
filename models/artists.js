@@ -39,7 +39,11 @@ var ArtistSchema = new mongoose.Schema({
     rating:{
         type:Number,
         default:-1   // artist is not yet rated by the users of our app
-    }
+    },
+	  isActive: {
+        type: Boolean,
+        default: false
+    },
     
 });
 
