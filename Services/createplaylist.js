@@ -9,7 +9,7 @@ var{playlist}= require("./../models/playlists.js"); // playlists model
 var{User}= require("./../models/users.js"); // users model
 var{images}= require("./../models/images.js"); // images model
 
-//const image1=require("./../demo");
+//const {image1}=require("./../demo.js");
 
 
 

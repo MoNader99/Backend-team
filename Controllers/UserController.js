@@ -536,6 +536,12 @@ app.patch('/users/confirmPremium/',async (req,res)=>{
 
 //GET ARTIST RELATED ARTISTS
 app.get('/artists',(req,res)=>{
+    var token = req.header('x-auth');
+    User.findByToken(token).then((user)=>{
+        if(!user){
+            return Promise.reject();
+        }
+
     var sentId=req.body.artistId; 
     if(!sentId){
         return res.status(400).send("Send the artist ID");
@@ -558,7 +564,7 @@ app.get('/artists',(req,res)=>{
                 break;
             }
         }
-        res.send(suggestedArtists);
+        res.status(302).send(suggestedArtists);
         },(e)=>{
             res.status(400).send(e);
         })
@@ -567,6 +573,9 @@ app.get('/artists',(req,res)=>{
         
         res.status(400).send(e);
     })
+  }).catch((e)=>{
+    res.status(401).send('Unauthorized Access');
+  })   
 });  
 
 

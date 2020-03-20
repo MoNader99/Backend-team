@@ -36,6 +36,10 @@ app.post('/tracks',(req,res)=>{
         if(!req.body.duration){
             return res.status(400).send("Track duration is required");
         }
+        //IF HEIGHT AND WIDTH ARE NOT REQUIRED -> TO BE REMOVED FROM THE OR CONDITION HERE
+        if(!req.body.image.height || !req.body.image.width || !req.body.image.url){
+            return res.status(400).send("Image Info of track has to be provided");
+        }
 
         track.findOne({url:req.body.url}).then((duptrackurl)=>{
             if(duptrackurl){
@@ -72,14 +76,14 @@ app.post('/tracks',(req,res)=>{
                     });
                 
                     trackInstance.save().then((doc)=>{
-                        res.send(doc._id);  // you can send back the whole document or just the id of the created playlist
+                        res.status(201).send(doc);  
                     }).catch((e)=>{
                         res.status(401).send("Coult not add Track ("+req.body.trackName+")");
                     });
                     
                 }
-                else if(trackduplicate.length!=0){
-                    return res.status(400).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+                else if(trackduplicate.length!=0){  //409 is code for conflict
+                    return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
                 };
             });
             

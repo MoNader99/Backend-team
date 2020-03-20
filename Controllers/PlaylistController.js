@@ -124,7 +124,7 @@ app.delete('/playlists',(req,res)=>{
             return res.status(404).send('No playlist found to delete');
         }
         
-        res.status(200).send("Playlist deleted succsesfully");
+        res.status(204).send("Playlist deleted succsesfully");
 
     }).catch((e)=>{
         res.status(400).send();
@@ -133,6 +133,8 @@ app.delete('/playlists',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
+
 
 
 //DELETE TRACK FROM A PLAYLIST
@@ -151,7 +153,7 @@ app.delete('/playlists/tracks',(req,res)=>{
     }
     var trackId= req.body.trackId
     if(!ObjectID.isValid(trackId)){
-        return res.status(404).send("Invalid Track Id");   //returning a message
+        return res.status(404).send("Invalid Track Id");   
     }
 
     var playlistName=req.body.playlistName;
@@ -180,7 +182,7 @@ app.delete('/playlists/tracks',(req,res)=>{
                     
                     
                 });
-                res.send("Track is successfully deleted from playlist");
+                res.status(204).send("Track is successfully deleted from playlist");
                 
             }
 

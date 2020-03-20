@@ -28,7 +28,7 @@ app.delete('/playlists/tracks',(req,res)=>{
     }
     var trackId= req.body.trackId
     if(!ObjectID.isValid(trackId)){
-        return res.status(404).send("Invalid Track Id");   //returning a message
+        return res.status(404).send("Invalid Track Id");   
     }
 
     var playlistName=req.body.playlistName;
@@ -57,7 +57,7 @@ app.delete('/playlists/tracks',(req,res)=>{
                     
                     
                 });
-                res.send("Track is successfully deleted from playlist");
+                res.status(204).send("Track is successfully deleted from playlist");
                 
             }
 
