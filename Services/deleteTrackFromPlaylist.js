@@ -64,7 +64,7 @@ app.delete('/playlists/tracks',(req,res)=>{
         });
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not remove the track from the playlist");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');

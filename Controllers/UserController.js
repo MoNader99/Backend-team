@@ -566,12 +566,12 @@ app.get('/artists',(req,res)=>{
         }
         res.status(302).send(suggestedArtists);
         },(e)=>{
-            res.status(400).send(e);
+            res.status(500).send("Internal Server error");
         })
 
     },(e)=>{
         
-        res.status(400).send(e);
+        res.status(500).send("Internal server error");
     })
   }).catch((e)=>{
     res.status(401).send('Unauthorized Access');

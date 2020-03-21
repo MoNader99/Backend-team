@@ -35,7 +35,7 @@ app.delete('/tracks',(req,res)=>{
         res.status(204).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not delete track");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');

@@ -71,7 +71,7 @@ app.post('/playlists',(req,res)=>{
                     res.send(doc);  
                 }).catch((e)=>{
                     myduplicate=[];
-                    res.status(401).send("Could not Create a new playlist");
+                    res.status(500).send("Could not Create a new playlist");
                 });
                 
             }

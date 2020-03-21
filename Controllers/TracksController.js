@@ -337,7 +337,7 @@ app.delete('/tracks',(req,res)=>{
         res.status(204).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not delete track");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
@@ -374,7 +374,7 @@ app.post('/tracks',(req,res)=>{
 
         track.findOne({url:req.body.url}).then((duptrackurl)=>{
             if(duptrackurl){
-                return res.status(400).send("This track is already created");
+                return res.status(409).send("This track is already created");
                 
             }
             var savedImage;
@@ -403,13 +403,13 @@ app.post('/tracks',(req,res)=>{
                         image:savedImage,
     
                     },(e)=>{
-                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
                     });
                 
                     trackInstance.save().then((doc)=>{
                         res.status(201).send(doc);  
                     }).catch((e)=>{
-                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
                     });
                     
                 }
@@ -428,7 +428,6 @@ app.post('/tracks',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
-
 
 
     
