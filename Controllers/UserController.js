@@ -157,38 +157,37 @@ app.get('/users/me',(req,res) => {
 
 
 
-/**
+ /**
  * forgot password
  * ----------------------
- * @api {post} /users/forgot      Request to send email for resetting password
+ * @api {post} /users/forgot      Request to send email after forgetting password
  * @apiName ForgotPasswordRequest
  * @apiGroup User privacy
  * 
- * @apiHeader {json} Content-Type
+ * @apiParam {string} email       in json form
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "email": "abc@abc.com"
+ *     }
  * 
- * @apiParam {string} userEmail       in json form
- * 
- * @apiSuccess {string} emailSent    The email contains a link with a token that should be passed in the resetPassword request
- *                                    
- 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "Email Sent Successfully"
+ *       "message" :"Email Sent Successfully"
  *     }
  *     
- * @apiError EmailCannotBeSent  A problem while sending email
+ * @apiError  500              [Email Cannot BeSent  A problem while sending email]
   * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 404 serverError
+ *     HTTP/1.1 500 serverError
  *     {
- *       "Sending Failed"
+ *       "message":"Sending Failed"
  *     }   
-  
-  
+* @apiError  404       [email of the user not found ]
+
  * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 505 serverError
+ *     HTTP/1.1 404 not found
  *     {
- *       "EmailCannotBeSent"
+ *        "message":"Email not found"
  *     }  
  */
 app.post('/users/forgot', async (req, res) => {
@@ -202,7 +201,7 @@ app.post('/users/forgot', async (req, res) => {
            if(!user)  {
 
               
-            return res.status(404).send('Email not found')}
+            return res.status(404).json({"message" :"Email not found"})}
 
         console.log('henaaaa')
     var rand=Math.floor((Math.random() * 100) + 54);
@@ -220,11 +219,11 @@ app.post('/users/forgot', async (req, res) => {
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
             console.log(error);
-        res.end("error");
+        res.json({"message" :"sending failed"});
      }else{
             console.log("Message sent: " + response.message);
             //res.send(token);
-        res.end("Email Sent Successfully");
+        res.json({"message":"Email Sent Successfully"});
          }
 
         })
@@ -234,7 +233,7 @@ app.post('/users/forgot', async (req, res) => {
 
     catch
     {
-        res.status(500).send("Sending Failed");
+        res.status(500).json({"message" :"Sending Failed"});
     }
 });
 
@@ -245,25 +244,21 @@ app.post('/users/forgot', async (req, res) => {
  * @apiName ResetRequest
  * @apiGroup User privacy
  * 
- * @apiHeader {json} Content-Type
+ * @apiParam {string} token          shoulb be passed in query
+ * @apiParam {string}  newPassword    should be passed in body in json form
  * 
- * @apiParam {string} Token    shoulb be passed in query
- * @apiParam {string}  newPassword   in json form
- * 
- * @apiSuccess {string}     The id the user will use to reset his
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "Password has been reset successfully""
+ *      "message": "Password has been reset successfully""
  *     }
  *     
- * @apiError EmailCannotBeSent  A problem while sending email
  * 
  * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 500 server Error
+ *     HTTP/1.1 401 unauthorized
  *     {
- *       "Reset Failed""
+ *       "message": "Reset Failed""
  *     }  
  */
 
@@ -283,10 +278,10 @@ app.patch('/users/reset',async (req,res)=>{
        user.resetToken=undefined;
        user.save();
 
-       res.send("Password has been reset successfully");
+       res.json({"message":"Password has been reset successfully"});
        
         console.log(user);
-    }).catch((e)=> {res.status(500).send('Reset Failed');})
+    }).catch((e)=> {res.status(401).json({"message":'Reset Failed'});})
     
     })
 
@@ -298,31 +293,29 @@ app.patch('/users/reset',async (req,res)=>{
  * @api {patch} api/users/:id/regular    User wants to unsubscribe from premium features
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
- * @apiHeader {string} x-auth    Only users 
- * @apiParam {String} userId   the id of the user has to be passed
- * @apiSuccess (200) {string}  
+ * @apiHeader {string} x-auth          Only users 
+ * @apiParam {String} id          the id of the user has to be passed  
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *        "Your account has been changed to regular account"
+ *       "message": "Your account has been changed to regular account"
  *     }
- * @apiUse MissingUser
- * @apiUse ErrorUser
+
  * 
  * @apiError (404)  You are  not premium in the firstplace   
  * 
  * @apiErrorExample {json} Error-Response:
  *    HTTP/1.1 404 
  *     {
- *       "you are not premium , you already have a regular account "
+ *       "message":"you are not premium , you already have a regular account "
  *     }
  * 
  * @apiError (401)  authentication failed
  * @apiErrorExample {json} Error-Response:
  *    HTTP/1.1 401 
  *     {
- *       ""authentication Failed" "
+ *       "message":"authentication Failed" "
  *     }
  * 
  */
@@ -340,21 +333,21 @@ app.patch('/users/:id/regular', async (req, res) => {
   console.log(userId);
   if(! (userId.toString()===id))
   {
-      return res.status(401).send("authentication Failed")
+      return res.status(401).json({"message":"authentication Failed"})
   }
   else if(user.isPremium===false)
   {
-    return res.status(404).send("you are not premium , you already have a regular account");
+    return res.status(404).json({"message":"you are not premium , you already have a regular account"});
       
   }
 else
 {
     user.isPremium=false;
     user.save();
-    res.status(200).send("Your account has been changed to regular account")
+    res.status(200).json({"message":"Your account has been changed to regular account"})
 }
 
-}).catch((e)=>{return res.status(401).send("authentication Failed")}) 
+}).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})}) 
 
 });
 
@@ -365,26 +358,25 @@ else
 
  //REQUEST FOR A PREMIUM ACCOUNT
 /**
- * @api {get} /users/:userId/premium    Send a confirmation mail to be a premium user  
+ * @api {get} /users/:id/premium    Send a confirmation mail to be a premium user  
  * @apiName Join Premium Request 
  * @apiGroup Users
  * @apiHeader {string} x-auth            token Only users can request to premium
  * 
- * @apiParam {String} userId             the id of the user should be passed in the path
+ * @apiParam {String} id             the id of the user should be passed in the path
  * 
- * @apiSuccess  (200) {string}          show him wether he is premium or not
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *       
- *        "confirmation request has been sent, You will be a premium user soon"
+ *       "message": "confirmation request has been sent, You will be a premium user soon"
  *     }
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *      
- *        "You are already a premium user.Thanks for that"
+ *       "message": "You are already a premium user.Thanks for that"
  *     }
  * 
  * 
@@ -392,15 +384,15 @@ else
  * @apiErrorExample {json} Error-Response:
  *    HTTP/1.1 401 
  *     {
- *       ""authentication Failed" "
+ *       "message":"authentication Failed" "
  *     }
  * 
- * @apiError (500) EmailCannotBeSent  A problem while sending email
+ * @apiError 500       EmailCannotBeSent  A problem while sending email
  * 
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 server Error
  *     {
- *       "error,failed to send"
+ *       "message":"error,failed to send"
  *     }  
  * 
  * 
@@ -422,11 +414,11 @@ app.get('/users/:id/premium', async (req, res) =>
               console.log(userId);
               if(! (userId.toString()===id))
               {
-                  return res.status(401).send("authentication Failed")
+                  return res.status(401).json({"message":"authentication Failed"})
               }
               else if(user.isPremium===true)
               {
-                return res.status(200).send("you are already a premium user, thanks for that");
+                return res.status(200).json({"message":"you are already a premium user, thanks for that"});
                   
               }
             else
@@ -449,20 +441,20 @@ app.get('/users/:id/premium', async (req, res) =>
                  if(error) 
                  {
                         console.log(error);
-                    res.status(500).send("error,failed to send");
+                    res.status(500).json({"message":"error,failed to send"});
                  }
                  
                  else
                  {
                         console.log("Message sent: " + response.message);
-                    res.status(200).send("confirmation request has been sent, You will be a premium user soon");
+                    res.status(200).json({"message":"confirmation request has been sent, You will be a premium user soon"});
                 }
                      
                       });
             }
             
            
-        }).catch((e)=>{return res.status(401).send("authentication Failed")}) 
+        }).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})}) 
     })   
             
 	
@@ -486,23 +478,27 @@ app.get('/users/:id/premium', async (req, res) =>
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
  * @apiParam {String} token               the token that was sent in the link snet to the user's email 
- * @apiSuccess (200) {string} "Email confirmed successfully,Welcome To Premium Life!"  change of premium status from false to true
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
-*              "Email confirmed successfully,Welcome To Premium Life!" 
+*           "message" : "Email confirmed successfully,Welcome To Premium Life!" 
  * 
  * 
  *     
  *     }
  * 
- * @apiError (401)  authentication failed
+ * @apiError 401  authentication failed
  * @apiErrorExample {json} Error-Response:
  *    HTTP/1.1 401 
  *     {
- *       ""authentication Failed" "
+ *       "message":"authentication Failed" "
  *     }
+ * 
+ 
+ * 
+ * 
+ * 
  * 
  * 
  */
@@ -511,24 +507,30 @@ app.get('/users/:id/premium', async (req, res) =>
 
 app.patch('/users/confirmPremium/',async (req,res)=>{
      var token=req.query.token;
-
+try{
     decoded = jwt.verify(token , 'secretkeyforuser');
+    
     if (decoded.type==='premium')
     { User.findById(decoded._id).then((user)=>{
         if(!user){
-			res.status(404).send("not found");
+			res.status(404).json({"message":"not found"});
             return Promise.reject();
         }
 
         user.isPremium=true;
         user.save()
-        res.status(200).send("Email confirmed successfully,Welcome To Premium Life!");
+        res.status(200).json({"message":"Email confirmed successfully,Welcome To Premium Life!"});
     }).catch((e) => {
-        res.status(401).send("authentication failed");
+        res.status(401).json({"message":"authentication failed"});
 
     })
 }
- 
+}
+catch{
+    res.status(401).json({"message":"authentication failed or invalid token"});
+
+}
+
  })
 
 
