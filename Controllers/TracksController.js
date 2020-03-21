@@ -334,15 +334,17 @@ app.delete('/tracks',(req,res)=>{
             return res.status(404).send('Track not found to be deleted');
         }
         
-        res.status(200).send("Track "+trackName1+" was deleted succsesfully");
+        res.status(204).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not delete track");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
+
 
 
 //ADD A TRACK
@@ -365,10 +367,14 @@ app.post('/tracks',(req,res)=>{
         if(!req.body.duration){
             return res.status(400).send("Track duration is required");
         }
+        //IF HEIGHT AND WIDTH ARE NOT REQUIRED -> TO BE REMOVED FROM THE OR CONDITION HERE
+        if(!req.body.image.height || !req.body.image.width || !req.body.image.url){
+            return res.status(400).send("Image Info of track has to be provided");
+        }
 
         track.findOne({url:req.body.url}).then((duptrackurl)=>{
             if(duptrackurl){
-                return res.status(400).send("This track is already created");
+                return res.status(409).send("This track is already created");
                 
             }
             var savedImage;
@@ -397,18 +403,18 @@ app.post('/tracks',(req,res)=>{
                         image:savedImage,
     
                     },(e)=>{
-                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
                     });
                 
                     trackInstance.save().then((doc)=>{
-                        res.send(doc._id);  // you can send back the whole document or just the id of the created playlist
+                        res.status(201).send(doc);  
                     }).catch((e)=>{
-                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
                     });
                     
                 }
-                else if(trackduplicate.length!=0){
-                    return res.status(400).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+                else if(trackduplicate.length!=0){  //409 is code for conflict
+                    return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
                 };
             });
             
@@ -422,7 +428,6 @@ app.post('/tracks',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
-
 
 
     

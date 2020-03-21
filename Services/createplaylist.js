@@ -9,7 +9,7 @@ var{playlist}= require("./../models/playlists.js"); // playlists model
 var{User}= require("./../models/users.js"); // users model
 var{images}= require("./../models/images.js"); // images model
 
-//const image1=require("./../demo");
+//const {image1}=require("./../demo.js");
 
 
 
@@ -71,7 +71,7 @@ app.post('/playlists',(req,res)=>{
                     res.send(doc);  
                 }).catch((e)=>{
                     myduplicate=[];
-                    res.status(401).send("Could not Create a new playlist");
+                    res.status(500).send("Could not Create a new playlist");
                 });
                 
             }

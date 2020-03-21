@@ -30,7 +30,7 @@ app.get('/playlists',(req,res)=>{
         }
         res.status(302).send(fetched.image);
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not send the image");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
