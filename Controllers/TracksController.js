@@ -21,28 +21,6 @@ app.listen(3000,()=>{console.log('started on port 3000');});
 app.use(bodyParser.json());
 
 
-// album.find({albumName:'25'}).then((album)=>{
-
-//     trackId=album[0].tracks[0]._id;
-  
-//     console.log(trackId);
-//  track.findById(trackId).then((track)=>{
-//      console.log(track);
-//  })
-// //setTimeout(() =>{console.log(album.tracks)},3000);
-
-//     console.log(album);
-// })
-
-
-
-
-
-
-
-
-
-
 /** GetATrack
 * ---------------------
 * 
@@ -50,11 +28,10 @@ app.use(bodyParser.json());
 * @apiName GetTrack
 * @apiGroup Tracks
 *
-* @apiHeader {string} Authorization    Required. Avalid acces token from our Accounts services
 * 
-* @apiParam {string}    trackId           the id of the track that the artist wants to delete 
+* @apiParam {string}    id           the id of the track that the artist wants to delete 
 * 
-* @apiSuccess {object[]}               object of type track in JSON formatwith status code 200
+* @apiSuccess {object}               object of type track in JSON formatwith status code 200
 *
 * @apiSuccessExample {JSON} Success-Response:
 *     HTTP/1.1 200 OK
@@ -71,24 +48,33 @@ app.use(bodyParser.json());
 * 
 *    
 * 
-* *@apiError  404                      [Track not found]
+* @apiError  404                      [Track not found]
 *  @apiErrorExample {JSON} Error-Response:
 *     HTTP/1.1 404 Not Found
 *     {
-*       "error": "Track not found"
+*       "message": "Track not found"
 *     }
 * 
+* @apiError  404                    [Track not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 
+*     {
+*       "message": "invalid id"
+*     }
+*
+*
+*
 * 
 */
 app.get('/tracks/:id', (req,res)=>{
 var id=req.params.id;
 if(!ObjectID.isValid(id))
 {
-    return res.status(404).send("invalid id");
+    return res.status(404).json({"message":"invalid id"});
 }
 
  track.findById(id).then((tracks)=>{
-    if(!tracks){return res.status(404).send("can not find track");}
+    if(!tracks){return res.status(404).json({"message":"Track not found"});}
     res.send({tracks})
 
 }).catch((e)=>res.status(400).send());
@@ -100,27 +86,49 @@ if(!ObjectID.isValid(id))
 * AddTracksToAPlaylist
  * ---------------------
  * 
- * @api {post} api/Playlists/{playlistId}/Tracks               Add tracks to a playlist
+ * @api {post} api/Playlists/:playlistId/Tracks               Add tracks to a playlist
  * @apiName AddTracksToAPlaylist
  * @apiGroup Playlists
  *
- * @apiHeader {string}  x-auth    
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format. 
+ * @apiHeader {string}  x-auth     
  *  
- *
+ *@apiParam {string}  playlistId
  * 
- * @apiParam {[string]}   url    a list of Urls to be passed in the body parameters
+ * @apiParam {string[]}   url            a list of Urls to be passed in the body parameters
  * @apiSuccess 200                      [tracks has been successfully added to playlist]
+ *   @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *      
+ *       "message": "tracks added successfully"
+ *     }
  * 
  * 
  * *@apiError  403                      [Forbidden because you crossed the limiting number of tracks in a playlist which is 1000]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 403 Forbidden
  *     {
- *       "Forbidden because you crossed the limiting number of tracks in a playlist which is 1000"
+ *        "message":  "Forbidden because you crossed the limiting number of tracks in a playlist which is 1000"
  *     }
+ * 
  * @apiError 401   [authentication failed]
- * @apiError 404  [playlist not found]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 
+ *     {
+ *        "message":  "authentication failed"
+ *     }
+ * 
+ * 
+ * 
+ * 
+ * @apiError 404     [playlist not found]
+*@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 
+ *     {
+ *        "message":  "playlist not found"
+ *     }
+ * 
+ * 
  */
 
 app.post('/Playlists/:playlistId/tracks',async (req,res)=>
@@ -135,62 +143,42 @@ app.post('/Playlists/:playlistId/tracks',async (req,res)=>
        userId=user._id;
 
 
-    }).catch((e)=>{return res.status(401).send("auth failed")}) 
-    var flag=0;
+    }).catch((e)=>{return res.status(401).json({"message":"auth failed"})}) 
     var url= req.body.url;
     console.log(url);
 
     var id=req.params.playlistId;
     var tracksarr=[{}];
-    if(url.length>1000)
+    if(url.length>10)
     {
-        res.status(403).send(" Forbidden because you crossed the limiting number of tracks in a playlist which is 1000");
+        res.status(403).json({"message":" Forbidden because you crossed the limit of tracks in a playlist which is 10"});
     }
+    var flag=0
     
  for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
     {
-        console.log(` loop ${i} flag ${flag} `)
+        
         await track.find({url: url[i]}).then((tracks)=>
     {
         
-    //     if(!tracks) 
-    //    { 
-    //        flag=1;
-    //     return res.status(404).end("the track was not found");
-    //    }
-    //      tracksarr[i]=tracks;
-    //     console.log(tracksarr[i]);
-     
-        if(tracks)
-        {
-            tracksarr[i]=tracks;
+        if(!tracks) 
+       { 
+           flag=1;
+        //return res.status(404).json({"message":"the track was not found"});
+        return
+       }
+         tracksarr[i]=tracks;
         console.log(tracksarr[i]);
-            
-        }
-        else{
-            flag=1;
-            
-           return Promise.reject("the track was not found");
-        //return res.status(404).end("the track was not found");
-        }
-
      
-
 
     }).catch((e)=>res.status(400).send(e));
 
-
-    //  if(flag)
-    //  {return res.status(404).end("the track was not found");}
-         //flag=0;
-    //     return res.status(404).send('the track was not found');
-    // }
-    
-
-    // console.log(`loop after ${i} flag ${flag} `)
+    if(flag) {
+        console.log(flag);
+        break}
 }
 
-
+if (flag){return res.status(404).json({"message":"the track was not found"});}
 
 console.log(tracksarr);
 
@@ -202,12 +190,12 @@ if(!ObjectID.isValid(id))  //validate the playlist id
 
 playlist.findById(id).then((playlist)=>{
 
-    if(!playlist) {return res.status(404).send("playlist not found")};
+    if(!playlist) {return res.status(404).send({"message":"playlist not found"})};
     console.log(userId);
     console.log(playlist);
-    //console.log({playlist:userId});
 
-if(! (playlist.userId.toString()=== userId.toString()))  {return res.status(401).send("auth failed");}
+
+if(! (playlist.userId.toString()=== userId.toString()))  {return res.status(401).json({"message":"auth failed"});}
 
     console.log(playlist)
 for(var i=0;i<tracksarr.length;i++)
@@ -219,7 +207,7 @@ for(var i=0;i<tracksarr.length;i++)
 }
    console.log(playlist);
    playlist.save();
-   res.send('tracks added successfully');
+   res.status(200).json({"message":'tracks added successfully'});
 })
  })
 
@@ -235,55 +223,68 @@ for(var i=0;i<tracksarr.length;i++)
  * @apiName GetSeveralTracks
  * @apiGroup Tracks
  *
- * @apiHeader {string} Authorization    Required. Avalid acces token from our Accounts services
  * 
- * @apiParam {string}    trackIds          An array of comma separated tracks Ids. Maximum 50 IDs. 
+ * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 50 IDs. 
  * 
  * @apiSuccess {object[]}     200          a set objects of type tracks in JSON format with status code 200
  *
  * * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
- *     [
+[
     {
-        "rating": 9,
-        "duration": 285000,
-        "_id": "5e6cbab4aa45bb3bacd5b916",
-        "trackName": "someone like you",
+        "rating": 8,
+        "_id": "5e74925ca9200c404c566eff",
+        "artistId": "5e74925ca9200c404c566ef5",
+        "trackName": "set fire to the rain",
+        "duration": 240000,
+        "image": {
+            "_id": "5e74925ca9200c404c566ef2",
+            "url": "www.images/imag23e/23454",
+            "height": 176,
+            "width": 65
+        },
         "url": "nnnn",
         "__v": 0
     },
     {
         "rating": 9,
+        "_id": "5e74925ca9200c404c566f03",
+        "artistId": "5e74925ca9200c404c566ef7",
+        "trackName": "Godzilla",
         "duration": 223000,
-        "_id": "5e6cbab4aa45bb3bacd5b919",
-        "trackName": "Never Give Up",
+        "image": {
+            "_id": "5e74925ca9200c404c566ef2",
+            "url": "www.images/imag23e/23454",
+            "height": 176,
+            "width": 65
+        },
         "url": "vvv",
         "__v": 0
-    },
-    {
-        "rating": 10,
-        "duration": 262000,
-        "_id": "5e6cbab4aa45bb3bacd5b918",
-        "trackName": "cheap thrills",
-        "url": "lll",
-        "__v": 0
     }
+]
  *
  * 
  * *@apiError  404                      [Track not found]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not Found
  *     {
- *       can not find track
+ *      "message": "can not find track"
  *     }
  * 
- * *@apiError  404                      [invalid id]
+ * @apiError  404                      [invalid id]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not Found
  *     {
- *       invalid id
+ *       "message" : "invalid id"
  *     }
- * 
+ *
+ *  @apiError  403                      
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 403 forbidden
+ *     {
+ *       "message" : "max 50 Ids"
+ *     }
+ *  
  * 
  * 
  */
@@ -292,16 +293,25 @@ app.get('/tracks',async (req,res)=>{
     var arr=req.body.id;
   
     var returnedTrackArray=[{}];
+
+    if(arr.length>50)
+    {
+        res.status(403).json({"message":" Forbidden maximum 50 Ids"});
+    }
+    
+
+
+
     for(var i=0;i<arr.length;i++)
     {
     if(!ObjectID.isValid(arr[i]))
     {
-        return res.status(404).send("invalid id");
+        return res.status(404).json({"message":"invalid id"});
     }
 
     await track.findById(req.body.id[i]).then((tracks)=>
     {
-       if(!tracks){return res.status(404).send("can not find track");}
+       if(!tracks){return res.status(404).json({"message":"can not find track"});}
         returnedTrackArray[i]=tracks;
     }).catch((e)=>res.status(400).send(e));
 
@@ -334,17 +344,15 @@ app.delete('/tracks',(req,res)=>{
             return res.status(404).send('Track not found to be deleted');
         }
         
-        res.status(204).send("Track "+trackName1+" was deleted succsesfully");
+        res.status(200).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
-        res.status(500).send("Could not delete track");
+        res.status(400).send();
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
-
-
 
 
 //ADD A TRACK
@@ -367,14 +375,10 @@ app.post('/tracks',(req,res)=>{
         if(!req.body.duration){
             return res.status(400).send("Track duration is required");
         }
-        //IF HEIGHT AND WIDTH ARE NOT REQUIRED -> TO BE REMOVED FROM THE OR CONDITION HERE
-        if(!req.body.image.height || !req.body.image.width || !req.body.image.url){
-            return res.status(400).send("Image Info of track has to be provided");
-        }
 
         track.findOne({url:req.body.url}).then((duptrackurl)=>{
             if(duptrackurl){
-                return res.status(409).send("This track is already created");
+                return res.status(400).send("This track is already created");
                 
             }
             var savedImage;
@@ -403,18 +407,18 @@ app.post('/tracks',(req,res)=>{
                         image:savedImage,
     
                     },(e)=>{
-                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
                     });
                 
                     trackInstance.save().then((doc)=>{
-                        res.status(201).send(doc);  
+                        res.send(doc._id);  // you can send back the whole document or just the id of the created playlist
                     }).catch((e)=>{
-                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(401).send("Coult not add Track ("+req.body.trackName+")");
                     });
                     
                 }
-                else if(trackduplicate.length!=0){  //409 is code for conflict
-                    return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+                else if(trackduplicate.length!=0){
+                    return res.status(400).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
                 };
             });
             
@@ -428,6 +432,7 @@ app.post('/tracks',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
 
 
     
