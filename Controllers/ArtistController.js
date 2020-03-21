@@ -4,7 +4,7 @@ var { artist } = require("../models/artists.js");
 var { User } = require("../models/users.js");
 var _ = require('lodash');
 var bodyparser = require('body-parser');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 var nodemailer = require("nodemailer");
 
 const { ObjectID } = require('mongodb');

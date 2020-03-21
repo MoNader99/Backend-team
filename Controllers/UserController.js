@@ -9,7 +9,7 @@ const {ObjectID}=require("mongodb");
 var bodyparser = require('body-parser');
 var express = require('express');
 var app = express();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 var password = "abc";
 app.use(bodyparser.json());
 var _ = require('lodash');
