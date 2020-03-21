@@ -10,7 +10,7 @@ const {ObjectID}=require("mongodb");
 var bodyparser = require('body-parser');
 var express = require('express');
 var app = express();
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 var password = "abc";
 app.use(bodyparser.json());
 var _ = require('lodash');
@@ -121,7 +121,7 @@ app.post('/users/login', async (req, res) => {
 		{	
 			return user.generateAuthToken().then((token) => {
             console.log(4);
-            res.header('x-auth', token).send(user);
+            res.header('x-auth', token).send();
 		    console.log(5);
 			});
 		}
@@ -131,7 +131,7 @@ app.post('/users/login', async (req, res) => {
 		}
     }).catch((e) => {
         console.log(e);
-        res.status(400).send();
+        res.status(401).send("Either email or passwrod is incorrect");
     });
     //res.send(body)
 

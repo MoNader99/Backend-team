@@ -4,7 +4,8 @@ var { artist } = require("../models/artists.js");
 var { User } = require("../models/users.js");
 var _ = require('lodash');
 var bodyparser = require('body-parser');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
+
 var nodemailer = require("nodemailer");
 
 const { ObjectID } = require('mongodb');
@@ -30,22 +31,40 @@ app.get('/artists/:id', (req, res) => {
     var token = req.header('x-auth');
     try{
         jwt.verify(token, 'secretkeyforuser')
+        var id = req.params.id;
+        if (!ObjectID.isValid(id)) {
+            return res.status(404).send("invalid id");
+        }
+
+        artist.findById(id).then((artist) => {
+            if (!artist) { return res.status(404).send("can not find artist"); }
+            res.send({ artist })
+
+        }).catch((e) => res.status(400).send(e));
     }
     catch(error) {
         console.log("enta hena ezayyyy");
-        return res.status(404).send("Not authorized"); 
+        try {
+            jwt.verify(token, 'secretkeyforartist')
+            var id = req.params.id;
+            if (!ObjectID.isValid(id)) {
+                return res.status(404).send("invalid id");
+            }
+
+            artist.findById(id).then((artist) => {
+                if (!artist) { return res.status(404).send("can not find artist"); }
+                res.send({ artist })
+
+            }).catch((e) => res.status(400).send(e));
+        }
+        catch (err) {
+
+            return res.status(401).send("Not authorized"); 
+        }
+        
     }
 
-    var id = req.params.id;
-    if (!ObjectID.isValid(id)) {
-        return res.status(404).send("invalid id");
-    }
 
-    artist.findById(id).then((artist) => {
-        if (!artist) { return res.status(404).send("can not find artist"); }
-        res.send({ artist })
-
-    }).catch((e) => res.status(400).send());
 
 });
 app.post('/artists/login', (req, res) => {
@@ -72,7 +91,7 @@ app.post('/artists/login', (req, res) => {
 		
     }).catch((e) => {
         console.log(e);
-        res.status(400).send();
+        res.status(401).send("Either email or passwrod is incorrect");
     });
 
 });
@@ -133,9 +152,11 @@ app.post('/artists/signup', async (req, res) => {
 
     }
 
-    catch
+    catch(err)
     {
-        res.status(500).send();
+        console.log(err);
+        res.status(500).send(err);
+        
     }
 });
 
