@@ -15,7 +15,6 @@ var password = "abc";
 app.use(bodyparser.json());
 var _ = require('lodash');
 //var rand=Math.floor((Math.random() * 100) + 54); //random confirmation code
-
 const jwt = require('jsonwebtoken');
 var userservices = require("./../Services/UserServices.js");
 
