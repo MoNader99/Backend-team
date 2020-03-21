@@ -15,6 +15,8 @@ const app=express();
 
 app.listen(3000,()=>{console.log('started on port 3000');});
 
+/////Get Album Tracks
+
 app.get('/album/tracks/:id', (req,res)=>{
     var id=req.params.id;
     if(!ObjectID.isValid(id))
@@ -23,11 +25,26 @@ app.get('/album/tracks/:id', (req,res)=>{
     }
     
     album.findById(id , 'tracks').then((album) => {
-        if(!album){return res.status(404).send("can not find playlist");}
+        if(!album){return res.status(404).send("can not find album");}
         return res.send({album});
     }).catch((e)=>res.status(400).send());
     
     });
+
+///// Get Album
+    app.get('/album/:id', (req,res)=>{
+        var id=req.params.id;
+        if(!ObjectID.isValid(id))
+        {
+            return res.status(404).send("invalid id");
+        }
+        
+        album.findById(id).then((album) => {
+            if(!album){return res.status(404).send("can not find album");}
+            return res.send({album});
+        }).catch((e)=>res.status(400).send());
+        
+        });    
 
 app.delete('/album/:id/delete', (req, res) => {
     var token = req.header('x-auth');
