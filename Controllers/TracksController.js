@@ -147,42 +147,50 @@ app.post('/Playlists/:playlistId/tracks',async (req,res)=>
     var url= req.body.url;
     console.log(url);
 
-    var id=req.params.playlistId;
+   // var id=req.params.playlistId;
     var tracksarr=[{}];
     if(url.length>10)
     {
         res.status(403).json({"message":" Forbidden because you crossed the limit of tracks in a playlist which is 10"});
     }
-    var flag=0
-    
+    var flag=0;
  for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
     {
         
         await track.find({url: url[i]}).then((tracks)=>
     {
-        
-        if(!tracks) 
+        console.log("gowaaaaaaalllllllllllllll")
+        console.log("el tracks ely rag3a");
+        console.log(tracks)
+        if(!tracks[0]) 
        { 
            flag=1;
+           console.log("gowaaaaaaa")
         //return res.status(404).json({"message":"the track was not found"});
-        return
+        return Promise.reject();
        }
          tracksarr[i]=tracks;
-        console.log(tracksarr[i]);
+        //console.log(tracksarr[i]);
      
 
-    }).catch((e)=>res.status(400).send(e));
+    }).catch((e)=>{ return })//res.status(400).send(e)});
 
     if(flag) {
         console.log(flag);
         break}
 }
+    
 
-if (flag){return res.status(404).json({"message":"the track was not found"});}
+
+if (flag) {return res.status(404).json({"message":"the track was not found"});}
 
 console.log(tracksarr);
+console.log("heloo");
 
     
+var id=req.params.playlistId;
+console.log(id);
+
 if(!ObjectID.isValid(id))  //validate the playlist id
 {
     return res.status(404).send("invalid id");
@@ -191,13 +199,13 @@ if(!ObjectID.isValid(id))  //validate the playlist id
 playlist.findById(id).then((playlist)=>{
 
     if(!playlist) {return res.status(404).send({"message":"playlist not found"})};
-    console.log(userId);
-    console.log(playlist);
+    //console.log(userId);
+    //console.log(playlist);
 
 
 if(! (playlist.userId.toString()=== userId.toString()))  {return res.status(401).json({"message":"auth failed"});}
 
-    console.log(playlist)
+   // console.log(playlist)
 for(var i=0;i<tracksarr.length;i++)
 {
     var trackId= _.map(tracksarr[i],"_id");
