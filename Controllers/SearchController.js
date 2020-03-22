@@ -15,10 +15,27 @@ const { track } = require("./../models/track");*/
 const trackservices = require("./../Services/TrackServices");
 const artistservices = require("./../Services/ArtistServices");
 const albumservices = require("./../Services/AlbumServices");
+var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
+app.get('/Search',AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+            var wordtosearch = req.query.word;
+            console.log(wordtosearch);
+            //Return array of tracks
+            artistservices.SearchInArtists(wordtosearch).then((Artists) => {
+                albumservices.SearchInAlbums(wordtosearch).then((Albums) => {
+                    trackservices.SearchInTracks(wordtosearch).then((Tracks) => {
+                        console.log("fkdsffdfkdlsfksl");
+                        res.send({ artists: Artists, Albums: Albums, Tracks: Tracks });
+                    }).catch((err) => { res.status(400).send(err) })
+                }).catch((err) => { res.status(400).send(err) })
+
+            }).catch((err) => { res.status(400).send(err) })
+     
+  
+    })   
 // Get User Profile Request
-app.get('/Search', (req, res) => {
+/*app.get('/Search', (req, res) => {
     var token = req.header('x-auth');
     try {
         jwt.verify(token, 'secretkeyforuser')
@@ -59,9 +76,9 @@ app.get('/Search', (req, res) => {
             return res.status(401).send("Token is not valid");
         }
     } 
-    })   
+    })   */
 
- /*  try {
+ /* *//* try {
         console.log({ artists: artistservices.SearchInArtists(wordtosearch), albums: albumservices.SearchInAlbums(wordtosearch), tracks: trackservices.SearchInTracks(wordtosearch) });
         res.send("")
     }

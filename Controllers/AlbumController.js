@@ -10,6 +10,7 @@ var ArtistServices = require("./../Services/AlbumServices.js");
 const {ObjectID}=require('mongodb');
 
 const app=express();
+var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
 
@@ -46,16 +47,9 @@ app.get('/album/tracks/:id', (req,res)=>{
         
         });    
 
-app.delete('/album/:id/delete', (req, res) => {
-    var token = req.header('x-auth');
-    try {
-        var decoded = jwt.verify(token, 'secretkeyforartist')
-    }
-    catch (error){
-        console.log(error);
-        return res.status(404).send("NotArtist");
-    }
+app.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
+    var decoded = req.token;
     if (!ObjectID.isValid(id)) {
         return res.status(404).send("invalid id");
     }
@@ -64,6 +58,7 @@ app.delete('/album/:id/delete', (req, res) => {
         return res.status(200).send(str);
     }).catch((err) => {
         console.log(err);
-        return res.status(404).send(err);
+        if (err = "Notfound") return res.status(404).send(err);
+        if (err = "NotAuthorized") return res.status(403).send(err);
     });
 });

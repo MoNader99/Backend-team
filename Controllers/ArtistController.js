@@ -11,6 +11,7 @@ const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
 
 const app = express();
+var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
 var smtpTransport = nodemailer.createTransport({
@@ -26,44 +27,20 @@ app.use(bodyparser.json());
 
 app.listen(3000, () => { console.log('started on port 3000'); });
 
-app.get('/artists/:id', (req, res) => {
-    var token = req.header('x-auth');
-    try{
-        jwt.verify(token, 'secretkeyforuser')
-        var id = req.params.id;
-        if (!ObjectID.isValid(id)) {
-            return res.status(404).send("invalid id");
-        }
+app.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+    console.log(req.param.id);
 
+    id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send("invalid id");
+    }
+    else {
         artist.findById(id).then((artist) => {
             if (!artist) { return res.status(404).send("can not find artist"); }
             res.send({ artist })
 
         }).catch((e) => res.status(400).send(e));
     }
-    catch(error) {
-        console.log("enta hena ezayyyy");
-        try {
-            jwt.verify(token, 'secretkeyforartist')
-            var id = req.params.id;
-            if (!ObjectID.isValid(id)) {
-                return res.status(404).send("invalid id");
-            }
-
-            artist.findById(id).then((artist) => {
-                if (!artist) { return res.status(404).send("can not find artist"); }
-                res.send({ artist })
-
-            }).catch((e) => res.status(400).send(e));
-        }
-        catch (err) {
-
-            return res.status(401).send("Token is not valid"); 
-        }
-        
-    }
-
-
 
 });
 app.post('/artists/login', (req, res) => {
