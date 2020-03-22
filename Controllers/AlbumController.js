@@ -10,10 +10,13 @@ var ArtistServices = require("./../Services/AlbumServices.js");
 const {ObjectID}=require('mongodb');
 
 const app=express();
+var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
 
-app.listen(3000,()=>{console.log('started on port 3000');});
+
+
+/////Get Album Tracks
 
 app.get('/album/tracks/:id', (req,res)=>{
     var id=req.params.id;
@@ -23,22 +26,30 @@ app.get('/album/tracks/:id', (req,res)=>{
     }
     
     album.findById(id , 'tracks').then((album) => {
-        if(!album){return res.status(404).send("can not find playlist");}
+        if(!album){return res.status(404).send("can not find album");}
         return res.send({album});
     }).catch((e)=>res.status(400).send());
     
     });
 
-app.delete('/album/:id/delete', (req, res) => {
-    var token = req.header('x-auth');
-    try {
-        var decoded = jwt.verify(token, 'secretkeyforartist')
-    }
-    catch (error){
-        console.log(error);
-        return res.status(404).send("NotArtist");
-    }
+///// Get Album
+    app.get('/album/:id', (req,res)=>{
+        var id=req.params.id;
+        if(!ObjectID.isValid(id))
+        {
+            return res.status(404).send("invalid id");
+        }
+        
+        album.findById(id).then((album) => {
+            if(!album){return res.status(404).send("can not find album");}
+            return res.send({album});
+        }).catch((e)=>res.status(400).send());
+        
+        });    
+
+app.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
+    var decoded = req.token;
     if (!ObjectID.isValid(id)) {
         return res.status(404).send("invalid id");
     }
@@ -47,6 +58,15 @@ app.delete('/album/:id/delete', (req, res) => {
         return res.status(200).send(str);
     }).catch((err) => {
         console.log(err);
-        return res.status(404).send(err);
+        if (err = "Notfound") return res.status(404).send(err);
+        if (err = "NotAuthorized") return res.status(403).send(err);
     });
 });
+
+
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};

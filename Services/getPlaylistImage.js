@@ -12,7 +12,7 @@ var app=express();
 //configures the middlewear
 app.use(bodyParser.json());
 
-app.get('/playlists',(req,res)=>{
+app.get('/playlists/image',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -30,7 +30,7 @@ app.get('/playlists',(req,res)=>{
         }
         res.status(302).send(fetched.image);
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not send the image");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
@@ -38,8 +38,11 @@ app.get('/playlists',(req,res)=>{
 });
 
   
-app.listen(3000,()=>{
-    console.log("Started on port 3000GO");
-});
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};
 
 

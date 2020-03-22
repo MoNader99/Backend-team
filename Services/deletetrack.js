@@ -32,10 +32,10 @@ app.delete('/tracks',(req,res)=>{
             return res.status(404).send('Track not found to be deleted');
         }
         
-        res.status(200).send("Track "+trackName1+" was deleted succsesfully");
+        res.status(204).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not delete track");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
@@ -45,8 +45,11 @@ app.delete('/tracks',(req,res)=>{
 
 
 
-app.listen(3000,()=>{
-    console.log("Started on port 3000 lets");
-});
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};
 
 

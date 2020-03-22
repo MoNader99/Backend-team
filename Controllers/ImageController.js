@@ -23,4 +23,10 @@ app.get('/Images/:id', (req,res)=>{
     
     })
 
-    app.listen(3000,()=>{console.log('started on port 3000 image');});
+    if(!module.parent){
+        app.listen(3000,()=>{
+            console.log("Started on port 3000 Image");
+        });
+    }
+    module.exports={app};
+    

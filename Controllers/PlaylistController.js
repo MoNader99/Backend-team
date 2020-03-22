@@ -12,11 +12,12 @@ const app=express();
 
 app.use(bodyParser.json());
 
-app.listen(3000,()=>{console.log('started on port 3000');});
+//app.listen(3000,()=>{console.log('started on port 3000');});
 
 
 //CREATE A NEW PLAYLIST
 app.post('/playlists',(req,res)=>{
+    //console.log(defaultImage);
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -40,12 +41,7 @@ app.post('/playlists',(req,res)=>{
                         }
                 });
             }
-            if(!req.body.image){
-                //savedImage= image1;  to be uncommented
-                // TO BE SET WITH THE DEFAULT IMAGE (IMAGE1) FROM DEMO
-                return res.send("no Image");
-            }
-  
+
         //PREVENT THE USER FROM HAVING 2 PLAYLISTS WITH THE SAME NAME
 
         var userId2=user._id;
@@ -55,7 +51,8 @@ app.post('/playlists',(req,res)=>{
                     userId:userId2,     
                     playlistName: req.body.playlistName,
                     privacy: req.body.privacy,
-                    image:savedImage,
+                    image:savedImage
+                    
                    // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{
                     return res.status(400).send("Coult not create playlist due to missing info");
@@ -66,7 +63,7 @@ app.post('/playlists',(req,res)=>{
                     res.send(doc);  
                 }).catch((e)=>{
                     myduplicate=[];
-                    res.status(401).send("Could not Create a new playlist");
+                    res.status(500).send("Could not Create a new playlist");
                 });
                 
             }
@@ -80,7 +77,6 @@ app.post('/playlists',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
-
 
 
 //Get a User Playlist Request
@@ -124,15 +120,17 @@ app.delete('/playlists',(req,res)=>{
             return res.status(404).send('No playlist found to delete');
         }
         
-        res.status(200).send("Playlist deleted succsesfully");
+        res.status(204).send("Playlist deleted succsesfully");
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not delete playlist");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
+
 
 
 //DELETE TRACK FROM A PLAYLIST
@@ -151,7 +149,7 @@ app.delete('/playlists/tracks',(req,res)=>{
     }
     var trackId= req.body.trackId
     if(!ObjectID.isValid(trackId)){
-        return res.status(404).send("Invalid Track Id");   //returning a message
+        return res.status(404).send("Invalid Track Id");   
     }
 
     var playlistName=req.body.playlistName;
@@ -180,14 +178,14 @@ app.delete('/playlists/tracks',(req,res)=>{
                     
                     
                 });
-                res.send("Track is successfully deleted from playlist");
+                res.status(204).send("Track is successfully deleted from playlist");
                 
             }
 
         });
 
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not remove the track from the playlist");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
@@ -196,7 +194,7 @@ app.delete('/playlists/tracks',(req,res)=>{
 
 //GET PLAYLIST COVER IMAGE
 
-app.get('/playlists',(req,res)=>{
+app.get('/playlists/image',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -214,9 +212,17 @@ app.get('/playlists',(req,res)=>{
         }
         res.status(302).send(fetched.image);
     }).catch((e)=>{
-        res.status(400).send();
+        res.status(500).send("Could not send the image");
     })
     }).catch((e)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
+
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};

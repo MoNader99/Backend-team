@@ -9,7 +9,7 @@ var{playlist}= require("./../models/playlists.js"); // playlists model
 var{User}= require("./../models/users.js"); // users model
 var{images}= require("./../models/images.js"); // images model
 
-//const image1=require("./../demo");
+
 
 
 
@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 //post fn takes the url as first paramter and a call back fn 
 //the user id is to be passed in the url to know whom this playlist belongs to
 app.post('/playlists',(req,res)=>{
+    //console.log(defaultImage);
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -45,12 +46,7 @@ app.post('/playlists',(req,res)=>{
                         }
                 });
             }
-            if(!req.body.image){
-                //savedImage= image1;  to be uncommented
-                // TO BE SET WITH THE DEFAULT IMAGE (IMAGE1) FROM DEMO
-                return res.send("no Image");
-            }
-  
+
         //PREVENT THE USER FROM HAVING 2 PLAYLISTS WITH THE SAME NAME
 
         var userId2=user._id;
@@ -60,7 +56,8 @@ app.post('/playlists',(req,res)=>{
                     userId:userId2,     
                     playlistName: req.body.playlistName,
                     privacy: req.body.privacy,
-                    image:savedImage,
+                    image:savedImage
+                    
                    // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{
                     return res.status(400).send("Coult not create playlist due to missing info");
@@ -71,7 +68,7 @@ app.post('/playlists',(req,res)=>{
                     res.send(doc);  
                 }).catch((e)=>{
                     myduplicate=[];
-                    res.status(401).send("Could not Create a new playlist");
+                    res.status(500).send("Could not Create a new playlist");
                 });
                 
             }
@@ -89,10 +86,11 @@ app.post('/playlists',(req,res)=>{
     
 
 
-app.listen(3000,()=>{
-    console.log("Started on port 3000");
-});
-
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
 module.exports={app};
 
 

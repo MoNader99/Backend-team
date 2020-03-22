@@ -12,12 +12,13 @@ var{playlistTracks}=require("./models/playlistTracks.js") //playlist_track model
 const {ObjectID}=require('mongodb');
 const Schema = mongoose.Schema;
 
-//////////////////////
+
+
 
 //IMAGES OBJECTS
 
 var image1= new images ({
-    url:"This will be the default image of the created playlists",
+    url:"https://www.google.com/search?q=url+of+a+dog+picture&sxsrf=ALeKk019SCzISGrghACY3jqtCUHli2XLMg:1584830715682&tbm=isch&source=iu&ictx=1&fir=oIyUVmRYtXjk-M%253A%252CNzcFCDirz3vE7M%252C_&vet=1&usg=AI4_-kTleoUVSJt4WwGfM510KhhRKuZwRw&sa=X&ved=2ahUKEwjtiNm-0qzoAhURkhQKHZ3ECEwQ9QEwAXoECAcQFw#imgrc=dq8ay5Ijnpdh0M",
     height:34,
     width:12,
 });
@@ -170,6 +171,7 @@ var track1=new track({
     trackName:"Hello",
     rating:10,
     duration:360000,
+    genre:"pop",
     image:image2,
     url:"this is a url"  // until we get real urls 
     });
@@ -185,6 +187,7 @@ var track1=new track({
         trackName:"someone like you",
         rating:9,
         duration:360000,
+        genre:"pop",
         image:image2,
         url:"this is a url"  // until we get real urls 
         });
@@ -199,6 +202,7 @@ var track1=new track({
             trackName:"set fire to the rain",
             rating:8,
             duration:240000,
+            genre:"pop",
             image:image3,
             url:"nnnn"  // until we get real urls 
             });
@@ -214,6 +218,7 @@ var track1=new track({
                 trackName:"When I'm Gone",
                 rating:10,
                 duration:262000,
+                genre:"rap",
                 image:image3,
                 url:"lll"  // until we get real urls 
                 });
@@ -230,6 +235,7 @@ var track1=new track({
                     rating:9,
                     duration:223000,
                     image:image3,
+                    genre:"rap",
                     url:"vvv"  // until we get real urls 
                     });
             
@@ -270,7 +276,6 @@ var playlist1 = new playlist({
     privacy:true,
     tracks:[track1,track2],
     image:image1
-    
 });
 
 playlist1.save().then((res)=>{
@@ -359,10 +364,6 @@ followPlaylist1.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
-
-
-
-
 
 
 
