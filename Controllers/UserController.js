@@ -26,6 +26,33 @@ var smtpTransport = nodemailer.createTransport({
     }
 });
 
+ //Sign up user
+ /**
+ * @api {post} api/users/signup   Create a new user
+ * @apiName SignUp Request for Users
+ * @apiGroup Users 
+ * 
+ * @apiParam {String} userName      Unique name of the user
+ * @apiParam {String} email         email of the user
+ * @apiParam {String} password      password of the user
+ * @apiParam  {Boolean} isPremium   default is false 
+ * @apiParam  {Boolean} isActive    default is false until the email is confirmed
+ * @apiParam  {Date} birthDate      birthdate of the user
+ * @apiParam  {Srting} gender       gender of the user-Limited to 'M' or 'F'
+ *
+ * @apiSuccess  (200) User added Successfully as inActive. Waiting for Email Confirmation
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "User added Successfully as inActive. Waiting for Email Confirmation "
+ *     }
+ * @apiError (409)  Conflict. the user already exists: duplicate userName or email
+ * @apiError (500) Internal Server Error 
+ * @apiErrorExample {string} Conflict Error-Response:
+ *    HTTP/1.1 409 
+ *       "UserName and/or Email already exists "
+ * 
+ */
 
 app.post('/users/signup', async (req, res) => {
     try {
@@ -58,7 +85,7 @@ app.post('/users/signup', async (req, res) => {
 		console.log(code);
 		
 		var host=req.get('host');
-		var link="http://"+req.get('host')+"/users/confirm/?code="+code;
+		var link="http://"+req.get('host')+"/users/confirm/"+code;
 		console.log(link);
 		var mailOptions={
 			to : req.body.email,
@@ -77,11 +104,12 @@ app.post('/users/signup', async (req, res) => {
 			 
 });
 
-            res.status(200).send(hashedPass);
+      
+            res.status(200).send("User added Successfully as inActive. Waiting for Email Confirmation ");
         },
             (err) => {
                 console.log(err);
-                res.status(403).send(err);
+                res.status(409).send("UserName and/or Email already exists ");
 
             })
 
@@ -94,17 +122,36 @@ app.post('/users/signup', async (req, res) => {
 });
 
 
+//CONFIRMATION OF USER SIGNUP 
+/**
+ * @api {get} api/users/confirm/:code      SignUp Confrimation 
+ * @apiName SignUp Confirmed for user
+ * @apiGroup Users
+ * 
+ * @apiParam {String} code    user-specific code to activate his account
+ * 
+ * @apiSuccess  (200) User was activated successfully
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "Email confirmed successfully!"
+ *     }
+ * @apiError (404)  User not found.
+ * @apiError (401) Unauthorized. Recieved a corrupted code. 
+ * 
+ */
 
-app.get('/users/confirm',(req,res) => {
-   User.ActivateByToken(req.query.code).then((user) => {
+
+app.get('/users/confirm/:code',(req,res) => {
+   User.ActivateByToken(req.params.code).then((user) => {
         if(!user){
-			res.status(404).send("not found");
+			res.status(404).send("user not found");
             return Promise.reject();
         }
 	
 		res.status(200).send("Email confirmed successfully!");
     }).catch((e) => {
-        res.status(401).send();
+        res.status(401).send("corrupted code");
     })
 })		
 

@@ -96,8 +96,29 @@ app.post('/artists/login', (req, res) => {
 });
 
 
+ //SIGNUP FOR THE ARTISTS
+  /**
+ * @api {post} api/artists/signup             Create a new artist
+ * @apiName SignUp Request for artists
+ * @apiGroup Artists 
+ * 
+ * @apiParam {String} artistName    Unique name of the artist
+ * @apiParam {String} email         email of the artist
+ * @apiParam {String} password      password of the artist
+ * @apiParam  {Srting} about        A minimum of 100 characters that describe the artist
+ *
+ * @apiSuccess  (200) Artist added Successfully as inActive. Waiting for Email Confirmation
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "Artist added Successfully as inActive. Waiting for Email Confirmation "
+ *     }
+ * @apiError (409)  Conflict. the Artist already exists: duplicate artistName or email
+ * @apiError (500) Internal Server Error 
+ * @apiErrorExample {string} Conflict Error-Response:
+ *       "artistName and/or Email already exists "
+ */
 
- 
 app.post('/artists/signup', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();
@@ -106,9 +127,9 @@ app.post('/artists/signup', async (req, res) => {
         var newacc = new artist(
             {
                artistName: req.body.artistName,
-                    email: req.body.email,
-                    password: hashedPass,
-                    about: req.body.about,
+               email: req.body.email,
+               password: hashedPass,
+               about: req.body.about,
 
             });
         console.log('2et3amal');
@@ -141,11 +162,11 @@ app.post('/artists/signup', async (req, res) => {
 			 
 });
 
-            res.status(200).send(hashedPass);
+            res.status(200).send("Artist added Successfully as inActive. Waiting for Email Confirmation ");
         },
             (err) => {
                 console.log(err);
-                res.status(403).send(err);
+                res.status(409).send("artistName and/or Email already exists ");
 
             })
 
@@ -159,6 +180,24 @@ app.post('/artists/signup', async (req, res) => {
     }
 });
 
+ //CONFIRMATION OF ARTIST SIGNUP 
+/**
+ * @api {get} api/artists/confirm/:code      SignUp Confrimation 
+ * @apiName SignUp Confirmed for artists
+ * @apiGroup Artists
+ * 
+ * @apiParam {String} code    artist-specific code to activate his account
+ * 
+ * @apiSuccess  (200) artist was activated successfully
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "Email confirmed successfully!"
+ *     }
+ * @apiError (404)  artist not found.
+ * @apiError (401) Unauthorized. Recieved a corrupted code. 
+ * 
+ */
 
 app.get('/artists/confirm/:code',(req,res) => {
    artist.ActivateByToken(req.params.code).then((activated) => {
