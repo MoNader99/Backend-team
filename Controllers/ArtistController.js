@@ -58,7 +58,7 @@ app.get('/artists/:id', (req, res) => {
         }
         catch (err) {
 
-            return res.status(401).send("Not authorized"); 
+            return res.status(401).send("Token is not valid"); 
         }
         
     }

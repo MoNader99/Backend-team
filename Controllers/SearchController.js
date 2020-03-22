@@ -19,19 +19,47 @@ const albumservices = require("./../Services/AlbumServices");
 
 // Get User Profile Request
 app.get('/Search', (req, res) => {
-    var wordtosearch = req.query.word;
-    console.log(wordtosearch);
-    //Return array of tracks
-    artistservices.SearchInArtists(wordtosearch).then((Artists) => {
-        albumservices.SearchInAlbums(wordtosearch).then((Albums) => {
-            trackservices.SearchInTracks(wordtosearch).then((Tracks) => {
-                console.log("fkdsffdfkdlsfksl");
-                res.send({artists:Artists,Albums:Albums,Tracks:Tracks});
-            }).catch((err) => { res.status(404).send(err) })
-        }).catch((err) => { res.status(404).send(err) })
+    var token = req.header('x-auth');
+    try {
+        jwt.verify(token, 'secretkeyforuser')
 
-    }).catch((err) => { res.status(404).send(err)})
-    
+        var wordtosearch = req.query.word;
+        console.log(wordtosearch);
+        //Return array of tracks
+        artistservices.SearchInArtists(wordtosearch).then((Artists) => {
+            albumservices.SearchInAlbums(wordtosearch).then((Albums) => {
+                trackservices.SearchInTracks(wordtosearch).then((Tracks) => {
+                    console.log("fkdsffdfkdlsfksl");
+                    res.send({ artists: Artists, Albums: Albums, Tracks: Tracks });
+                }).catch((err) => { res.status(404).send(err) })
+            }).catch((err) => { res.status(404).send(err) })
+
+        }).catch((err) => { res.status(404).send(err) })
+    }
+    catch (error) {
+        console.log("enta hena ezayyyy");
+        try {
+            console.log("da5a5aalapd");
+            jwt.verify(token, 'secretkeyforartist')
+            var wordtosearch = req.query.word;
+            console.log(wordtosearch);
+            //Return array of tracks
+            artistservices.SearchInArtists(wordtosearch).then((Artists) => {
+                albumservices.SearchInAlbums(wordtosearch).then((Albums) => {
+                    trackservices.SearchInTracks(wordtosearch).then((Tracks) => {
+                        console.log("fkdsffdfkdlsfksl");
+                        res.send({ artists: Artists, Albums: Albums, Tracks: Tracks });
+                    }).catch((err) => { res.status(400).send(err) })
+                }).catch((err) => { res.status(400).send(err) })
+
+            }).catch((err) => { res.status(400).send(err) })
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(401).send("Token is not valid");
+        }
+    } 
+    })   
 
  /*  try {
         console.log({ artists: artistservices.SearchInArtists(wordtosearch), albums: albumservices.SearchInAlbums(wordtosearch), tracks: trackservices.SearchInTracks(wordtosearch) });
@@ -51,5 +79,5 @@ app.get('/Search', (req, res) => {
         res.status(404).send(err);
 
     })*/
-})
+
 app.listen(3000, () => { console.log('started on port 3000'); });
