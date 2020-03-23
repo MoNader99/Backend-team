@@ -632,22 +632,106 @@ app.get('/artists',(req,res)=>{
 
 
 
+app.patch('/users/me/editprofile',(req, res)=>{
+  var token=req.header('x-auth');
+try{
+    decoded = jwt.verify(token , 'secretkeyforuser');
+    
+     User.findById(decoded._id).then((user)=>{
+        if(!user)
+		{
+			return res.status(404).json({"message":"not found"});
+        }
+		if(req.body.birthDate)
+			{
+				var timestamp = Date.parse(req.body.birthDate);
 
+				if (isNaN(timestamp) == false) 
+				{
+					var correctDate = new Date(timestamp);
+				}
+				else 
+				{
+					return res.status(400).send("invalid date format. use yyyy-mm-dd");
+				
+				}
+		
+		    }
+		 if(req.body.userName)
+		 {
+		  User.findOne({userName:req.body.userName}).then((duplicate)=>{
+			if(duplicate)
+			{
 
+				return res.status(403).send("UserName already exists")
 
+			}
+			else
+			{
+				
+		
+        try
+		{
+			if(req.body.userName)
+			{
 
+				user.userName=req.body.userName;
 
+			}
+			if(req.body.gender)
+			{
 
+				if(req.body.gender.toString()!="M"&&req.body.gender.toString()!="F")
+				{
 
+					return res.status(400).send("gender must be 'M' or 'F'");
+				}
 
+			
+				user.gender= req.body.gender;
+			}
+			if(req.body.birthDate)
+			{
 
+					user.birthDate=correctDate
 
+			}
 
+				user.save(function(err, user) {
+        if (err) return res.send("invalid userName");
+    });
+			
 
+			
 
+		}
+		catch(e)
+		
+		{	
 
+			return res.status(400).send(e);
 
+		}
 
+        return res.status(200).send("updated");
+	}
+
+		 });
+		 }
+    }).catch((e) => {
+
+        return res.status(401).send("authentication failed");
+
+    })
+
+}
+catch{
+
+    return res.status(401).json({"message":"authentication failed or invalid token"});
+
+}
+
+ })
 
 
 
