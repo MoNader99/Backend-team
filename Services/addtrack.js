@@ -27,6 +27,9 @@ app.post('/tracks',(req,res)=>{
         if(!req.body.trackName){
             return res.status(400).send("Track name is required");
         }
+        if(!req.body.genre){
+            return res.status(400).send("Track genre is required");
+        }
         if(!req.body.image){
            return  res.status(400).send("Track image is required");
         }
@@ -70,6 +73,7 @@ app.post('/tracks',(req,res)=>{
                         duration:req.body.duration,
                         url:req.body.url,
                         image:savedImage,
+                        genre:req.body.genre,
     
                     },(e)=>{
                         res.status(500).send("Coult not add Track ("+req.body.trackName+")");
@@ -100,10 +104,11 @@ app.post('/tracks',(req,res)=>{
 
     
 
-
-app.listen(3000,()=>{
-    console.log("Started on port 3000");
-});
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
 
 module.exports={app};
 

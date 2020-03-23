@@ -1,0 +1,45 @@
+{
+  "name": "softwareproject",
+  "version": "1.0.0",
+  "description": "the database project runs from node demo.js.\r No demo2 it is included in demo1\r Services folder is for requests \r Postman folder-> to save postman requests\r The folder already has the 3 requests i made --Ahmed\r run [npm install nodemailer --save ] for sending emails",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.2",
+    "crypto-js": "^3.1.6",
+    "express": "^4.14.0",
+    "hbs": "^4.0.0",
+    "jetbrains": "^0.1.2",
+    "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.17.15",
+    "mongoose": "^4.5.9",
+    "nodemailer": "^6.4.6",
+    "validator": "^5.6.0"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.0.0",
+    "nodemon": "^1.10.2",
+    "nyc": "^15.0.0",
+    "supertest": "^2.0.0"
+  },
+  "scripts": {
+    "start": "node Index.js",
+    "test": "SET \"NODE_ENV=test\"&& mocha tests/*.test.js ",
+    "test-watch": "nyc nodemon --exec \"npm test\""
+  },
+  "author": "",
+  "license": "ISC",
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MohammedNader99/Backend-team.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MohammedNader99/Backend-team/issues"
+  },
+  "homepage": "https://github.com/MohammedNader99/Backend-team#readme"
+}

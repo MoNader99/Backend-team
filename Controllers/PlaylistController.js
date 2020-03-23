@@ -12,11 +12,12 @@ const app=express();
 
 app.use(bodyParser.json());
 
-app.listen(3000,()=>{console.log('started on port 3000');});
+//app.listen(3000,()=>{console.log('started on port 3000');});
 
 
 //CREATE A NEW PLAYLIST
 app.post('/playlists',(req,res)=>{
+    //console.log(defaultImage);
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -40,12 +41,7 @@ app.post('/playlists',(req,res)=>{
                         }
                 });
             }
-            if(!req.body.image){
-                //savedImage= image1;  to be uncommented
-                // TO BE SET WITH THE DEFAULT IMAGE (IMAGE1) FROM DEMO
-                return res.send("no Image");
-            }
-  
+
         //PREVENT THE USER FROM HAVING 2 PLAYLISTS WITH THE SAME NAME
 
         var userId2=user._id;
@@ -55,7 +51,8 @@ app.post('/playlists',(req,res)=>{
                     userId:userId2,     
                     playlistName: req.body.playlistName,
                     privacy: req.body.privacy,
-                    image:savedImage,
+                    image:savedImage
+                    
                    // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{
                     return res.status(400).send("Coult not create playlist due to missing info");
@@ -197,7 +194,7 @@ app.delete('/playlists/tracks',(req,res)=>{
 
 //GET PLAYLIST COVER IMAGE
 
-app.get('/playlists',(req,res)=>{
+app.get('/playlists/image',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -221,3 +218,11 @@ app.get('/playlists',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
+
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};

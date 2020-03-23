@@ -40,6 +40,11 @@ var track=mongoose.model("Tracks",{
     unique: true,
     trim:true,
     required:true
+  },
+  genre:{
+    type:String,
+    required:true,
+    trim:true
   }
 });
 

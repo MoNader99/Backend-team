@@ -25,7 +25,7 @@ var smtpTransport = nodemailer.createTransport({
 
 app.use(bodyparser.json());
 
-app.listen(3000, () => { console.log('started on port 3000'); });
+//app.listen(3000, () => { console.log('started on port 3000'); });
 
 app.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
     console.log(req.param.id);
@@ -313,3 +313,14 @@ res.send(returnedArtistArray);
     })
 
 })
+<<<<<<< HEAD
+=======
+
+
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};
+>>>>>>> 51f61b5dcd56e82a7ded45ed3db3b71bc5e9e612

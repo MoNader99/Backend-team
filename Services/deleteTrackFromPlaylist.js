@@ -81,8 +81,12 @@ app.delete('/playlists/tracks',(req,res)=>{
 
 
 
-app.listen(3000,()=>{
-    console.log("Started on port 3000 lets");
-});
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};
+
 
 

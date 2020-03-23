@@ -14,7 +14,9 @@ var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
 
-app.listen(3000,()=>{console.log('started on port 3000');});
+
+
+/////Get Album Tracks
 
 /////Get Album Tracks
 
@@ -60,5 +62,14 @@ app.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req,
         console.log(err);
         if (err = "Notfound") return res.status(404).send(err);
         if (err = "NotAuthorized") return res.status(403).send(err);
+
     });
 });
+
+
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
+}
+module.exports={app};

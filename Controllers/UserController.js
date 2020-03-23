@@ -1,4 +1,4 @@
-
+require("./../Config/Config.js");
 
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js");
@@ -140,7 +140,6 @@ app.post('/users/signup', async (req, res) => {
  * @apiError (401) Unauthorized. Recieved a corrupted code. 
  * 
  */
-
 
 app.get('/users/confirm/:code',(req,res) => {
    User.ActivateByToken(req.params.code).then((user) => {
@@ -651,7 +650,13 @@ app.get('/artists',(req,res)=>{
 
 
 
-app.listen(3000, () => { console.log('started on port 3000'); });
-module.exports = {
-    app
+
+if(!module.parent){
+    app.listen(3000,()=>{
+        console.log("Started on port 3000");
+    });
 }
+module.exports = {
+    app,
+    User
+};
