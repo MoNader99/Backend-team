@@ -1,19 +1,18 @@
 const expect =require('expect');
-const request = require('supertest')
+const request = require('supertest')//.agent(app.listen());
 
 const {app}= require("./../Services/addtrack.js");
 var{track}=require("./../models/track.js"); //tracks model
-var{artist}= require("./../models/Artists.js");  
+var{artist}= require("./../models/Artists.js");  //artists model and schema
 var{images}= require("./../models/images.js"); // images model
 
-//TOKEN HAS TO BE MANUALLY SET AFTER CREATING THE DATABASE IN EACH TEST
-
 describe("Add a Single Track",()=>{
+    var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdhNjkxYzgyYTIxZTI0MTQ3OGMyYTciLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1MDgwNjA4fQ.TZvrymUsOZYWMDQw20fmN9XGmifTiaTspv6en45AibI";
     it('Should create a new Track',(done)=>{
         //GENERATE A TRUE AUTHENTICATION TOKEN
        //artist.generateAuthToken().then((testToken));
         //
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+       
         var testImage = new images({
             url:"This is the test image ",
             height:224,
@@ -46,23 +45,31 @@ describe("Add a Single Track",()=>{
               //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
             })
             //.end(done);
-          .end(done)
+          .end((err,res)=>{
+            if(err){
+                 done(err)
+            }
+              track.findOne({$and:[{url:testTrackurl},{trackName:testTrackName }]}).then((found)=>{
+                expect(found.url).toBe(testTrackurl);  //AS THE TRACK URL IS UNIQUE THIS EXPECT IS ENOUGH
+                done();
+            }).catch((e)=>done(e));
+          });
     })
 
     it('Should create a new Track but does not add a new image',(done)=>{
       //GENERATE A TRUE AUTHENTICATION TOKEN
      //artist.generateAuthToken().then((testToken));
       //
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+      
       var testImage = new images({
-          url:"This is the test image3456",
+          url:"This is the test image ",
           height:224,
-          width:119,
+          width:110,
       }); 
       var testTrackName = "RockStar";
-      var testDuration= 65000;
+      var testDuration= 64000;
       var testGenre="RPG";
-      var testTrackurl="thmgis is the test track url1234"
+      var testTrackurl="this is the test track url1234"
       
       request(app)
         .post('/tracks')
@@ -86,13 +93,21 @@ describe("Add a Single Track",()=>{
             //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
           })
           //.end(done);
-        .end(done)
+        .end((err,res)=>{
+          if(err){
+               done(err)
+          }
+            track.findOne({$and:[{url:testTrackurl},{trackName:testTrackName }]}).then((found)=>{
+              expect(found.url).toBe(testTrackurl);  //AS THE TRACK URL IS UNIQUE THIS EXPECT IS ENOUGH
+              done();
+          }).catch((e)=>done(e));
+        });
   })
 
 
     it('Should not create a new Track with missing or incorrect Authorization token',(done)=>{
 
-      var testToken="Any wrong auth token";
+      var testToken2="Any wrong auth token";
       var testImage = new images({
           url:"This is the test image2 ",
           height:224,
@@ -105,7 +120,7 @@ describe("Add a Single Track",()=>{
       
       request(app)
         .post('/tracks')
-        .set('x-auth',testToken)
+        .set('x-auth',testToken2)
         .send({
           trackName: testTrackName,
           duration: testDuration,
@@ -122,7 +137,7 @@ describe("Add a Single Track",()=>{
       })
     it('Should not create a new Track with missing track Name',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+      
       var testImage = new images({
           url:"This is the test image3 ",
           height:224,
@@ -154,7 +169,7 @@ describe("Add a Single Track",()=>{
 
       it('Should not create a new Track with missing track genre',(done)=>{
 
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+        
         var testImage = new images({
             url:"This is the test image3 ",
             height:224,
@@ -186,7 +201,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with missing track image',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+     
       var testImage ;
       var testTrackName="Superlife4.0";
       var testDuration= 65000;
@@ -208,7 +223,7 @@ describe("Add a Single Track",()=>{
       })
     it('Should not create a new Track with missing track url',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+      
       var testImage = new images({
           url:"This is the test image4",
           height:224,
@@ -239,7 +254,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with missing track duration',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+    
       var testImage = new images({
           url:"This is the test image4",
           height:224,
@@ -270,7 +285,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with missing image information',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+     
       var testImage = new images({
           url:"",
           height:224,
@@ -301,7 +316,7 @@ describe("Add a Single Track",()=>{
   
     it('Should not create a new Track with the same track url of another created track',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+      
       var testImage = new images({
           url:"this is a test imagee",
           height:224,
@@ -332,7 +347,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with the same track name for the same artist',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+      
       var testImage = new images({
           url:"this is a test imagee2",
           height:224,
