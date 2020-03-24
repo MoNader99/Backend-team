@@ -1,10 +1,12 @@
 const expect =require('expect');
-const request = require('supertest')//.agent(app.listen());
+const request = require('supertest')
 
 const {app}= require("./../Services/addtrack.js");
 var{track}=require("./../models/track.js"); //tracks model
-var{artist}= require("./../models/Artists.js");  //artists model and schema
+var{artist}= require("./../models/Artists.js");  
 var{images}= require("./../models/images.js"); // images model
+
+//TOKEN HAS TO BE MANUALLY SET AFTER CREATING THE DATABASE IN EACH TEST
 
 describe("Add a Single Track",()=>{
     it('Should create a new Track',(done)=>{
@@ -44,15 +46,7 @@ describe("Add a Single Track",()=>{
               //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
             })
             //.end(done);
-          .end((err,res)=>{
-            if(err){
-                 done(err)
-            }
-              track.findOne({$and:[{url:testTrackurl},{trackName:testTrackName }]}).then((found)=>{
-                expect(found.url).toBe(testTrackurl);  //AS THE TRACK URL IS UNIQUE THIS EXPECT IS ENOUGH
-                done();
-            }).catch((e)=>done(e));
-          });
+          .end(done)
     })
 
     it('Should create a new Track but does not add a new image',(done)=>{
@@ -61,14 +55,14 @@ describe("Add a Single Track",()=>{
       //
       var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
-          url:"This is the test image ",
+          url:"This is the test image3456",
           height:224,
-          width:110,
+          width:119,
       }); 
       var testTrackName = "RockStar";
-      var testDuration= 64000;
+      var testDuration= 65000;
       var testGenre="RPG";
-      var testTrackurl="this is the test track url1234"
+      var testTrackurl="thmgis is the test track url1234"
       
       request(app)
         .post('/tracks')
@@ -91,8 +85,8 @@ describe("Add a Single Track",()=>{
             expect(res.body.duration).toBe(testDuration)
             //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
           })
-        .end(done);
-
+          //.end(done);
+        .end(done)
   })
 
 
@@ -367,3 +361,5 @@ describe("Add a Single Track",()=>{
         .end(done);
       })                        
 });
+
+
