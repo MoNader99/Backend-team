@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 
 //CREATE A NEW PLAYLIST
 app.post('/playlists',(req,res)=>{
-    //console.log(defaultImage);
+    
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -26,7 +26,7 @@ app.post('/playlists',(req,res)=>{
         if(!req.body.playlistName){
             return res.status(400).send("Playlist must have a name");
         }
-        var savedImage;
+        var savedImage=undefined;
         if(req.body.image){
             images.findOne({url:req.body.image.url}).then((isImage)=>{
                     if(!isImage){
@@ -55,15 +55,15 @@ app.post('/playlists',(req,res)=>{
                     
                    // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{
-                    return res.status(400).send("Coult not create playlist due to missing info");
+                    return res.status(500).send("Coult not create playlist");
                 });
             
                 playlistInstance.save().then((doc)=>{
                     myduplicate=[];
-                    res.send(doc);  
+                    res.status(201).send(doc);  
                 }).catch((e)=>{
                     myduplicate=[];
-                    res.status(500).send("Could not Create a new playlist");
+                    res.status(500).send("Could not save the playlist");
                 });
                 
             }
@@ -120,7 +120,7 @@ app.delete('/playlists',(req,res)=>{
             return res.status(404).send('No playlist found to delete');
         }
         
-        res.status(204).send("Playlist deleted succsesfully");
+        res.status(200).send("Playlist deleted succsesfully");
 
     }).catch((e)=>{
         res.status(500).send("Could not delete playlist");
@@ -132,8 +132,6 @@ app.delete('/playlists',(req,res)=>{
 
 
 
-
-//DELETE TRACK FROM A PLAYLIST
 app.delete('/playlists/tracks',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
@@ -178,7 +176,7 @@ app.delete('/playlists/tracks',(req,res)=>{
                     
                     
                 });
-                res.status(204).send("Track is successfully deleted from playlist");
+                res.status(200).send("Track is successfully deleted from playlist");
                 
             }
 
@@ -191,14 +189,13 @@ app.delete('/playlists/tracks',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
-
 //GET PLAYLIST COVER IMAGE
 
 app.get('/playlists/image',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
-            console.log("ddd");
+            
             return Promise.reject();
         }
     var userId2=user._id;

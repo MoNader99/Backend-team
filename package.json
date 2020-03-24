@@ -1,7 +1,7 @@
 {
   "name": "softwareproject",
   "version": "1.0.0",
-  "description": "the database project runs from node demo.js.\r No demo2 it is included in demo1\r Services folder is for requests \r Postman folder-> to save postman requests\r The folder already has the 3 requests i made --Ahmed\r run [npm install nodemailer --save ] for sending emails",
+  "description": "",
   "main": "index.js",
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -19,27 +19,14 @@
   },
   "devDependencies": {
     "expect": "^1.20.2",
-    "mocha": "^3.0.0",
-    "nodemon": "^1.10.2",
+    "mocha": "^7.0.0",
     "nyc": "^15.0.0",
-    "supertest": "^2.0.0"
+    "supertest": "^4.0.2"
   },
   "scripts": {
-    "start": "node Index.js",
-    "test": "SET \"NODE_ENV=test\"&& mocha tests/*.test.js ",
+    "test": "nyc mocha Services **/addtrack.test.js --exit --inspect=0.0.0.0:3000",
     "test-watch": "nyc nodemon --exec \"npm test\""
   },
   "author": "",
-  "license": "ISC",
-  "directories": {
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MohammedNader99/Backend-team.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MohammedNader99/Backend-team/issues"
-  },
-  "homepage": "https://github.com/MohammedNader99/Backend-team#readme"
+  "license": "ISC"
 }

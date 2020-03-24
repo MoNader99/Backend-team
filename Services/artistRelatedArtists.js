@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 //and return array of artist objects who play the same genre
 
 //the id is to be sent after artists/"your id" 
-app.get('/artists',(req,res)=>{
+app.get('/artists/related',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -35,6 +35,7 @@ app.get('/artists',(req,res)=>{
         if(!myartists){
             return res.status(404).send('Id not found');
         }
+
         artist.find({genres:{$in:myartists.genres}}).then((suggestedArtists)=>{    
         for(var count=0;count<suggestedArtists.length;count++)
         {

@@ -31,7 +31,7 @@ app.delete('/playlists',(req,res)=>{
             return res.status(404).send('No playlist found to delete');
         }
         
-        res.status(204).send("Playlist deleted succsesfully");
+        res.status(200).send("Playlist deleted succsesfully");
 
     }).catch((e)=>{
         res.status(500).send("Could not delete playlist");

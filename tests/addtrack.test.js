@@ -11,7 +11,7 @@ describe("Add a Single Track",()=>{
         //GENERATE A TRUE AUTHENTICATION TOKEN
        //artist.generateAuthToken().then((testToken));
         //
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
         var testImage = new images({
             url:"This is the test image ",
             height:224,
@@ -59,7 +59,7 @@ describe("Add a Single Track",()=>{
       //GENERATE A TRUE AUTHENTICATION TOKEN
      //artist.generateAuthToken().then((testToken));
       //
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"This is the test image ",
           height:224,
@@ -91,16 +91,8 @@ describe("Add a Single Track",()=>{
             expect(res.body.duration).toBe(testDuration)
             //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
           })
-          //.end(done);
-        .end((err,res)=>{
-          if(err){
-               done(err)
-          }
-            track.findOne({$and:[{url:testTrackurl},{trackName:testTrackName }]}).then((found)=>{
-              expect(found.url).toBe(testTrackurl);  //AS THE TRACK URL IS UNIQUE THIS EXPECT IS ENOUGH
-              done();
-          }).catch((e)=>done(e));
-        });
+        .end(done);
+
   })
 
 
@@ -136,7 +128,7 @@ describe("Add a Single Track",()=>{
       })
     it('Should not create a new Track with missing track Name',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"This is the test image3 ",
           height:224,
@@ -168,7 +160,7 @@ describe("Add a Single Track",()=>{
 
       it('Should not create a new Track with missing track genre',(done)=>{
 
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
         var testImage = new images({
             url:"This is the test image3 ",
             height:224,
@@ -200,7 +192,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with missing track image',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage ;
       var testTrackName="Superlife4.0";
       var testDuration= 65000;
@@ -222,7 +214,7 @@ describe("Add a Single Track",()=>{
       })
     it('Should not create a new Track with missing track url',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"This is the test image4",
           height:224,
@@ -253,7 +245,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with missing track duration',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"This is the test image4",
           height:224,
@@ -284,7 +276,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with missing image information',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"",
           height:224,
@@ -315,7 +307,7 @@ describe("Add a Single Track",()=>{
   
     it('Should not create a new Track with the same track url of another created track',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"this is a test imagee",
           height:224,
@@ -346,7 +338,7 @@ describe("Add a Single Track",()=>{
 
     it('Should not create a new Track with the same track name for the same artist',(done)=>{
 
-      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3OGRkYTc3MmNkMjJjMzY5YWQ3NzAiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0ODkzNDA2fQ.zxqAJNeEKEMzTcDv2rbP6d-gmFzIyZp37FSKnI1gxYw";
+      var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
       var testImage = new images({
           url:"this is a test imagee2",
           height:224,
@@ -375,5 +367,3 @@ describe("Add a Single Track",()=>{
         .end(done);
       })                        
 });
-
-

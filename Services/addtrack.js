@@ -82,7 +82,7 @@ app.post('/tracks',(req,res)=>{
                     trackInstance.save().then((doc)=>{
                         res.status(201).send(doc);  
                     }).catch((e)=>{
-                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+                        res.status(500).send("Coult not asedd Track ("+req.body.trackName+")");
                     });
                     
                 }

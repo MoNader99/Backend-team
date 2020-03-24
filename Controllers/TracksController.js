@@ -352,7 +352,7 @@ app.delete('/tracks',(req,res)=>{
             return res.status(404).send('Track not found to be deleted');
         }
         
-        res.status(204).send("Track "+trackName1+" was deleted succsesfully");
+        res.status(200).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
         res.status(500).send("Could not delete track");
@@ -361,6 +361,8 @@ app.delete('/tracks',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
+
+
 
 
 //ADD A TRACK
@@ -448,7 +450,7 @@ app.post('/tracks',(req,res)=>{
         res.status(401).send('Unauthorized Access');
     })
 });
-
+    
 
     
 

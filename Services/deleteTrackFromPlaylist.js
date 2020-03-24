@@ -57,7 +57,7 @@ app.delete('/playlists/tracks',(req,res)=>{
                     
                     
                 });
-                res.status(204).send("Track is successfully deleted from playlist");
+                res.status(200).send("Track is successfully deleted from playlist");
                 
             }
 

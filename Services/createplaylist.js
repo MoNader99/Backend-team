@@ -10,7 +10,6 @@ var{User}= require("./../models/users.js"); // users model
 var{images}= require("./../models/images.js"); // images model
 
 
-//const {image1}=require("./../demo.js");
 
 
 
@@ -23,7 +22,7 @@ app.use(bodyParser.json());
 //post fn takes the url as first paramter and a call back fn 
 //the user id is to be passed in the url to know whom this playlist belongs to
 app.post('/playlists',(req,res)=>{
-    //console.log(defaultImage);
+    
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -32,7 +31,7 @@ app.post('/playlists',(req,res)=>{
         if(!req.body.playlistName){
             return res.status(400).send("Playlist must have a name");
         }
-        var savedImage;
+        var savedImage=undefined;
         if(req.body.image){
             images.findOne({url:req.body.image.url}).then((isImage)=>{
                     if(!isImage){
@@ -61,15 +60,15 @@ app.post('/playlists',(req,res)=>{
                     
                    // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{
-                    return res.status(400).send("Coult not create playlist due to missing info");
+                    return res.status(500).send("Coult not create playlist");
                 });
             
                 playlistInstance.save().then((doc)=>{
                     myduplicate=[];
-                    res.send(doc);  
+                    res.status(201).send(doc);  
                 }).catch((e)=>{
                     myduplicate=[];
-                    res.status(500).send("Could not Create a new playlist");
+                    res.status(500).send("Could not save the playlist");
                 });
                 
             }

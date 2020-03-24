@@ -16,7 +16,7 @@ app.get('/playlists/image',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
-            console.log("ddd");
+            
             return Promise.reject();
         }
     var userId2=user._id;
