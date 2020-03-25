@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const Schema=mongoose.Schema;
 var ObjectID = require('mongodb').ObjectID;
+var { images, ImagesSchema } = require("./images.js"); // images model
+//var { artist } = require("../models/artists.js");
+
 var AlbumSchema = new mongoose.Schema({
     albumName: {
         type: String,
@@ -8,6 +11,11 @@ var AlbumSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
+    image: {
+        type: ImagesSchema,
+        required: true
+    },
+
     artistId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "artists"
@@ -55,7 +63,12 @@ AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
     })
         ;
 }
+/*AlbumSchema.methods.findartistname = function () {
+    alb = this;
+    artid = alb.artistId;
+    return artist.findById({artid});
 
+}*/
 var album = mongoose.model('albums', AlbumSchema);
 
 

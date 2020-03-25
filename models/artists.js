@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const password = "2032";
 const jwt = require('jsonwebtoken');
+var { images, ImagesSchema } = require("./images.js"); // images model
 
 bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
@@ -44,6 +45,10 @@ var ArtistSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    image: {
+        type: ImagesSchema,
+        required: true
+    }
     
 });
 

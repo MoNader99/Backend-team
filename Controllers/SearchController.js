@@ -17,8 +17,8 @@ const artistservices = require("./../Services/ArtistServices");
 const albumservices = require("./../Services/AlbumServices");
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
-
-app.get('/Search',AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+//,AuthenticationServices.AuthenticateAllUsers
+app.get('/Search', (req, res) => {
             var wordtosearch = req.query.word;
             console.log(wordtosearch);
             //Return array of tracks
@@ -52,7 +52,7 @@ app.get('/Search',AuthenticationServices.AuthenticateAllUsers, (req, res) => {
             }).catch((err) => { res.status(404).send(err) })
 
         }).catch((err) => { res.status(404).send(err) })
-    }
+    }s
     catch (error) {
         console.log("enta hena ezayyyy");
         try {

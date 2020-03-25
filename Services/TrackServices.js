@@ -2,19 +2,55 @@
 var { track } = require("./../models/track.js");//track model
 var { mongoose } = require("./../db/mongoose.js");
 var _ = require('lodash');
-
+var { GetArtistById } = require("./../Services/ArtistServices");
 var GetTrackObjectArray = function (wordtosearch) {
     return track.find({ trackName: wordtosearch });
 }
+
 var SearchInTracks = function (wordtosearch) {
-    console.log("D5al");
-    return GetTrackObjectArray(wordtosearch).then((tracks) => {
-        console.log("ijgifjgf"+tracks.map(function (value) { return value._id }));
-       return Promise.resolve(tracks.map(function (value) { return value._id }));
-    }
-    ).catch((err) => {
-       return Promise.reject(err);
+    
+    return GetTrackObjectArray(wordtosearch).then(async (tracks) => {
+        
+        if (tracks.length === 0) return Promise.resolve([]);
+        const Tracks = await AddArtistName(tracks);
+        console.log(Tracks);
+        console.log(1);
+
+        console.log(Tracks.map(Track => GetSimplifiedTrack(Track)));
+        console.log(2);
+
+        return Promise.resolve(Tracks.map(track=> GetSimplifiedTrack(track)));
+
+
+
     })
+        // return Promise.resolve(albums);
+        .catch((err) => {
+            return Promise.reject(err);
+        })
+
+}
+var AddArtistName = async function (tracks) {
+    console.log("adadadadadadadadadadadadadadada");
+    console.log("adadadadadadadadadadadadadadada");
+    var i = 1;
+    var length = tracks.length;
+    console.log(length);
+    const promises = tracks.map(async track => {
+
+        const ArtistName = await GetArtistById(track.artistId.toString());
+
+        return Object.assign(track, { ArtistName: ArtistName })
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
+var GetSimplifiedTrack = function (track) {
+    console.log(track);
+    console.log("beysimplify");
+    return ((({ _id, trackName, image, ArtistName }) => ({ _id, trackName, image, ArtistName }))(track));
 
 }
 module.exports = {

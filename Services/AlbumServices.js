@@ -2,8 +2,9 @@
 var { mongoose } = require("./../db/mongoose.js");
 var ObjectID = require('mongodb').ObjectID;
 var { album } = require("./../models/album.js");
-
-
+//var { artist } = require("../models/artists.js");
+//const { artist} = require("./../Services/ArtistServices");
+var { GetArtistById } =require("./../Services/ArtistServices");
 var IsAlbumFound = function ( albumid) {
  
 
@@ -34,18 +35,97 @@ var DeleteByArtist = function (albumid, artistid) {
    })
     }
 
-var GetAlbumObjectArray = function (wordtosearch) {
+var GetAlbumObjectArray =function (wordtosearch) {
     return album.find({ albumName: wordtosearch });
 }
-var SearchInAlbums = function (wordtosearch) {
-    console.log("D5al");
-    return GetAlbumObjectArray(wordtosearch).then((albums) => {
-        console.log("ijgifjgf" + albums.map(function (value) { return value._id }));
-        return Promise.resolve(albums.map(function (value) { return value._id }));
-    }
-    ).catch((err) => {
+/*var getsimplifiedalbum = function (album) {
+    id = album._id;
+    name = album.albumName;
+    image = album.image;
+    artid = album.artistid
+    album= {ID:id,AlbumName:name,Image:image,Artid:artid};
+}*/
+var SearchInAlbums =function (wordtosearch) {
+    console.log("adadadadadadadadadadadadadadada");
+    return GetAlbumObjectArray(wordtosearch).then(async(albums) => {
+        // console.log("ijgifjgf" + albums.map(function (value) { return value._id, value.albumName, value.image, value.artistId }));
+        // return Promise.resolve(albums.map(function (value) { return value._id, value.albumName, value.image, value.artistId  }));
+
+        //, albumname: a.albumName,albumimage: a.image,artistid: a.artistId
+        // return Promise.resolve(albums.map(a =>9 { albumid: a._id })); 
+        //return Promise.resolve((({ a, c }) => ({ a, c }))(album));
+        if (albums.length === 0) return Promise.resolve([]);
+      //  return Promise.resolve(albums.forEach(album => { (({ _id, albumName, image, artistId }) => ({ _id, albumName, image, artistId }))(album); }));
+        //console.log("promises");
+       // console.log(AddArtistName(albums));
+        //console.log(await Promise.all(AddArtistName(albums)));
+       /* const promises = await Promise.resolve(AddArtistName(albums));
+       // const Albums = await Promise.all(promises);
+       // console.log(Albums);
+        console.log(promises);*/
+        const Albums =await AddArtistName(albums);
+        console.log(Albums);
+        //console.log(await AddArtistName(albums))
+        //.then((Albums) => {
+          //  console.log("albums");
+           // console.log(Albums);
+        console.log(Albums.map(album => GetSimplifiedAlbum(album)));
+            return Promise.resolve(Albums.map(album => GetSimplifiedAlbum(album)));
+               // }
+       // );
+       // return Promise.resolve(albums.map(album => getsimplifiedalbum(album)));
+       // }).then(()=>{return Promise.resolve(albums)})
+            
+            
+
+    })
+       // return Promise.resolve(albums);
+    .catch((err) => {
         return Promise.reject(err);
     })
 
 }
+
+var AddArtistName = async function (albums) {
+    var i = 1;
+    var length = albums.length;
+    console.log(length);
+   const promises=albums.map(async album => {
+
+       const ArtistName= await GetArtistById(album.artistId.toString());
+            //console.log(i);
+            // console.log(album);
+            // album["ArtistName"] = ArtistName;
+            // return Promise.resolve(Object.assign(album, { ArtistName: ArtistName }));
+            //return Promise.resolve({ ...album, ...{ ArtistName: ArtistName } });
+            // });
+
+            //  console.log("hw ada"+album.ArtistName);
+            
+          //  return { ...album, ...{ ArtistName: ArtistName } };
+       return Object.assign(album, {ArtistName:ArtistName})
+            // console.log(albums);
+            // if (i++ === length) {
+            //    console.log("raga3o");
+            //   return Promise.resolve(albums);
+            //+5  }
+
+        
+
+    });
+    //console.log(await Promise.all(promises));
+    //console.log(promises);
+    return Promise.resolve(await Promise.all(promises));
+
+}
+ var GetSimplifiedAlbum= function (album) {
+     console.log("beysimplify");
+     return ((({ _id, albumName, image,ArtistName }) => ({ _id, albumName, image,ArtistName }))(album));
+
+}
+//var getsimplifiedalbum = function (album) {
+ //   return getsimplifiedalbum1(album);
+//}
+
+
 module.exports = { DeleteByArtist,SearchInAlbums}
