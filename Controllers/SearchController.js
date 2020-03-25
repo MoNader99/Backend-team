@@ -18,7 +18,7 @@ const albumservices = require("./../Services/AlbumServices");
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
 //,AuthenticationServices.AuthenticateAllUsers
-app.get('/Search', (req, res) => {
+app.get('/Search', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
             var wordtosearch = req.query.word;
             console.log(wordtosearch);
             //Return array of tracks
