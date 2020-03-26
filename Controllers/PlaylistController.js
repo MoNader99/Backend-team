@@ -82,16 +82,17 @@ app.post('/playlists',(req,res)=>{
 //Get a User Playlist Request
 app.get('/playlists/me',(req,res) => {
     var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(400).send('You should Pass a token to access the profile');
+    }
     User.findByToken(token).then((user) => {
         if(!user){
-            return Promise.reject();
+            res.status(401).send();
         }
         playlist.find({userId:user._id}).then((playlist) =>
         {
-            if(!playlist){
-                return Promise.reject();
-            }
-            res.send({playlist});
+            res.status(302).send({playlist});
         }).catch((e) => {
             res.status(401).send();
         })
