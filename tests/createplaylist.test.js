@@ -10,8 +10,9 @@ var{playlist}= require("./../models/playlists.js");
 //TOKEN HAS TO BE MANUALLY SET AFTER CREATING THE DATABASE IN EACH TEST
 
 describe('Create a new playlist',()=>{
+    var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdhNmVkM2JkZDZkNDY4NDhjMjdjOGEiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1MDgyMDczfQ.NUn44gK8NuWM6Reqm6OwC8jnED9owl72Zy0_QfyXTGA';
    it('Should create a new playlist and add the new image to the images collection',(done)=>{
-       var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
        var testPlaylistName="Moraba3";
        var testImage = new images({
         url:"This is the test image of the playlist ",
@@ -38,7 +39,7 @@ describe('Create a new playlist',()=>{
     }); 
 
     it('Should create a new playlist and doesnot add an image (image is already saved)',(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba32";
         var testImage = new images({
          url:"This is the test image of the playlist ",
@@ -66,7 +67,7 @@ describe('Create a new playlist',()=>{
      
      
     it('Should create a new playlist without providing privacy',(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+        
         var testPlaylistName="Moraba323";
         var testImage = new images({
          url:"This is the test image of the playlist ko ko ",
@@ -93,7 +94,7 @@ describe('Create a new playlist',()=>{
     });  
      
     it('Should create a new playlist without providing an Image',(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba3213";
         var testImage=undefined;
         var testPrivacy=false;
@@ -116,7 +117,7 @@ describe('Create a new playlist',()=>{
     });  
 
     it('Should create a new playlist without providing an Image and privacy',(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba3213ma2";
         var testImage=undefined;
         var testPrivacy;
@@ -139,7 +140,7 @@ describe('Create a new playlist',()=>{
     });    
      
     it('Should not create a new playlist with invalid token',(done)=>{
-        var testToken='This is an invalid token';
+        var testToken2='This is an invalid token';
         var testPlaylistName="Moraba322";
         var testImage = new images({
          url:"This is the test image of the playlist1 ",
@@ -149,7 +150,7 @@ describe('Create a new playlist',()=>{
         var testPrivacy=true;
         request(app)
         .post('/playlists')
-        .set('x-auth',testToken)
+        .set('x-auth',testToken2)
         .send({
             playlistName:testPlaylistName,
             privacy:testPrivacy,
@@ -164,7 +165,7 @@ describe('Create a new playlist',()=>{
    
 
     it('Should not create a new playlist without a playlist name',(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName;
         var testImage = new images({
          url:"This is the test image of the playlist ko ",
@@ -187,7 +188,7 @@ describe('Create a new playlist',()=>{
     }); 
     
     it('Should not create a new playlist with the same name of an exisiting playlist for the same user',(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+     
         var testPlaylistName="Moraba3";
         var testImage = new images({
          url:"This is the test image of the playlist ko mana ",

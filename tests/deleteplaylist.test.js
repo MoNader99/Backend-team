@@ -9,8 +9,9 @@ var{playlist}= require("./../models/playlists.js");
 
 //TOKEN HAS TO BE MANUALLY SET AFTER CREATING THE DATABASE IN EACH TEST
 describe("Delete a playlist",()=>{
+    var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdhNmVkM2JkZDZkNDY4NDhjMjdjOGEiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1MDgyMDczfQ.NUn44gK8NuWM6Reqm6OwC8jnED9owl72Zy0_QfyXTGA';
     it("Should delete a playlist",(done)=>{
-       var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+      
        var testPlaylistName="Moraba32";
        request(app)
        .delete('/playlists')
@@ -25,11 +26,11 @@ describe("Delete a playlist",()=>{
 
     })
     it("Should not delete playlist without the correct authorization token",(done)=>{
-        var testToken='worng token';
+        var testToken2='worng token';
         var testPlaylistName="Moraba3123";
         request(app)
         .delete('/playlists')
-        .set('x-auth',testToken)
+        .set('x-auth',testToken2)
         .send({
             playlistName:testPlaylistName,
  
@@ -41,7 +42,7 @@ describe("Delete a playlist",()=>{
      })
 
      it("Should not delete playlist without the playlist name",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName;
         request(app)
         .delete('/playlists')
@@ -57,7 +58,7 @@ describe("Delete a playlist",()=>{
      })
 
      it("Should not delete playlist that does not exist",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+        
         var testPlaylistName="Playlist that is not created";
         request(app)
         .delete('/playlists')

@@ -257,7 +257,8 @@ var track1=new track({
     var album1 = new album({
         artistId:artist2._id,
         albumName:"25",
-        tracks: [track1,track2]
+        tracks: [track1, track2],
+        image:image3
             
     });
 

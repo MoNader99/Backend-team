@@ -9,8 +9,9 @@ var{track}=require("./../models/track.js");
 //TRACK ID AND TOKEN HAS TO BE MANUALLY SET AFTER CREATING THE DATABASE IN EACH TEST
 
 describe("Delete a single track from a playlist",()=>{
+    var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdhNmVkM2JkZDZkNDY4NDhjMjdjOGEiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1MDgyMDczfQ.NUn44gK8NuWM6Reqm6OwC8jnED9owl72Zy0_QfyXTGA';
     it("Should delete a middle track in the playlist and re-order it",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba3";
         var testTackId="5e776b83cca58cb00494bb88"
         request(app)
@@ -29,7 +30,7 @@ describe("Delete a single track from a playlist",()=>{
 
 
     it("Should delete the last track in the playlist",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba3";
         var testTackId="5e776b83cca58cb00494bb8c"
         request(app)
@@ -47,12 +48,12 @@ describe("Delete a single track from a playlist",()=>{
      });
      
     it("Should not delete a track from a  playlist with an unauthorized token ",(done)=>{
-        var testToken='Unauthorized Token';
+        var testToken2='Unauthorized Token';
         var testPlaylistName="Moraba323";
         var testTackId="5e776b83cca58cb00494bb88"
         request(app)
         .delete('/playlists/tracks')
-        .set('x-auth',testToken)
+        .set('x-auth',testToken2)
         .send({
             playlistName:testPlaylistName,
             trackId:testTackId
@@ -65,7 +66,7 @@ describe("Delete a single track from a playlist",()=>{
     }); 
 
     it("Should not  delete a track from a  playlist without passing a playlist name",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName;
         var testTackId="5e776b83cca58cb00494bb8c"
         request(app)
@@ -83,7 +84,7 @@ describe("Delete a single track from a playlist",()=>{
      });  
      
      it("Should not  delete a track from a  playlist without passing a track id",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba323";
         var testTackId;
         request(app)
@@ -102,7 +103,7 @@ describe("Delete a single track from a playlist",()=>{
      
      
     it("Should not  delete a track from a  playlist with an invalid track id",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+        
         var testPlaylistName="Moraba323";
         var testTackId="15e776b83cca58cb00494bb8c";
         request(app)
@@ -120,7 +121,7 @@ describe("Delete a single track from a playlist",()=>{
     });      
 
     it("Should not  delete a track from a  playlist with a playlist name that the user doesnot have",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="RecyleBin";
         var testTackId="5e776b83cca58cb00494bb8c";
         request(app)
@@ -138,7 +139,7 @@ describe("Delete a single track from a playlist",()=>{
     }); 
     
     it("Should not  delete a track from a  playlist if the track is not in the playlist",(done)=>{
-        var testToken='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc3ZTg0M2U5NTc2MTk4MWU4MmY3MjYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTE2NTU0fQ.lUg-xvAF0Z_3TZ7m8ftvc9M_pOSfJgN6ekbvvPKsF4s';
+       
         var testPlaylistName="Moraba3";
         var testTackId="5e776b83cca58cb00494bb8e";
         request(app)

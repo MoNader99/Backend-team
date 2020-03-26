@@ -242,7 +242,7 @@ app.get('/users/me',(req,res) => {
 app.post('/users/forgot', async (req, res) => {
     
     var reqEmail=req.body.email;
-    console.log(reqEmail)
+    //console.log(reqEmail)
     try {
 
      await User.findByEmail(reqEmail).then((user)=>{
@@ -252,10 +252,10 @@ app.post('/users/forgot', async (req, res) => {
               
             return res.status(404).json({"message" :"Email not found"})}
 
-        console.log('henaaaa')
+       // console.log('henaaaa')
     var rand=Math.floor((Math.random() * 100) + 54);
     user.generateResetToken().then((token)=>{
-    console.log(token);
+    //console.log(token);
     var host=req.get('host');
     var link="http://"+req.get('host')+"/users/reset/?token= "+token;
     var mailOptions={
@@ -264,11 +264,11 @@ app.post('/users/forgot', async (req, res) => {
         html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
         }
     
-    console.log(mailOptions);
+    //console.log(mailOptions);
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
             console.log(error);
-        res.json({"message" :"sending failed"});
+        res.status(500).json({"message" :"sending failed"});
      }else{
             console.log("Message sent: " + response.message);
             //res.send(token);
@@ -314,13 +314,13 @@ app.post('/users/forgot', async (req, res) => {
 app.patch('/users/reset',async (req,res)=>{
 
     var newPassword=req.body.newPassword;
-    console.log(newPassword)
-    console.log("helloooooo");
+   // console.log(newPassword)
+    //console.log("helloooooo");
     var token=req.query.token;
 
     const salt = await bcrypt.genSalt();
     const hashedPass = await bcrypt.hash(newPassword, salt);
-   console.log(hashedPass);
+   //console.log(hashedPass);
     await User.checkTokenAndFind(token).then((user)=>{
 
        user.password=hashedPass;
@@ -329,7 +329,7 @@ app.patch('/users/reset',async (req,res)=>{
 
        res.json({"message":"Password has been reset successfully"});
        
-        console.log(user);
+       // console.log(user);
     }).catch((e)=> {res.status(401).json({"message":'Reset Failed'});})
     
     })
@@ -394,6 +394,8 @@ else
     user.isPremium=false;
     user.save();
     res.status(200).json({"message":"Your account has been changed to regular account"})
+    console.log('inside the request')
+    console.log(user.isPremium);
 }
 
 }).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})}) 
@@ -478,7 +480,7 @@ app.get('/users/:id/premium', async (req, res) =>
                 console.log(code);
                 
                 var host=req.get('host');
-                var link="http://"+req.get('host')+"/users/confirmPremium/?code= "+code;
+                var link="http://"+req.get('host')+"/users/confirmPremium/?token= "+code;
                 console.log(link);
                 var mailOptions={
                     to : email,
@@ -562,15 +564,15 @@ try{
     if (decoded.type==='premium')
     { User.findById(decoded._id).then((user)=>{
         if(!user){
-			res.status(404).json({"message":"not found"});
-            return Promise.reject();
+		 return	res.status(404).json({"message":"not found"});
+           // return Promise.reject();
         }
 
         user.isPremium=true;
         user.save()
         res.status(200).json({"message":"Email confirmed successfully,Welcome To Premium Life!"});
     }).catch((e) => {
-        res.status(401).json({"message":"authentication failed"});
+       return res.status(401).json({"message":"authentication failed"});
 
     })
 }

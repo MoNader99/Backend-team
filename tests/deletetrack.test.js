@@ -8,8 +8,9 @@ const {app}= require("./../Services/deletetrack.js");
 //TOKEN HAS TO BE MANUALLY SET AFTER CREATING THE DATABASE IN EACH TEST
 
 describe("Delete a single track",()=>{
+  var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTdhNjkxYzgyYTIxZTI0MTQ3OGMyYTciLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg1MDgwNjA4fQ.TZvrymUsOZYWMDQw20fmN9XGmifTiaTspv6en45AibI";
     it("Should delete a single track",(done)=>{
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+        
         var testTrackName="Superlife";
         request(app)
           .delete('/tracks')
@@ -22,11 +23,11 @@ describe("Delete a single track",()=>{
     });
 
     it("Should not delete a single track with incorrect token",(done)=>{
-        var testToken="incorrect token";
+        var testToken2="incorrect token";
         var testTrackName="Superlife123";
         request(app)
           .delete('/tracks')
-          .set('x-auth',testToken)
+          .set('x-auth',testToken2)
           .send({
             trackName: testTrackName,
         })  
@@ -35,7 +36,7 @@ describe("Delete a single track",()=>{
     });  
 
     it("Should not delete a single track with missing track name",(done)=>{
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+       
         var testTrackName;
         request(app)
           .delete('/tracks')
@@ -49,7 +50,7 @@ describe("Delete a single track",()=>{
 
 
     it("Should not delete a single track if the track does not belong to this artist",(done)=>{
-        var testToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTc4ZTljMjUzNjM0NjMwNGMzZDZmN2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0OTgyNDgyfQ.toWk26mYRqnuMpVF2foUZsnP3y5efffUzQyaAcwt3Pg";
+       
         var testTrackName="Hello";
         request(app)
           .delete('/tracks')

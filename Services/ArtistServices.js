@@ -1,6 +1,7 @@
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js"); 
 var { artist } = require("./../models/Artists.js");  //artists model
+var { GetArtistById } = require("./../Services/ArtistServices");
 var addartist = (Email, Password, Artistname, About, Genres) => {
     var artist1 = new artist({
         email: Email,
@@ -31,11 +32,48 @@ var SearchInArtists = function (wordtosearch) {
     ).catch((err) => {
         return Promise.reject(err);
     })
+}
+var GetArtistById = function (id) {
+    console.log(id);
+    console.log(artist.findById(id).artistName);
+    return artist.findById(id).then((Art) => {
+        console.log(Art.artistName);
+        return Art.artistName;
+
+    })
+    
+
+}
+
+var SearchInArtists = function (wordtosearch) {
+    console.log("adadadadadadadadadadadadadadada");
+    return GetArtistObjectArray(wordtosearch).then(async (artists) => {
+        console.log(1);
+        if (artists.length === 0) return Promise.resolve([]);
+        console.log(2);
+        return Promise.resolve(artists.map(artist => GetSimplifiedArtist(artist)));
+
+
+
+
+    })
+        // return Promise.resolve(albums);
+        .catch((err) => {
+            return Promise.reject(err);
+        })
+
+}
+var GetSimplifiedArtist = function (artist) {
+    console.log("beysimplify");
+    console.log(artist.image);
+    return ((({ _id,artistName,image }) => ({ _id, artistName, image}))(artist));
 
 }
 module.exports = {
     addartist,
-    SearchInArtists
+    SearchInArtists,
+    artist,
+    GetArtistById
 
 }
 

@@ -304,7 +304,7 @@ app.get('/tracks',async (req,res)=>{
 
     if(arr.length>50)
     {
-        res.status(403).json({"message":" Forbidden maximum 50 Ids"});
+       return res.status(403).json({"message":" Forbidden maximum 50 Ids"});
     }
     
 
