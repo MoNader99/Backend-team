@@ -16,9 +16,9 @@ const trackservices = require("./../Services/TrackServices");
 const artistservices = require("./../Services/ArtistServices");
 const albumservices = require("./../Services/AlbumServices");
 var AuthenticationServices = require("./../Services/AuthenticationService");
-
+//{ $regex: "s", $options: "i" }
 //,AuthenticationServices.AuthenticateAllUsers
-app.get('/Search', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+app.get('/Search', (req, res) => {
             var wordtosearch = req.query.word;
             console.log(wordtosearch);
             //Return array of tracks

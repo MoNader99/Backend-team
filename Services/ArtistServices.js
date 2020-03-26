@@ -21,7 +21,10 @@ var addartist = (Email, Password, Artistname, About, Genres) => {
 
 
 var GetArtistObjectArray = function (wordtosearch) {
-    return artist.find({ artistName: wordtosearch });
+    //return artist.find({ artistName: wordtosearch });
+    return artist.find({ 'artistName': { '$regex': wordtosearch, $options: 'i' } });
+
+    
 }
 var SearchInArtists = function (wordtosearch) {
     console.log("D5al");

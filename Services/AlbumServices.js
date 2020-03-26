@@ -36,7 +36,10 @@ var DeleteByArtist = function (albumid, artistid) {
     }
 
 var GetAlbumObjectArray =function (wordtosearch) {
-    return album.find({ albumName: wordtosearch });
+   // return album.find({ albumName: wordtosearch });
+    return album.find({ 'albumName': { '$regex': wordtosearch, $options: 'i' } });
+
+    
 }
 /*var getsimplifiedalbum = function (album) {
     id = album._id;

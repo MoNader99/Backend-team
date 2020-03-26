@@ -4,7 +4,9 @@ var { mongoose } = require("./../db/mongoose.js");
 var _ = require('lodash');
 var { GetArtistById } = require("./../Services/ArtistServices");
 var GetTrackObjectArray = function (wordtosearch) {
-    return track.find({ trackName: wordtosearch });
+    //return track.find({ trackName: wordtosearch });
+    return track.find({ 'trackName': { '$regex': wordtosearch, $options: 'i' } });
+        
 }
 
 var SearchInTracks = function (wordtosearch) {
