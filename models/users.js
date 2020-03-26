@@ -92,11 +92,11 @@ UserSchema.statics.findByCredentials = function (email, password) {
 UserSchema.methods.generateAuthToken = function () {
     var user = this;
     var access = 'auth';
-    console.log('hena');
+    //console.log('hena');
     var token = jwt.sign({ _id: user._id.toHexString(), access }, 'secretkeyforuser').toString();
-    console.log('henahena');
+    //console.log('henahena');
     return new Promise((resolve, reject) => {
-        console.log('henahenahena');
+        //console.log('henahenahena');
         resolve(token);
 
     });
