@@ -2,9 +2,7 @@
 var { mongoose } = require("./../db/mongoose.js");
 var ObjectID = require('mongodb').ObjectID;
 var { album } = require("./../models/album.js");
-//var { artist } = require("../models/artists.js");
-//const { artist} = require("./../Services/ArtistServices");
-var { GetArtistById } =require("./../Services/ArtistServices");
+var { GetArtistById } = require("./../Services/ArtistServices");
 var IsAlbumFound = function ( albumid) {
  
 
@@ -94,8 +92,13 @@ var AddArtistName = async function (albums) {
     var length = albums.length;
     console.log(length);
    const promises=albums.map(async album => {
-
-       const ArtistName= await GetArtistById(album.artistId.toString());
+       console.log(2);
+      // try {
+           const ArtistName = await GetArtistById(album.artistId.toString());
+      // }
+       //catch (err) {
+        //   console.log(err);
+       //}
             //console.log(i);
             // console.log(album);
             // album["ArtistName"] = ArtistName;
@@ -106,6 +109,8 @@ var AddArtistName = async function (albums) {
             //  console.log("hw ada"+album.ArtistName);
             
           //  return { ...album, ...{ ArtistName: ArtistName } };
+       console.log(3);
+
        return Object.assign(album, {ArtistName:ArtistName})
             // console.log(albums);
             // if (i++ === length) {
@@ -129,6 +134,5 @@ var AddArtistName = async function (albums) {
 //var getsimplifiedalbum = function (album) {
  //   return getsimplifiedalbum1(album);
 //}
-
 
 module.exports = { DeleteByArtist,SearchInAlbums}

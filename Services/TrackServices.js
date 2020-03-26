@@ -33,8 +33,8 @@ var SearchInTracks = function (wordtosearch) {
 
 }
 var AddArtistName = async function (tracks) {
-    console.log("adadadadadadadadadadadadadadada");
-    console.log("adadadadadadadadadadadadadadada");
+    console.log("adadadadadadadadadadadadadadadavf,vldfv");
+    console.log("adadadadadadadadadadadadadadadaf,dvmfvfl");
     var i = 1;
     var length = tracks.length;
     console.log(length);
@@ -55,7 +55,10 @@ var GetSimplifiedTrack = function (track) {
     return ((({ _id, trackName, image, ArtistName }) => ({ _id, trackName, image, ArtistName }))(track));
 
 }
+
+
 module.exports = {
-    SearchInTracks
+    SearchInTracks,
+    track
 
 }

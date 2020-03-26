@@ -1,7 +1,17 @@
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js"); 
 var { artist } = require("./../models/Artists.js");  //artists model
-var { GetArtistById } = require("./../Services/ArtistServices");
+
+var { album } = require("./../models/album.js");
+var { track } = require("./../models/track.js");//track model
+var GetTracksOfArtists = function (id) {
+    return track.find({ artistId: id });
+}
+var GetAlbumsOfArtists = function (id) {
+    return album.find({ artistId: id });
+}
+
+
 var addartist = (Email, Password, Artistname, About, Genres) => {
     var artist1 = new artist({
         email: Email,
@@ -54,7 +64,13 @@ var SearchInArtists = function (wordtosearch) {
         console.log(1);
         if (artists.length === 0) return Promise.resolve([]);
         console.log(2);
-        return Promise.resolve(artists.map(artist => GetSimplifiedArtist(artist)));
+
+        const ArtistsWithTracks = await AddTracks(artists);
+
+        const Artists = await AddAlbums(ArtistsWithTracks);
+
+
+        return Promise.resolve(Artists.map(artist => GetSimplifiedArtist(artist)));
 
 
 
@@ -66,10 +82,37 @@ var SearchInArtists = function (wordtosearch) {
         })
 
 }
+var AddTracks = async function (artists) {
+
+    const promises = artists.map(async artist => {
+
+        const Tracks = await GetTracksOfArtists(artist._id);
+        const tracks= await Tracks.map(track => ((({ _id, trackName, image}) => ({ _id, trackName, image}))(track)));
+
+        return Object.assign(artist, { Tracks:tracks })
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
+var AddAlbums = async function (artists) {
+
+    const promises = artists.map(async artist => {
+
+        const Albums = await GetAlbumsOfArtists(artist._id);
+        const albums= await Albums.map(album => ((({ _id, albumName, image}) => ({ _id, albumName, image}))(album)));
+        return Object.assign(artist, { Albums: albums })
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
 var GetSimplifiedArtist = function (artist) {
     console.log("beysimplify");
     console.log(artist.image);
-    return ((({ _id,artistName,image }) => ({ _id, artistName, image}))(artist));
+    return ((({ _id,artistName,image,Albums,Tracks }) => ({ _id, artistName, image,Albums,Tracks}))(artist));
 
 }
 module.exports = {
