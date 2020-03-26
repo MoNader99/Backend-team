@@ -16,7 +16,7 @@ app.use(bodyparser.json());
 var _ = require('lodash');
 //var rand=Math.floor((Math.random() * 100) + 54); //random confirmation code
 const jwt = require('jsonwebtoken');
-var userservices = require("./../Services/UserServices.js");
+//var userservices = require("./../Services/UserServices.js");
 
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
@@ -187,11 +187,15 @@ app.post('/users/login', async (req, res) => {
 // Get User Profile Request
 app.get('/users/me',(req,res) => {
     var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(400).send('You should Pass a token to access the profile');
+    }
     User.findByToken(token).then((user) => {
         if(!user){
-            return Promise.reject();
+            res.status(401).send();
         }
-        res.send(user);
+        res.status(302).send(user);
     }).catch((e) => {
         res.status(401).send();
     })
