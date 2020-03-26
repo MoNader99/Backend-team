@@ -313,8 +313,7 @@ res.send(returnedArtistArray);
     })
 
 })
-<<<<<<< HEAD
-=======
+
 
 
 if(!module.parent){
@@ -323,4 +322,3 @@ if(!module.parent){
     });
 }
 module.exports={app};
->>>>>>> 51f61b5dcd56e82a7ded45ed3db3b71bc5e9e612
