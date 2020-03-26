@@ -742,6 +742,43 @@ catch{
 
 
 
+ 
+
+ // Change Password
+ app.put('/users/changePassword',async (req,res)=>{
+    var oldPassword=req.body.oldPassword;
+    var newPassword=req.body.newPassword;
+    var token=req.header('x-auth');
+    User.findByToken(token).then((user) => {
+        if(!user)
+        {
+        return Promise.reject();
+        }
+    console.log("you are my user");
+    bcrypt.compare(oldPassword, user.password, async (err, res2) => {
+        if(res2) {
+            console.log('Your password mached with database hash password');
+            console.log('lets change password');
+                const salt = await bcrypt.genSalt();
+                const hashedPass = await bcrypt.hash(newPassword, salt);
+                console.log(hashedPass);
+                user.password=hashedPass;
+                user.save();
+
+                res.status(200).send("Password has been reset successfully");
+
+        } else {
+            console.log('Your password not mached.');
+            res.status(403).send("this is not the correct password"); 
+        };       
+    }).catch((e) => {
+        res.status(401).send(e);
+    })
+    })
+});
+
+
+
 if(!module.parent){
     app.listen(3000,()=>{
         console.log("Started on port 3000");
