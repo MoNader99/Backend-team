@@ -45,10 +45,10 @@ var ArtistSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    image: {
+    /*image: {
         type: ImagesSchema,
         required: true
-    }
+    }*/
     
 });
 
@@ -82,11 +82,11 @@ ArtistSchema.statics.findByCredentials = function (email, password) {
 ArtistSchema.methods.generateAuthToken = function () {
     var artist = this;
     var access = 'auth';
-    console.log('hena');
+    //console.log('hena');
     var token = jwt.sign({ _id: artist._id.toHexString(), access }, 'secretkeyforartist').toString();
-    console.log('henahena');
+    //console.log('henahena');
     return new Promise((resolve, reject) => {
-        console.log('henahenahena');
+        //console.log('henahenahena');
         resolve(token);
 
     });
