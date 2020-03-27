@@ -97,7 +97,7 @@ var artist1= new artist({
       commercial success unsurpassed among her peers.`,
     genres:["pop","R&B"],
     rating: 4,
-    image:image1
+    image:image3
 });
 
 //SAVING AND RETURNING ID OF THE NEW ARTIST

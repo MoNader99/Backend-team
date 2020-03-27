@@ -74,7 +74,7 @@ var AddArtistName = async function (tracks) {
 var GetSimplifiedTrack = function (track) {
     console.log(track);
     console.log("beysimplifytracks");
-    return ((({ _id, trackName, image, ArtistName, artistId }) => ({ _id, trackName, image, ArtistName, artistId }))(track));
+    return ((({ _id, trackName, image, artistName, artistId }) => ({ _id, trackName, image, artistName, artistId }))(track));
 
 }
 
@@ -82,5 +82,4 @@ var GetSimplifiedTrack = function (track) {
 module.exports = {
     SearchInTracks,
     track
-
 }
