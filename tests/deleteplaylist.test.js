@@ -12,7 +12,7 @@ describe("Delete a playlist",()=>{
 
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
-                var testPlaylistName="Moraba32";
+                var testPlaylistName="Moraba323";
                 request(app)
                 .delete('/playlists')
                 .set('x-auth',token)

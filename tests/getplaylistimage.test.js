@@ -59,8 +59,8 @@ describe("Get Image of a playlist",()=>{
     it("Should not get the image of a playlist that doesnot belong to this user",(done)=>{
         User.find().then((users)=>{
 
-            users[users.length-1].save()
-            users[users.length-1].generateAuthToken().then((token)=>{
+            users[0].save()
+            users[0].generateAuthToken().then((token)=>{
                 var testPlaylistName="RecyleBin";
                 request(app)
                 .get('/playlists/image')

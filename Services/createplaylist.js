@@ -2,13 +2,11 @@
 const express= require('express');
 var bodyParser= require('body-parser');
 const {ObjectID}=require("mongodb");
-
+var fs = require('fs');
 //local imports
 var{mongoose}= require("./../db/mongoose.js");  
 var{playlist}= require("./../models/playlists.js"); // playlists model
 var{User}= require("./../models/users.js"); // users model
-var{images}= require("./../models/images.js"); // images model
-
 
 
 
@@ -31,21 +29,8 @@ app.post('/playlists',(req,res)=>{
         if(!req.body.playlistName){
             return res.status(400).send("Playlist must have a name");
         }
-        var savedImage=undefined;
-        if(req.body.image){
-            images.findOne({url:req.body.image.url}).then((isImage)=>{
-                    if(!isImage){
-                            savedImage= new images ({
-                            url:req.body.image.url,
-                            height:req.body.image.height,
-                            width:req.body.image.width,});
-                            savedImage.save();
-                        }
-                        else if(isImage){
-                            savedImage=isImage
-                        }
-                });
-            }
+        
+
 
         //PREVENT THE USER FROM HAVING 2 PLAYLISTS WITH THE SAME NAME
 
@@ -56,7 +41,7 @@ app.post('/playlists',(req,res)=>{
                     userId:userId2,     
                     playlistName: req.body.playlistName,
                     privacy: req.body.privacy,
-                    image:savedImage
+                    
                     
                    // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{

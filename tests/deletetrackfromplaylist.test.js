@@ -14,7 +14,7 @@ describe("Delete a single track from a playlist",()=>{
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
                 var testPlaylistName="Moraba3";
-                var testTackId="5e7cd7cad46d241c23a4ce8f"
+                var testTackId="5e7e7d1836c0421830d60500"
                 request(app)
                 .delete('/playlists/tracks')
                 .set('x-auth',token)
@@ -36,7 +36,7 @@ describe("Delete a single track from a playlist",()=>{
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
                 var testPlaylistName="Moraba3";
-                var testTackId="5e7cd7cad46d241c23a4ce91"
+                var testTackId="5e7e7d1836c0421830d60504"
                 request(app)
                 .delete('/playlists/tracks')
                 .set('x-auth',token)
@@ -136,8 +136,8 @@ describe("Delete a single track from a playlist",()=>{
     it("Should not  delete a track from a  playlist with a playlist name that the user doesnot have",(done)=>{
         User.find().then((users)=>{
 
-            users[users.length-1].save()
-            users[users.length-1].generateAuthToken().then((token)=>{
+            users[0].save()
+            users[0].generateAuthToken().then((token)=>{
                 var testPlaylistName="RecyleBin";
                 var testTackId="5e776b83cca58cb00494bb8c";
                 request(app)

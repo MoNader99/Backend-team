@@ -59,9 +59,9 @@ describe("Delete a single track",()=>{
 
     it("Should not delete a single track if the track does not belong to this artist",(done)=>{
       artist.find().then((users)=>{
-        users[users.length-1].save()
-        users[users.length-1].generateAuthToken().then((testToken)=>{
-          var testTrackName="Hello";
+        users[0].save()
+        users[0].generateAuthToken().then((testToken)=>{
+          var testTrackName="Any track that the artist doesnot have!";
               request(app)
                 .delete('/tracks')
                 .set('x-auth',testToken)
