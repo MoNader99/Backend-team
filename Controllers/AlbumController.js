@@ -37,16 +37,20 @@ app.get('/album/tracks/:id', (req,res)=>{
 ///// Get Album
     app.get('/album/:id', (req,res)=>{
         var id=req.params.id;
-        if(!ObjectID.isValid(id))
+        var token = req.header('x-auth');
+        if(!token)
         {
-            return res.status(404).send("invalid id");
+            res.status(401).send('You should pass the token');
         }
-        
+        User.findByToken(token).then((user)=>{
+            if(!user){
+                return Promise.reject();
+            }
         album.findById(id).then((album) => {
             if(!album){return res.status(404).send("can not find album");}
-            return res.send({album});
-        }).catch((e)=>res.status(400).send());
-        
+            return res.status(302).send({album});
+        }).catch((e)=>res.status(404).send());
+    }).catch((e)=>res.status(401).send());
         });    
 
 app.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req, res) => {
