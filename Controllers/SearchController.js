@@ -18,13 +18,14 @@ const albumservices = require("./../Services/AlbumServices");
 var AuthenticationServices = require("./../Services/AuthenticationService");
 //{ $regex: "s", $options: "i" }
 //
-app.get('/Search', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+// AuthenticationServices.AuthenticateAllUsers
+app.get('/Search', (req, res) => {
             var wordtosearch = req.query.word;
             console.log(wordtosearch);
             //Return array of tracks
             artistservices.SearchInArtists(wordtosearch).then((Artists) => {
-                albumservices.SearchInAlbums(wordtosearch).then((Albums) => {
-                    trackservices.SearchInTracks(wordtosearch).then((Tracks) => {
+                albumservices.SearchInAlbums(wordtosearch,Artists).then((Albums) => {
+                    trackservices.SearchInTracks(wordtosearch, Artists).then((Tracks) => {
                         console.log("fkdsffdfkdlsfksl");
                         res.send({ artists: Artists, Albums: Albums, Tracks: Tracks });
                     }).catch((err) => { res.status(400).send(err) })

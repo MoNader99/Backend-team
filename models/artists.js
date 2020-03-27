@@ -45,10 +45,10 @@ var ArtistSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    /*image: {
+    image: {
         type: ImagesSchema,
         required: true
-    }*/
+    }
     
 });
 

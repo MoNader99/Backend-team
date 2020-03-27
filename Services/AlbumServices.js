@@ -33,9 +33,15 @@ var DeleteByArtist = function (albumid, artistid) {
    })
     }
 
-var GetAlbumObjectArray =function (wordtosearch) {
+var GetAlbumObjectArray =function (wordtosearch,Artists) {
    // return album.find({ albumName: wordtosearch });
-    return album.find({ 'albumName': { '$regex': wordtosearch, $options: 'i' } });
+   // console.log(Artists);
+    //const artists = await Artists.map(function (value) { return value._id.toString() });
+   // console.log(Artists.map(function (value) { return value._id.toString() }));
+   // { $or: [{ a: 1 }, { b: 1 }] }
+    return album.find({ $or: [{ 'albumName': { '$regex': wordtosearch, $options: 'i' } }, { 'artistId': { $in: Artists.map(function (value) { return value._id.toString() }) } }] });
+
+   // return album.find({ 'albumName': { '$regex': wordtosearch, $options: 'i' }, 'artistId': { $in: Artists.map(function (value) { return value._id.toString() })  } } );
 
     
 }
@@ -46,9 +52,9 @@ var GetAlbumObjectArray =function (wordtosearch) {
     artid = album.artistid
     album= {ID:id,AlbumName:name,Image:image,Artid:artid};
 }*/
-var SearchInAlbums =function (wordtosearch) {
+var SearchInAlbums =function (wordtosearch,Artists) {
     console.log("adadadadadadadadadadadadadadada");
-    return GetAlbumObjectArray(wordtosearch).then(async(albums) => {
+    return GetAlbumObjectArray(wordtosearch,Artists).then(async(albums) => {
         // console.log("ijgifjgf" + albums.map(function (value) { return value._id, value.albumName, value.image, value.artistId }));
         // return Promise.resolve(albums.map(function (value) { return value._id, value.albumName, value.image, value.artistId  }));
 
@@ -94,7 +100,7 @@ var AddArtistName = async function (albums) {
    const promises=albums.map(async album => {
        console.log(2);
       // try {
-           const ArtistName = await GetArtistById(album.artistId.toString());
+           const artistName = await GetArtistById(album.artistId.toString());
       // }
        //catch (err) {
         //   console.log(err);
@@ -111,7 +117,7 @@ var AddArtistName = async function (albums) {
           //  return { ...album, ...{ ArtistName: ArtistName } };
        console.log(3);
 
-       return Object.assign(album, {ArtistName:ArtistName})
+       return Object.assign(album, {artistName:artistName})
             // console.log(albums);
             // if (i++ === length) {
             //    console.log("raga3o");
@@ -127,8 +133,8 @@ var AddArtistName = async function (albums) {
 
 }
  var GetSimplifiedAlbum= function (album) {
-     console.log("beysimplify");
-     return ((({ _id, albumName, image,ArtistName }) => ({ _id, albumName, image,ArtistName }))(album));
+     console.log("beysimplifyalbum");
+     return ((({ _id, albumName, image,artistName,artistId }) => ({ _id, albumName, image,artistName,artistId }))(album));
 
 }
 //var getsimplifiedalbum = function (album) {

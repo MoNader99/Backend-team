@@ -90,7 +90,8 @@ var artist1= new artist({
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
     genres:["pop","R&B"],
-    rating:4
+    rating: 4,
+    image:image1
 });
 
 //SAVING AND RETURNING ID OF THE NEW ARTIST
@@ -111,7 +112,8 @@ var artist2= new artist({
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
-    genres:["sha3by","R&B"]
+    genres: ["sha3by", "R&B"],
+    image:image2
 });
 
 artist2.save().then((res)=>{
@@ -129,7 +131,8 @@ var artist3= new artist({
      (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer, 
      record executive and actor. He is one of the most successful musical artists of the 21st century.`,
     genres:["Trap","Jazz","pop","Rap"],
-    rating:4.6
+    rating: 4.6,
+    image:image3
 });
 
 artist3.save().then((res)=>{

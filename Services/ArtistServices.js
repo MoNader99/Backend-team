@@ -65,12 +65,12 @@ var SearchInArtists = function (wordtosearch) {
         if (artists.length === 0) return Promise.resolve([]);
         console.log(2);
 
-        const ArtistsWithTracks = await AddTracks(artists);
+        //const ArtistsWithTracks = await AddTracks(artists);
 
-        const Artists = await AddAlbums(ArtistsWithTracks);
+        //const Artists = await AddAlbums(ArtistsWithTracks);
 
 
-        return Promise.resolve(Artists.map(artist => GetSimplifiedArtist(artist)));
+        return Promise.resolve(artists.map(artist => GetSimplifiedArtist(artist)));
 
 
 
@@ -110,7 +110,7 @@ var AddAlbums = async function (artists) {
 
 }
 var GetSimplifiedArtist = function (artist) {
-    console.log("beysimplify");
+    console.log("beysimplifyartist");
     console.log(artist.image);
     return ((({ _id,artistName,image,Albums,Tracks }) => ({ _id, artistName, image,Albums,Tracks}))(artist));
 
@@ -119,7 +119,8 @@ module.exports = {
     addartist,
     SearchInArtists,
     artist,
-    GetArtistById
+    GetArtistById,
+    GetArtistObjectArray
 
 }
 
