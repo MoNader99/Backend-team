@@ -1,4 +1,5 @@
 require('./Config/Config');
+var fs = require('fs');
 var { mongoose } = require("./db/mongoose.js");  
 var{User}= require("./models/users.js");   //users model
 var{artist}= require("./models/Artists.js");  //artists model
@@ -17,27 +18,32 @@ const Schema = mongoose.Schema;
 
 //IMAGES OBJECTS
 
-var image1= new images ({
-    url:"https://www.google.com/search?q=url+of+a+dog+picture&sxsrf=ALeKk019SCzISGrghACY3jqtCUHli2XLMg:1584830715682&tbm=isch&source=iu&ictx=1&fir=oIyUVmRYtXjk-M%253A%252CNzcFCDirz3vE7M%252C_&vet=1&usg=AI4_-kTleoUVSJt4WwGfM510KhhRKuZwRw&sa=X&ved=2ahUKEwjtiNm-0qzoAhURkhQKHZ3ECEwQ9QEwAXoECAcQFw#imgrc=dq8ay5Ijnpdh0M",
-    height:34,
-    width:12,
-});
-image1.save();
-//image2
-var image2= new images ({
-    url:"www.images/image/234",
-    height:200,
-    width:65,
-});
-image2.save();
-//image2
-var image3= new images ({
-        url:"www.images/imag23e/23454",
-        height:176,
-        width:65,
+var imgPath1 = "./Pictures/default.png";
+var image1 = new images;
+    image1.data = fs.readFileSync(imgPath1);
+    image1.contentType = 'image/png';
+    image1.save(function (err, a) {
+      if (err) throw err;
+      console.error('saved img to mongo');
     });
-image3.save();
 
+var imgPath2 = "./Pictures/Billie-Eilish.png";    
+var image2 = new images;
+    image2.data = fs.readFileSync(imgPath2);
+    image2.contentType = 'image/png';
+    image2.save(function (err, a) {
+      if (err) throw err;
+      console.error('saved img to mongo');
+    });    
+
+var imgPath3 = "./Pictures/Adele.png";    
+var image3 = new images;
+        image3.data = fs.readFileSync(imgPath3);
+        image3.contentType = 'image/png';
+        image3.save(function (err, a) {
+          if (err) throw err;
+          console.error('saved img to mongo');
+        });        
 
 
 
@@ -175,7 +181,7 @@ var track1=new track({
     rating:10,
     duration:360000,
     genre:"pop",
-    image:image2,
+    image:image1,
     url:"uuu"  // until we get real urls 
     });
     track1.save().then((res)=>{
@@ -191,7 +197,7 @@ var track1=new track({
         rating:9,
         duration:360000,
         genre:"pop",
-        image:image2,
+        image:image1,
         url:"qqq"  // until we get real urls 
         });
         track2.save().then((res)=>{
@@ -206,7 +212,7 @@ var track1=new track({
             rating:8,
             duration:240000,
             genre:"pop",
-            image:image3,
+            image:image1,
             url:"nnnn"  // until we get real urls 
             });
     
@@ -222,7 +228,7 @@ var track1=new track({
                 rating:10,
                 duration:262000,
                 genre:"rap",
-                image:image3,
+                image:image1,
                 url:"lll"  // until we get real urls 
                 });
         
@@ -237,7 +243,7 @@ var track1=new track({
                     trackName:"Godzilla",
                     rating:9,
                     duration:223000,
-                    image:image3,
+                    image:image1,
                     genre:"rap",
                     url:"vvv"  // until we get real urls 
                     });
@@ -261,7 +267,7 @@ var track1=new track({
         artistId:artist2._id,
         albumName:"25",
         tracks: [track1, track2],
-        image:image3
+        image:image1
             
     });
 
@@ -294,7 +300,7 @@ var playlist2 = new playlist({
     playlistName:"Classics",
     privacy:true,
     tracks:[track1,track2,track3,track4],
-    image:image3
+    image:image1
     
 });
 
@@ -309,7 +315,7 @@ var playlist3 = new playlist({
     userId:user1._id,
     playlistName:"X",
     privacy:false,
-    image:image2,
+    image:image1,
     tracks:[track1,track2,track3,track4,track5],
     //This playlist will have the deafult image of the playlist
 });
@@ -324,7 +330,7 @@ playlist3.save().then((res)=>{
 var playlist4 = new playlist({
     userId:user2._id,
     playlistName:"Likes",
-    image:image3,
+    image:image1,
     tracks:[track5]
     
 });
@@ -339,7 +345,7 @@ playlist4.save().then((res)=>{
 var playlist5 = new playlist({
     userId:user2._id,
     playlistName:"RecyleBin",
-    image:image3
+    image:image1
 });
 
 playlist5.save().then((res)=>{
