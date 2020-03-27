@@ -30,12 +30,12 @@ var smtpTransport = nodemailer.createTransport({
  /**
  * @api {post} api/users/signup   Create a new user
  * @apiName SignUp Request for Users
- * @apiGroup Users 
- * 
+ * @apiGroup Users
+ *
  * @apiParam {String} userName      Unique name of the user
  * @apiParam {String} email         email of the user
  * @apiParam {String} password      password of the user
- * @apiParam  {Boolean} isPremium   default is false 
+ * @apiParam  {Boolean} isPremium   default is false
  * @apiParam  {Boolean} isActive    default is false until the email is confirmed
  * @apiParam  {Date} birthDate      birthdate of the user
  * @apiParam  {Srting} gender       gender of the user-Limited to 'M' or 'F'
@@ -47,11 +47,11 @@ var smtpTransport = nodemailer.createTransport({
  *        "User added Successfully as inActive. Waiting for Email Confirmation "
  *     }
  * @apiError (409)  Conflict. the user already exists: duplicate userName or email
- * @apiError (500) Internal Server Error 
+ * @apiError (500) Internal Server Error
  * @apiErrorExample {string} Conflict Error-Response:
- *    HTTP/1.1 409 
+ *    HTTP/1.1 409
  *       "UserName and/or Email already exists "
- * 
+ *
  */
 
 app.post('/users/signup', async (req, res) => {
@@ -77,13 +77,13 @@ app.post('/users/signup', async (req, res) => {
         console.log('2et3amal');
         newacc.save().then((doc) => {
             console.log("skod");
-	
-	
-		
-		var access= 'auth';		
+
+
+
+		var access= 'auth';
 		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforuser',{expiresIn:'1d'});
 		console.log(code);
-		
+
 		var host=req.get('host');
 		var link="http://"+req.get('host')+"/users/confirm/"+code;
 		console.log(link);
@@ -101,10 +101,10 @@ app.post('/users/signup', async (req, res) => {
 				console.log("Message sent: " + response.message);
 			res.end("sent");
 			 }
-			 
+
 });
 
-      
+
             res.status(200).send("User added Successfully as inActive. Waiting for Email Confirmation ");
         },
             (err) => {
@@ -122,14 +122,14 @@ app.post('/users/signup', async (req, res) => {
 });
 
 
-//CONFIRMATION OF USER SIGNUP 
+//CONFIRMATION OF USER SIGNUP
 /**
- * @api {get} api/users/confirm/:code      SignUp Confrimation 
+ * @api {get} api/users/confirm/:code      SignUp Confrimation
  * @apiName SignUp Confirmed for user
  * @apiGroup Users
- * 
+ *
  * @apiParam {String} code    user-specific code to activate his account
- * 
+ *
  * @apiSuccess  (200) User was activated successfully
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -137,8 +137,8 @@ app.post('/users/signup', async (req, res) => {
  *       "Email confirmed successfully!"
  *     }
  * @apiError (404)  User not found.
- * @apiError (401) Unauthorized. Recieved a corrupted code. 
- * 
+ * @apiError (401) Unauthorized. Recieved a corrupted code.
+ *
  */
 
 app.get('/users/confirm/:code',(req,res) => {
@@ -147,12 +147,12 @@ app.get('/users/confirm/:code',(req,res) => {
 			res.status(404).send("user not found");
             return Promise.reject();
         }
-	
+
 		res.status(200).send("Email confirmed successfully!");
     }).catch((e) => {
         res.status(401).send("corrupted code");
     })
-})		
+})
 
 
 
@@ -163,7 +163,7 @@ app.post('/users/login', async (req, res) => {
     User.findByCredentials(body.email, body.password).then((user) => {
         console.log(3);
 		if(user.isActive==true)
-		{	
+		{
 			return user.generateAuthToken().then((token) => {
             console.log(4);
             res.header('x-auth', token).send();
@@ -212,35 +212,35 @@ app.get('/users/me',(req,res) => {
  * @api {post} /users/forgot      Request to send email after forgetting password
  * @apiName ForgotPasswordRequest
  * @apiGroup User privacy
- * 
+ *
  * @apiParam {string} email       in json form
  * @apiParamExample {json} Request-Example:
  *     {
  *       "email": "abc@abc.com"
  *     }
- * 
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *       "message" :"Email Sent Successfully"
  *     }
- *     
+ *
  * @apiError  500              [Email Cannot BeSent  A problem while sending email]
   * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 serverError
  *     {
  *       "message":"Sending Failed"
- *     }   
+ *     }
 * @apiError  404       [email of the user not found ]
 
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 not found
  *     {
  *        "message":"Email not found"
- *     }  
+ *     }
  */
 app.post('/users/forgot', async (req, res) => {
-    
+
     var reqEmail=req.body.email;
     //console.log(reqEmail)
     try {
@@ -249,7 +249,7 @@ app.post('/users/forgot', async (req, res) => {
 
            if(!user)  {
 
-              
+
             return res.status(404).json({"message" :"Email not found"})}
 
        // console.log('henaaaa')
@@ -263,7 +263,7 @@ app.post('/users/forgot', async (req, res) => {
         subject : "Reset the password ",
         html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
         }
-    
+
     //console.log(mailOptions);
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
@@ -292,23 +292,23 @@ app.post('/users/forgot', async (req, res) => {
  * @api {patch} /users/reset      Request to reset password
  * @apiName ResetRequest
  * @apiGroup User privacy
- * 
+ *
  * @apiParam {string} token          shoulb be passed in query
  * @apiParam {string}  newPassword    should be passed in body in json form
- * 
- * 
+ *
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *      "message": "Password has been reset successfully""
  *     }
- *     
- * 
+ *
+ *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 401 unauthorized
  *     {
  *       "message": "Reset Failed""
- *     }  
+ *     }
  */
 
 app.patch('/users/reset',async (req,res)=>{
@@ -328,10 +328,10 @@ app.patch('/users/reset',async (req,res)=>{
        user.save();
 
        res.json({"message":"Password has been reset successfully"});
-       
+
        // console.log(user);
     }).catch((e)=> {res.status(401).json({"message":'Reset Failed'});})
-    
+
     })
 
 
@@ -342,31 +342,31 @@ app.patch('/users/reset',async (req,res)=>{
  * @api {patch} api/users/:id/regular    User wants to unsubscribe from premium features
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
- * @apiHeader {string} x-auth          Only users 
- * @apiParam {String} id          the id of the user has to be passed  
- * 
+ * @apiHeader {string} x-auth          Only users
+ * @apiParam {String} id          the id of the user has to be passed
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *       "message": "Your account has been changed to regular account"
  *     }
 
- * 
- * @apiError (404)  You are  not premium in the firstplace   
- * 
+ *
+ * @apiError (404)  You are  not premium in the firstplace
+ *
  * @apiErrorExample {json} Error-Response:
- *    HTTP/1.1 404 
+ *    HTTP/1.1 404
  *     {
  *       "message":"you are not premium , you already have a regular account "
  *     }
- * 
+ *
  * @apiError (401)  authentication failed
  * @apiErrorExample {json} Error-Response:
- *    HTTP/1.1 401 
+ *    HTTP/1.1 401
  *     {
  *       "message":"authentication Failed" "
  *     }
- * 
+ *
  */
 
 app.patch('/users/:id/regular', async (req, res) => {
@@ -387,7 +387,7 @@ app.patch('/users/:id/regular', async (req, res) => {
   else if(user.isPremium===false)
   {
     return res.status(404).json({"message":"you are not premium , you already have a regular account"});
-      
+
   }
 else
 {
@@ -398,7 +398,7 @@ else
     console.log(user.isPremium);
 }
 
-}).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})}) 
+}).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})})
 
 });
 
@@ -409,54 +409,54 @@ else
 
  //REQUEST FOR A PREMIUM ACCOUNT
 /**
- * @api {get} /users/:id/premium    Send a confirmation mail to be a premium user  
- * @apiName Join Premium Request 
+ * @api {get} /users/:id/premium    Send a confirmation mail to be a premium user
+ * @apiName Join Premium Request
  * @apiGroup Users
  * @apiHeader {string} x-auth            token Only users can request to premium
- * 
+ *
  * @apiParam {String} id             the id of the user should be passed in the path
- * 
- * 
+ *
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       
+ *
  *       "message": "confirmation request has been sent, You will be a premium user soon"
  *     }
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *      
+ *
  *       "message": "You are already a premium user.Thanks for that"
  *     }
- * 
- * 
+ *
+ *
  * @apiError (401)  authentication failed
  * @apiErrorExample {json} Error-Response:
- *    HTTP/1.1 401 
+ *    HTTP/1.1 401
  *     {
  *       "message":"authentication Failed" "
  *     }
- * 
+ *
  * @apiError 500       EmailCannotBeSent  A problem while sending email
- * 
+ *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 server Error
  *     {
  *       "message":"error,failed to send"
- *     }  
- * 
- * 
+ *     }
+ *
+ *
 */
 
 
-app.get('/users/:id/premium', async (req, res) => 
+app.get('/users/:id/premium', async (req, res) =>
 {
-    
+
              var id=req.params.id;
               var userId;
              var token=req.header('x-auth');
-             User.findByToken(token).then((user) => 
+             User.findByToken(token).then((user) =>
              {
                 if(!user){
                     return Promise.reject();
@@ -470,15 +470,15 @@ app.get('/users/:id/premium', async (req, res) =>
               else if(user.isPremium===true)
               {
                 return res.status(200).json({"message":"you are already a premium user, thanks for that"});
-                  
+
               }
             else
             {
                 var email= user.email;
-                var type= 'premium';		
+                var type= 'premium';
                 var code = jwt.sign({ _id: user._id, type }, 'secretkeyforuser',{expiresIn:'1d'});
                 console.log(code);
-                
+
                 var host=req.get('host');
                 var link="http://"+req.get('host')+"/users/confirmPremium/?token= "+code;
                 console.log(link);
@@ -489,28 +489,28 @@ app.get('/users/:id/premium', async (req, res) =>
                     }
                 console.log(mailOptions);
                 smtpTransport.sendMail(mailOptions, function(error, response){
-                 if(error) 
+                 if(error)
                  {
                         console.log(error);
                     res.status(500).json({"message":"error,failed to send"});
                  }
-                 
+
                  else
                  {
                         console.log("Message sent: " + response.message);
                     res.status(200).json({"message":"confirmation request has been sent, You will be a premium user soon"});
                 }
-                     
+
                       });
             }
-            
-           
-        }).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})}) 
-    })   
-            
-	
-	
-  
+
+
+        }).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})})
+    })
+
+
+
+
 
 
 
@@ -528,30 +528,30 @@ app.get('/users/:id/premium', async (req, res) =>
  * @api {patch} /users/confirmPremium     User is confirmed to be a premium user
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
- * @apiParam {String} token               the token that was sent in the link snet to the user's email 
- * 
+ * @apiParam {String} token               the token that was sent in the link snet to the user's email
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
-*           "message" : "Email confirmed successfully,Welcome To Premium Life!" 
- * 
- * 
- *     
+*           "message" : "Email confirmed successfully,Welcome To Premium Life!"
+ *
+ *
+ *
  *     }
- * 
+ *
  * @apiError 401  authentication failed
  * @apiErrorExample {json} Error-Response:
- *    HTTP/1.1 401 
+ *    HTTP/1.1 401
  *     {
  *       "message":"authentication Failed" "
  *     }
- * 
- 
- * 
- * 
- * 
- * 
- * 
+ *
+
+ *
+ *
+ *
+ *
+ *
  */
 
 
@@ -560,7 +560,7 @@ app.patch('/users/confirmPremium/',async (req,res)=>{
      var token=req.query.token;
 try{
     decoded = jwt.verify(token , 'secretkeyforuser');
-    
+
     if (decoded.type==='premium')
     { User.findById(decoded._id).then((user)=>{
         if(!user){
@@ -595,23 +595,23 @@ app.get('/artists/related',(req,res)=>{
             return Promise.reject();
         }
 
-    var sentId=req.body.artistId; 
+    var sentId=req.body.artistId;
     if(!sentId){
         return res.status(400).send("Send the artist ID");
     }
     if(!ObjectID.isValid(sentId)){
-        return res.status(404).send("Invalid Id");  
+        return res.status(404).send("Invalid Id");
     }
-    artist.findById(sentId).then((myartists)=>{ 
+    artist.findById(sentId).then((myartists)=>{
         if(!myartists){
             return res.status(404).send('Id not found');
         }
 
-        artist.find({genres:{$in:myartists.genres}}).then((suggestedArtists)=>{    
+        artist.find({genres:{$in:myartists.genres}}).then((suggestedArtists)=>{
         for(var count=0;count<suggestedArtists.length;count++)
         {
             if(suggestedArtists[count]._id==sentId){
-                var switchvar=suggestedArtists[count];   
+                var switchvar=suggestedArtists[count];
                 suggestedArtists[count]=suggestedArtists[(suggestedArtists.length)-1];
                 suggestedArtists[(suggestedArtists.length)-1]=switchvar;
                 suggestedArtists.pop();
@@ -624,13 +624,13 @@ app.get('/artists/related',(req,res)=>{
         })
 
     },(e)=>{
-        
+
         res.status(500).send("Internal server error");
     })
   }).catch((e)=>{
     res.status(401).send('Unauthorized Access');
-  })   
-});  
+  })
+});
 
 
 
@@ -641,9 +641,14 @@ app.get('/artists/related',(req,res)=>{
 
 app.patch('/users/me/editprofile',(req, res)=>{
   var token=req.header('x-auth');
+  if(!token)
+  {
+    return  res.status(401).send('You should Pass a token to access the profile');
+  }
+  else
 try{
     decoded = jwt.verify(token , 'secretkeyforuser');
-    
+
      User.findById(decoded._id).then((user)=>{
         if(!user)
 		{
@@ -653,16 +658,16 @@ try{
 			{
 				var timestamp = Date.parse(req.body.birthDate);
 
-				if (isNaN(timestamp) == false) 
+				if (isNaN(timestamp) == false)
 				{
 					var correctDate = new Date(timestamp);
 				}
-				else 
+				else
 				{
 					return res.status(400).send("invalid date format. use yyyy-mm-dd");
-				
+
 				}
-		
+
 		    }
 		 if(req.body.userName)
 		 {
@@ -675,8 +680,8 @@ try{
 			}
 			else
 			{
-				
-		
+
+
         try
 		{
 			if(req.body.userName)
@@ -694,7 +699,7 @@ try{
 					return res.status(400).send("gender must be 'M' or 'F'");
 				}
 
-			
+
 				user.gender= req.body.gender;
 			}
 			if(req.body.birthDate)
@@ -707,14 +712,14 @@ try{
 				user.save(function(err, user) {
         if (err) return res.send("invalid userName");
     });
-			
 
-			
+
+
 
 		}
 		catch(e)
-		
-		{	
+
+		{
 
 			return res.status(400).send(e);
 
@@ -742,7 +747,7 @@ catch{
 
 
 
- 
+
 
  // Change Password
  app.put('/users/changePassword',async (req,res)=>{
@@ -774,8 +779,8 @@ catch{
         } else {
             console.log(user.password);
             console.log('Your password not mached.');
-            res.status(403).send("this is not the correct password"); 
-        };       
+            res.status(403).send("this is not the correct password");
+        };
     })
     }).catch((e) => {
         res.status(401).send();

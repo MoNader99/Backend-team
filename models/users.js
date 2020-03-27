@@ -113,8 +113,8 @@ UserSchema.statics.findByToken = function (token) {
     }
     return User.findOne({
      _id:decoded._id
-    });    
-    
+    });
+
 };
 
 UserSchema.statics.ActivateByToken = function (token) {
@@ -126,7 +126,7 @@ UserSchema.statics.ActivateByToken = function (token) {
     } catch (e) {
        return Promise.reject();
     }
-			
+
 
     return User.findOneAndUpdate(
 	{
@@ -135,9 +135,9 @@ UserSchema.statics.ActivateByToken = function (token) {
 	{
 		isActive:true
 	}
-	); 
-	
-    
+	);
+
+
 };
 
 /*bcrypt.genSalt(10, (err, salt) => {
@@ -168,14 +168,14 @@ UserSchema.methods.generateResetToken=function(){
     return user.save().then(()=>{
         return new Promise((resolve, reject) => {
             resolve(token);
-    
+
         });
     })
-    
+
     }
 
 
-    
+
     UserSchema.statics.checkTokenAndFind= function (token) {
         var User = this;
         var decoded;
@@ -190,16 +190,16 @@ UserSchema.methods.generateResetToken=function(){
 
          resetToken:t
 
-        });    
-        
+        });
+
     };
 
 
     UserSchema.statics.findByEmail = function (reqEmail) {
         var User = this;
-        return User.findOne({email:reqEmail});  
+        return User.findOne({email:reqEmail});
     };
-    
+
 
 
 
