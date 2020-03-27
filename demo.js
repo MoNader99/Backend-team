@@ -173,7 +173,7 @@ var track1=new track({
     duration:360000,
     genre:"pop",
     image:image2,
-    url:"this is a url"  // until we get real urls 
+    url:"uuu"  // until we get real urls 
     });
     track1.save().then((res)=>{
         console.log(res._id);
@@ -189,7 +189,7 @@ var track1=new track({
         duration:360000,
         genre:"pop",
         image:image2,
-        url:"this is a url"  // until we get real urls 
+        url:"qqq"  // until we get real urls 
         });
         track2.save().then((res)=>{
             console.log(res._id);

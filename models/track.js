@@ -45,7 +45,7 @@ var track=mongoose.model("Tracks",{
     type:String,
     required:true,
     trim:true
-  }
+  },
 });
 
 module.exports={track}; 

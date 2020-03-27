@@ -159,9 +159,9 @@ app.post('/Playlists/:playlistId/tracks',async (req,res)=>
         
         await track.find({url: url[i]}).then((tracks)=>
     {
-        console.log("gowaaaaaaalllllllllllllll")
-        console.log("el tracks ely rag3a");
-        console.log(tracks)
+        //console.log("gowaaaaaaalllllllllllllll")
+        //console.log("el tracks ely rag3a");
+       // console.log(JSON.stringify( tracks))
         if(!tracks[0]) 
        { 
            flag=1;
@@ -170,7 +170,6 @@ app.post('/Playlists/:playlistId/tracks',async (req,res)=>
         return Promise.reject();
        }
          tracksarr[i]=tracks;
-        //console.log(tracksarr[i]);
      
 
     }).catch((e)=>{ return })//res.status(400).send(e)});
@@ -184,7 +183,6 @@ app.post('/Playlists/:playlistId/tracks',async (req,res)=>
 
 if (flag) {return res.status(404).json({"message":"the track was not found"});}
 
-console.log(tracksarr);
 console.log("heloo");
 
     
@@ -193,30 +191,44 @@ console.log(id);
 
 if(!ObjectID.isValid(id))  //validate the playlist id
 {
-    return res.status(404).send("invalid id");
+    return res.status(404).json({"message":"invalid id"});
 }
 
-playlist.findById(id).then((playlist)=>{
+playlist.findById(id).then((playlists)=>{
 
-    if(!playlist) {return res.status(404).send({"message":"playlist not found"})};
+    if(!playlists) {return res.status(404).send({"message":"playlist not found"})};
     //console.log(userId);
     //console.log(playlist);
 
 
-if(! (playlist.userId.toString()=== userId.toString()))  {return res.status(401).json({"message":"auth failed"});}
+if(! (playlists.userId.toString()=== userId.toString()))  {return res.status(401).json({"message":"auth failed"});}
 
    // console.log(playlist)
 for(var i=0;i<tracksarr.length;i++)
 {
     var trackId= _.map(tracksarr[i],"_id");
-   
-    playlist.tracks.push(ObjectID(trackId.toString()));
+    
+
+
+     var len =playlists.tracks.length;
+     playlists.tracks[len]=ObjectID(trackId.toString())
+     
+     playlists.markModified('tracks')
+     playlists.save();
+    
 
 }
-   console.log(playlist);
-   playlist.save();
-   res.status(200).json({"message":'tracks added successfully'});
+   //console.log(JSON.stringify(playlists));
+   //playlists.markModified('tracks')
+   //playlists.save();
+   console.log("end")
+    res.status(200).json({"message":'tracks added successfully'});
 })
+
+
+
+
+
  })
 
 
