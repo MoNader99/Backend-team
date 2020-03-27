@@ -749,10 +749,14 @@ catch{
     var oldPassword=req.body.oldPassword;
     var newPassword=req.body.newPassword;
     var token=req.header('x-auth');
+    if(!token)
+    {
+        res.status(400).send('You did not pass a token')
+    }
     User.findByToken(token).then((user) => {
         if(!user)
         {
-        return Promise.reject();
+            res.status(404).send();
         }
     console.log("you are my user");
     bcrypt.compare(oldPassword, user.password, async (err, res2) => {
@@ -768,13 +772,14 @@ catch{
                 res.status(200).send("Password has been reset successfully");
 
         } else {
+            console.log(user.password);
             console.log('Your password not mached.');
             res.status(403).send("this is not the correct password"); 
         };       
+    })
     }).catch((e) => {
-        res.status(401).send(e);
-    })
-    })
+        res.status(401).send();
+    });
 });
 
 
