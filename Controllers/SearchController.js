@@ -15,6 +15,10 @@ const { track } = require("./../models/track");*/
 const trackservices = require("./../Services/TrackServices");
 const artistservices = require("./../Services/ArtistServices");
 const albumservices = require("./../Services/AlbumServices");
+const playlistservices = require("./../Services/PlaylistServices");
+const userservices = require("./../Services/UserServices");
+
+
 var AuthenticationServices = require("./../Services/AuthenticationService");
 //{ $regex: "s", $options: "i" }
 //AuthenticationServices.AuthenticateAllUsers
@@ -25,8 +29,17 @@ app.get('/Search',(req, res) => {
             artistservices.SearchInArtists(wordtosearch).then((Artists) => {
                 albumservices.SearchInAlbums(wordtosearch,Artists).then((Albums) => {
                     trackservices.SearchInTracks(wordtosearch, Artists).then((Tracks) => {
-                        console.log("fkdsffdfkdlsfksl");
-                        res.send({ artists: Artists, Albums: Albums, Tracks: Tracks });
+                        console.log("5alas 2el tracks");
+                        userservices.SearchInUsers(wordtosearch).then((Users) => {
+                            console.log("5alas 2el Users");
+
+                            playlistservices.SearchInPlaylists(wordtosearch).then((Playlists) => {
+                                console.log("5alas 2el Playlists");
+
+                                 res.send({ artists: Artists, Albums: Albums, Tracks: Tracks,Playlists:Playlists,Users:Users });
+                             }).catch((err) => { res.status(400).send(err) })
+                        }).catch((err) => { res.status(400).send(err) })
+
                     }).catch((err) => { res.status(400).send(err) })
                 }).catch((err) => { res.status(400).send(err) })
 

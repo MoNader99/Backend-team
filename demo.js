@@ -60,7 +60,8 @@ var user1= new User({
     isActive:true,
     userName:"hamadaaa  ",
     gender:"M",
-    birthDate:'1990-06-19',
+    birthDate: '1990-06-19',
+    image:image1
 });
 
 //SAVING AND RETURNING ID OF THE NEW USER
@@ -75,7 +76,8 @@ var user2= new User({
     password:"kok123",
     userName:"Mario1",
     gender:"F",
-    birthDate:'1990-06-19',
+    birthDate: '1990-06-19',
+    image:image2
 });
 
 

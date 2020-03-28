@@ -3,6 +3,8 @@ const Schema=mongoose.Schema;
 var ObjectID = require('mongodb').ObjectID;
 var { images, ImagesSchema } = require("./images.js"); // images model
 //var { artist } = require("../models/artists.js");
+const defaultModule = require("./../defaultimage");
+
 
 var AlbumSchema = new mongoose.Schema({
     albumName: {
@@ -13,7 +15,8 @@ var AlbumSchema = new mongoose.Schema({
     },
     image: {
         type: ImagesSchema,
-        required: true
+        required: true,
+        default: defaultModule.defaultImage._doc
     },
 
     artistId: {

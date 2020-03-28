@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 var password = "abc";
-const validator= require ('validator');
+const validator = require('validator');
+var { images, ImagesSchema } = require("./images.js"); // images model
+
+const defaultModule = require("./../defaultimage");
+
 
 var UserSchema = new mongoose.Schema({
     userName: {
@@ -57,7 +61,12 @@ var UserSchema = new mongoose.Schema({
      {
          type: String,
          default:undefined
-     }
+    },
+    image: {
+        type: ImagesSchema,
+        required: true,
+        default: defaultModule.defaultImage._doc
+    }
 
 
 });
