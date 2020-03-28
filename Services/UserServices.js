@@ -46,9 +46,21 @@ var GetSimplifiedUser = function (user) {
     return ((({ _id, userName, image}) => ({ _id, userName, image}))(user));
 
 }
+var GetUserById = function (id) {
+    console.log(id);
+  //  console.log(artist.findById(id).artistName);
+    return User.findById(id).then((user) => {
+       // console.log(Art.artistName);
+        return user.userName;
+
+    })
+
+
+}
 
 
 module.exports = {
     SearchInUsers,
-    User
+    User,
+    GetUserById
 }

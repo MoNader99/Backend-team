@@ -1,6 +1,7 @@
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js");
 var { playlist } = require("./../models/playlists.js");//track model
+var { GetUserById } = require("./../Services/UserServices");
 
 var GetPlaylistObjectArray = async function (wordtosearch) {
     console.log("getplaylistObjectArray");
@@ -15,7 +16,8 @@ var SearchInPlaylists = function (wordtosearch) {
     return GetPlaylistObjectArray(wordtosearch).then(async (playlists) => {
         if (playlists.length === 0) return Promise.resolve([]);
 
-        return Promise.resolve(playlists.map(playlist => GetSimplifiedPlaylist(playlist)));
+        const Playlists = await AddUserName(playlists);
+        return Promise.resolve(Playlists.map(playlist => GetSimplifiedPlaylist(playlist)));
 
     })
         .catch((err) => {
@@ -24,9 +26,22 @@ var SearchInPlaylists = function (wordtosearch) {
         })
 
 }
+var AddUserName = async function (playlists) {
+
+    const promises = playlists.map(async playlist => {
+
+        const userName = await GetUserById(playlist.userId);
+
+        return Object.assign(playlist, { userName: userName})
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
 var GetSimplifiedPlaylist = function (playlist) {
     console.log("getsimplifiedplaylist");
-    return ((({ _id, playlistName, image}) => ({ _id, playlistName, image}))(playlist));
+    return ((({ _id, playlistName, image, userName, userId }) => ({ _id, playlistName, image, userName, userId}))(playlist));
 
 }
 //SearchInPlaylists("deja");
