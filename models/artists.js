@@ -137,5 +137,7 @@ ArtistSchema.statics.ActivateByToken = function (token) {
 };
 
 
+
+
 var artist = mongoose.model('Artists', ArtistSchema);
 module.exports={artist};

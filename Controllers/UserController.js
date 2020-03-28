@@ -7,12 +7,14 @@ var { User } = require("./../models/users.js");
 var{artist}= require("./../models/Artists.js");  //artists model
 
 const {ObjectID}=require("mongodb");
-var bodyparser = require('body-parser');
-var express = require('express');
-var app = express();
+//var bodyparser = require('body-parser');
+const express = require('express');
+const router = express.Router();
+//var app = express();
 const bcrypt = require('bcrypt');
 var password = "abc";
-app.use(bodyparser.json());
+///////////////////////////////////////////////
+//app.use(bodyparser.json());
 var _ = require('lodash');
 //var rand=Math.floor((Math.random() * 100) + 54); //random confirmation code
 const jwt = require('jsonwebtoken');
@@ -54,7 +56,7 @@ var smtpTransport = nodemailer.createTransport({
  *
  */
 
-app.post('/users/signup', async (req, res) => {
+router.post('/users/signup', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();
         const hashedPass = await bcrypt.hash(req.body.password, salt);
@@ -141,7 +143,7 @@ app.post('/users/signup', async (req, res) => {
  *
  */
 
-app.get('/users/confirm/:code',(req,res) => {
+router.get('/users/confirm/:code',(req,res) => {
    User.ActivateByToken(req.params.code).then((user) => {
         if(!user){
 			res.status(404).send("user not found");
@@ -156,7 +158,7 @@ app.get('/users/confirm/:code',(req,res) => {
 
 
 
-app.post('/users/login', async (req, res) => {
+router.post('/users/login', async (req, res) => {
     console.log(1);
     var body = _.pick(req.body, ['email', 'password']);
     console.log(2);
@@ -185,7 +187,7 @@ app.post('/users/login', async (req, res) => {
 });
 
 // Get User Profile Request
-app.get('/users/me',(req,res) => {
+router.get('/users/me',(req,res) => {
     var token = req.header('x-auth');
     if(!token)
     {
@@ -239,7 +241,7 @@ app.get('/users/me',(req,res) => {
  *        "message":"Email not found"
  *     }
  */
-app.post('/users/forgot', async (req, res) => {
+router.post('/users/forgot', async (req, res) => {
 
     var reqEmail=req.body.email;
     //console.log(reqEmail)
@@ -311,7 +313,7 @@ app.post('/users/forgot', async (req, res) => {
  *     }
  */
 
-app.patch('/users/reset',async (req,res)=>{
+router.patch('/users/reset',async (req,res)=>{
 
     var newPassword=req.body.newPassword;
    // console.log(newPassword)
@@ -369,7 +371,7 @@ app.patch('/users/reset',async (req,res)=>{
  *
  */
 
-app.patch('/users/:id/regular', async (req, res) => {
+router.patch('/users/:id/regular', async (req, res) => {
     var userId;
     var id=req.params.id;
     console.log(id);
@@ -450,7 +452,7 @@ else
 */
 
 
-app.get('/users/:id/premium', async (req, res) =>
+router.get('/users/:id/premium', async (req, res) =>
 {
 
              var id=req.params.id;
@@ -556,7 +558,7 @@ app.get('/users/:id/premium', async (req, res) =>
 
 
 
-app.patch('/users/confirmPremium/',async (req,res)=>{
+router.patch('/users/confirmPremium/',async (req,res)=>{
      var token=req.query.token;
 try{
     decoded = jwt.verify(token , 'secretkeyforuser');
@@ -588,7 +590,7 @@ catch{
 
 
 //GET ARTIST RELATED ARTISTS
-app.get('/artists/related',(req,res)=>{
+router.get('/users/artists/related',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -639,7 +641,7 @@ app.get('/artists/related',(req,res)=>{
 
 
 
-app.patch('/users/me/editprofile',(req, res)=>{
+router.patch('/users/me/editprofile',(req, res)=>{
   var token=req.header('x-auth');
   if(!token)
   {
@@ -750,7 +752,7 @@ catch{
 
 
  // Change Password
- app.put('/users/changePassword',async (req,res)=>{
+ router.put('/users/changePassword',async (req,res)=>{
     var oldPassword=req.body.oldPassword;
     var newPassword=req.body.newPassword;
     var token=req.header('x-auth');
@@ -781,7 +783,9 @@ catch{
             console.log('Your password not mached.');
             res.status(403).send("this is not the correct password");
         };
-    })
+    }).catch((e) => {
+        res.status(500).send();
+    });
     }).catch((e) => {
         res.status(401).send();
     });
@@ -789,12 +793,10 @@ catch{
 
 
 
-if(!module.parent){
-    app.listen(3000,()=>{
-        console.log("Started on port 3000");
-    });
-}
-module.exports = {
-    app,
-    User
-};
+ //if(!module.parent){
+    //  app.listen(3000,()=>{
+    //      console.log("Started on port 3000");
+    //  });
+ //}
+
+ module.exports = router ;

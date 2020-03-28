@@ -3,14 +3,14 @@ var { mongoose } = require("../db/mongoose.js");
 var { artist } = require("../models/artists.js");
 var { User } = require("../models/users.js");
 var _ = require('lodash');
-var bodyparser = require('body-parser');
+//var bodyparser = require('body-parser');
 const bcrypt = require('bcrypt');
 var nodemailer = require("nodemailer");
 
 const { ObjectID } = require('mongodb');
 const jwt = require('jsonwebtoken');
 
-const app = express();
+const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
@@ -23,11 +23,11 @@ var smtpTransport = nodemailer.createTransport({
 });
 
 
-app.use(bodyparser.json());
+//app.use(bodyparser.json());
 
 //app.listen(3000, () => { console.log('started on port 3000'); });
 
-app.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+router.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
     console.log(req.param.id);
 
     id = req.params.id;
@@ -43,7 +43,9 @@ app.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) 
     }
 
 });
-app.post('/artists/login', (req, res) => {
+
+
+router.post('/artists/login', (req, res) => {
     console.log("email");
     console.log(req.body.email);
     var body = _.pick(req.body, ['email', 'password']);
@@ -96,7 +98,7 @@ app.post('/artists/login', (req, res) => {
  *       "artistName and/or Email already exists "
  */
 
-app.post('/artists/signup', async (req, res) => {
+router.post('/artists/signup', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();
         const hashedPass = await bcrypt.hash(req.body.password, salt);
@@ -176,7 +178,7 @@ app.post('/artists/signup', async (req, res) => {
  * 
  */
 
-app.get('/artists/confirm/:code',(req,res) => {
+router.get('/artists/confirm/:code',(req,res) => {
    artist.ActivateByToken(req.params.code).then((activated) => {
         if(!activated){
 			res.status(404).send("not found");
@@ -265,7 +267,7 @@ app.get('/artists/confirm/:code',(req,res) => {
  */
 
 
-app.get('/artists',async (req,res)=>{
+router.get('/artists',async (req,res)=>{
 
     var flag=1
     var token=req.header('x-auth');
@@ -316,9 +318,5 @@ res.send(returnedArtistArray);
 
 
 
-if(!module.parent){
-    app.listen(3000,()=>{
-        console.log("Started on port 3000");
-    });
-}
-module.exports={app};
+
+module.exports= router;

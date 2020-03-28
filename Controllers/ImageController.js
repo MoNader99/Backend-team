@@ -1,14 +1,14 @@
 const express=require('express');
-const bodyParser=require('body-parser');
+//const bodyParser=require('body-parser');
 const { mongoose } = require("./../db/mongoose.js");
 const{images}=require("./../models/images");
 
 const {ObjectID}=require('mongodb');
 
-const app=express();
+const router =express.Router();
 
 
-app.get('/Images/:id', (req,res)=>{
+router.get('/Images/:id', (req,res)=>{
     var id=req.params.id;
     if(!ObjectID.isValid(id))
     {
@@ -23,10 +23,6 @@ app.get('/Images/:id', (req,res)=>{
     
     })
 
-    if(!module.parent){
-        app.listen(3000,()=>{
-            console.log("Started on port 3000 Image");
-        });
-    }
-    module.exports={app};
+    
+    module.exports=router;
     

@@ -9,7 +9,7 @@ var ArtistServices = require("./../Services/AlbumServices.js");
 
 const {ObjectID}=require('mongodb');
 
-const app=express();
+const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
@@ -18,9 +18,7 @@ var AuthenticationServices = require("./../Services/AuthenticationService");
 
 /////Get Album Tracks
 
-/////Get Album Tracks
-
-app.get('/album/tracks/:id', (req,res)=>{
+router.get('/album/tracks/:id', (req,res)=>{
     var id=req.params.id;
     if(!ObjectID.isValid(id))
     {
@@ -35,7 +33,7 @@ app.get('/album/tracks/:id', (req,res)=>{
     });
 
 ///// Get Album
-    app.get('/album/:id', (req,res)=>{
+    router.get('/album/:id', (req,res)=>{
         var id=req.params.id;
         var token = req.header('x-auth');
         if(!token)
@@ -53,7 +51,7 @@ app.get('/album/tracks/:id', (req,res)=>{
     }).catch((e)=>res.status(401).send());
         });    
 
-app.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req, res) => {
+router.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
     var decoded = req.token;
     if (!ObjectID.isValid(id)) {
@@ -71,9 +69,10 @@ app.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req,
 });
 
 
-if(!module.parent){
-    app.listen(3000,()=>{
-        console.log("Started on port 3000");
-    });
-}
-module.exports={app};
+// if(module.parent){
+//     app.listen(3000,()=>{
+//         console.log("Started on port 3000");
+//     });
+// }
+
+module.exports= router;

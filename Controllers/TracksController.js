@@ -1,5 +1,5 @@
 const express=require('express');
-const bodyParser=require('body-parser');
+//const bodyParser=require('body-parser');
 const _=require ('lodash');
 const { mongoose } = require("./../db/mongoose.js");
 const{track}=require("./../models/track");
@@ -14,11 +14,11 @@ var{images}= require("./../models/images.js"); // images model
 
 const {ObjectID}=require('mongodb');
 
-const app=express();
+const router=express.Router();
 
 
 //app.listen(3000,()=>{console.log('started on port 3000');});
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 
 /** GetATrack
@@ -66,7 +66,7 @@ app.use(bodyParser.json());
 *
 * 
 */
-app.get('/tracks/:id', (req,res)=>{
+router.get('/tracks/:id', (req,res)=>{
 var id=req.params.id;
 if(!ObjectID.isValid(id))
 {
@@ -131,7 +131,7 @@ if(!ObjectID.isValid(id))
  * 
  */
 
-app.post('/Playlists/:playlistId/tracks',async (req,res)=>
+router.post('/Playlists/:playlistId/tracks',async (req,res)=>
 {
         var userId;
          var token = req.header('x-auth');
@@ -309,7 +309,7 @@ for(var i=0;i<tracksarr.length;i++)
  * 
  */
 
-app.get('/tracks',async (req,res)=>{
+router.get('/tracks',async (req,res)=>{
     var arr=req.body.id;
   
     var returnedTrackArray=[{}];
@@ -345,7 +345,7 @@ res.send(returnedTrackArray);
 
 
 //DELETE A TRACK
-app.delete('/tracks',(req,res)=>{
+router.delete('/tracks',(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
         if(!myartist){
@@ -378,7 +378,7 @@ app.delete('/tracks',(req,res)=>{
 
 
 //ADD A TRACK
-app.post('/tracks',(req,res)=>{
+router.post('/tracks',(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
         if(!myartist){
@@ -504,9 +504,5 @@ app.post('/tracks',(req,res)=>{
 //            res.status(200).send('Inserted succesfully');
 //         });
 
-if(!module.parent){
-    app.listen(3000,()=>{
-        console.log("Started on port 3000");
-    });
-}
-module.exports={app};
+
+module.exports=router;

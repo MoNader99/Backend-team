@@ -3,20 +3,20 @@ var { mongoose } = require("../db/mongoose.js");
 const{track}=require("../models/track");
 var {playlist} = require("../models/playlists.js");
 var {User} = require("../models/users.js");
-var bodyParser= require('body-parser');
+
 var{images}= require("./../models/images.js"); // images model
 
 const {ObjectID}=require('mongodb');
 
-const app=express();
+const router=express.Router();
 
-app.use(bodyParser.json());
+
 
 //app.listen(3000,()=>{console.log('started on port 3000');});
 
 
 //CREATE A NEW PLAYLIST
-app.post('/playlists',(req,res)=>{
+router.post('/playlists',(req,res)=>{
     
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
@@ -67,7 +67,7 @@ app.post('/playlists',(req,res)=>{
 
 
 //Get a User Playlist Request
-app.get('/playlists/me',(req,res) => {
+router.get('/playlists/me',(req,res) => {
     var token = req.header('x-auth');
     if(!token)
     {
@@ -91,7 +91,7 @@ app.get('/playlists/me',(req,res) => {
 
 
 //DELETE A PLAYLIST
-app.delete('/playlists',(req,res)=>{
+router.delete('/playlists',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -120,7 +120,7 @@ app.delete('/playlists',(req,res)=>{
 
 
 
-app.delete('/playlists/tracks',(req,res)=>{
+router.delete('/playlists/tracks',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -179,7 +179,7 @@ app.delete('/playlists/tracks',(req,res)=>{
 });
 //GET PLAYLIST COVER IMAGE
 
-app.get('/playlists/image',(req,res)=>{
+router.get('/playlists/image',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){
@@ -205,9 +205,5 @@ app.get('/playlists/image',(req,res)=>{
 });
 
 
-if(!module.parent){
-    app.listen(3000,()=>{
-        console.log("Started on port 3000");
-    });
-}
-module.exports={app};
+
+module.exports=router;
