@@ -1,9 +1,9 @@
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js");
-var bodyparser = require('body-parser');
+//var bodyparser = require('body-parser');
 var express = require('express');
-var app = express();
-app.use(bodyparser.json());
+const router = express();
+
 var _ = require('lodash');
 //var rand=Math.floor((Math.random() * 100) + 54); //random confirmation code
 
@@ -22,7 +22,7 @@ const userservices = require("./../Services/UserServices");
 var AuthenticationServices = require("./../Services/AuthenticationService");
 //{ $regex: "s", $options: "i" }
 //AuthenticationServices.AuthenticateAllUsers
-app.get('/Search',(req, res) => {
+router.get('/Search',(req, res) => {
             var wordtosearch = req.query.word;
             console.log(wordtosearch);
             //Return array of tracks
@@ -112,9 +112,5 @@ app.get('/Search',(req, res) => {
 
 
 
-    if(!module.parent){
-        app.listen(3000,()=>{
-            console.log("Started on port 3000");
-        });
-    }
-    module.exports={app};
+    
+    module.exports=router;
