@@ -3,6 +3,7 @@ const request = require('supertest')
 //local imports
 const {app}= require("./../Services/deletetrackfromplaylist.js");
 var{User}= require("./../models/users.js"); 
+var{playlist}= require("./../models/playlists.js"); 
 
 //TO TEST THIS REQUEST THE TEST OF ADD TRACK TO PLAYLIST HAS TO BE MADE FOR WHICH TRACK ID TO DELETE
 //CHANGE THE TRACK ID OF THR FIRST 2 TESTS ONLY 
@@ -10,11 +11,12 @@ describe("Delete a single track from a playlist",()=>{
    
     it("Should delete a middle track in the playlist and re-order it",(done)=>{
         User.find().then((users)=>{
-
+        playlist.findOne({playlistName:"Moraba3"}).then((Arr)=>{ 
+            var testTackId=Arr.tracks[0];
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
                 var testPlaylistName="Moraba3";
-                var testTackId="5e7e7d1836c0421830d60500"
+               
                 request(app)
                 .delete('/playlists/tracks')
                 .set('x-auth',token)
@@ -27,16 +29,17 @@ describe("Delete a single track from a playlist",()=>{
                 .end(done)
              })
         })
+    })
     });   
 
 
     it("Should delete the last track in the playlist",(done)=>{
         User.find().then((users)=>{
-
+        playlist.findOne({playlistName:"Moraba3"}).then((Arr)=>{  
+            var testTackId=Arr.tracks[Arr.tracks.length-1]  
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
                 var testPlaylistName="Moraba3";
-                var testTackId="5e7e7d1836c0421830d60504"
                 request(app)
                 .delete('/playlists/tracks')
                 .set('x-auth',token)
@@ -49,6 +52,7 @@ describe("Delete a single track from a playlist",()=>{
                 .end(done)
              })
         })
+    })
     });
      
     it("Should not delete a track from a  playlist with an unauthorized token ",(done)=>{

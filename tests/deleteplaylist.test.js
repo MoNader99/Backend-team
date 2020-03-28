@@ -4,7 +4,7 @@ const request = require('supertest')
 const {app}= require("./../Services/deleteplaylist.js");
 var{images}= require("./../models/images.js"); // images model
 var{User}= require("./../models/users.js"); 
-var{playlist}= require("./../models/playlists.js"); 
+
 
 describe("Delete a playlist",()=>{
    it("Should delete a playlist",(done)=>{
