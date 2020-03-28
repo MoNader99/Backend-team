@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 //and return array of artist objects who play the same genre
 
 //the id is to be sent after artists/"your id" 
-app.get('/artists/related',(req,res)=>{
+app.get('/users/artists/related',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){

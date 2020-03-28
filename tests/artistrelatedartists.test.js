@@ -1,7 +1,7 @@
 const expect =require('expect');
 const request = require('supertest')
 //local imports
-const {app}= require("./../Controllers/UserController.js");
+const {app}= require("./../Services/artistrelatedartists.js");
 var{User}= require("./../models/users.js"); 
 var{artist}= require("./../models/Artists.js");  
 
@@ -18,7 +18,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
                 
         
                 request(app)
-                .get('/artists/related')
+                .get('/users/artists/related')
                 .set('x-auth',token)
                 .send({
 
@@ -38,7 +38,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
             users[users.length-1].generateAuthToken().then((token)=>{
                 var testArtistId;
                 request(app)
-                .get('/artists/related')
+                .get('/users/artists/related')
                 .set('x-auth',token)
                 .send({
                     artistId:testArtistId,
@@ -54,7 +54,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
         var testArtistId;
 
         request(app)
-        .get('/artists/related')
+        .get('/users/artists/related')
         .set('x-auth',testToken2)
         .send({
             artistId:testArtistId,
@@ -72,7 +72,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
                 var testArtistId="125e776b83cca58cb00494bb84";
         
                 request(app)
-                .get('/artists/related')
+                .get('/users/artists/related')
                 .set('x-auth',token)
                 .send({
                     artistId:testArtistId,
@@ -91,7 +91,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
                 var testArtistId="5e776b83cca68cb00494bb99";
         
                 request(app)
-                .get('/artists/related')
+                .get('/users/artists/related')
                 .set('x-auth',token)
                 .send({
                     artistId:testArtistId,

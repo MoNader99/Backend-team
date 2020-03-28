@@ -1,7 +1,7 @@
 const expect =require('expect');
 const request = require('supertest')
 //local imports
-const {app}= require("./../Controllers/PlaylistController.js");
+const {app}= require("./../Services/deletetrackfromplaylist.js");
 var{User}= require("./../models/users.js"); 
 
 //TO TEST THIS REQUEST THE TEST OF ADD TRACK TO PLAYLIST HAS TO BE MADE FOR WHICH TRACK ID TO DELETE

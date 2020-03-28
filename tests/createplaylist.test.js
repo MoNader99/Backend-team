@@ -1,7 +1,7 @@
 const expect =require('expect');
 const request = require('supertest')
 //local imports
-const {app}= require("./../Controllers/PlaylistController.js");
+const {app}= require("./../Services/createplaylist.js");
 var{images}= require("./../models/images.js"); // images model
 var{User}= require("./../models/users.js"); 
 

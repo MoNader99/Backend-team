@@ -119,7 +119,7 @@ router.delete('/playlists',(req,res)=>{
 });
 
 
-
+//DELETE TRACKS FROM A PLAYLIST
 router.delete('/playlists/tracks',(req,res)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
