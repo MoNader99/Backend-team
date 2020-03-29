@@ -5,3 +5,5 @@ node_modules/
 package-lock.json
 .vs/
 */.vs/
+*/.nyc_output/
+.nyc_output/

@@ -674,7 +674,7 @@ try{
 		 if(req.body.userName)
 		 {
 		  User.findOne({userName:req.body.userName}).then((duplicate)=>{
-			if(duplicate)
+			if(duplicate&& duplicate._id!=decoded._id)
 			{
 
 				return res.status(403).send("UserName already exists")

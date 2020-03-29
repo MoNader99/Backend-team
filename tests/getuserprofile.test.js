@@ -1,7 +1,7 @@
 const expect =require('expect');
 const request = require('supertest')
 //local imports
-const {app}= require("../Controllers/UserController.js");
+const app=require('./../Index');
 var{User}= require("../models/users.js");
 
 describe('Get user profile /users/me', () => {
@@ -67,7 +67,7 @@ describe('Patch /users/me/editprofile', () => {
       .patch(`/users/me/editprofile`)
       .set('x-auth',token)
       .send({
- "userName":"bbb",
+ "userName":"test1",
   "gender":"F",
   "birthDate":"1955-12-05"
 
@@ -78,7 +78,7 @@ describe('Patch /users/me/editprofile', () => {
   })
   });
 
-/*  it('should reject empty token', (done) =>
+  it('should reject empty token', (done) =>
   {
       var token = "";
       request(app)
@@ -93,7 +93,7 @@ describe('Patch /users/me/editprofile', () => {
       .expect(401)
       .end(done)
   })
-*/
+
   it('should reject invalid token', (done) =>
   {
       var token = "any invalid token";
@@ -101,7 +101,7 @@ describe('Patch /users/me/editprofile', () => {
       .patch(`/users/me/editprofile`)
       .set('x-auth',token)
       .send({
- "userName":"bbb",
+ "userName":"test2",
   "gender":"F",
   "birthDate":"1955-12-05"
 
@@ -117,7 +117,7 @@ describe('Patch /users/me/editprofile', () => {
       .patch(`/users/me/editprofile`)
       .set('x-auth',token)
       .send({
- "userName":"bbb",
+ "userName":"test3",
   "gender":"F",
   "birthDate":"1955-12-05"
 
@@ -126,25 +126,88 @@ describe('Patch /users/me/editprofile', () => {
       .end(done)
   })
 
-/*  it('should allow missing userName& change the other 2 ', (done) =>
+ it('should reject invalid gender', (done) =>
   {
       User.find().then((users)=>{
           users[users.length-1].generateAuthToken().then((token)=>{
-            users[users.length-1].userName="ayman";
+            users[users.length-1].userName="default";
             users[users.length-1].save();
       request(app)
       .patch(`/users/me/editprofile`)
       .set('x-auth',token)
       .send({
-          "gender":"F",
+        "userName":"test4",
+          "gender":"invalid",
           "birthDate":"1955-12-05"
 
         })
-      .expect(200)
+      .expect(400)
       .end(done)
       })
   })
   });
-*/
+
+  it('should reject invalid date', (done) =>
+   {
+       User.find().then((users)=>{
+           users[users.length-1].generateAuthToken().then((token)=>{
+             users[users.length-1].userName="default";
+             users[users.length-1].save();
+       request(app)
+       .patch(`/users/me/editprofile`)
+       .set('x-auth',token)
+       .send({
+         "userName":"test4",
+           "gender":"M",
+           "birthDate":"invalid"
+
+         })
+       .expect(400)
+       .end(done)
+       })
+   })
+   });
+
+   it('should allow no change in data', (done) =>
+    {
+        User.find().then((users)=>{
+            users[users.length-1].generateAuthToken().then((token)=>{
+        request(app)
+        .patch(`/users/me/editprofile`)
+        .set('x-auth',token)
+        .send({
+          "userName":  users[users.length-1].userName,
+            "gender":  users[users.length-1].gender,
+            "birthDate":  users[users.length-1].birthDate
+
+          })
+        .expect(200)
+        .end(done)
+        })
+    })
+    });
+
+    it('should reject userName if it already exists', (done) =>
+     {
+         User.find().then((users)=>{
+             users[users.length-1].generateAuthToken().then((token)=>{
+               users[users.length-1].userName="default";
+               users[users.length-1].save();
+         request(app)
+         .patch(`/users/me/editprofile`)
+         .set('x-auth',token)
+         .send({
+           "userName":users[users.length-2].userName,
+             "gender":"M",
+             "birthDate": users[users.length-1].birthDate
+
+           })
+         .expect(403)
+         .end(done)
+         })
+     })
+     });
+
+
 
 });
