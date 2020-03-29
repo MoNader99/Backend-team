@@ -62,9 +62,9 @@ var AddArtistName = async function (tracks) {
     console.log(length);
     const promises = tracks.map(async track => {
 
-        const ArtistName = await GetArtistById(track.artistId.toString());
+        const artistName = await GetArtistById(track.artistId.toString());
 
-        return Object.assign(track, { ArtistName: ArtistName })
+        return Object.assign(track, { artistName: artistName })
 
 
     });
