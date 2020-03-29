@@ -11,6 +11,8 @@ const image = require('./models/images');
 //const track = require('./models/track');
 
 
+
+
 const usersRoutes = require('./Controllers/UserController');
 const albumsRoutes = require('./Controllers/AlbumController');
 //const artistRoutes = require('./Controllers/ArtistController');
@@ -19,11 +21,13 @@ const playlistRoutes = require('./Controllers/PlaylistController');
 //const trackRoutes = require('./Controllers/TracksController');
 const searchRoute = require('./Controllers/SearchController');
 
+
 const app = express();
 
 app.use(bodyParser.json());
 
-app.use("/users", usersRoutes);
+
+app.use("/", usersRoutes);
 app.use("/album", albumsRoutes);
 //app.use("/artists", artistRoutes);
 app.use("/Images", imageRoutes);
@@ -35,3 +39,5 @@ app.use("/Search", searchRoute);
 app.listen(3000,()=>{
     console.log("Started on port 3000");
 });
+
+module.exports=app
