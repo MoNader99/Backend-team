@@ -266,7 +266,7 @@ router.post('/users/forgot', async (req, res) => {
         html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
         }
 
-    //console.log(mailOptions);
+    console.log(mailOptions);
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
             console.log(error);
@@ -322,7 +322,7 @@ router.patch('/users/reset',async (req,res)=>{
 
     const salt = await bcrypt.genSalt();
     const hashedPass = await bcrypt.hash(newPassword, salt);
-   //console.log(hashedPass);
+   console.log(hashedPass);
     await User.checkTokenAndFind(token).then((user)=>{
 
        user.password=hashedPass;

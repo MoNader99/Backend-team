@@ -3,11 +3,11 @@ const express=require('express');
 const _=require ('lodash');
 const { mongoose } = require("./../db/mongoose.js");
 const{track}=require("./../models/track");
-//const{playlistTracks}=require("./../models/playlistTracks");
+
 
 const{playlist}=require("./../models/playlists");
 const{album}=require('./../models/album');
-const{artist}=require('./../models/artists');
+//const{artist}=require('./../models/artists');
 var { User } = require("./../models/users.js");
 var{images}= require("./../models/images.js"); // images model
 
@@ -131,7 +131,7 @@ if(!ObjectID.isValid(id))
  * 
  */
 
-router.post('/Playlists/:playlistId/tracks',async (req,res)=>
+router.post('/tracks/:playlistId/playlists',async (req,res)=>
 {
     var flagg=0
     var userId;

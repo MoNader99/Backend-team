@@ -1,13 +1,14 @@
 const expect =require('expect');
 const request = require('supertest')//.agent(app.listen());
 const {ObjectID}=require('mongodb');
-const{app}=require("./../Controllers/TracksController")
+const app=require('./../Index');
+//const{app}=require("./../Controllers/TracksController")
 const{User}=require("./../models/users")
 
 const {track}=require("./../models/track")
 var{playlist}= require("./../models/playlists.js"); 
 
-describe('Post Playlists/:playlistId/tracks',()=>{
+describe('Post /tracks/:playlistId/playlists',()=>{
 
     it('should add tracks in the given playlist ',(done)=>{
         

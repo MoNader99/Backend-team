@@ -18,7 +18,7 @@ const albumsRoutes = require('./Controllers/AlbumController');
 //const artistRoutes = require('./Controllers/ArtistController');
 const imageRoutes = require('./Controllers/ImageController');
 const playlistRoutes = require('./Controllers/PlaylistController');
-//const trackRoutes = require('./Controllers/TracksController');
+const trackRoutes = require('./Controllers/TracksController');
 const searchRoute = require('./Controllers/SearchController');
 
 
@@ -32,7 +32,7 @@ app.use("/", albumsRoutes);
 //app.use("/", artistRoutes);
 app.use("/", imageRoutes);
 app.use("/", playlistRoutes);
-//app.use("/playlists", trackRoutes);
+app.use("/", trackRoutes);
 app.use("/", searchRoute);
 
 
