@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 
 
 const{app}=require("./../Controllers/UserController")
-const {User}=require("./../Controllers/UserController")
-
+//const {User}=require("./../Controllers/UserController")
+const{User}=require('./../models/users')
 
 describe('Get /users/:id/premium',()=>{
 

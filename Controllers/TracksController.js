@@ -133,97 +133,113 @@ if(!ObjectID.isValid(id))
 
 router.post('/Playlists/:playlistId/tracks',async (req,res)=>
 {
-        var userId;
-         var token = req.header('x-auth');
-         User.findByToken(token).then((user) => {
-         if(!user){
-             return Promise.reject();
-         }
+    var flagg=0
+    var userId;
+     var token = req.header('x-auth');
 
-       userId=user._id;
+var url= req.body.url;
+//console.log(url);
 
 
-    }).catch((e)=>{return res.status(401).json({"message":"auth failed"})}) 
-    var url= req.body.url;
-    console.log(url);
-
-   // var id=req.params.playlistId;
-    var tracksarr=[{}];
-    if(url.length>10)
-    {
-        res.status(403).json({"message":" Forbidden because you crossed the limit of tracks in a playlist which is 10"});
-    }
-    var flag=0;
- for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
-    {
-        
-        await track.find({url: url[i]}).then((tracks)=>
-    {
-        //console.log("gowaaaaaaalllllllllllllll")
-        //console.log("el tracks ely rag3a");
-       // console.log(JSON.stringify( tracks))
-        if(!tracks[0]) 
-       { 
-           flag=1;
-           console.log("gowaaaaaaa")
-        //return res.status(404).json({"message":"the track was not found"});
-        return Promise.reject();
-       }
-         tracksarr[i]=tracks;
-     
-
-    }).catch((e)=>{ return })//res.status(400).send(e)});
-
-    if(flag) {
-        console.log(flag);
-        break}
+var tracksarr=[{}];
+if(url.length>10)
+{
+    res.status(403).json({"message":" Forbidden because you crossed the limit of tracks in a playlist which is 10"});
 }
+var flag=0;
+for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
+{
     
+    await track.find({url: url[i]}).then((tracks)=>
+{
+    //console.log("gowaaaaaaalllllllllllllll")
+    //console.log("el tracks ely rag3a");
+   // console.log(JSON.stringify( tracks))
+    if(!tracks[0]) 
+   { 
+       flag=1;
+      // console.log("gowaaaaaaa")
+    //return res.status(404).json({"message":"the track was not found"});
+    return Promise.reject();
+   }
+     tracksarr[i]=tracks;
+ 
+
+}).catch((e)=>{ return })//res.status(400).send(e)});
+
+if(flag) {
+    console.log(flag);
+    break}
+}
+
 
 
 if (flag) {return res.status(404).json({"message":"the track was not found"});}
 
-console.log("heloo");
+//console.log("heloo");
 
-    
+
 var id=req.params.playlistId;
-console.log(id);
+//console.log(id);
 
 if(!ObjectID.isValid(id))  //validate the playlist id
 {
-    return res.status(404).json({"message":"invalid id"});
+return res.status(404).json({"message":"invalid id"});
 }
 
-playlist.findById(id).then((playlists)=>{
+playlist.findById(id).then(async (playlists)=>{
 
-    if(!playlists) {return res.status(404).send({"message":"playlist not found"})};
-    //console.log(userId);
-    //console.log(playlist);
+if(!playlists) {return res.status(404).send({"message":"playlist not found"})};
+//console.log(userId);
+//console.log(playlist);
+
+//console.log('wohooooooo')
+
+
+await User.findByToken(token).then((user) => {
+    if(!user){
+        return Promise.reject();
+    }
+
+  userId=user._id;
+
+
+}).catch((e)=>{
+   flagg=1
+
+   return res.status(401).json({"message":"authentication failed"})})
+
+if(flagg)
+{
+   return;
+}
+
 
 
 if(! (playlists.userId.toString()=== userId.toString()))  {return res.status(401).json({"message":"auth failed"});}
 
-   // console.log(playlist)
+// console.log(playlist)
 for(var i=0;i<tracksarr.length;i++)
 {
-    var trackId= _.map(tracksarr[i],"_id");
-    
+var trackId= _.map(tracksarr[i],"_id");
 
 
-     var len =playlists.tracks.length;
-     playlists.tracks[len]=ObjectID(trackId.toString())
-     
-     playlists.markModified('tracks')
-     playlists.save();
-    
+
+ var len =playlists.tracks.length;
+ playlists.tracks[len]=ObjectID(trackId.toString())
+ 
+ playlists.markModified('tracks')
+ playlists.save();
+
 
 }
-   //console.log(JSON.stringify(playlists));
-   //playlists.markModified('tracks')
-   //playlists.save();
-   console.log("end")
-    res.status(200).json({"message":'tracks added successfully'});
+//console.log(JSON.stringify(playlists));
+//playlists.markModified('tracks')
+//playlists.save();
+console.log("end")
+res.status(200).json({"message":'tracks added successfully'});
 })
+
 
 
 

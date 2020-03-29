@@ -9,35 +9,35 @@ var{playlist}= require("./../models/playlists.js");
 
 describe('Post Playlists/:playlistId/tracks',()=>{
 
-    // it('should add tracks in the given playlist ',(done)=>{
+    it('should add tracks in the given playlist ',(done)=>{
         
 
 
-    //   playlist.find().then((playlists)=>{
-    //       var playlistId=playlists[playlists.length-1]._id.toHexString()
-    //       var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
-    //       User.findById(userId).then((users)=>{
-    //           users.generateAuthToken().then((token)=>{
-    //             track.find().then((tracks)=>{
-    //                 var urls=[];
-    //                 for(var i=0;i<tracks.length;i++)
-    //                 {
-    //                     urls[i]=tracks[i].url;
-    //                 }
-    //                   request(app)
-    //             .post(`/Playlists/${playlistId}/tracks`)
-    //             .set('x-auth',token)
-    //             .send({url:[urls[urls.length-1],urls[urls.length-2]]})
-    //             .expect(200)
-    //             .expect((res)=>{
-    //                 expect( res.body.message).toBe('tracks added successfully')
-    //           })
-    //           .end(done)
-    //             })
-    //       })    
-    //   })
-    // })
-    // })
+      playlist.find().then((playlists)=>{
+          var playlistId=playlists[playlists.length-1]._id.toHexString()
+          var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+          User.findById(userId).then((users)=>{
+              users.generateAuthToken().then((token)=>{
+                track.find().then((tracks)=>{
+                    var urls=[];
+                    for(var i=0;i<tracks.length;i++)
+                    {
+                        urls[i]=tracks[i].url;
+                    }
+                      request(app)
+                .post(`/tracks/${playlistId}/playlists`)
+                .set('x-auth',token)
+                .send({url:[urls[urls.length-1],urls[urls.length-2]]})
+                .expect(200)
+                .expect((res)=>{
+                    expect( res.body.message).toBe('tracks added successfully')
+              })
+              .end(done)
+                })
+          })    
+      })
+    })
+    })
 
 
 
@@ -58,7 +58,7 @@ describe('Post Playlists/:playlistId/tracks',()=>{
                           urls[i]=tracks[i].url;
                       }
                         request(app)
-                  .post(`/Playlists/${playlistId}/tracks`)
+                  .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token+1)   //invalid token
                   .send({url:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(401)
@@ -91,7 +91,7 @@ describe('Post Playlists/:playlistId/tracks',()=>{
                           urls[i]=tracks[i].url;
                       }
                         request(app)
-                  .post(`/Playlists/${playlistId}/tracks`)
+                  .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
                   .send({url:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(404)
@@ -127,7 +127,7 @@ describe('Post Playlists/:playlistId/tracks',()=>{
                           urls[i]=tracks[i].url;
                       }
                         request(app)
-                  .post(`/Playlists/${playlistId}/tracks`)
+                  .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
                   .send({url:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(404)
@@ -156,7 +156,7 @@ describe('Post Playlists/:playlistId/tracks',()=>{
                           urls[i]=tracks[i].url+'llalla';
                       }
                         request(app)
-                  .post(`/Playlists/${playlistId}/tracks`)
+                  .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
                   .send({url:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(404)
@@ -188,7 +188,7 @@ describe('Post Playlists/:playlistId/tracks',()=>{
                           url[i]=tracks[1].url;
                       }
                         request(app)
-                  .post(`/Playlists/${playlistId}/tracks`)
+                  .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
                   .send({url})
                   .expect(403)

@@ -3,8 +3,8 @@ const request = require('supertest')//.agent(app.listen());
 const {ObjectID}=require('mongodb');
 
 const{app}=require("./../Controllers/UserController")
-const {User}=require("./../Controllers/UserController")
-
+//const {User}=require("./../Controllers/UserController")
+const{User}=require('./../models/users')
 
 describe('Patch /users/:id/regular',()=>{
 
