@@ -1,21 +1,19 @@
 const expect =require('expect');
 const request = require('supertest')
 //local imports
-const {app}= require("./../Services/deletetrackfromplaylist.js");
+const app=require('./../Index');
 var{User}= require("./../models/users.js"); 
 var{playlist}= require("./../models/playlists.js"); 
 
-//TO TEST THIS REQUEST THE TEST OF ADD TRACK TO PLAYLIST HAS TO BE MADE FOR WHICH TRACK ID TO DELETE
-//CHANGE THE TRACK ID OF THR FIRST 2 TESTS ONLY 
 describe("Delete a single track from a playlist",()=>{
    
     it("Should delete a middle track in the playlist and re-order it",(done)=>{
         User.find().then((users)=>{
-        playlist.findOne({playlistName:"Moraba3"}).then((Arr)=>{ 
+        playlist.findOne({playlistName:"X"}).then((Arr)=>{ 
             var testTackId=Arr.tracks[0];
-            users[users.length-1].save()
-            users[users.length-1].generateAuthToken().then((token)=>{
-                var testPlaylistName="Moraba3";
+            users[0].save()
+            users[0].generateAuthToken().then((token)=>{
+                var testPlaylistName="X";
                
                 request(app)
                 .delete('/playlists/tracks')
@@ -35,11 +33,11 @@ describe("Delete a single track from a playlist",()=>{
 
     it("Should delete the last track in the playlist",(done)=>{
         User.find().then((users)=>{
-        playlist.findOne({playlistName:"Moraba3"}).then((Arr)=>{  
+        playlist.findOne({playlistName:"X"}).then((Arr)=>{  
             var testTackId=Arr.tracks[Arr.tracks.length-1]  
-            users[users.length-1].save()
-            users[users.length-1].generateAuthToken().then((token)=>{
-                var testPlaylistName="Moraba3";
+            users[0].save()
+            users[0].generateAuthToken().then((token)=>{
+                var testPlaylistName="X";
                 request(app)
                 .delete('/playlists/tracks')
                 .set('x-auth',token)
