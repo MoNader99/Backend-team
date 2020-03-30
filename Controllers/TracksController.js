@@ -575,4 +575,26 @@ router.post('/tracks/like/:id', (req,res) =>
     }) 
 })
 
+
+/////// Get Liked Tracks //////////
+router.get('/tracks/like/me', (req,res) =>
+{
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(400).send('You should Pass a token to access your liked tracks');
+    }
+    User.findByToken(token).then((user) =>
+    {
+        if(!user)
+        {
+            res.status(401).send('you are not a user or your token is expired');
+        }
+        res.status(302).send(user.likedTracks);
+    }).catch((e) =>
+    {
+        res.status(500).send('invalid token');
+    })
+})
+
 module.exports=router;
