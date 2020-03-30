@@ -771,9 +771,10 @@ catch{
     User.findByToken(token).then((user) => {
         if(!user)
         {
-            res.status(404).send();
-        }
+            res.status(401).send();
+        }    
     console.log("you are my user");
+    var done = 0;
     bcrypt.compare(oldPassword, user.password, async (err, res2) => {
         if(res2) {
             console.log('Your password mached with database hash password');
@@ -783,21 +784,21 @@ catch{
                 console.log(hashedPass);
                 user.password=hashedPass;
                 user.save();
-
+                console.log('saving user');
+                done = 1;
                 res.status(200).send("Password has been reset successfully");
 
         } else {
             console.log(user.password);
+            console.log(oldPassword);
             console.log('Your password not mached.');
+            done = 0
             res.status(403).send("this is not the correct password");
-        };
-    }).catch((e) => {
-        res.status(500).send();
-    });
-    }).catch((e) => {
-        res.status(401).send();
-    });
+        }}).catch(err);
+    }).catch(e);
 });
+
+
 
 
 

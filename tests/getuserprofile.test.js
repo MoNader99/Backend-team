@@ -474,3 +474,119 @@ describe('GET /users/confirm/:code', () => {
         })
 
     });
+
+    
+
+    describe('Change Password /users/changePassword', () => {
+    
+        it('Should change password successfully', (done) =>
+        {   var testuser = new User({
+            email: "ranimemohamed8@gmail.com",
+            password: "$2b$10$6/4iKym5yIP0j0lItY59G.VCwDod/S2QXuwEAVWZqutavXsQlivs.",
+            userName: "Ranime",
+            gender: "F",
+            birthDate: '1999-05-30',
+            isActive: true
+        });
+
+        testuser.save().then((res) => {
+             testuser.generateAuthToken().then((token)=>{
+           request(app)
+           .put(`/users/changePassword`)
+           .set('x-auth',token)
+           .send({oldPassword:"222", newPassword:"111",})
+           .expect(200)
+           .end((err, res) => {
+            if (err) {
+                done(err)
+            }
+            User.findOneAndRemove({ _id: testuser._id }, function (err) {
+                if (!err) {
+
+                    done();
+
+                }
+                else {
+                    done(err);
+                }
+            });
+        });
+           })
+   
+       })
+       })
+   
+        it('Passing incorrect old password', (done) =>
+         {
+            var testuser = new User({
+                email: "ranimemohamed8@gmail.com",
+                password: "$2b$10$6/4iKym5yIP0j0lItY59G.VCwDod/S2QXuwEAVWZqutavXsQlivs.",
+                userName: "Ranime",
+                gender: "F",
+                birthDate: '1999-05-30',
+                isActive: true
+            });
+    
+            testuser.save().then((res) => {
+                testuser.generateAuthToken().then((token)=>{
+            request(app)
+            .put(`/users/changePassword`)
+            .set('x-auth',token)
+            .send({oldPassword:"000", newPassword:"111",})
+            .expect(403)
+            .end((err, res) => {
+                if (err) {
+                    done(err)
+                }
+                User.findOneAndRemove({ _id: testuser._id }, function (err) {
+                    if (!err) {
+
+                        done();
+
+                    }
+                    else {
+                        done(err);
+                    }
+                });
+            });
+            })
+   
+       })
+       })
+   
+          it('Passing empty token', (done) =>
+         {
+             var token = "";
+             request(app)
+             .put(`/users/changePassword`)
+             .set('x-auth',token)
+             .expect(400)
+             .end(done)
+         })
+    
+   
+          it('Passing valid token but did not find an according user', (done) =>
+           {
+               var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTZkZTVmNGE2N2EwZGJjMDU4Y2I0MDYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0MzAwMDEyfQ.bq9qS5Z7a992i0_MTOqfVxmPmjOObKT2YPh7oHKkQ64";
+               request(app)
+               .put(`/users/changePassword`)
+               .set('x-auth',token)
+               .expect(401)
+               .end(done)
+           })
+
+          
+   
+        });
+      
+       
+   
+      
+   
+ 
+
+
+    
+
+   
+
