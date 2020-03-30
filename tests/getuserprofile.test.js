@@ -4,6 +4,71 @@ const request = require('supertest')
 const app=require('./../Index');
 var{User}= require("../models/users.js");
 
+beforeEach((done)=>{
+  User.remove({ "email":"sw.project.verify@gmail.com"}).then(()=> done());
+})
+
+describe('POST /users/signup', () => {
+
+  it('should create new inactive user ', (done) =>
+  {
+  //  User.findByCredentials("sw.project.verify@gmail.com","1234").then((user)=>{
+    //  User.findOneAndRemove(user._id).then(()=>{
+        request(app)
+        .post('/users/signup')
+        .send({
+          "email":"sw.project.verify@gmail.com",
+          "password":"1234",
+          "isPremium":false,
+          "userName":"testuser",
+          "gender":"F",
+          "birthDate":"1990-06-19"
+            })
+        .expect((res)=>{
+        //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
+        })
+
+
+        .end((err, res)=>{
+if (err)
+{
+  return done(err);
+}
+User.findByEmail("sw.project.verify@gmail.com").then((user)=>{
+console.log(user)
+  expect (user.isPremium).toBe(false);
+  expect (user.userName).toBe("testuser");
+  expect (user.gender).toBe("F");
+//  expect (user.birthDate.toString()).toBe("1990-06-19");
+done();
+}).catch((e)=>done(e));
+
+        })
+
+      })
+
+      it('should create new inactive user ', (done) =>
+      {
+      request(app)
+            .post('/users/signup')
+            .send({
+              "email":"sw.project.verify@gmail.com",
+              "password":"1234",
+              "isPremium":false,
+              "userName":"testuser",
+              "gender":"x",
+              "birthDate":"1990-06-19"
+                })
+            .expect(400)
+
+            .end(done)
+
+          })
+
+})
+
+
+
 describe('Get user profile /users/me', () => {
 
     it('Get the user having the passed token (Valid)', (done) =>
@@ -61,7 +126,7 @@ describe('Patch /users/me/editprofile', () => {
   {
       User.find().then((users)=>{
           users[users.length-1].generateAuthToken().then((token)=>{
-            users[users.length-1].userName="ayman";
+            users[users.length-1].userName="default1";
             users[users.length-1].save();
       request(app)
       .patch(`/users/me/editprofile`)
@@ -130,7 +195,7 @@ describe('Patch /users/me/editprofile', () => {
   {
       User.find().then((users)=>{
           users[users.length-1].generateAuthToken().then((token)=>{
-            users[users.length-1].userName="default";
+            users[users.length-1].userName="default2";
             users[users.length-1].save();
       request(app)
       .patch(`/users/me/editprofile`)
@@ -151,7 +216,7 @@ describe('Patch /users/me/editprofile', () => {
    {
        User.find().then((users)=>{
            users[users.length-1].generateAuthToken().then((token)=>{
-             users[users.length-1].userName="default";
+             users[users.length-1].userName="default3";
              users[users.length-1].save();
        request(app)
        .patch(`/users/me/editprofile`)
@@ -191,7 +256,7 @@ describe('Patch /users/me/editprofile', () => {
      {
          User.find().then((users)=>{
              users[users.length-1].generateAuthToken().then((token)=>{
-               users[users.length-1].userName="default";
+               users[users.length-1].userName="default4";
                users[users.length-1].save();
          request(app)
          .patch(`/users/me/editprofile`)
@@ -244,5 +309,3 @@ describe('GET /users/confirm/:code', () => {
         })
 
     });
-
-  
