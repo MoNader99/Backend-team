@@ -6,7 +6,7 @@ var bodyParser= require('body-parser');
 
 var{mongoose}= require("./../db/mongoose.js");  
 var{track}=require("./../models/track.js");
-var{artist}= require("./../models/Artists.js");  //artists model
+var{artist}= require("./../models/artists.js");  //artists model
 
 
 var app=express();

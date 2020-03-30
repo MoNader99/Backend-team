@@ -2,7 +2,7 @@ require('./Config/Config');
 var fs = require('fs');
 var { mongoose } = require("./db/mongoose.js");  
 var{User}= require("./models/users.js");   //users model
-var{artist}= require("./models/Artists.js");  //artists model
+var{artist}= require("./models/artists.js");  //artists model
 var{followArtist}= require("./models/followArtist.js");  // follow artist model
 var{playlist}= require("./models/playlists.js"); // playlists model
 var{followPlaylist}= require("./models/followPlaylist.js"); // followplaylist model

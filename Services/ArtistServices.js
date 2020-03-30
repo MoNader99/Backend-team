@@ -1,6 +1,6 @@
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js"); 
-var { artist } = require("./../models/Artists.js");  //artists model
+var { artist } = require("./../models/artists.js");  //artists model
 
 var { album } = require("./../models/album.js");
 var { track } = require("./../models/track.js");//track model

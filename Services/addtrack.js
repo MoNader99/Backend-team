@@ -6,7 +6,7 @@ const {ObjectID}=require("mongodb");
 //local imports
 var{mongoose}= require("./../db/mongoose.js");  
 var{track}=require("./../models/track.js");
-var{artist}= require("./../models/Artists.js");  //artists model
+var{artist}= require("./../models/artists.js");  //artists model
 var{images}= require("./../models/images.js"); // images model
 
 

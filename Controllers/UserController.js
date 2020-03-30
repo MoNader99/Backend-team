@@ -4,7 +4,7 @@ require("./../Config/Config.js");
 var { mongoose } = require("./../db/mongoose.js");
 var nodemailer = require("nodemailer");
 var { User } = require("./../models/users.js");
-var{artist}= require("./../models/Artists.js");  //artists model
+var{artist}= require("./../models/artists.js");  //artists model
 
 const {ObjectID}=require("mongodb");
 //var bodyparser = require('body-parser');

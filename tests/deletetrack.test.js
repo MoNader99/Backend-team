@@ -2,7 +2,7 @@ const expect =require('expect');
 const request = require('supertest')
 //local
 const {app}= require("./../Services/deletetrack.js");
-var{artist}= require("./../models/Artists.js");  
+var{artist}= require("./../models/artists.js");  
 
 describe("Delete a single track",()=>{
   

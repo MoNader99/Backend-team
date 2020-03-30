@@ -3,7 +3,7 @@ const request = require('supertest')//.agent(app.listen());
 const app=require('./../Index');
 //const {app}= require("./../Services/addtrack.js");
 var{track}=require("./../models/track.js"); //tracks model
-var{artist}= require("./../models/Artists.js");  //artists model and schema
+var{artist}= require("./../models/artists.js");  //artists model and schema
 var{images}= require("./../models/images.js"); // images model
 
 

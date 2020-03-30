@@ -1,5 +1,5 @@
 var{mongoose}= require("./../db/mongoose.js");  
-var{artist}= require("./../models/Artists.js");  //artists model
+var{artist}= require("./../models/artists.js");  //artists model
 
 
 

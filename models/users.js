@@ -66,8 +66,14 @@ var UserSchema = new mongoose.Schema({
         type: ImagesSchema,
         required: true,
         default: defaultModule.defaultImage._doc
-    }
+    },
 
+    likedTracks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "track"
+        }
+    ]
 
 });
 

@@ -15,7 +15,7 @@ const image = require('./models/images');
 
 const usersRoutes = require('./Controllers/UserController');
 const albumsRoutes = require('./Controllers/AlbumController');
-//const artistRoutes = require('./Controllers/ArtistController');
+const artistRoutes = require('./Controllers/ArtistController');
 const imageRoutes = require('./Controllers/ImageController');
 const playlistRoutes = require('./Controllers/PlaylistController');
 const trackRoutes = require('./Controllers/TracksController');
@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 app.use("/", usersRoutes);
 app.use("/", albumsRoutes);
-//app.use("/", artistRoutes);
+app.use("/", artistRoutes);
 app.use("/", imageRoutes);
 app.use("/", playlistRoutes);
 app.use("/", trackRoutes);
