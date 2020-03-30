@@ -691,7 +691,6 @@ try{
 			else
 			{
 
-
         try
 		{
 			if(req.body.userName)
@@ -772,7 +771,7 @@ catch{
         if(!user)
         {
             res.status(401).send();
-        }    
+        }
     console.log("you are my user");
     var done = 0;
     bcrypt.compare(oldPassword, user.password, async (err, res2) => {
