@@ -69,6 +69,64 @@ router.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (r
 });
 
 
+///////// Like album /////////////
+router.post('/album/like/:id',(req, res) => {
+    var albumId = req.params.id;
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(400).send('You should Pass a token to access your liked tracks');
+    }
+    if(!ObjectID.isValid(albumId))
+    {
+        return res.status(404).send("invalid id");
+    }
+    album.findOne({_id:albumId}).then((album) => {
+    if(!album){
+        res.status(404).send('their is no such an album in the database');
+    }
+    })
+    User.findByToken(token).then((user) =>{
+        if(!user)
+        {
+            res.status(401).send();
+        }
+        console.log('user was found');
+        var len =user.likedAlbums.length;
+        if(len == 0)
+        {
+            user.likedAlbums[0]=ObjectID(albumId.toString());
+            user.markModified('likedAlbums')
+            user.save();
+            album.findOne({_id:albumId}).then((album) => {
+                album.likes = album.likes +1;
+                album.markModified('likes');
+                album.save();
+                })
+            res.status(200).send();
+        }
+        else{
+        for(var i = 0;i<len;i++)
+        {
+            if(albumId==user.likedAlbums[i])
+            {
+                return res.status(403).send('you are trying to like the same track twice');   
+            }
+        }
+        user.likedAlbums[len]=ObjectID(albumId.toString());
+        user.markModified('likedTracks')
+        user.save();
+        album.findOne({_id:albumId}).then((album) => {
+            album.likes = album.likes +1;
+            album.markModified('likes');
+            album.save();
+            })
+        res.status(200).send();
+        }
+    }) 
+});
+
+
 // if(module.parent){
 //     app.listen(3000,()=>{
 //         console.log("Started on port 3000");

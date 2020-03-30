@@ -526,6 +526,10 @@ router.post('/tracks/like/:id', (req,res) =>
 {
     var trackId = req.params.id;
     var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(400).send('You should Pass a token to access your liked tracks');
+    }
     if(!ObjectID.isValid(trackId))
     {
         return res.status(404).send("invalid id");

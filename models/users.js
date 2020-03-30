@@ -73,7 +73,15 @@ var UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "track"
         }
-    ]
+    ],
+
+    likedAlbums: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "album"
+        }
+    ],
+    
 
 });
 

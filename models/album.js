@@ -28,7 +28,21 @@ var AlbumSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "track"
         }
-    ]
+    ],
+    rating:{
+        type:Number,
+        default:null,
+        required:false,
+        min:1,
+        max:10,
+  
+    },
+    likes:{
+      type:Number,
+      default:0,
+      required:true,
+      min:0,
+    },
 })
 
 AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
