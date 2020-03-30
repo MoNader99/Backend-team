@@ -5,6 +5,71 @@ const app=require('./../Index');
 var{User}= require("../models/users.js");
 const jwt = require('jsonwebtoken');
 
+beforeEach((done)=>{
+  User.remove({ "email":"sw.project.verify@gmail.com"}).then(()=> done());
+})
+
+describe('POST /users/signup', () => {
+
+  it('should create new inactive user ', (done) =>
+  {
+  //  User.findByCredentials("sw.project.verify@gmail.com","1234").then((user)=>{
+    //  User.findOneAndRemove(user._id).then(()=>{
+        request(app)
+        .post('/users/signup')
+        .send({
+          "email":"sw.project.verify@gmail.com",
+          "password":"1234",
+          "isPremium":false,
+          "userName":"testuser",
+          "gender":"F",
+          "birthDate":"1990-06-19"
+            })
+        .expect((res)=>{
+        //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
+        })
+
+
+        .end((err, res)=>{
+if (err)
+{
+  return done(err);
+}
+User.findByEmail("sw.project.verify@gmail.com").then((user)=>{
+console.log(user)
+  expect (user.isPremium).toBe(false);
+  expect (user.userName).toBe("testuser");
+  expect (user.gender).toBe("F");
+//  expect (user.birthDate.toString()).toBe("1990-06-19");
+done();
+}).catch((e)=>done(e));
+
+        })
+
+      })
+
+      it('should create new inactive user ', (done) =>
+      {
+      request(app)
+            .post('/users/signup')
+            .send({
+              "email":"sw.project.verify@gmail.com",
+              "password":"1234",
+              "isPremium":false,
+              "userName":"testuser",
+              "gender":"x",
+              "birthDate":"1990-06-19"
+                })
+            .expect(400)
+
+            .end(done)
+
+          })
+
+})
+
+
+
 describe('Get user profile /users/me', () => {
 
     it('Get the user having the passed token (Valid)', (done) =>
@@ -62,7 +127,7 @@ describe('Patch /users/me/editprofile', () => {
   {
       User.find().then((users)=>{
           users[users.length-1].generateAuthToken().then((token)=>{
-            users[users.length-1].userName="ayman";
+            users[users.length-1].userName="default1";
             users[users.length-1].save();
       request(app)
       .patch(`/users/me/editprofile`)
@@ -131,7 +196,7 @@ describe('Patch /users/me/editprofile', () => {
   {
       User.find().then((users)=>{
           users[users.length-1].generateAuthToken().then((token)=>{
-            users[users.length-1].userName="default";
+            users[users.length-1].userName="default2";
             users[users.length-1].save();
       request(app)
       .patch(`/users/me/editprofile`)
@@ -152,7 +217,7 @@ describe('Patch /users/me/editprofile', () => {
    {
        User.find().then((users)=>{
            users[users.length-1].generateAuthToken().then((token)=>{
-             users[users.length-1].userName="default";
+             users[users.length-1].userName="default3";
              users[users.length-1].save();
        request(app)
        .patch(`/users/me/editprofile`)
@@ -192,7 +257,7 @@ describe('Patch /users/me/editprofile', () => {
      {
          User.find().then((users)=>{
              users[users.length-1].generateAuthToken().then((token)=>{
-               users[users.length-1].userName="default";
+               users[users.length-1].userName="default4";
                users[users.length-1].save();
          request(app)
          .patch(`/users/me/editprofile`)
@@ -212,6 +277,7 @@ describe('Patch /users/me/editprofile', () => {
 
 
 });
+
 
 
 
@@ -375,3 +441,36 @@ describe('POST /users/login', () => {
 
 
 })
+
+describe('GET /users/confirm/:code', () => {
+
+    it('should activate existing user with a valid token', (done) =>
+    {
+        User.find().then((users)=>{
+            users[users.length-1].generateAuthToken().then((token)=>{
+        request(app)
+        .get(`/users/confirm/`+token)
+        .expect(200)
+        .end(done)
+        })
+    })
+    });
+
+    it('should reject invalid token', (done) =>
+    {
+         request(app)
+        .get(`/users/confirm/invalid`)
+        .expect(401)
+        .end(done)
+        })
+
+    it('should reject user whose id does not exist', (done) =>
+    {
+      var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTZkZTVmNGE2N2EwZGJjMDU4Y2I0MDYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0MzAwMDEyfQ.bq9qS5Z7a992i0_MTOqfVxmPmjOObKT2YPh7oHKkQ64";
+        request(app)
+        .get(`/users/confirm/`+token)
+        .expect(404)
+        .end(done)
+        })
+
+    });

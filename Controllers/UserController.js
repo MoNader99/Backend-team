@@ -60,12 +60,20 @@ router.post('/users/signup', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();
         const hashedPass = await bcrypt.hash(req.body.password, salt);
-        console.log(req.body.userName)
-        console.log(req.body.email)
-        console.log(req.body.password)
-        console.log(req.body.isPremium)
-        console.log(req.body.gender)
-        console.log(req.body.birthDate)
+        // console.log(req.body.userName)
+        // console.log(req.body.email)
+        // console.log(req.body.password)
+        // console.log(req.body.isPremium)
+        // console.log(req.body.gender)
+        // console.log(req.body.birthDate)
+
+
+        if(req.body.gender&&req.body.gender.toString()!="M"&&req.body.gender.toString()!="F")
+        {
+          return res.status(400).send("gender must be 'M' or 'F'");
+        }
+
+
         var newacc = new User(
             {
                 userName: req.body.userName,
@@ -76,15 +84,15 @@ router.post('/users/signup', async (req, res) => {
                 birthDate: req.body.birthDate
 
             });
-        console.log('2et3amal');
+        // console.log('2et3amal');
         newacc.save().then((doc) => {
-            console.log("skod");
+            // console.log("skod");
 
 
 
 		var access= 'auth';
 		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforuser',{expiresIn:'1d'});
-		console.log(code);
+		// console.log(code);
 
 		var host=req.get('host');
 		var link="http://"+req.get('host')+"/users/confirm/"+code;
@@ -94,13 +102,13 @@ router.post('/users/signup', async (req, res) => {
 			subject : "Please confirm your Email account",
 			html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
 			}
-		console.log(mailOptions);
+		// console.log(mailOptions);
 		smtpTransport.sendMail(mailOptions, function(error, response){
 		 if(error){
 				console.log(error);
 			res.end("error");
 		 }else{
-				console.log("Message sent: " + response.message);
+				// console.log("Message sent: " + response.message);
 			res.end("sent");
 			 }
 
