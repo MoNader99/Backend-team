@@ -211,3 +211,38 @@ describe('Patch /users/me/editprofile', () => {
 
 
 });
+
+describe('GET /users/confirm/:code', () => {
+
+    it('should activate existing user with a valid token', (done) =>
+    {
+        User.find().then((users)=>{
+            users[users.length-1].generateAuthToken().then((token)=>{
+        request(app)
+        .get(`/users/confirm/`+token)
+        .expect(200)
+        .end(done)
+        })
+    })
+    });
+
+    it('should reject invalid token', (done) =>
+    {
+         request(app)
+        .get(`/users/confirm/invalid`)
+        .expect(401)
+        .end(done)
+        })
+
+    it('should reject user whose id does not exist', (done) =>
+    {
+      var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTZkZTVmNGE2N2EwZGJjMDU4Y2I0MDYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0MzAwMDEyfQ.bq9qS5Z7a992i0_MTOqfVxmPmjOObKT2YPh7oHKkQ64";
+        request(app)
+        .get(`/users/confirm/`+token)
+        .expect(404)
+        .end(done)
+        })
+
+    });
+
+  
