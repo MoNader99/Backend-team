@@ -144,5 +144,6 @@ var AddArtistName = async function (albums) {
 module.exports = {
     DeleteByArtist,
     SearchInAlbums,
-    album
+    album,
+    GetSimplifiedAlbum
 }

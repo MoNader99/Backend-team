@@ -36,7 +36,7 @@ router.get('/Search',(req, res) => {
                             playlistservices.SearchInPlaylists(wordtosearch).then((Playlists) => {
                                 console.log("5alas 2el Playlists");
 
-                                 res.send({ artists: Artists, Albums: Albums, Tracks: Tracks,Playlists:Playlists,Users:Users });
+                                 res.send({ Artists: Artists, Albums: Albums, Tracks: Tracks,Playlists:Playlists,Users:Users });
                              }).catch((err) => { res.status(400).send(err) })
                         }).catch((err) => { res.status(400).send(err) })
 
