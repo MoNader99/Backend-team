@@ -19,7 +19,12 @@ var track=mongoose.model("Tracks",{
       min:1,
       max:10,
 
-
+  },
+  likes:{
+    type:Number,
+    default:0,
+    required:true,
+    min:0,
   },
   duration:   //in ms
   { type:Number,  //not sure about the field type

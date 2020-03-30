@@ -521,5 +521,58 @@ router.post('/tracks',(req,res)=>{
 //            res.status(200).send('Inserted succesfully');
 //         });
 
+///////// Like a track ///////////
+router.post('/tracks/like/:id', (req,res) =>
+{
+    var trackId = req.params.id;
+    var token = req.header('x-auth');
+    if(!ObjectID.isValid(trackId))
+    {
+        return res.status(404).send("invalid id");
+    }
+    track.findOne({_id:trackId}).then((track) => {
+    if(!track){
+        res.status(404).send('their is no such a track in the database');
+    }
+    })
+    User.findByToken(token).then((user) =>{
+        if(!user)
+        {
+            res.status(401).send();
+        }
+        console.log('user was found');
+        var len =user.likedTracks.length;
+        if(len == 0)
+        {
+            user.likedTracks[0]=ObjectID(trackId.toString());
+            user.markModified('likedTracks')
+            user.save();
+            track.findOne({_id:trackId}).then((track) => {
+                track.likes = track.likes +1;
+                track.markModified('likes');
+                track.save();
+                })
+            res.status(200).send();
+        }
+        else{
+        for(var i = 0;i<len;i++)
+        {
+            if(trackId==user.likedTracks[i])
+            {
+                return res.status(403).send('you are trying to like the same track twice');   
+            }
+        }
+        user.likedTracks[len]=ObjectID(trackId.toString());
+        user.markModified('likedTracks')
+        user.save();
+        track.findOne({_id:trackId}).then((track) => {
+            track.likes = track.likes +1;
+            track.markModified('likes');
+            track.save();
+            })
+        res.status(200).send();
+        }
+    }) 
+})
 
 module.exports=router;
