@@ -64,7 +64,7 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                   .send({url:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(401)
                   .expect((res)=>{
-                      expect( res.body.message).toBe('auth failed')
+                      expect( res.body.message).toBe('authentication failed')
                 })
                 .end(done)
                   })
@@ -173,7 +173,7 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
 
 
-      it('should return 403 if urls more than 50 ',(done)=>{
+      it('should return 403 if urls more than 10 ',(done)=>{
         
 
 

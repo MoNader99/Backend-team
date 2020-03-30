@@ -274,7 +274,7 @@ router.post('/users/forgot', async (req, res) => {
         html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
         }
 
-    console.log(mailOptions);
+    //console.log(mailOptions);
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
             console.log(error);
@@ -330,7 +330,7 @@ router.patch('/users/reset',async (req,res)=>{
 
     const salt = await bcrypt.genSalt();
     const hashedPass = await bcrypt.hash(newPassword, salt);
-   console.log(hashedPass);
+   //console.log(hashedPass);
     await User.checkTokenAndFind(token).then((user)=>{
 
        user.password=hashedPass;
@@ -382,14 +382,14 @@ router.patch('/users/reset',async (req,res)=>{
 router.patch('/users/:id/regular', async (req, res) => {
     var userId;
     var id=req.params.id;
-    console.log(id);
+    //console.log(id);
     var token = req.header('x-auth');
     User.findByToken(token).then((user) => {
     if(!user){
         return Promise.reject();
     }
   userId=user._id;
-  console.log(userId);
+  //console.log(userId);
   if(! (userId.toString()===id))
   {
       return res.status(401).json({"message":"authentication Failed"})
@@ -404,8 +404,8 @@ else
     user.isPremium=false;
     user.save();
     res.status(200).json({"message":"Your account has been changed to regular account"})
-    console.log('inside the request')
-    console.log(user.isPremium);
+    //console.log('inside the request')
+    //console.log(user.isPremium);
 }
 
 }).catch((e)=>{return res.status(401).json({"message":"authentication Failed"})})
@@ -472,7 +472,7 @@ router.get('/users/:id/premium', async (req, res) =>
                     return Promise.reject();
                 }
               userId=user._id;
-              console.log(userId);
+              //console.log(userId);
               if(! (userId.toString()===id))
               {
                   return res.status(401).json({"message":"authentication Failed"})
@@ -491,13 +491,13 @@ router.get('/users/:id/premium', async (req, res) =>
 
                 var host=req.get('host');
                 var link="http://"+req.get('host')+"/users/confirmPremium/?token= "+code;
-                console.log(link);
+                //console.log(link);
                 var mailOptions={
                     to : email,
                     subject : "Please confirm your Premium account",
                     html : "Hello,<br> Please Click on the link to confirm your premium account.<br><a href="+link+">Click here to verify</a>"
                     }
-                console.log(mailOptions);
+                //console.log(mailOptions);
                 smtpTransport.sendMail(mailOptions, function(error, response){
                  if(error)
                  {

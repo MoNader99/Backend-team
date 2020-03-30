@@ -168,7 +168,7 @@ for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given
 }).catch((e)=>{ return })//res.status(400).send(e)});
 
 if(flag) {
-    console.log(flag);
+    //console.log(flag);
     break}
 }
 
@@ -237,7 +237,8 @@ var trackId= _.map(tracksarr[i],"_id");
 //playlists.markModified('tracks')
 //playlists.save();
 console.log("end")
-res.status(200).json({"message":'tracks added successfully'});
+
+return res.status(200).json({"message":'tracks added successfully'});
 })
 
 
