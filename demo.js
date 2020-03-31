@@ -21,7 +21,8 @@ const Schema = mongoose.Schema;
 var imgPath1 = "./Pictures/default.png";
 var image1 = new images;
     image1.data = fs.readFileSync(imgPath1);
-    image1.contentType = 'image/png';
+    image1.contentType = 'png';
+    image1.path=imgPath1;
     image1.save(function (err, a) {
       if (err) throw err;
       console.error('saved img to mongo');
@@ -30,7 +31,8 @@ var image1 = new images;
 var imgPath2 = "./Pictures/Billie-Eilish.png";    
 var image2 = new images;
     image2.data = fs.readFileSync(imgPath2);
-    image2.contentType = 'image/png';
+    image2.contentType = 'png';
+    image2.path=imgPath2;
     image2.save(function (err, a) {
       if (err) throw err;
       console.error('saved img to mongo');
@@ -39,14 +41,23 @@ var image2 = new images;
 var imgPath3 = "./Pictures/Adele.png";    
 var image3 = new images;
         image3.data = fs.readFileSync(imgPath3);
-        image3.contentType = 'image/png';
+        image3.contentType = 'png';
+        image3.path=imgPath3;
         image3.save(function (err, a) {
           if (err) throw err;
           console.error('saved img to mongo');
         });        
 
 
-
+/*var imgPath4 = "./Pictures/defaultuser.png";    
+var image4 = new images;
+        image4.data = fs.readFileSync(imgPath4);
+        image4.contentType = 'png';
+        image4.path=imgPath4;
+        image4.save(function (err, a) {
+        if (err) throw err;
+            console.error('saved img to mongo');
+        });   */ 
 
 
 
@@ -77,7 +88,7 @@ var user2= new User({
     userName:"Mario1",
     gender:"F",
     birthDate: '1990-06-19',
-    image:image2
+    image:image1
 });
 
 

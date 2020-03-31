@@ -20,6 +20,14 @@ var _ = require('lodash');
 const jwt = require('jsonwebtoken');
 //var userservices = require("./../Services/UserServices.js");
 
+//edit user pp imports
+var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
+var upload=require("./../Services/ImageService.js").UploadUserPhoto;
+var AuthenticateUser= require("./../Services/ImageService.js").AuthenticateUser;
+var AssignUserImage=require("./../Services/ImageService.js").AssignUserImage;
+
+
+
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -56,6 +64,11 @@ var smtpTransport = nodemailer.createTransport({
  *
  */
 
+
+ 
+//EDIT USER PROFILE PICTURE REQUEST
+router.post('/users/profilepicture',AuthenticateUser,upload,reSizeUserImage,uploadImagefn,AssignUserImage);
+///////////////////////////////////////////
 router.post('/users/signup', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();

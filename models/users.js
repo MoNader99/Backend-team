@@ -5,7 +5,7 @@ var password = "abc";
 const validator = require('validator');
 var { images, ImagesSchema } = require("./images.js"); // images model
 
-const defaultModule = require("./../defaultimage");
+const defaultModule=require("./../defaultimage");
 
 
 var UserSchema = new mongoose.Schema({
@@ -65,7 +65,7 @@ var UserSchema = new mongoose.Schema({
     image: {
         type: ImagesSchema,
         required: true,
-        default: defaultModule.defaultImage._doc
+        default:defaultModule.defaultImage._doc
     },
 
     likedTracks: [

@@ -10,7 +10,7 @@ const{album}=require('./../models/album');
 //const{artist}=require('./../models/artists');
 var { User } = require("./../models/users.js");
 var{images}= require("./../models/images.js"); // images model
-
+var{artist}= require("./../models/artists.js"); 
 
 const {ObjectID}=require('mongodb');
 

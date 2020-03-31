@@ -1,16 +1,16 @@
 const expect =require('expect');
 const request = require('supertest')
 //local
-const {app}= require("./../Services/deletetrack.js");
+const app=require('./../Index');
 var{artist}= require("./../models/artists.js");  
 
 describe("Delete a single track",()=>{
   
     it("Should delete a single track",(done)=>{
       artist.find().then((users)=>{
-        users[users.length-1].save()
-        users[users.length-1].generateAuthToken().then((testToken)=>{
-          var testTrackName="RockStar";
+        users[0].save()
+        users[0].generateAuthToken().then((testToken)=>{
+          var testTrackName="Hello";
               request(app)
                 .delete('/tracks')
                 .set('x-auth',testToken)

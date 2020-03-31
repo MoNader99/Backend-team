@@ -13,6 +13,13 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
+//edit image imports
+var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
+var upload=require("./../Services/ImageService.js").UploadUserPhoto;
+var AuthenticateArtist= require("./../Services/ImageService.js").AuthenticateArtist;
+var AssignArtistImage=require("./../Services/ImageService.js").AssignArtistImage;
+
+
 
 var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
@@ -23,9 +30,9 @@ var smtpTransport = nodemailer.createTransport({
 });
 
 
-//app.use(bodyparser.json());
-
-//app.listen(3000, () => { console.log('started on port 3000'); });
+//EDIT ARTIST PROFILE PICTURE REQUEST
+router.post("/artists/profilepicture",AuthenticateArtist,upload,reSizeUserImage,uploadImagefn,AssignArtistImage);
+/////////////////
 
 router.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
     console.log(req.param.id);

@@ -4,6 +4,7 @@ const Schema=mongoose.Schema;
 var ImagesSchema = new mongoose.Schema({
    data:Buffer,
    contentType: String,
+   path:String,
 });
 
 var images= mongoose.model('Images', ImagesSchema);
