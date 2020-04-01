@@ -19,7 +19,7 @@ describe('POST /users/signup', () => {
         .post('/users/signup')
         .send({
           "email":"sw.project.verify@gmail.com",
-          "password":"1234",
+          "password":"abc1234",
           "isPremium":false,
           "userName":"testuser",
           "gender":"F",
@@ -40,7 +40,7 @@ console.log(user)
   expect (user.isPremium).toBe(false);
   expect (user.userName).toBe("testuser");
   expect (user.gender).toBe("F");
-//  expect (user.birthDate.toString()).toBe("1990-06-19");
+// expect (user.birthDate.toString()).toBe("1990-06-19");
 done();
 }).catch((e)=>done(e));
 
@@ -48,7 +48,7 @@ done();
 
       })
 
-      it('should create new inactive user ', (done) =>
+      it('should reject invalid gender ', (done) =>
       {
       request(app)
             .post('/users/signup')
@@ -67,7 +67,6 @@ done();
           })
 
 })
-
 
 
 describe('Get user profile /users/me', () => {
@@ -284,7 +283,7 @@ describe('Patch /users/me/editprofile', () => {
 describe('POST /users/login', () => {
 
     it('It should refuse inactive user', (done) => {
-       
+
             var testuser = new User({
                 email: "nadamahmoudabdelfatah@gmail.com",
                 password: "$2b$10$omJZRaDaSrwjJyNnbOj6qe.BiOuWkqus4T4f7cNnfqZ22WV3.sS3y",
@@ -311,7 +310,7 @@ describe('POST /users/login', () => {
                         }
                         User.findOneAndRemove({ _id: testuser._id }, function (err) {
                             if (!err) {
-                                
+
                                     done();
 
                             }
@@ -323,14 +322,14 @@ describe('POST /users/login', () => {
             }, (err) => {
                 console.log(err);
             });
-       
+
 
 
     })
 
 
     it('It should add user', (done) => {
-        
+
             var testuser = new User({
                 email: "nadamahmoudabdelfatah@gmail.com",
                 password: "$2b$10$omJZRaDaSrwjJyNnbOj6qe.BiOuWkqus4T4f7cNnfqZ22WV3.sS3y",
@@ -371,12 +370,12 @@ describe('POST /users/login', () => {
             }, (err) => {
                 done(err);
             });
-        
+
 
 
     })
     it('It  refuses user with wrong info', (done) => {
-        
+
             request(app)
                 .post('/users/login')
                 .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
@@ -392,7 +391,7 @@ describe('POST /users/login', () => {
 
     });
     it('It should refuse user with wrong password', (done) => {
-       
+
             var testuser = new User({
                 email: "nadamahmoudabdelfatah@gmail.com",
                 password: "$2b$10$omJZRaDaSrwjJyNnbOj6qe.BiOuWkqus4T4f7cNnfqZ22WV3.sS3y",
@@ -475,10 +474,10 @@ describe('GET /users/confirm/:code', () => {
 
     });
 
-    
+
 
     describe('Change Password /users/changePassword', () => {
-    
+
         it('Should change password successfully', (done) =>
         {   var testuser = new User({
             email: "ranimemohamed8@gmail.com",
@@ -512,10 +511,10 @@ describe('GET /users/confirm/:code', () => {
             });
         });
            })
-   
+
        })
        })
-   
+
         it('Passing incorrect old password', (done) =>
          {
             var testuser = new User({
@@ -526,7 +525,7 @@ describe('GET /users/confirm/:code', () => {
                 birthDate: '1999-05-30',
                 isActive: true
             });
-    
+
             testuser.save().then((res) => {
                 testuser.generateAuthToken().then((token)=>{
             request(app)
@@ -550,10 +549,10 @@ describe('GET /users/confirm/:code', () => {
                 });
             });
             })
-   
+
        })
        })
-   
+
           it('Passing empty token', (done) =>
          {
              var token = "";
@@ -563,8 +562,8 @@ describe('GET /users/confirm/:code', () => {
              .expect(400)
              .end(done)
          })
-    
-   
+
+
           it('Passing valid token but did not find an according user', (done) =>
            {
                var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTZkZTVmNGE2N2EwZGJjMDU4Y2I0MDYiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTg0MzAwMDEyfQ.bq9qS5Z7a992i0_MTOqfVxmPmjOObKT2YPh7oHKkQ64";
@@ -575,18 +574,6 @@ describe('GET /users/confirm/:code', () => {
                .end(done)
            })
 
-          
-   
+
+
         });
-      
-       
-   
-      
-   
- 
-
-
-    
-
-   
-

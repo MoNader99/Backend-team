@@ -5,20 +5,20 @@ var { mongoose } = require("./../db/mongoose.js");
 var nodemailer = require("nodemailer");
 var { User } = require("./../models/users.js");
 var{artist}= require("./../models/artists.js");  //artists model
+const bcrypt = require('bcrypt');
 
 const {ObjectID}=require("mongodb");
 //var bodyparser = require('body-parser');
 const express = require('express');
 const router = express.Router();
 //var app = express();
-const bcrypt = require('bcrypt');
 var password = "abc";
 ///////////////////////////////////////////////
 //app.use(bodyparser.json());
 var _ = require('lodash');
 //var rand=Math.floor((Math.random() * 100) + 54); //random confirmation code
 const jwt = require('jsonwebtoken');
-//var userservices = require("./../Services/UserServices.js");
+var userservices = require("./../Services/UserServices.js");
 
 //edit user pp imports
 var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
@@ -65,27 +65,20 @@ var smtpTransport = nodemailer.createTransport({
  */
 
 
- 
-//EDIT USER PROFILE PICTURE REQUEST
+
+//EDIT USER PROFILE PICTURE REQUEST 
 router.post('/users/profilepicture',AuthenticateUser,upload,reSizeUserImage,uploadImagefn,AssignUserImage);
 ///////////////////////////////////////////
 router.post('/users/signup', async (req, res) => {
-    try {
-        const salt = await bcrypt.genSalt();
-        const hashedPass = await bcrypt.hash(req.body.password, salt);
-        // console.log(req.body.userName)
-        // console.log(req.body.email)
-        // console.log(req.body.password)
-        // console.log(req.body.isPremium)
-        // console.log(req.body.gender)
-        // console.log(req.body.birthDate)
-
-
+    // try {
+        // const salt = await bcrypt.genSalt();
+        // const hashedPass = await bcrypt.hash(req.body.password, salt);
+        const hashedPass=await userservices.HashPassword(req.body.password);
+        console.log(hashedPass);
         if(req.body.gender&&req.body.gender.toString()!="M"&&req.body.gender.toString()!="F")
         {
           return res.status(400).send("gender must be 'M' or 'F'");
         }
-
 
         var newacc = new User(
             {
@@ -97,31 +90,24 @@ router.post('/users/signup', async (req, res) => {
                 birthDate: req.body.birthDate
 
             });
-        // console.log('2et3amal');
+
         newacc.save().then((doc) => {
-            // console.log("skod");
-
-
-
 		var access= 'auth';
 		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforuser',{expiresIn:'1d'});
-		// console.log(code);
-
 		var host=req.get('host');
 		var link="http://"+req.get('host')+"/users/confirm/"+code;
-		console.log(link);
+	//	console.log(link);
 		var mailOptions={
 			to : req.body.email,
 			subject : "Please confirm your Email account",
 			html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
 			}
-		// console.log(mailOptions);
+
 		smtpTransport.sendMail(mailOptions, function(error, response){
 		 if(error){
 				console.log(error);
 			res.end("error");
 		 }else{
-				// console.log("Message sent: " + response.message);
 			res.end("sent");
 			 }
 
@@ -136,12 +122,12 @@ router.post('/users/signup', async (req, res) => {
 
             })
 
-    }
-
-    catch
-    {
-        res.status(500).send();
-    }
+    // }
+    //
+    // catch
+    // {
+    //     res.status(500).send();
+    // }
 });
 
 

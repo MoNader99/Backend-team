@@ -1,4 +1,5 @@
 // JavaScript source code
+const bcrypt = require('bcrypt');
 
 var { mongoose } = require("./../db/mongoose.js");
 var { User } = require("./../models/users.js");  //artists model
@@ -57,10 +58,24 @@ var GetUserById = function (id) {
 
 
 }
+var HashPassword= async function(password)
+{
+  try {
+    const salt = await bcrypt.genSalt();
+    const hashedPass = await bcrypt.hash(password, salt);
+   return hashedPass;
+
+  } catch (e) {
+    console.log(e);
+    console.log("faaaaiiiiilllleeeeddd");
+    return Promise.reject();
+  }
+}
 
 
 module.exports = {
     SearchInUsers,
     User,
-    GetUserById
+    GetUserById,
+    HashPassword
 }

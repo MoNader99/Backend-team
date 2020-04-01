@@ -144,7 +144,7 @@ artist2.save().then((res)=>{
 
 //CREATING A THIRD ARTIST
 var artist3= new artist({
-  
+
     artistName:"Eminem",
     about:`Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem
      (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,
