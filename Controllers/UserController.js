@@ -74,13 +74,20 @@ router.post('/users/signup', async (req, res) => {
   {
     return res.status(400).send("Missing some fields in the request body");
   }
+  var timestamp = Date.parse(req.body.birthDate);
+
+  if (isNaN(timestamp))
+  {
+      return res.status(400).send("invalid date format. use yyyy-mm-dd");
+  }
+  var correctDate = new Date(timestamp)
 
   const hashedPass=await userservices.HashPassword(req.body.password);
 
-  User.findOne({userName:req.body.userName}).then((duplicate)=>{
+  User.findOne({$or:[{userName:req.body.userName},{email: req.body.email}]}).then((duplicate)=>{
       if(duplicate)
       {
-        return res.status(409).send("UserName already exists")
+        return res.status(409).send("UserName and/or email already exist")
       }
       else
       {
@@ -96,7 +103,7 @@ router.post('/users/signup', async (req, res) => {
                 password: hashedPass,
                 isPremium: req.body.isPremium,
                 gender: req.body.gender,
-                birthDate: req.body.birthDate
+                birthDate: correctDate
 
             });
 

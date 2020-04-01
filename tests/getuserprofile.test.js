@@ -40,7 +40,8 @@ describe('POST /users/signup', () => {
         expect (user.isPremium).toBe(false);
         expect (user.userName).toBe("testuser");
         expect (user.gender).toBe("F");
-        // expect (user.birthDate.toString()).toBe("1990-06-19");
+        var d= new Date("1990-06-19");
+        expect (user.birthDate.toString()).toEqual(d);
         done();
       }).catch((e)=>done(e));
 
@@ -169,6 +170,68 @@ describe('POST /users/signup', () => {
 
     })
   });
+
+  it('should reject email if it already exists', (done) =>
+  {
+    User.find().then((users)=>{
+      request(app)
+      .post(`/users/signup`)
+      .send({
+        "email":users[users.length-1].email,
+        "gender":"M",
+        "userName":"testuser",
+        "password":"1234",
+        "isPremium":false,
+        "gender":"M",
+        "birthDate":"1990-06-19"
+
+      })
+      .expect(409)
+      .end(done)
+
+    })
+  });
+
+  it('should reject invalid date ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "password":"1234",
+      "isPremium":false,
+      "userName":"testuser2",
+      "gender":"M",
+      "birthDate":"invalid"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+
+  it('should reject invalid email', (done) =>
+  {
+    User.find().then((users)=>{
+      request(app)
+      .post(`/users/signup`)
+      .send({
+        "userName":"testuser",
+        "gender":"M",
+        "email":"invalid",
+        "password":"1234",
+        "isPremium":false,
+        "gender":"M",
+        "birthDate":"1990-06-19"
+
+      })
+      .expect(409)
+      .end(done)
+
+    })
+
+  });
+
 
 })
 
