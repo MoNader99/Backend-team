@@ -500,7 +500,7 @@
   },
   {
     "type": "post",
-    "url": "api/Playlists/:playlistId/Tracks",
+    "url": "/tracks/:playlistId/playlists",
     "title": "Add tracks to a playlist",
     "name": "AddTracksToAPlaylist",
     "group": "Playlists",
@@ -1449,7 +1449,7 @@
   },
   {
     "type": "Get",
-    "url": "api/Tracks",
+    "url": "/tracks",
     "title": "Get several Track",
     "name": "GetSeveralTracks",
     "group": "Tracks",
@@ -1461,7 +1461,7 @@
             "type": "string[]",
             "optional": false,
             "field": "id",
-            "description": "<p>An array of comma separated tracks Ids. Maximum 50 IDs.</p>"
+            "description": "<p>An array of comma separated tracks Ids. Maximum 10 IDs.</p>"
           }
         ]
       }
@@ -1527,7 +1527,7 @@
   },
   {
     "type": "Get",
-    "url": "api/Tracks/:id",
+    "url": "/tracks/:id",
     "title": "Get a Track",
     "name": "GetTrack",
     "group": "Tracks",
@@ -2300,7 +2300,7 @@
   },
   {
     "type": "patch",
-    "url": "api/users/:id/regular",
+    "url": "/users/:id/regular",
     "title": "User wants to unsubscribe from premium features",
     "name": "WithdrawPremiumServies",
     "group": "Users",

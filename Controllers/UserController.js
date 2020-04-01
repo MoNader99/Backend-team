@@ -287,7 +287,7 @@ router.post('/users/forgot', async (req, res) => {
         html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
         }
 
-    //console.log(mailOptions);
+    console.log(link);
     smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
             console.log(error);
@@ -504,7 +504,7 @@ router.get('/users/:id/premium', async (req, res) =>
 
                 var host=req.get('host');
                 var link="http://"+req.get('host')+"/users/confirmPremium/?token= "+code;
-                //console.log(link);
+                console.log(link);
                 var mailOptions={
                     to : email,
                     subject : "Please confirm your Premium account",
