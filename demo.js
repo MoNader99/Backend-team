@@ -101,6 +101,8 @@ user2.save().then((res)=>{
 
 
 var artist1= new artist({
+    email:"adele@music.com",
+    password:"2020",
     artistName:"Adele",
     about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
@@ -122,6 +124,8 @@ artist1.save().then((res)=>{
 //CREATING A third ARTIST
 
 var artist2= new artist({
+    email:"beeka70@hotmail.com",
+    password:"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS",
     artistName:"HAmo Beeka",
     about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
@@ -140,6 +144,7 @@ artist2.save().then((res)=>{
 
 //CREATING A THIRD ARTIST
 var artist3= new artist({
+  
     artistName:"Eminem",
     about:`Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem
      (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,
