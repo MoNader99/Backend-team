@@ -1,6 +1,6 @@
 require('./Config/Config');
 var fs = require('fs');
-var { mongoose } = require("./db/mongoose.js");  
+var { mongoose } = require("./db/mongoose.js");
 var{User}= require("./models/users.js");   //users model
 var{artist}= require("./models/artists.js");  //artists model
 var{followArtist}= require("./models/followArtist.js");  // follow artist model
@@ -28,7 +28,7 @@ var image1 = new images;
       console.error('saved img to mongo');
     });
 
-var imgPath2 = "./Pictures/Billie-Eilish.png";    
+var imgPath2 = "./Pictures/Billie-Eilish.png";
 var image2 = new images;
     image2.data = fs.readFileSync(imgPath2);
     image2.contentType = 'png';
@@ -36,9 +36,9 @@ var image2 = new images;
     image2.save(function (err, a) {
       if (err) throw err;
       console.error('saved img to mongo');
-    });    
+    });
 
-var imgPath3 = "./Pictures/Adele.png";    
+var imgPath3 = "./Pictures/Adele.png";
 var image3 = new images;
         image3.data = fs.readFileSync(imgPath3);
         image3.contentType = 'png';
@@ -46,10 +46,10 @@ var image3 = new images;
         image3.save(function (err, a) {
           if (err) throw err;
           console.error('saved img to mongo');
-        });        
+        });
 
 
-/*var imgPath4 = "./Pictures/defaultuser.png";    
+/*var imgPath4 = "./Pictures/defaultuser.png";
 var image4 = new images;
         image4.data = fs.readFileSync(imgPath4);
         image4.contentType = 'png';
@@ -57,7 +57,7 @@ var image4 = new images;
         image4.save(function (err, a) {
         if (err) throw err;
             console.error('saved img to mongo');
-        });   */ 
+        });   */
 
 
 
@@ -101,10 +101,8 @@ user2.save().then((res)=>{
 
 
 var artist1= new artist({
-    email:"adele@music.com",
-    password:"2020",
     artistName:"Adele",
-    about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter 
+    about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
@@ -124,10 +122,8 @@ artist1.save().then((res)=>{
 //CREATING A third ARTIST
 
 var artist2= new artist({
-    email:"beeka70@hotmail.com",
-    password:"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS",
     artistName:"HAmo Beeka",
-    about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter 
+    about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
@@ -144,10 +140,9 @@ artist2.save().then((res)=>{
 
 //CREATING A THIRD ARTIST
 var artist3= new artist({
-    password:"5080",
     artistName:"Eminem",
     about:`Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem
-     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer, 
+     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,
      record executive and actor. He is one of the most successful musical artists of the 21st century.`,
     genres:["Trap","Jazz","pop","Rap"],
     rating: 4.6,
@@ -195,15 +190,15 @@ var track1=new track({
     duration:360000,
     genre:"pop",
     image:image1,
-    url:"uuu"  // until we get real urls 
+    url:"uuu"  // until we get real urls
     });
     track1.save().then((res)=>{
         console.log(res._id);
     },(err)=>{
         console.log(err);
     });
-    
-    
+
+
     var track2=new track({
         artistId:artist1._id,
         trackName:"someone like you",
@@ -211,14 +206,14 @@ var track1=new track({
         duration:360000,
         genre:"pop",
         image:image1,
-        url:"qqq"  // until we get real urls 
+        url:"qqq"  // until we get real urls
         });
         track2.save().then((res)=>{
             console.log(res._id);
         },(err)=>{
             console.log(err);
         });
-        
+
         var track3=new track({
             artistId:artist1._id,
             trackName:"set fire to the rain",
@@ -226,15 +221,15 @@ var track1=new track({
             duration:240000,
             genre:"pop",
             image:image1,
-            url:"nnnn"  // until we get real urls 
+            url:"nnnn"  // until we get real urls
             });
-    
+
             track3.save().then((res)=>{
                 console.log(res._id);
             },(err)=>{
                 console.log(err);
             });
-            
+
             var track4=new track({
                 artistId:artist3._id,
                 trackName:"When I'm Gone",
@@ -242,15 +237,15 @@ var track1=new track({
                 duration:262000,
                 genre:"rap",
                 image:image1,
-                url:"lll"  // until we get real urls 
+                url:"lll"  // until we get real urls
                 });
-        
+
                 track4.save().then((res)=>{
                     console.log(res._id);
                 },(err)=>{
                     console.log(err);
                 });
-    
+
                 var track5=new track({
                     artistId:artist3._id,
                     trackName:"Godzilla",
@@ -258,30 +253,30 @@ var track1=new track({
                     duration:223000,
                     image:image1,
                     genre:"rap",
-                    url:"vvv"  // until we get real urls 
+                    url:"vvv"  // until we get real urls
                     });
-            
+
                     track5.save().then((res)=>{
                         console.log(res._id);
                     },(err)=>{
                         console.log(err);
                     });
-        
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
 ///////////Creating Albums//////////////////
     var album1 = new album({
         artistId:artist2._id,
         albumName:"25",
         tracks: [track1, track2],
         image:image1
-            
+
     });
 
     album1.save().then((res)=>{
@@ -316,7 +311,7 @@ var playlist2 = new playlist({
     tracks:[track1,track2,track3,track4],
     image: image1,
     href:2
-    
+
 });
 
 playlist2.save().then((res)=>{
@@ -349,7 +344,7 @@ var playlist4 = new playlist({
     image:image1,
     tracks: [track5],
     href:5
-    
+
 });
 
 playlist4.save().then((res)=>{
@@ -392,7 +387,3 @@ followPlaylist1.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
-
-
-
-

@@ -10,23 +10,23 @@ bcrypt.genSalt(10, (err, salt) => {
     })
 })
 var ArtistSchema = new mongoose.Schema({
-    artistName: { /////////////
+    artistName: {
         type:String,
         required:true,
         minlength : 1 ,
         trim : true,
-        unique:true 
+        unique:true
     },
-    email:{ ///////////
+    email:{
         type:String,
         //required:true,
         trim:true,
         minlength:1,
         unique : true
     },
-    password:{ ///////////
+    password:{
     type:String,
-    required:true,
+    //required:true,
     trim:true,
     minlength:4,
     },
@@ -41,7 +41,7 @@ var ArtistSchema = new mongoose.Schema({
         type:Number,
         default:-1   // artist is not yet rated by the users of our app
     },
-	  isActive: {  /////////
+	  isActive: {
         type: Boolean,
         default: false
     },
