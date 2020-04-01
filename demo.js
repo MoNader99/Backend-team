@@ -110,7 +110,9 @@ var artist1= new artist({
       commercial success unsurpassed among her peers.`,
     genres:["pop","R&B"],
     rating: 4,
-    image:image3
+    image:image3,
+    gender:"F",
+    birthDate:"1988-05-05"
 });
 
 //SAVING AND RETURNING ID OF THE NEW ARTIST
@@ -132,7 +134,9 @@ var artist2= new artist({
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
     genres: ["sha3by", "R&B"],
-    image:image2
+    image:image2,
+    gender:"M",
+    birthDate:"1988-05-05"
 });
 
 artist2.save().then((res)=>{
@@ -151,7 +155,9 @@ var artist3= new artist({
      record executive and actor. He is one of the most successful musical artists of the 21st century.`,
     genres:["Trap","Jazz","pop","Rap"],
     rating: 4.6,
-    image:image3
+    image:image3,
+    gender:"M",
+    birthDate:"1988-05-05"
 });
 
 artist3.save().then((res)=>{
