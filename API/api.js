@@ -657,7 +657,7 @@
 
  //REGULAR ACCOUNT
 /**
- * @api {patch} api/users/:id/regular    User wants to unsubscribe from premium features
+ * @api {patch} /users/:id/regular    User wants to unsubscribe from premium features
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
  * @apiHeader {string} x-auth          Only users 
@@ -768,7 +768,7 @@
  /** GetATrack
 * ---------------------
 * 
-* @api {Get} api/Tracks/:id               Get a Track
+* @api {Get} /tracks/:id               Get a Track
 * @apiName GetTrack
 * @apiGroup Tracks
 *
@@ -816,12 +816,12 @@
   * GetSeveralTracks
  * ---------------------
  * 
- * @api {Get} api/Tracks               Get several Track
+ * @api {Get} /tracks               Get several Track
  * @apiName GetSeveralTracks
  * @apiGroup Tracks
  *
  * 
- * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 50 IDs. 
+ * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs. 
  * 
  * @apiSuccess {object[]}     200          a set objects of type tracks in JSON format with status code 200
  *
@@ -891,7 +891,7 @@
 * AddTracksToAPlaylist
  * ---------------------
  * 
- * @api {post} api/Playlists/:playlistId/Tracks               Add tracks to a playlist
+ * @api {post} /tracks/:playlistId/playlists               Add tracks to a playlist
  * @apiName AddTracksToAPlaylist
  * @apiGroup Playlists
  *
@@ -935,7 +935,6 @@
  * 
  * 
  */
-
  ///////////////////////Aya Magdy/////////////////////////////
 
  //Sign up user
