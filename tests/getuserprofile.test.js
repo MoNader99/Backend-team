@@ -13,58 +13,162 @@ describe('POST /users/signup', () => {
 
   it('should create new inactive user ', (done) =>
   {
-  //  User.findByCredentials("sw.project.verify@gmail.com","1234").then((user)=>{
+    //  User.findByCredentials("sw.project.verify@gmail.com","1234").then((user)=>{
     //  User.findOneAndRemove(user._id).then(()=>{
-        request(app)
-        .post('/users/signup')
-        .send({
-          "email":"sw.project.verify@gmail.com",
-          "password":"abc1234",
-          "isPremium":false,
-          "userName":"testuser",
-          "gender":"F",
-          "birthDate":"1990-06-19"
-            })
-        .expect((res)=>{
-        //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
-        })
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "password":"abc1234",
+      "isPremium":false,
+      "userName":"testuser",
+      "gender":"F",
+      "birthDate":"1990-06-19"
+    })
+    .expect((res)=>{
+      //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
+    })
 
 
-        .end((err, res)=>{
-if (err)
-{
-  return done(err);
-}
-User.findByEmail("sw.project.verify@gmail.com").then((user)=>{
-console.log(user)
-  expect (user.isPremium).toBe(false);
-  expect (user.userName).toBe("testuser");
-  expect (user.gender).toBe("F");
-// expect (user.birthDate.toString()).toBe("1990-06-19");
-done();
-}).catch((e)=>done(e));
+    .end((err, res)=>{
+      if (err)
+      {
+        return done(err);
+      }
+      User.findByEmail("sw.project.verify@gmail.com").then((user)=>{
+        console.log(user)
+        expect (user.isPremium).toBe(false);
+        expect (user.userName).toBe("testuser");
+        expect (user.gender).toBe("F");
+        // expect (user.birthDate.toString()).toBe("1990-06-19");
+        done();
+      }).catch((e)=>done(e));
 
-        })
+    })
+
+  })
+
+  it('should reject invalid gender ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "password":"1234",
+      "isPremium":false,
+      "userName":"testuser2",
+      "gender":"x",
+      "birthDate":"1990-06-19"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+
+
+  it('should reject empty email ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+
+      "password":"1234",
+      "isPremium":false,
+      "userName":"testuser3",
+      "gender":"M",
+      "birthDate":"1990-06-19"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+
+  it('should reject empty userName ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw222.project.verify@gmail.com",
+      "password":"1234",
+      "isPremium":false,
+      "gender":"M",
+      "birthDate":"1990-06-19"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+  it('should reject empty password ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "isPremium":false,
+      "userName":"testuser2",
+      "gender":"x",
+      "birthDate":"1990-06-19"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+  it('should reject empty gender ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "password":"1234",
+      "isPremium":false,
+      "userName":"testuser2",
+      "birthDate":"1990-06-19"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+  it('should reject empty birthdate ', (done) =>
+  {
+    request(app)
+    .post('/users/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "password":"1234",
+      "isPremium":false,
+      "userName":"testuser2",
+      "gender":"M"
+    })
+    .expect(400)
+
+    .end(done)
+
+  })
+  it('should reject userName if it already exists', (done) =>
+  {
+    User.find().then((users)=>{
+      request(app)
+      .post(`/users/signup`)
+      .send({
+        "userName":users[users.length-1].userName,
+        "gender":"M",
+        "email":"sw.project.verify@gmail.com",
+        "password":"1234",
+        "isPremium":false,
+        "gender":"M",
+        "birthDate":"1990-06-19"
 
       })
+      .expect(409)
+      .end(done)
 
-      it('should reject invalid gender ', (done) =>
-      {
-      request(app)
-            .post('/users/signup')
-            .send({
-              "email":"sw.project.verify@gmail.com",
-              "password":"1234",
-              "isPremium":false,
-              "userName":"testuser",
-              "gender":"x",
-              "birthDate":"1990-06-19"
-                })
-            .expect(400)
-
-            .end(done)
-
-          })
+    })
+  });
 
 })
 
@@ -236,6 +340,7 @@ describe('Patch /users/me/editprofile', () => {
    it('should allow no change in data', (done) =>
     {
         User.find().then((users)=>{
+
             users[users.length-1].generateAuthToken().then((token)=>{
         request(app)
         .patch(`/users/me/editprofile`)
@@ -267,7 +372,7 @@ describe('Patch /users/me/editprofile', () => {
              "birthDate": users[users.length-1].birthDate
 
            })
-         .expect(403)
+         .expect(409)
          .end(done)
          })
      })

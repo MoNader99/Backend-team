@@ -66,20 +66,29 @@ var smtpTransport = nodemailer.createTransport({
 
 
 
-//EDIT USER PROFILE PICTURE REQUEST 
+//EDIT USER PROFILE PICTURE REQUEST
 router.post('/users/profilepicture',AuthenticateUser,upload,reSizeUserImage,uploadImagefn,AssignUserImage);
 ///////////////////////////////////////////
 router.post('/users/signup', async (req, res) => {
-    // try {
-        // const salt = await bcrypt.genSalt();
-        // const hashedPass = await bcrypt.hash(req.body.password, salt);
-        const hashedPass=await userservices.HashPassword(req.body.password);
+  if(!req.body.userName||!req.body.email||!req.body.password||!req.body.gender||!req.body.birthDate)
+  {
+    return res.status(400).send("Missing some fields in the request body");
+  }
+
+  const hashedPass=await userservices.HashPassword(req.body.password);
+
+  User.findOne({userName:req.body.userName}).then((duplicate)=>{
+      if(duplicate)
+      {
+        return res.status(409).send("UserName already exists")
+      }
+      else
+      {
         console.log(hashedPass);
         if(req.body.gender&&req.body.gender.toString()!="M"&&req.body.gender.toString()!="F")
         {
           return res.status(400).send("gender must be 'M' or 'F'");
         }
-
         var newacc = new User(
             {
                 userName: req.body.userName,
@@ -121,7 +130,8 @@ router.post('/users/signup', async (req, res) => {
                 res.status(409).send("UserName and/or Email already exists ");
 
             })
-
+}
+});
     // }
     //
     // catch
@@ -684,7 +694,7 @@ try{
 			if(duplicate&& duplicate._id!=decoded._id)
 			{
 
-				return res.status(403).send("UserName already exists")
+				return res.status(409).send("UserName already exists")
 
 			}
 			else

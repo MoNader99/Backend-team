@@ -66,7 +66,7 @@ var image4 = new images;
 
 //CREATING NEW USER INSTANCES AND SAVING THEM
 var user1= new User({
-    email:"        ahmed.ayman16@yahoo.com      ",
+    email:"        ayaelsackaan.1999@gmail.com      ",
     password:"1234",
     isActive:true,
     userName:"hamadaaa  ",
@@ -81,7 +81,7 @@ user1.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
-///
+//
 var user2= new User({
     email:"mario123@gmail.com",
     password:"kok123",
