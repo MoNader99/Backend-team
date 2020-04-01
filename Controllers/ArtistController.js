@@ -34,7 +34,7 @@ var smtpTransport = nodemailer.createTransport({
 router.post("/artists/profilepicture",AuthenticateArtist,upload,reSizeUserImage,uploadImagefn,AssignArtistImage);
 /////////////////
 
-router.get('/artists/:id', AuthenticationServices.AuthenticateAllUsers, (req, res) => {
+router.get('/artists/:id', AuthenticationServices.AuthenticateFrontend, (req, res) => {
     console.log(req.param.id);
 
     id = req.params.id;
