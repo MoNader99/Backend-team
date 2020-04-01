@@ -1354,5 +1354,138 @@
  *     {
  *        "Notfound"
  *     }
- *
+ * 
  */
+
+
+////////////////// Ranime Hossam //////////////////
+/**
+* Like album
+ * ---------------------
+ * 
+ * @api {post} api/album//like/:id              like album
+ * @apiName  Like album
+ * @apiGroup Album
+ *   
+ *  
+ *@apiParam {string}  id
+ * 
+* @apiHeader {string}  x-auth       user token to like album
+*
+ *@apiHeader (Response Header) {String} x-auth [token given for the logging in user] 
+ * 
+ * @apiSuccessExample {JSON} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+* 
+ *}
+*
+*
+ * @apiError 401   [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401
+ *     {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401
+ *     {
+ *        "Token is Empty"
+ *     }
+ *
+ *
+ * @apiError  403  Forbidden                [Repeating the request more than once for the same user and the same album]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *        "You have already liked that album"
+ *     }
+ *
+ * 
+ * 
+  * @apiError  404  Not found                [this album is not found]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *        "No album found"
+ *     }
+ * 
+ * 
+ *  * @apiError  404  Not found                [this is not an ID]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *        "Invalid id"
+ *     }
+ * 
+ */
+/**
+* Like track
+ * ---------------------
+ * 
+ * @api {post} api/track/like/:id              like track
+ * @apiName  Like track
+ * @apiGroup Track
+ *   
+ *  
+ *@apiParam {string}  id
+ * 
+* @apiHeader {string}  x-auth       user token to like track
+*
+ *@apiHeader (Response Header) {String} x-auth [token given for the logging in user] 
+ * 
+ * @apiSuccessExample {JSON} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+* 
+ *}
+*
+*
+ * @apiError 401   [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401
+ *     {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401
+ *     {
+ *        "Token is Empty"
+ *     }
+ *
+ *
+ * @apiError  403  Forbidden                [Repeating the request more than once for the same user and the same album]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *        "You have already liked that track"
+ *     }
+ *
+ * 
+ * 
+  * @apiError  404  Not found                [this album is not found]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *        "No album found"
+ *     }
+ * 
+ * 
+ *  * @apiError  404  Not found                [this is not an ID]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *        "Invalid id"
+ *     }
+ * 
+ */
+
+ 
+
+

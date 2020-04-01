@@ -528,21 +528,21 @@ router.post('/tracks/like/:id', (req,res) =>
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(400).send('You should Pass a token to access your liked tracks');
+        res.status(401).send('Token is Empty');
     }
     if(!ObjectID.isValid(trackId))
     {
-        return res.status(404).send("invalid id");
+        return res.status(404).send("Invalid id");
     }
     track.findOne({_id:trackId}).then((track) => {
     if(!track){
-        res.status(404).send('their is no such a track in the database');
+        res.status(404).send('No track found');
     }
     })
     User.findByToken(token).then((user) =>{
         if(!user)
         {
-            res.status(401).send();
+            res.status(401).send('Token Invalid');
         }
         console.log('user was found');
         var len =user.likedTracks.length;
@@ -563,7 +563,7 @@ router.post('/tracks/like/:id', (req,res) =>
         {
             if(trackId==user.likedTracks[i])
             {
-                return res.status(403).send('you are trying to like the same track twice');   
+                return res.status(403).send('You have already liked that track');   
             }
         }
         user.likedTracks[len]=ObjectID(trackId.toString());
