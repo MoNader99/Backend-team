@@ -1,0 +1,8 @@
+{
+  "name": "Spotify API documentation" ,
+  "version" : "1.0.0" ,
+  "description" : "API task list manager" ,
+  "template":{
+      "force language":"en"
+  }
+}
