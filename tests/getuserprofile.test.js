@@ -19,11 +19,12 @@ describe('POST /users/signup', () => {
     .post('/users/signup')
     .send({
       "email":"sw.project.verify@gmail.com",
+      "gender":"F",
+      "birthDate":"1990-06-19",
       "password":"abc1234",
       "isPremium":false,
-      "userName":"testuser",
-      "gender":"F",
-      "birthDate":"1990-06-19"
+      "userName":"testuser"
+
     })
     .expect((res)=>{
       //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
@@ -40,6 +41,7 @@ describe('POST /users/signup', () => {
         expect (user.isPremium).toBe(false);
         expect (user.userName).toBe("testuser");
         expect (user.gender).toBe("F");
+        expect(user.isActive).toBe(false);
         var d= new Date("1990-06-19");
         expect (user.birthDate.toString()).toEqual(d);
         done();

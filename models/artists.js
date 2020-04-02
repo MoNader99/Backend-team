@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const password = "2032";
 const jwt = require('jsonwebtoken');
 var { images, ImagesSchema } = require("./images.js"); // images model
+const validator = require('validator');
 
 bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
@@ -22,7 +23,11 @@ var ArtistSchema = new mongoose.Schema({
         //required:true,
         trim:true,
         minlength:1,
-        unique : true
+        unique : true,
+        validate:{
+          validator: validator.isEmail,
+          message: '{value} is not a valid email'
+        }
     },
     password:{
     type:String,
@@ -47,7 +52,7 @@ var ArtistSchema = new mongoose.Schema({
     },
     image: {
         type: ImagesSchema,
-        required: true
+      //  required: true
     },
     gender: {
         type: String,
@@ -150,6 +155,10 @@ ArtistSchema.statics.ActivateByToken = function (token) {
 };
 
 
+ArtistSchema.statics.findByEmail = function (reqEmail) {
+    var artist = this;
+    return artist.findOne({email:reqEmail});
+};
 
 
 var artist = mongoose.model('Artists', ArtistSchema);
