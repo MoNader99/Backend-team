@@ -219,8 +219,8 @@ router.get('/artists/confirm/:code',(req,res) => {
  * @apiGroup Artists
  *
  * @apiHeader {string}  x-auth          Authorization Required. A valid access token.
- *
- * @apiParam {string[]}                 ids array of each Artist's unique ID.
+ * 
+ * @apiParam {string[]}   id               ids array of each Artist's unique ID.
  *
  * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
  *
@@ -259,17 +259,17 @@ router.get('/artists/confirm/:code',(req,res) => {
         }
     ]
 }
- * @apiError ArtistNotFound The id of the Artist was not found.
+ * @apiError Authentication failed    The token sent didn't belong to any user.
  *
- * @apiErrorExample {string} AuthError-Response:
- *     HTTP/1.1 401  Not Found
+ * @apiErrorExample {json} AuthError-Response:
+ *     HTTP/1.1 401  Authentication Failure
  *     {
  *        "message":"authentication failed"
  *     }
  *
- *     @apiError Exceeded 5o ids
+ * @apiError Exceeded 5o ids
  *
- * @apiErrorExample {string}      BadRequest-Response:
+ * @apiErrorExample {json}      BadRequest-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
  *       "message":"maximum 50 ids"
@@ -305,7 +305,7 @@ router.get('/artists',async (req,res)=>{
 
     var returnedArtistArray=[{}];
 
-    if(arr.length>50) {return  res.status(400).json({"message":"maximum 50 Ids only"})}
+    if(arr.length>10) {return  res.status(400).json({"message":"maximum 10 Ids only"})}
 
     for(var i=0;i<arr.length;i++)
     {
