@@ -214,57 +214,57 @@ router.get('/artists/confirm/:code',(req,res) => {
 
 
 /**
- * @api {get} /api/artists Get several Artists
+ * @api {get} /artists Get several Artists
  * @apiName GetSeveralArtists
  * @apiGroup Artists
  *
  * @apiHeader {string}  x-auth          Authorization Required. A valid access token.
  *
- * @apiParam {string[]}        ids array of each Artist's unique ID.
+ * @apiParam {string[]}                 ids array of each Artist's unique ID.
  *
- * @apiSuccess {Artist[]}          artists An array of Artist objects containing the full details of each  Artist.
+ * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *     [
-    {
-        "artistName": "HAmo Beeka",
-        "genres": [
-            "sha3by",
-            "R&B"
-        ],
-        "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter \nwho has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
-        "rating": -1
-    },
-    {
-        "artistName": "Adele",
-        "genres": [
-            "pop",
-            "R&B"
-        ],
-        "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter \n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
-        "rating": 4
-    },
-    {
-        "artistName": "Eminem",
-        "genres": [
-            "Trap",
-            "Jazz",
-            "pop",
-            "Rap"
-        ],
-        "about": "Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer, \n     record executive and actor. He is one of the most successful musical artists of the 21st century.",
-        "rating": 4.6
-    }
-]
+ *     "artists": [
+        {
+            "artistName": "Adele",
+            "genres": [
+                "pop",
+                "R&B"
+            ],
+            "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
+            "rating": 4
+        },
+        {
+            "artistName": "HAmo Beeka",
+            "genres": [
+                "sha3by",
+                "R&B"
+            ],
+            "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
+            "rating": -1
+        },
+        {
+            "artistName": "Eminem",
+            "genres": [
+                "Trap",
+                "Jazz",
+                "pop",
+                "Rap"
+            ],
+            "about": "Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,\n     record executive and actor. He is one of the most successful musical artists of the 21st century.",
+            "rating": 4.6
+        }
+    ]
 }
  * @apiError ArtistNotFound The id of the Artist was not found.
  *
  * @apiErrorExample {string} AuthError-Response:
  *     HTTP/1.1 401  Not Found
  *     {
- *       "authentication failed"
+ *        "message":"authentication failed"
  *     }
  *
  *     @apiError Exceeded 5o ids
@@ -272,15 +272,15 @@ router.get('/artists/confirm/:code',(req,res) => {
  * @apiErrorExample {string}      BadRequest-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
- *       "maximum 50 ids"
+ *       "message":"maximum 50 ids"
  *     }
  *
  *     @apiError invalid id
  *
- * @apiErrorExample {string}       forbidden-Response:
+ * @apiErrorExample {json}       forbidden-Response:
  *     HTTP/1.1 403 forbidden
  *     {
- *       "invalid id"
+ *       "message":"invalid id"
  *     }
  *
  *
@@ -290,49 +290,56 @@ router.get('/artists/confirm/:code',(req,res) => {
 
 router.get('/artists',async (req,res)=>{
 
-    var flag=1
+    
     var token=req.header('x-auth');
 
     User.findByToken(token).then(async(user)=>{
 
         if(!user) {
-            console.log('eeee');
-             flag=0
-            Promise.reject("authenticaton failed");
-            //return res.status(401).send('authentication failed')
+             
+            //Promise.reject("authenticaton failed");
+            return res.status(401).json( {"message" :'authentication failed'})
      };
 
      var arr=req.body.id;
 
     var returnedArtistArray=[{}];
 
-    if(arr.length>50) {return  res.status(400).send("maximum 50 Ids only")}
+    if(arr.length>50) {return  res.status(400).json({"message":"maximum 50 Ids only"})}
 
     for(var i=0;i<arr.length;i++)
     {
     if(!ObjectID.isValid(arr[i]))
     {
-        return res.status(403).send("invalid id");
+        return res.status(403).json({"message":"invalid id"});
     }
 
+    var flag=0;
     await artist.findById(req.body.id[i]).then((artists)=>
     {
-       if(!artists)//{return res.status(404).send("can not find artist");}
-       {
 
+       if(!artists)//return res.status(404).send("can not find artist");}
+       {
+          flag=1;
+         return Promise.reject("artists not found")
+          
 
        }
 
        returnedArtistArray[i]= _.pick(artists, ['artistName', 'genres','about','rating']);;
-    }).catch((e)=>res.status(400).send(e));
+    }).catch((e)=>res.status(404).json({"message":e}));
+if(flag)
+{
+    break;
+}
+}
+if(flag){return;}
 
-
-    }
-res.send(returnedArtistArray);
+res.json({"artists":returnedArtistArray});
 
       }).catch((e)=>{
 
-        return res.status(401).send("authentication failed")
+        return res.status(401).json({"message":"authentication failed"})
     })
 
 })

@@ -909,7 +909,7 @@
  *     }
  *
  *
- * *@apiError  403                      [Forbidden because you crossed the limiting number of tracks in a playlist which is 1000]
+ * *@apiError  403                      [Forbidden because you crossed the limiting number of tracks in a playlist which is 10]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 403 Forbidden
  *     {
@@ -935,6 +935,99 @@
  *
  *
  */
+
+
+
+
+/** 
+
+* @api {get} /artists Get several Artists
+ * @apiName GetSeveralArtists
+ * @apiGroup Artists
+ *
+ * @apiHeader {string}  x-auth          Authorization Required. A valid access token.
+ * 
+ * @apiParam {string[]}   id               ids array of each Artist's unique ID.
+ *
+ * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *     "artists": [
+        {
+            "artistName": "Adele",
+            "genres": [
+                "pop",
+                "R&B"
+            ],
+            "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
+            "rating": 4
+        },
+        {
+            "artistName": "HAmo Beeka",
+            "genres": [
+                "sha3by",
+                "R&B"
+            ],
+            "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
+            "rating": -1
+        },
+        {
+            "artistName": "Eminem",
+            "genres": [
+                "Trap",
+                "Jazz",
+                "pop",
+                "Rap"
+            ],
+            "about": "Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,\n     record executive and actor. He is one of the most successful musical artists of the 21st century.",
+            "rating": 4.6
+        }
+    ]
+}
+ * @apiError 401                 [Authentication failed,The token sent didn't belong to any user]
+ *
+ * @apiErrorExample {json} AuthError-Response:
+ *     HTTP/1.1 401  Authentication Failure
+ *     {
+ *        "message":"authentication failed"
+ *     }
+ *
+ * 
+ * @apiError 400  [exceeded 50 ids]
+ *
+ * @apiErrorExample {json}      BadRequest-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message":"maximum 50 ids"
+ *     }
+ *
+ * 
+ * 
+ *     @apiError  403  [invalid id]
+ *
+ * @apiErrorExample {json}       forbidden-Response:
+ *     HTTP/1.1 403 forbidden
+ *     {
+ *       "message":"invalid id"
+ *     }
+ *
+ * @apiError 404     [artist not found]
+*@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404
+ *     {
+ *        "message":  "artist not found"
+ *     }
+ * 
+ * 
+ * 
+ *
+ */
+
+
+
+
  ///////////////////////Aya Magdy/////////////////////////////
 
  //Sign up user
