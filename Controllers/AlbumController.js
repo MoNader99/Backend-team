@@ -59,12 +59,24 @@ router.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (r
     }
     album.deletebyartist(decoded._id, id).then((str) => {
         console.log(str);
+        console.log("404");
+        console.log("404");
         return res.status(200).send(str);
     }).catch((err) => {
+        console.log("hena");
         console.log(err);
-        if (err = "Notfound") return res.status(404).send(err);
-        if (err = "NotAuthorized") return res.status(403).send(err);
-
+        if (err === "Notfound") {
+            console.log("notfound");
+            return res.status(404).send(err);
+        }
+        else if (err === "NotAuthorized") {
+            console.log("403");
+            return res.status(403).send(err);
+        }
+        else {
+            console.log("404");
+            return res.status(404).send(err);
+        }
     });
 });
 

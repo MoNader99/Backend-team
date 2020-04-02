@@ -23,7 +23,9 @@ describe('POST /artists/login', () => {
       commercial success unsurpassed among her peers.`,
             genres: ["pop", "R&B"],
             rating: 4,
-            image: defaultModule.defaultImage._doc
+            image: defaultModule.defaultImage._doc,
+            gender: "M",
+            birthDate: "1988-05-05"
         });
         testartist.save().then((res) => {
             request(app)
@@ -73,7 +75,9 @@ describe('POST /artists/login', () => {
             genres: ["pop", "R&B"],
             rating: 4,
             image: defaultModule.defaultImage._doc,
-            isActive:true
+            isActive: true,
+            gender: "M",
+            birthDate: "1988-05-05"
         });
 
 
@@ -140,7 +144,9 @@ describe('POST /artists/login', () => {
             genres: ["pop", "R&B"],
             rating: 4,
             image: defaultModule.defaultImage._doc,
-            isActive: true
+            isActive: true,
+            gender: "M",
+            birthDate: "1988-05-05"
         });
 
 

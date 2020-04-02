@@ -53,7 +53,7 @@ AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
 
         if (!Album) {
             console.log("not album")
-            return Promise.reject("not album");
+            return Promise.reject("Notfound");
 
         }
         if (Album.artistId.toString() === artistid) {
@@ -68,8 +68,9 @@ AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
         }
         else {
             console.log(artistid);
-            console.log(Album.artistId._id);
-            return Promise.reject("not authorized");
+            console.log("id");
+            console.log(Album.artistId);
+            return Promise.reject("NotAuthorized");
 
         }
         console.log("fejeif");
