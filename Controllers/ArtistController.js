@@ -107,7 +107,7 @@ router.post('/artists/login', (req, res) => {
  */
 
  router.post('/artists/signup', async (req, res) => {
-   if(!req.body.artistName||!req.body.email||!req.body.password||!req.body.gender||!req.body.birthDate)
+   if(!req.body.artistName||!req.body.email||!req.body.password||!req.body.gender||!req.body.birthDate||!req.body.about)
    {
      return res.status(400).send("Missing some fields in the request body");
    }
@@ -170,7 +170,7 @@ router.post('/artists/login', (req, res) => {
              res.status(200).send("artist added Successfully as inActive. Waiting for Email Confirmation ");
          },
              (err) => {
-                 console.log(err);
+                 console.log("err");
                  res.status(409).send("UserName and/or Email already exists ");
 
              })
