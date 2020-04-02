@@ -139,12 +139,7 @@ router.post('/users/signup', async (req, res) => {
             })
 }
 });
-    // }
-    //
-    // catch
-    // {
-    //     res.status(500).send();
-    // }
+  
 });
 
 

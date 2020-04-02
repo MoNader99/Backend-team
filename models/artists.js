@@ -47,7 +47,7 @@ var ArtistSchema = new mongoose.Schema({
     },
     image: {
         type: ImagesSchema,
-        required: true
+      //  required: true
     },
     gender: {
         type: String,

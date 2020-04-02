@@ -18,6 +18,7 @@ var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
 var upload=require("./../Services/ImageService.js").UploadUserPhoto;
 var AuthenticateArtist= require("./../Services/ImageService.js").AuthenticateArtist;
 var AssignArtistImage=require("./../Services/ImageService.js").AssignArtistImage;
+var userservices = require("./../Services/UserServices.js");
 
 
 
@@ -57,8 +58,8 @@ router.post('/artists/login', (req, res) => {
     console.log(req.body.email);
     var body = _.pick(req.body, ['email', 'password']);
     console.log(2);
-	
-	
+
+
 		artist.findByCredentials(body.email, body.password).then((artist) => {
         console.log(3);
 		if(artist.isActive==true)
@@ -68,12 +69,12 @@ router.post('/artists/login', (req, res) => {
             res.header('x-auth', token).send(artist);
             console.log(5);
         });
-	}	
+	}
 	else
 	{
 		res.status(403).send("Please go to your inbox and click the link to activate your Email.");
 	}
-		
+
     }).catch((e) => {
         console.log(e);
         res.status(401).send("Either email or passwrod is incorrect");
@@ -86,8 +87,8 @@ router.post('/artists/login', (req, res) => {
   /**
  * @api {post} api/artists/signup             Create a new artist
  * @apiName SignUp Request for artists
- * @apiGroup Artists 
- * 
+ * @apiGroup Artists
+ *
  * @apiParam {String} artistName    Unique name of the artist
  * @apiParam {String} email         email of the artist
  * @apiParam {String} password      password of the artist
@@ -100,80 +101,93 @@ router.post('/artists/login', (req, res) => {
  *        "Artist added Successfully as inActive. Waiting for Email Confirmation "
  *     }
  * @apiError (409)  Conflict. the Artist already exists: duplicate artistName or email
- * @apiError (500) Internal Server Error 
+ * @apiError (500) Internal Server Error
  * @apiErrorExample {string} Conflict Error-Response:
  *       "artistName and/or Email already exists "
  */
 
-router.post('/artists/signup', async (req, res) => {
-    try {
-        const salt = await bcrypt.genSalt();
-        const hashedPass = await bcrypt.hash(req.body.password, salt);
-      
-        var newacc = new artist(
-            {
-               artistName: req.body.artistName,
-               email: req.body.email,
-               password: hashedPass,
-               about: req.body.about,
+ router.post('/artists/signup', async (req, res) => {
+   if(!req.body.artistName||!req.body.email||!req.body.password||!req.body.gender||!req.body.birthDate)
+   {
+     return res.status(400).send("Missing some fields in the request body");
+   }
+   var timestamp = Date.parse(req.body.birthDate);
 
-            });
-        console.log('2et3amal');
-        newacc.save().then((doc) => {
-            console.log("skod");
-	
-	
-		
-		var access= 'auth';		
-		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforartist',{expiresIn:'1d'});
-		console.log(code);
-		
-		var host=req.get('host');
-		var link="http://"+req.get('host')+"/artists/confirm/"+code;
-		console.log(link);
-		var mailOptions={
-			to : req.body.email,
-			subject : "Please confirm your Email account",
-			html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
-			}
-		console.log(mailOptions);
-		smtpTransport.sendMail(mailOptions, function(error, response){
-		 if(error){
-				console.log(error);
-			res.end("error");
-		 }else{
-				console.log("Message sent: " + response.message);
-			res.end("sent");
-			 }
-			 
-});
+   if (isNaN(timestamp))
+   {
+       return res.status(400).send("invalid date format. use yyyy-mm-dd");
+   }
+   var correctDate = new Date(timestamp)
 
-            res.status(200).send("Artist added Successfully as inActive. Waiting for Email Confirmation ");
-        },
-            (err) => {
-                console.log(err);
-                res.status(409).send("artistName and/or Email already exists ");
+   const hashedPass=await userservices.HashPassword(req.body.password);
 
-            })
+   artist.findOne({$or:[{artistName:req.body.artistName},{email: req.body.email}]}).then((duplicate)=>{
+       if(duplicate)
+       {
+         return res.status(409).send("artistName and/or email already exist")
+       }
+       else
+       {
+         console.log(hashedPass);
+         if(req.body.gender&&req.body.gender.toString()!="M"&&req.body.gender.toString()!="F")
+         {
+           return res.status(400).send("gender must be 'M' or 'F'");
+         }
+         var newacc = new artist(
+             {
+                 artistName: req.body.artistName,
+                 email: req.body.email,
+                 password: hashedPass,
+                 about:req.body.about,
+                 gender: req.body.gender,
+                 birthDate: correctDate
 
-    }
+             });
 
-    catch(err)
-    {
-        console.log(err);
-        res.status(500).send(err);
-        
-    }
-});
+         newacc.save().then((doc) => {
+ 		var access= 'auth';
+ 		var code = jwt.sign({ _id: newacc._id.toHexString(), access }, 'secretkeyforartist',{expiresIn:'1d'});
+ 		var host=req.get('host');
+ 		var link="http://"+req.get('host')+"/artists/confirm/"+code;
+ 	//	console.log(link);
+ 		var mailOptions={
+ 			to : req.body.email,
+ 			subject : "Please confirm your Email account",
+ 			html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+ 			}
 
- //CONFIRMATION OF ARTIST SIGNUP 
+ 		smtpTransport.sendMail(mailOptions, function(error, response){
+ 		 if(error){
+ 				console.log(error);
+ 			res.end("error");
+ 		 }else{
+ 			res.end("sent");
+ 			 }
+
+ });
+
+
+             res.status(200).send("artist added Successfully as inActive. Waiting for Email Confirmation ");
+         },
+             (err) => {
+                 console.log(err);
+                 res.status(409).send("UserName and/or Email already exists ");
+
+             })
+ }
+ });
+
+ });
+
+
+ //CONFIRMATION OF ARTIST SIGNUP
 /**
- * @api {get} api/artists/confirm/:code      SignUp Confrimation 
+ * @api {get} api/artists/confirm/:code      SignUp Confrimation
  * @apiName SignUp Confirmed for artists
  * @apiGroup Artists
- * 
+ *
  * @apiParam {String} code    artist-specific code to activate his account
- * 
+ *
  * @apiSuccess  (200) artist was activated successfully
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -181,8 +195,8 @@ router.post('/artists/signup', async (req, res) => {
  *       "Email confirmed successfully!"
  *     }
  * @apiError (404)  artist not found.
- * @apiError (401) Unauthorized. Recieved a corrupted code. 
- * 
+ * @apiError (401) Unauthorized. Recieved a corrupted code.
+ *
  */
 
 router.get('/artists/confirm/:code',(req,res) => {
@@ -191,12 +205,12 @@ router.get('/artists/confirm/:code',(req,res) => {
 			res.status(404).send("not found");
             return Promise.reject();
         }
-	
+
 		res.status(200).send("Email confirmed successfully!");
     }).catch((e) => {
         res.status(401).send();
     })
-})		
+})
 
 
 /**
@@ -205,11 +219,11 @@ router.get('/artists/confirm/:code',(req,res) => {
  * @apiGroup Artists
  *
  * @apiHeader {string}  x-auth          Authorization Required. A valid access token.
- * 
+ *
  * @apiParam {string[]}        ids array of each Artist's unique ID.
  *
  * @apiSuccess {Artist[]}          artists An array of Artist objects containing the full details of each  Artist.
- * 
+ *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -252,15 +266,15 @@ router.get('/artists/confirm/:code',(req,res) => {
  *     {
  *       "authentication failed"
  *     }
- *     
- *     @apiError Exceeded 5o ids 
+ *
+ *     @apiError Exceeded 5o ids
  *
  * @apiErrorExample {string}      BadRequest-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
  *       "maximum 50 ids"
  *     }
- * 
+ *
  *     @apiError invalid id
  *
  * @apiErrorExample {string}       forbidden-Response:
@@ -268,9 +282,9 @@ router.get('/artists/confirm/:code',(req,res) => {
  *     {
  *       "invalid id"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 
@@ -281,7 +295,7 @@ router.get('/artists',async (req,res)=>{
 
     User.findByToken(token).then(async(user)=>{
 
-        if(!user) { 
+        if(!user) {
             console.log('eeee');
              flag=0
             Promise.reject("authenticaton failed");
@@ -289,7 +303,7 @@ router.get('/artists',async (req,res)=>{
      };
 
      var arr=req.body.id;
-  
+
     var returnedArtistArray=[{}];
 
     if(arr.length>50) {return  res.status(400).send("maximum 50 Ids only")}
@@ -305,10 +319,10 @@ router.get('/artists',async (req,res)=>{
     {
        if(!artists)//{return res.status(404).send("can not find artist");}
        {
-         
 
-       } 
-       
+
+       }
+
        returnedArtistArray[i]= _.pick(artists, ['artistName', 'genres','about','rating']);;
     }).catch((e)=>res.status(400).send(e));
 
@@ -317,7 +331,7 @@ router.get('/artists',async (req,res)=>{
 res.send(returnedArtistArray);
 
       }).catch((e)=>{
-        
+
         return res.status(401).send("authentication failed")
     })
 
