@@ -20,17 +20,18 @@ var { playlist } = require("../models/playlists.js");
 var _ = require('lodash');
 const defaultModule = require("./../defaultimage");
 
-
+var testToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZyb250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s';
 
 
 describe('search /Search', () => {
 
-    it('return album when the user searches for',  (done) => {
+    it('return album when the user searches for', (done) => {
         album.find().then((albums) => {
             var testalbum = albums[albums.length - 1];
             artistservices.GetArtistById(testalbum.artistId.toString()).then((name) => {
                 request(app)
                     .get(`/Search`)
+                    .set('x-auth', testToken)
                     .query('word', testalbum.albumName)
                     .expect(200)
                     .expect((res) => {
@@ -48,6 +49,7 @@ describe('search /Search', () => {
 
             request(app)
                 .get(`/Search`)
+                .set('x-auth', testToken)
                 .query('word', testuser.userName)
                 .expect(200)
                 .expect((res) => {
@@ -62,54 +64,74 @@ describe('search /Search', () => {
             var testplaylist = playlists[playlists.length - 1];
             userservices.GetUserById(testplaylist.userId.toString()).then((name) => {
                 console.log(name);
-            request(app)
+                request(app)
                     .get(`/Search`)
+                    .set('x-auth', testToken)
                     .query('word', testplaylist.playlistName)
                     .expect(200)
-                .expect((res) => {
+                    .expect((res) => {
 
 
                         expect(res.body.Playlists.map(function (value) { return value._id })).to.include(testplaylist._id.toString());
 
-                       expect(res.body.Playlists.map(function (value) { return value.userName })).to.include(name);
+                        expect(res.body.Playlists.map(function (value) { return value.userName })).to.include(name);
                         // end(done);
 
                     })
-                .end(done)
-                })
-                
+                    .end(done)
+            })
+
 
         })
     });
     it('return tracks when the user searches for', (done) => {
         track.find().then((tracks) => {
             var testtrack = tracks[tracks.length - 1];
-            artistservices.GetArtistById(testtrack.artistId.toString()).then((name)=> {
+            artistservices.GetArtistById(testtrack.artistId.toString()).then((name) => {
                 request(app)
-                .get(`/Search`)
-                .query('word', testtrack.teackName)
-                .expect(200)
-                .expect((res) => {
-                    console.log(testtrack);
-                    //console.log(res.body.Tracks.map(function (value) { return value._id }));
-                    expect(res.body.Tracks.map(function (value) { return value._id })).to.include(testtrack._id.toString());
-                    expect(res.body.Tracks.map(function (value) { return value.artistName })).to.include(name);
-                })
-                .end(done)
+                    .get(`/Search`)
+                    .set('x-auth', testToken)
+                    .query('word', testtrack.teackName)
+                    .expect(200)
+                    .expect((res) => {
+                        console.log(testtrack);
+                        //console.log(res.body.Tracks.map(function (value) { return value._id }));
+                        expect(res.body.Tracks.map(function (value) { return value._id })).to.include(testtrack._id.toString());
+                        expect(res.body.Tracks.map(function (value) { return value.artistName })).to.include(name);
+                    })
+                    .end(done)
+            })
         })
+    })
+    it('return authorization error when the token is wrong', (done) => {
+       var wrongtoken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZyb250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68';
+        track.find().then((tracks) => {
+            var testtrack = tracks[tracks.length - 1];
+            artistservices.GetArtistById(testtrack.artistId.toString()).then((name) => {
+                request(app)
+                    .get(`/Search`)
+                    .set('x-auth', wrongtoken)
+                    .query('word', testtrack.teackName)
+                    .expect(401)
+                    .expect((res) => {
+                        console.log(testtrack);
+                        expect(res.error.text).to.equal("Token is not valid");
+                    })
+                    .end(done)
+            })
         })
-        })
+    })
     it('return artists when the user searches for', (done) => {
 
         artist.find().then((artists) => {
-                var testartist = artists[artists.length - 1];
-                var testalbum = new album({
+            var testartist = artists[artists.length - 1];
+            var testalbum = new album({
                 artistId: testartist._id,
                 albumName: "fortesting",
                 tracks: [],
                 image: defaultModule.defaultImage._doc
 
-                });
+            });
             var testtrack = new track({
                 artistId: testartist._id,
                 trackName: "searchtesting",
@@ -125,6 +147,7 @@ describe('search /Search', () => {
 
                     request(app)
                         .get(`/Search`)
+                        .set('x-auth', testToken)
                         .query('word', testartist.artistName)
                         .expect(200)
                         .expect((res) => {
@@ -169,10 +192,10 @@ describe('search /Search', () => {
             });
         }, (err) => {
             done(err);
-        });        
-                   // console.log(res._id);
-
-
-            })
         });
- 
+        // console.log(res._id);
+
+
+    })
+});
+

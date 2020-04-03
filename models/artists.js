@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const password = "2032";
 const jwt = require('jsonwebtoken');
 var { images, ImagesSchema } = require("./images.js"); // images model
+const validator = require('validator');
 
 bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(password, salt, (err, hash) => {
@@ -10,23 +11,27 @@ bcrypt.genSalt(10, (err, salt) => {
     })
 })
 var ArtistSchema = new mongoose.Schema({
-    artistName: { /////////////
+    artistName: {
         type:String,
         required:true,
         minlength : 1 ,
         trim : true,
-        unique:true 
+        unique:true
     },
-    email:{ ///////////
+    email:{
         type:String,
         //required:true,
         trim:true,
         minlength:1,
-        unique : true
+        unique : true,
+        validate:{
+          validator: validator.isEmail,
+          message: '{value} is not a valid email'
+        }
     },
-    password:{ ///////////
+    password:{
     type:String,
-    required:true,
+    //required:true,
     trim:true,
     minlength:4,
     },
@@ -41,15 +46,28 @@ var ArtistSchema = new mongoose.Schema({
         type:Number,
         default:-1   // artist is not yet rated by the users of our app
     },
-	  isActive: {  /////////
+	  isActive: {
         type: Boolean,
         default: false
     },
     image: {
         type: ImagesSchema,
-        required: true
+      //  required: true
+    },
+    gender: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 1,
+        maxlength: 1,
+        enum: ["M", "F"],
+    },
+    birthDate: {
+        type: Date,
+        required: true,
+        min: '1920-12-31',
+        max: '2005-12-31'
     }
-
 });
 
 ArtistSchema.statics.findByCredentials = function (email, password) {
@@ -137,6 +155,10 @@ ArtistSchema.statics.ActivateByToken = function (token) {
 };
 
 
+ArtistSchema.statics.findByEmail = function (reqEmail) {
+    var artist = this;
+    return artist.findOne({email:reqEmail});
+};
 
 
 var artist = mongoose.model('Artists', ArtistSchema);

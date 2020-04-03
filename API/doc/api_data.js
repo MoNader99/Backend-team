@@ -87,6 +87,111 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "api/album//like/:id",
+    "title": "like album",
+    "name": "Like_album",
+    "group": "Album",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user token to like album</p>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>[token given for the logging in user]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n     {\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Forbidden                [Repeating the request more than once for the same user and the same album]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                [this album is not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n{\n   \"Token is not valid\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n{\n   \"Token is Empty\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 Forbidden\n{\n   \"You have already liked that album\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"No album found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "post",
     "url": "api/users/login",
     "title": "login for artist",
     "name": "Artist_login",
@@ -263,6 +368,114 @@ define({ "api": [
     "groupTitle": "Artists"
   },
   {
+    "type": "get",
+    "url": "/artists",
+    "title": "Get several Artists",
+    "name": "GetSeveralArtists",
+    "group": "Artists",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Authorization Required. A valid access token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string[]",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ids array of each Artist's unique ID.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "artists[]",
+            "optional": false,
+            "field": "artists",
+            "description": "<p>An array of Artist objects containing the full details of each  Artist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n    \"artists\": [\n        {\n            \"artistName\": \"Adele\",\n            \"genres\": [\n                \"pop\",\n                \"R&B\"\n            ],\n            \"about\": \"Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\\n      commercial success unsurpassed among her peers.\",\n            \"rating\": 4\n        },\n        {\n            \"artistName\": \"HAmo Beeka\",\n            \"genres\": [\n                \"sha3by\",\n                \"R&B\"\n            ],\n            \"about\": \"Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\\n      commercial success unsurpassed among her peers.\",\n            \"rating\": -1\n        },\n        {\n            \"artistName\": \"Eminem\",\n            \"genres\": [\n                \"Trap\",\n                \"Jazz\",\n                \"pop\",\n                \"Rap\"\n            ],\n            \"about\": \"Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,\\n     record executive and actor. He is one of the most successful musical artists of the 21st century.\",\n            \"rating\": 4.6\n        }\n    ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Authentication failed,The token sent didn't belong to any user]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[exceeded 50 ids]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>[invalid id]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[artist not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "AuthError-Response:",
+          "content": "HTTP/1.1 401  Authentication Failure\n{\n   \"message\":\"authentication failed\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "BadRequest-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\":\"maximum 50 ids\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "forbidden-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"message\":\"invalid id\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404\n{\n   \"message\":  \"artist not found\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Artists"
+  },
+  {
     "type": "Get",
     "url": "api/Artists/:id",
     "title": "Get artist",
@@ -337,7 +550,7 @@ define({ "api": [
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 \n{\n  \"can not find artist\"\n}",
+          "content": "HTTP/1.1 404\n{\n  \"can not find artist\"\n}",
           "type": "JSON"
         }
       ]
@@ -551,7 +764,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n \n  \"message\": \"tracks added successfully\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n\n  \"message\": \"tracks added successfully\"\n}",
           "type": "json"
         }
       ]
@@ -563,7 +776,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "403",
-            "description": "<p>[Forbidden because you crossed the limiting number of tracks in a playlist which is 1000]</p>"
+            "description": "<p>[Forbidden because you crossed the limiting number of tracks in a playlist which is 10]</p>"
           },
           {
             "group": "Error 4xx",
@@ -587,12 +800,12 @@ define({ "api": [
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401 \n{\n   \"message\":  \"authentication failed\"\n}",
+          "content": "HTTP/1.1 401\n{\n   \"message\":  \"authentication failed\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 \n{\n   \"message\":  \"playlist not found\"\n}",
+          "content": "HTTP/1.1 404\n{\n   \"message\":  \"playlist not found\"\n}",
           "type": "JSON"
         }
       ]
@@ -1019,7 +1232,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 302 \n{\n       \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5527\"),\n       \"contentType\": image/png\n          \"data\":array of image pixels(HUGE)\n       \"__v\" : 0\n}",
+          "content": "HTTP/1.1 302\n{\n       \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5527\"),\n       \"contentType\": image/png\n          \"data\":array of image pixels(HUGE)\n       \"__v\" : 0\n}",
           "type": "JSON"
         }
       ]
@@ -1168,6 +1381,111 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "api/track/like/:id",
+    "title": "like track",
+    "name": "Like_track",
+    "group": "Track",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user token to like track</p>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>[token given for the logging in user]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n     {\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Forbidden                [Repeating the request more than once for the same user and the same album]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                [this album is not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n{\n   \"Token is not valid\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n{\n   \"Token is Empty\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 Forbidden\n{\n   \"You have already liked that track\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"No album found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Track"
+  },
+  {
+    "type": "post",
     "url": "/tracks",
     "title": "Add Track",
     "name": "AddTrack",
@@ -1247,7 +1565,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5539\"),\n     \"artistId\" : \"5e7511fa1a2c59902efa552d\",\n     \"trackName\" : \"Godzilla\",\n      \"duration\" : 223000,\n      \"image\" : {\n         \"url\" : \"www.images/imag23e/23454\",\n         \"height\" : 176,\n         \"width\" : 65,\n         \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5528\")\n      },\n     \"url\" : \"vvv\",\n     \"genre\" :\"Trap\"\n     \"rating\" : 9,\n     \"__v\" : 0 \n\n}",
+          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5539\"),\n     \"artistId\" : \"5e7511fa1a2c59902efa552d\",\n     \"trackName\" : \"Godzilla\",\n      \"duration\" : 223000,\n      \"image\" : {\n         \"url\" : \"www.images/imag23e/23454\",\n         \"height\" : 176,\n         \"width\" : 65,\n         \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5528\")\n      },\n     \"url\" : \"vvv\",\n     \"genre\" :\"Trap\"\n     \"rating\" : 9,\n     \"__v\" : 0\n\n}",
           "type": "JSON"
         }
       ]
@@ -1583,7 +1901,7 @@ define({ "api": [
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 \n{\n  \"message\": \"invalid id\"\n}",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"invalid id\"\n}",
           "type": "JSON"
         }
       ]
@@ -1732,7 +2050,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n      \"message\" : \"Email confirmed successfully,Welcome To Premium Life!\" \n\n\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n      \"message\" : \"Email confirmed successfully,Welcome To Premium Life!\"\n\n\n\n}",
           "type": "json"
         }
       ]
@@ -1751,8 +2069,110 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401 \n {\n   \"message\":\"authentication Failed or invalid token\"\n }",
+          "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed or invalid token\"\n }",
           "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "patch",
+    "url": "/api/users/me/editprofile",
+    "title": "edit current user's profile",
+    "name": "Edit_Current_User's_Profile",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header Fields": [
+          {
+            "group": "Header Fields",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Required. A valid access token.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Body Parameters": [
+          {
+            "group": "Body Parameters",
+            "type": "string",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>the name visible to othe users.</p>"
+          },
+          {
+            "group": "Body Parameters",
+            "type": "string",
+            "optional": false,
+            "field": "birthDate",
+            "description": "<p>user's birthdate.</p>"
+          },
+          {
+            "group": "Body Parameters",
+            "type": "string",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>user's gender 'M' or 'F'.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "Bad",
+            "description": "<p>request. invalid body parameters such as birthDate or gender.</p>"
+          }
+        ],
+        "401": [
+          {
+            "group": "401",
+            "optional": false,
+            "field": "Authentication",
+            "description": "<p>failed.</p>"
+          }
+        ],
+        "403": [
+          {
+            "group": "403",
+            "optional": false,
+            "field": "Conflict.",
+            "description": "<p>userName already exists</p>"
+          }
+        ],
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "user",
+            "description": "<p>not found.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "AuthError-Response:",
+          "content": "HTTP/1.1 401 Access denied\n{\n  \"error\": \"Authentication failed or invalied token.\"\n}",
+          "type": "string"
         }
       ]
     },
@@ -1910,7 +2330,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 302 \n{\n       [\n  {\n      \"_id\": \"5e7511fa1a2c59902efa552d\",\n      \"password\": \"5080\",\n      \"artistName\": \"Eminem\",\n      \"about\": \"Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer, \\n     record executive and actor. He is one of the most successful musical artists of the 21st century.\",\n      \"__v\": 0,\n      \"isActive\": false,\n      \"rating\": 4.6,\n      \"genres\": [\n          \"Trap\",\n          \"Jazz\",\n          \"pop\",\n          \"Rap\"\n      ]\n  },\n  {\n      \"_id\": \"5e7511fa1a2c59902efa552c\",\n      \"email\": \"beeka70@hotmail.com\",\n      \"password\": \"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS\",\n      \"artistName\": \"HAmo Beeka\",\n      \"about\": \"Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter \\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\\n      commercial success unsurpassed among her peers.\",\n      \"__v\": 0,\n      \"isActive\": false,\n      \"rating\": -1,\n      \"genres\": [\n          \"sha3by\",\n          \"R&B\"\n      ]\n  }\n ]\n         \n}",
+          "content": "    HTTP/1.1 302\n{\n       [\n  {\n      \"_id\": \"5e7511fa1a2c59902efa552d\",\n      \"password\": \"5080\",\n      \"artistName\": \"Eminem\",\n      \"about\": \"Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer, \\n     record executive and actor. He is one of the most successful musical artists of the 21st century.\",\n      \"__v\": 0,\n      \"isActive\": false,\n      \"rating\": 4.6,\n      \"genres\": [\n          \"Trap\",\n          \"Jazz\",\n          \"pop\",\n          \"Rap\"\n      ]\n  },\n  {\n      \"_id\": \"5e7511fa1a2c59902efa552c\",\n      \"email\": \"beeka70@hotmail.com\",\n      \"password\": \"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS\",\n      \"artistName\": \"HAmo Beeka\",\n      \"about\": \"Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter \\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\\n      commercial success unsurpassed among her peers.\",\n      \"__v\": 0,\n      \"isActive\": false,\n      \"rating\": -1,\n      \"genres\": [\n          \"sha3by\",\n          \"R&B\"\n      ]\n  }\n ]\n\n}",
           "type": "JSON"
         }
       ]
@@ -2001,12 +2421,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \n  \"message\": \"confirmation request has been sent, You will be a premium user soon\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n\n  \"message\": \"confirmation request has been sent, You will be a premium user soon\"\n}",
           "type": "json"
         },
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n \n  \"message\": \"You are already a premium user.Thanks for that\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n\n  \"message\": \"You are already a premium user.Thanks for that\"\n}",
           "type": "json"
         }
       ]
@@ -2031,7 +2451,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401 \n {\n   \"message\":\"authentication Failed\" \"\n }",
+          "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed\" \"\n }",
           "type": "json"
         },
         {
@@ -2209,7 +2629,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Conflict Error-Response:",
-          "content": "HTTP/1.1 409 \n   \"UserName and/or Email already exists \"",
+          "content": "HTTP/1.1 409\n   \"UserName and/or Email already exists \"",
           "type": "string"
         }
       ]
@@ -2359,12 +2779,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 \n {\n   \"message\":\"you are not premium , you already have a regular account \"\n }",
+          "content": "HTTP/1.1 404\n {\n   \"message\":\"you are not premium , you already have a regular account \"\n }",
           "type": "json"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401 \n {\n   \"message\":\"authentication Failed\" \"\n }",
+          "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed\" \"\n }",
           "type": "json"
         }
       ]
