@@ -64,8 +64,11 @@ router.post('/artists/login', (req, res) => {
         console.log(3);
 		if(artist.isActive==true)
 	{
-        return artist.generateAuthToken().then((token) => {
+            return artist.generateAuthToken().then((token) => {
+            console.log("da5a5aalapd");
+            var decodedtoken = jwt.verify(token, 'secretkeyforartist')
             console.log(4);
+            console.log(decodedtoken._id);
             res.header('x-auth', token).send(artist);
             console.log(5);
         });

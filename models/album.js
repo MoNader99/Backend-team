@@ -4,6 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 var { images, ImagesSchema } = require("./images.js"); // images model
 //var { artist } = require("../models/artists.js");
 const defaultModule = require("./../defaultimage");
+var { track } = require("../models/track.js");
 
 
 var AlbumSchema = new mongoose.Schema({
@@ -44,7 +45,9 @@ var AlbumSchema = new mongoose.Schema({
       min:0,
     },
 })
-
+var deletealbumtracks = function (album) {
+   return track.deleteMany({ '_id': { $in: album.tracks.map(function (value) { return value.toString() }) } });
+}
 AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
     album = this;
    // artistid = new ObjectID(artistid);
@@ -59,8 +62,19 @@ AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
         if (Album.artistId.toString() === artistid) {
             console.log("ukpl");
             return album.findByIdAndRemove(albumid).then((alb) => {
+                //var trackstobedeleted = alb.tracks;
+                //console.log(trackstobedeleted);
+                //var tracksids = trackstobedeleted.map(function (value) { return value._id })
+                //trackstobedeleted.map(function (value) { return value._id.toString() })
+                return deletealbumtracks(alb).then((result) => {
+                    return Promise.resolve("deleted");
+
+                }).catch((err) => {
+                    return Promise.reject(err);
+                })
+
                 console.log("kfho");
-                return Promise.resolve("deleted");
+                
             }).catch((e) => {
                 console.log("kfojf");
                 return Promise.reject(e);
