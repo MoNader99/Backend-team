@@ -1,4 +1,4 @@
-/////////////////////////// Ranime /////////////////////////////////////////
+/////////////////////////// Ahmed /////////////////////////////////////////
 /**
  * AddTrack
  * ---------------------
@@ -1443,7 +1443,7 @@
  *
   * @apiError  404  Not found                [this album is not found]
  *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Forbidden
+ *     HTTP/1.1 404 Not found 
  *     {
  *        "Notfound"
  *     }
@@ -1474,17 +1474,17 @@
  *}
 *
 *
- * @apiError 401   [authentication failed]
+ * @apiError 401   Unauthorized          [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is not valid"
  *     }
  *
  *
- * @apiError 401   [authentication failed]
+ * @apiError 401   Unauthorized          [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401
+ *     HTTP/1.1 401  Unauthorized
  *     {
  *        "Token is Empty"
  *     }
@@ -1579,6 +1579,49 @@
  * 
  */
 
+
+ /**
+ * change password
+ * ---------------
+ * @api {put} /api/changepassword Change password
+ * @apiName change password
+ * @apiGroup User privacy
+ *
+ * @apiHeader {string}  x-auth    
+ * 
+ * @apiParam {string} oldPassword
+ * @apiParam {string} newPassword
+ * 
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "Password has been changed successfully"
+ *     }
+ *     
+ * * @apiError  403  Forbidden                [Password is incorrect]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 403  Forbidden 
+ *     {
+ *        "Password is incorrect"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ * 
+ */
  
 
 

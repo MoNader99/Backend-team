@@ -729,7 +729,7 @@ describe('GET /users/confirm/:code', () => {
              request(app)
              .put(`/users/changePassword`)
              .set('x-auth',token)
-             .expect(400)
+             .expect(401)
              .end(done)
          })
 
