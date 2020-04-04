@@ -1,4 +1,4 @@
-/////////////////////////// Ranime /////////////////////////////////////////
+/////////////////////////// Ahmed /////////////////////////////////////////
 /**
  * AddTrack
  * ---------------------
@@ -367,14 +367,11 @@
  *
 * @apiParam {string} playlistName       Name of the playlist he wants to get its cover image
  *
- * @apiSuccess 302                     [The response of the sucess case is the image object]
+ * @apiSuccess 302                     [The response of the sucess case is the url to the image file]
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
  *     {
- *            "_id" : ObjectId("5e7511fa1a2c59902efa5527"),
- *            "contentType": image/png
-              "data":array of image pixels(HUGE)
- *            "__v" : 0
+              .real Server Url will  be here/Pictures/default.png
  *     }
  *
  * @apiError  400                     [playlist name is missing (Obligatory filed)]
@@ -619,7 +616,6 @@
  *       "message":"Sending Failed"
  *     }
 * @apiError  404       [email of the user not found ]
-
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 not found
  *     {
@@ -660,7 +656,7 @@
  * @api {patch} /users/:id/regular    User wants to unsubscribe from premium features
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
- * @apiHeader {string} x-auth          Only users
+ * @apiHeader {string} x-auth        the token Only users
  * @apiParam {String} id          the id of the user has to be passed
  *
  * @apiSuccessExample {json} Success-Response:
@@ -668,12 +664,10 @@
  *     {
  *       "message": "Your account has been changed to regular account"
  *     }
-
  *
- * @apiError 404         [You are  not premium in the firstplace]
  *
- * @apiErrorExample {json} Error-Response:
- *    HTTP/1.1 404
+ * @apiSuccessExample {json} Error-Response:
+ *    HTTP/1.1 200
  *     {
  *       "message":"you are not premium , you already have a regular account "
  *     }
@@ -756,8 +750,12 @@
  *       "message":"authentication Failed or invalid token"
  *     }
  *
-
- *
+ *@apiError 404    user not found
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 404
+ *     {
+ *       "message":"not found"
+ *     }
  *
  *
  *
@@ -775,12 +773,12 @@
 *
 * @apiParam {string}    id           the id of the track that the artist wants to delete
 *
-* @apiSuccess {object}               object of type track in JSON formatwith status code 200
+* @apiSuccess {object}  tracks             object of type track in JSON formatwith status code 200
 *
 * @apiSuccessExample {JSON} Success-Response:
 *     HTTP/1.1 200 OK
 *      {
-*          ""tracks": {
+*          "tracks": {
         "rating": 10,
         "duration": 360000,
         "_id": "5e6b7dac91cb724878446635",
@@ -823,42 +821,38 @@
  *
  * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
  *
- * @apiSuccess {object[]}     200          a set objects of type tracks in JSON format with status code 200
+ * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
  *
  * * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
-[
-    {
-        "rating": 8,
-        "_id": "5e74925ca9200c404c566eff",
-        "artistId": "5e74925ca9200c404c566ef5",
-        "trackName": "set fire to the rain",
-        "duration": 240000,
-        "image": {
-            "_id": "5e74925ca9200c404c566ef2",
-            "url": "www.images/imag23e/23454",
-            "height": 176,
-            "width": 65
+{
+    "tracks": [
+        {
+            "_id": "5e88ce838d92547020e1a65a",
+            "artistId": "5e88ce838d92547020e1a652",
+            "trackName": "Godzilla",
+            "duration": 223000,
+            "genre": "rap",
+            "url": "vvv",
+            "__v": 0,
+            "imagePath": "./Pictures/default.png",
+            "likes": 0,
+            "rating": 9
         },
-        "url": "nnnn",
-        "__v": 0
-    },
-    {
-        "rating": 9,
-        "_id": "5e74925ca9200c404c566f03",
-        "artistId": "5e74925ca9200c404c566ef7",
-        "trackName": "Godzilla",
-        "duration": 223000,
-        "image": {
-            "_id": "5e74925ca9200c404c566ef2",
-            "url": "www.images/imag23e/23454",
-            "height": 176,
-            "width": 65
-        },
-        "url": "vvv",
-        "__v": 0
-    }
-]
+        {
+            "_id": "5e88ce838d92547020e1a656",
+            "artistId": "5e88ce838d92547020e1a650",
+            "trackName": "Hello",
+            "duration": 360000,
+            "genre": "pop",
+            "url": "uuu",
+            "__v": 0,
+            "imagePath": "./Pictures/default.png",
+            "likes": 0,
+            "rating": 10
+        }
+    ]
+}
  *
  *
  * *@apiError  404                      [Track not found]
@@ -926,13 +920,20 @@
  *
  *
  *
- * @apiError 404     [playlist not found]
+ * @apiError 404     [playlist or tracks not found]
 *@apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404
  *     {
  *        "message":  "playlist not found"
  *     }
  *
+ * 
+ * 
+*@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404
+ *     {
+ *        "message":  "tracks not found"
+ *     }
  *
  */
 
@@ -940,7 +941,6 @@
 
 
 /** 
-
 * @api {get} /artists Get several Artists
  * @apiName GetSeveralArtists
  * @apiGroup Artists
@@ -949,7 +949,7 @@
  * 
  * @apiParam {string[]}   id               ids array of each Artist's unique ID.
  *
- * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
+ * @apiSuccess {object[]} artists           An array of Artist objects containing the full details of each  Artist.
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
@@ -1253,22 +1253,26 @@
 * @apiSuccess {object}               object of type artist in JSON formatwith status code 200
 *
 * @apiSuccessExample {JSON} Success-Response:
-*     HTTP/1.1 200 OK
-*      {
-*              "artist": {
-*        "_id": "5e6942b6646c86bc20fc9a93",
-*        "email": "beeka70@hotmail.com",
-*        "password": "$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS",
-*        "artistName": "HAmo Beeka",
-*        "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter \n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
-*        "__v": 0,
-*        "isActive": false,
-*        "rating": -1,
-*        "genres": [
-*            "sha3by",
-*            "R&B"
-*        ]
-*    }
+*     HTTP/1.1 200 OK{
+*      
+*{
+*    "_id" : ObjectId("5e8902475501bd142cbeff13"),
+*    "email" : "be12@hotmail.com",
+*    "password" : "$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS",
+*    "artistName" : "Billie Eilish",
+*    "about" : "Billie Eilish is an American singer-songwriter who first shot to prominence when she uploaded her breakout hit \n    \"Ocean Eyes\" to SoundCloud in 2015. ... She worked with her brother, Finneas O'Connell, to record \"Ocean Eyes,\"\n     a song O'Connell had initially written for his band",
+*    "gender" : "M",
+*    "birthDate" : ISODate("2001-12-18T00:00:00.000Z"),
+*    "imagePath" : "./Pictures/Billie-Eilish.png",
+*    "isActive" : false,
+*    "rating" : -1,
+*    "genres" : [
+*        "sha3by",
+*        "R&B"
+*    ],
+*    "__v" : 0
+*}
+*    
 *      }
 *
  * @apiError 401  authentication failed
@@ -1306,7 +1310,7 @@
 *
 *
 * @apiParam {string}    word         word to search about
-* @apiHeader {string}  x-auth       token to search
+* @apiHeader {string}  x-auth       token for frontend to send the response
 * @apiSuccess {object}               object containing five simplified arrays artists albums tracks profiles and playlists
 *
 * @apiSuccessExample {JSON} Success-Response:
@@ -1317,27 +1321,14 @@
 *        {
 *            "_id": "5e6942b6646c86bc20fc9a92",
 *            "artistName": "Adele",
-*            "image": {
-*                "data": {
-*                    "type": "Buffer",
-*                    "data": [                  ]
-*                },
-*                "_id": "5e7f8d10cf1f565c1d21a6cd"
-*            }
+*            "imagePath" : "./Pictures/default.png",
 *        }
 *    ],
 *    "Albums": [
 *        {
 *           "_id": "5e7a8bb2a986d07c0c22277d",
 *            "albumName": "25",
-*            "image": {
-*                "data": {
-*                    "type": "Buffer",
-*                    "data": [                  ]
-*                },
-*                "_id": "5e7f8d10cf1f565c1d21a6cd"
-*            }
-*        },
+*            "imagePath" : "./Pictures/default.png",
 *            "artistName": "Adele",
 *            "artistId": "5e6942b6646c86bc20fc9a92"
 *        }
@@ -1346,14 +1337,7 @@
 *        {
 *            "_id": "5e7e626d4849be7c17be3552",
 *            "trackName": "Hello",
-*            "image": {
-*                "data": {
-*                    "type": "Buffer",
-*                    "data": [                  ]
-*                },
-*                "_id": "5e7f8d10cf1f565c1d21a6cd"
-*            }
-*        },
+*            "imagePath" : "./Pictures/default.png",
 *            "artistId": "5e6942b6646c86bc20fc9a92"
 *        }
 *    ],
@@ -1361,13 +1345,7 @@
 *        {
 *            "_id": "5e6942b6646c86bc20fc9a89",
 *            "playlistName": "Dejavu",
-*            "image": {
-*                "data": {
-*                    "type": "Buffer",
-*                    "data": [                  ]
-*                },
-*                "_id": "5e7f8d10cf1f565c1d21a6cd"
-*            },
+*            "imagePath" : "./Pictures/default.png",
 *            "userName": "hamadaaa",
 *            "userId": "5e6d547b639f2ca419a1c08d"
 *        }
@@ -1376,13 +1354,7 @@
 *   "Users": [{
 *                    "_id": "5e6d547b639f2ca419a1c08d",
 *            "userName": "hamadaaa",
-*            "image": {
-*                "data": {
-*                    "type": "Buffer",
-*                    "data": []
-*                                    },
-*                "_id": "5e7f8d10cf1f565c1d21a6cd"
-*            }
+*            "imagePath" : "./Pictures/default.png",
  *        }]
 *      }
  *
@@ -1403,7 +1375,7 @@
  *     }
  *
 *
-* @apiError  400 Bad Request                    [Error while executing request
+* @apiError  400 Bad Request                    [Error while executing request]
  */
 
 
@@ -1423,7 +1395,11 @@
 * @apiHeader {string}  x-auth       token to delete album
 *
  *@apiHeader (Response Header) {String} x-auth [token given for the logging in user]
- *
+ * @apiSuccessExample {JSON} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+ *      "deleted"
+ *      }
  * @apiError 401   [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401
@@ -1443,11 +1419,18 @@
  *
   * @apiError  404  Not found                [this album is not found]
  *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Forbidden
+ *     HTTP/1.1 404 Not found 
  *     {
  *        "Notfound"
  *     }
  * 
+ * @apiError  404  Not found                [The id is not an objectid]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *        "invalid id"
+ *     }
+ *
  */
 
 
@@ -1474,23 +1457,23 @@
  *}
 *
 *
- * @apiError 401   [authentication failed]
+ * @apiError 401   Unauthorized          [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is not valid"
  *     }
  *
  *
- * @apiError 401   [authentication failed]
+ * @apiError 401   Unauthorized          [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401
+ *     HTTP/1.1 401  Unauthorized
  *     {
  *        "Token is Empty"
  *     }
  *
  *
- * @apiError  403  Forbidden                [Repeating the request more than once for the same user and the same album]
+ *  @apiError  403  Forbidden                [Repeating the request more than once for the same user and the same album]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 403 Forbidden
  *     {
@@ -1499,7 +1482,7 @@
  *
  * 
  * 
-  * @apiError  404  Not found                [this album is not found]
+ *  @apiError  404  Not found                [this album is not found]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
@@ -1507,7 +1490,7 @@
  *     }
  * 
  * 
- *  * @apiError  404  Not found                [this is not an ID]
+ * @apiError  404  Not found                [this is not an ID]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
@@ -1579,6 +1562,50 @@
  * 
  */
 
+
+ /**
+ * change password
+ * ---------------
+ * @api {put} /api/changepassword Change password
+ * @apiName change password
+ * @apiGroup User privacy
+ *
+ * @apiHeader {string}  x-auth    
+ * 
+ * @apiParam {string} oldPassword
+ * @apiParam {string} newPassword
+ * 
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "Password has been changed successfully"
+ *     }
+ *     
+ * * @apiError  403  Forbidden                [Password is incorrect]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 403  Forbidden 
+ *     {
+ *        "Password is incorrect"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ * 
+ * 
+ */
  
 
 

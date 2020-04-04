@@ -34,7 +34,7 @@ describe('Create a new playlist',()=>{
     }); 
 
 
-     it('Should create a new playlist without providing privacy',(done)=>{
+     /*it('Should create a new playlist without providing privacy',(done)=>{
         User.find().then((users)=>{
 
             users[users.length-1].save()
@@ -57,7 +57,7 @@ describe('Create a new playlist',()=>{
              })
             })
          });  
-         
+         */
          
          
          

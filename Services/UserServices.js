@@ -44,7 +44,7 @@ var SearchInUsers = function (wordtosearch) {
 }
 
 var GetSimplifiedUser = function (user) {
-    return ((({ _id, userName, image}) => ({ _id, userName, image}))(user));
+    return ((({ _id, userName, imagePath }) => ({ _id, userName, imagePath}))(user));
 
 }
 var GetUserById = function (id) {

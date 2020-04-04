@@ -5,7 +5,7 @@ const request = require('supertest')
 const app = require('./../Index');
 var { artist } = require("../models/artists.js");
 const jwt = require('jsonwebtoken');
-const defaultModule = require("./../defaultimage");
+//const defaultModule = require("./../defaultimage");
 
 describe('POST /artists/login', () => {
 
@@ -23,7 +23,6 @@ describe('POST /artists/login', () => {
       commercial success unsurpassed among her peers.`,
             genres: ["pop", "R&B"],
             rating: 4,
-            image: defaultModule.defaultImage._doc,
             gender: "M",
             birthDate: "1988-05-05"
         });
@@ -74,7 +73,6 @@ describe('POST /artists/login', () => {
       commercial success unsurpassed among her peers.`,
             genres: ["pop", "R&B"],
             rating: 4,
-            image: defaultModule.defaultImage._doc,
             isActive: true,
             gender: "M",
             birthDate: "1988-05-05"
@@ -143,7 +141,6 @@ describe('POST /artists/login', () => {
       commercial success unsurpassed among her peers.`,
             genres: ["pop", "R&B"],
             rating: 4,
-            image: defaultModule.defaultImage._doc,
             isActive: true,
             gender: "M",
             birthDate: "1988-05-05"

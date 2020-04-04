@@ -4,7 +4,6 @@ const{track}=require("../models/track");
 var {playlist} = require("../models/playlists.js");
 var {User} = require("../models/users.js");
 
-var{images}= require("./../models/images.js"); // images model
 
 const {ObjectID}=require('mongodb');
 
@@ -30,7 +29,6 @@ router.post('/playlists',(req,res)=>{
 
 
         //PREVENT THE USER FROM HAVING 2 PLAYLISTS WITH THE SAME NAME
-
         var userId2=user._id;
         playlist.find({$and:[{userId:userId2},{playlistName:req.body.playlistName }]}).then((myduplicate)=>{
             if(myduplicate.length==0){
@@ -46,10 +44,10 @@ router.post('/playlists',(req,res)=>{
                 });
             
                 playlistInstance.save().then((doc)=>{
-                    myduplicate=[];
+                    //myduplicate=[];
                     res.status(201).send(doc);  
                 }).catch((e)=>{
-                    myduplicate=[];
+                    //myduplicate=[];
                     res.status(500).send("Could not save the playlist");
                 });
                 
@@ -195,7 +193,7 @@ router.get('/playlists/image',(req,res)=>{
         if(!fetched){
             return res.status(404).send('Playlist does not exist');
         }
-        res.status(302).send(fetched.image);
+        res.status(302).send(fetched.imagePath);
     }).catch((e)=>{
         res.status(500).send("Could not send the image");
     })

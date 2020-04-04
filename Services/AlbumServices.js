@@ -134,7 +134,7 @@ var AddArtistName = async function (albums) {
 }
  var GetSimplifiedAlbum= function (album) {
      console.log("beysimplifyalbum");
-     return ((({ _id, albumName, image,artistName,artistId }) => ({ _id, albumName, image,artistName,artistId }))(album));
+     return ((({ _id, albumName, imagePath, artistName, artistId }) => ({ _id, albumName, imagePath,artistName,artistId }))(album));
 
 }
 //var getsimplifiedalbum = function (album) {

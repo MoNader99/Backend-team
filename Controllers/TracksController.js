@@ -9,7 +9,6 @@ const{playlist}=require("./../models/playlists");
 const{album}=require('./../models/album');
 //const{artist}=require('./../models/artists');
 var { User } = require("./../models/users.js");
-var{images}= require("./../models/images.js"); // images model
 var{artist}= require("./../models/artists.js"); 
 
 const {ObjectID}=require('mongodb');
@@ -31,7 +30,7 @@ const router=express.Router();
 * 
 * @apiParam {string}    id           the id of the track that the artist wants to delete 
 * 
-* @apiSuccess {object}               object of type track in JSON formatwith status code 200
+* @apiSuccess {object}     tracks          object of type track in JSON formatwith status code 200
 *
 * @apiSuccessExample {JSON} Success-Response:
 *     HTTP/1.1 200 OK
@@ -354,7 +353,7 @@ router.get('/tracks',async (req,res)=>{
 
 
     }
-res.send(returnedTrackArray);
+res.send({"tracks":returnedTrackArray});    //need to send an object with a name "tracks":returnedTrackArray
     })
 
 
@@ -395,7 +394,7 @@ router.delete('/tracks',(req,res)=>{
 
 
 //ADD A TRACK
-router.post('/tracks',(req,res)=>{
+/*router.post('/tracks',(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
         if(!myartist){
@@ -481,7 +480,7 @@ router.post('/tracks',(req,res)=>{
 });
 
 
-    
+ */   
 
     // Add a track
 //     app.post('/tracks',async (req,res)=>

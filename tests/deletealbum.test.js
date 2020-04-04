@@ -4,7 +4,7 @@ const request = require('supertest')
 const app = require('./../Index');
 var { artist } = require("./../models/artists.js");
 var { album } = require("./../models/album.js");
-const defaultModule = require("./../defaultimage");
+//const defaultModule = require("./../defaultimage");
 const { ObjectID } = require('mongodb');
 var { User } = require("../Services/UserServices");
 
@@ -16,8 +16,7 @@ describe("Delete an album", () => {
             var testalbum = new album({
                 artistId: testartist._id,
                 albumName: "testalbum",
-                tracks: [],
-                image: defaultModule.defaultImage._doc
+                tracks: []
 
             });
             testalbum.save().then((res) => {
@@ -47,7 +46,6 @@ describe("Delete an album", () => {
                 commercial success unsurpassed among her peers.`,
                 genres: ["pop", "R&B"],
                 rating: 4,
-                image: defaultModule.defaultImage._doc,
                 gender: "M",
                 birthDate: "1988-05-05"
              });

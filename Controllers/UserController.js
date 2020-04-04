@@ -407,7 +407,7 @@ router.patch('/users/:id/regular', async (req, res) => {
   }
   else if(user.isPremium===false)
   {
-    return res.status(404).json({"message":"you are not premium , you already have a regular account"});
+    return res.status(200).json({"message":"you are not premium , you already have a regular account"});
 
   }
 else
@@ -776,12 +776,12 @@ catch{
     var token=req.header('x-auth');
     if(!token)
     {
-        res.status(400).send('You did not pass a token')
+        res.status(401).send('Token is Empty')
     }
     User.findByToken(token).then((user) => {
         if(!user)
         {
-            res.status(401).send();
+            res.status(404).send('User not found');
         }
     console.log("you are my user");
     var done = 0;
@@ -796,14 +796,14 @@ catch{
                 user.save();
                 console.log('saving user');
                 done = 1;
-                res.status(200).send("Password has been reset successfully");
+                res.status(200).send("Password has been changed successfully");
 
         } else {
             console.log(user.password);
             console.log(oldPassword);
             console.log('Your password not mached.');
             done = 0
-            res.status(403).send("this is not the correct password");
+            res.status(403).send("Password is incorrect");
         }}).catch(err);
     }).catch(e);
 });

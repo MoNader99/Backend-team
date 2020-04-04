@@ -7,9 +7,8 @@ var{artist}= require("./../models/artists.js");
 describe("Delete a single track",()=>{
   
     it("Should delete a single track",(done)=>{
-      artist.find().then((users)=>{
-        users[0].save()
-        users[0].generateAuthToken().then((testToken)=>{
+      artist.findOne({artistName:"Adele"}).then((users)=>{
+        users.generateAuthToken().then((testToken)=>{
           var testTrackName="Hello";
               request(app)
                 .delete('/tracks')

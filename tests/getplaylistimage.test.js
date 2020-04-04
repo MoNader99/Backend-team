@@ -8,9 +8,9 @@ describe("Get Image of a playlist",()=>{
     it("Should get the image of a playlist",(done)=>{
         User.find().then((users)=>{
 
-            users[users.length-1].save()
-            users[users.length-1].generateAuthToken().then((token)=>{
-                var testPlaylistName="Moraba3";
+            users[0].save()
+            users[0].generateAuthToken().then((token)=>{
+                var testPlaylistName="Dejavu";
                 request(app)
                 .get('/playlists/image')
                 .set('x-auth',token)

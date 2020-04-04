@@ -18,7 +18,7 @@ var userservices = require("../Services/UserServices");
 var { playlist } = require("../models/playlists.js");
 
 var _ = require('lodash');
-const defaultModule = require("./../defaultimage");
+//const defaultModule = require("./../defaultimage");
 
 var testToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZyb250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s';
 
@@ -128,8 +128,7 @@ describe('search /Search', () => {
             var testalbum = new album({
                 artistId: testartist._id,
                 albumName: "fortesting",
-                tracks: [],
-                image: defaultModule.defaultImage._doc
+                tracks: []
 
             });
             var testtrack = new track({
@@ -138,7 +137,6 @@ describe('search /Search', () => {
                 rating: 10,
                 duration: 360000,
                 genre: "pop",
-                image: defaultModule.defaultImage._doc,
                 url: "searchtesting"  // until we get real urls 
             });
             testtrack.save().then((res2) => {

@@ -41,7 +41,7 @@ var AddUserName = async function (playlists) {
 }
 var GetSimplifiedPlaylist = function (playlist) {
     console.log("getsimplifiedplaylist");
-    return ((({ _id, playlistName, image, userName, userId }) => ({ _id, playlistName, image, userName, userId}))(playlist));
+    return ((({ _id, playlistName, imagePath, userName, userId }) => ({ _id, playlistName, imagePath, userName, userId}))(playlist));
 
 }
 //SearchInPlaylists("deja");

@@ -87,7 +87,7 @@ var AddTracks = async function (artists) {
     const promises = artists.map(async artist => {
 
         const Tracks = await GetTracksOfArtists(artist._id);
-        const tracks= await Tracks.map(track => ((({ _id, trackName, image}) => ({ _id, trackName, image}))(track)));
+        const tracks = await Tracks.map(track => ((({ _id, trackName, imagePath }) => ({ _id, trackName, imagePath}))(track)));
 
         return Object.assign(artist, { Tracks:tracks })
 
@@ -101,7 +101,7 @@ var AddAlbums = async function (artists) {
     const promises = artists.map(async artist => {
 
         const Albums = await GetAlbumsOfArtists(artist._id);
-        const albums= await Albums.map(album => ((({ _id, albumName, image}) => ({ _id, albumName, image}))(album)));
+        const albums = await Albums.map(album => ((({ _id, albumName, imagePath }) => ({ _id, albumName, imagePath}))(album)));
         return Object.assign(artist, { Albums: albums })
 
 
@@ -112,7 +112,7 @@ var AddAlbums = async function (artists) {
 var GetSimplifiedArtist = function (artist) {
     console.log("beysimplifyartist");
     console.log(artist.image);
-    return ((({ _id,artistName,image,Albums,Tracks }) => ({ _id, artistName, image,Albums,Tracks}))(artist));
+    return ((({ _id, artistName, imagePath, Albums, Tracks }) => ({ _id, artistName, imagePath,Albums,Tracks}))(artist));
 
 }
 module.exports = {
