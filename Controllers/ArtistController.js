@@ -329,7 +329,7 @@ router.get('/artists',async (req,res)=>{
 
        }
 
-       returnedArtistArray[i]= _.pick(artists, ['artistName', 'genres','about','rating']);;
+       returnedArtistArray[i]= _.pick(artists, ['artistName', 'genres','about','rating','imagePath']);;
     }).catch((e)=>res.status(404).json({"message":e}));
 if(flag)
 {
