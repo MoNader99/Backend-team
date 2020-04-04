@@ -29,6 +29,7 @@ var AuthenticateArtists = (req, res, next) => {
     try {
         console.log("da5a5aalapd");
         var decodedtoken = jwt.verify(token, 'secretkeyforartist')
+        console.log(decodedtoken._id);
         req.token = decodedtoken;
         req.usertype = "artist"
         next();

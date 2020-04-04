@@ -51,7 +51,7 @@ router.get('/album/tracks/:id', (req,res)=>{
     }).catch((e)=>res.status(401).send());
         });    
 
-router.delete('/album/:id/delete',AuthenticationServices.AuthenticateArtists, (req, res) => {
+router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
     var decoded = req.token;
     if (!ObjectID.isValid(id)) {

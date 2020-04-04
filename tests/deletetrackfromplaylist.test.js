@@ -159,9 +159,9 @@ describe("Delete a single track from a playlist",()=>{
     it("Should not  delete a track from a  playlist if the track is not in the playlist",(done)=>{
         User.find().then((users)=>{
 
-            users[users.length-1].save()
-            users[users.length-1].generateAuthToken().then((token)=>{
-                var testPlaylistName="Moraba3";
+            users[0].save()
+            users[0].generateAuthToken().then((token)=>{
+                var testPlaylistName="Classics";
                 var testTackId="5e776b83cca58cb00494bb8e";
                 request(app)
                 .delete('/playlists/tracks')

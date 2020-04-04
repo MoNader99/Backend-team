@@ -404,7 +404,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "artists[]",
+            "type": "object[]",
             "optional": false,
             "field": "artists",
             "description": "<p>An array of Artist objects containing the full details of each  Artist.</p>"
@@ -788,7 +788,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "404",
-            "description": "<p>[playlist not found]</p>"
+            "description": "<p>[playlist or tracks not found]</p>"
           }
         ]
       },
@@ -806,6 +806,11 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404\n{\n   \"message\":  \"playlist not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404\n{\n   \"message\":  \"tracks not found\"\n}",
           "type": "JSON"
         }
       ]
@@ -1225,14 +1230,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "302",
-            "description": "<p>[The response of the sucess case is the image object]</p>"
+            "description": "<p>[The response of the sucess case is the url to the image file]</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 302\n{\n       \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5527\"),\n       \"contentType\": image/png\n          \"data\":array of image pixels(HUGE)\n       \"__v\" : 0\n}",
+          "content": "HTTP/1.1 302\n{\n          .real Server Url will  be here/Pictures/default.png\n}",
           "type": "JSON"
         }
       ]
@@ -1791,7 +1796,7 @@
             "group": "Success 200",
             "type": "object[]",
             "optional": false,
-            "field": "200",
+            "field": "tracks",
             "description": "<p>a set objects of type tracks in JSON format with status code 200</p>"
           }
         ]
@@ -1799,7 +1804,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n[\n    {\n        \"rating\": 8,\n        \"_id\": \"5e74925ca9200c404c566eff\",\n        \"artistId\": \"5e74925ca9200c404c566ef5\",\n        \"trackName\": \"set fire to the rain\",\n        \"duration\": 240000,\n        \"image\": {\n            \"_id\": \"5e74925ca9200c404c566ef2\",\n            \"url\": \"www.images/imag23e/23454\",\n            \"height\": 176,\n            \"width\": 65\n        },\n        \"url\": \"nnnn\",\n        \"__v\": 0\n    },\n    {\n        \"rating\": 9,\n        \"_id\": \"5e74925ca9200c404c566f03\",\n        \"artistId\": \"5e74925ca9200c404c566ef7\",\n        \"trackName\": \"Godzilla\",\n        \"duration\": 223000,\n        \"image\": {\n            \"_id\": \"5e74925ca9200c404c566ef2\",\n            \"url\": \"www.images/imag23e/23454\",\n            \"height\": 176,\n            \"width\": 65\n        },\n        \"url\": \"vvv\",\n        \"__v\": 0\n    }\n]",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"tracks\": [\n        {\n            \"_id\": \"5e88ce838d92547020e1a65a\",\n            \"artistId\": \"5e88ce838d92547020e1a652\",\n            \"trackName\": \"Godzilla\",\n            \"duration\": 223000,\n            \"genre\": \"rap\",\n            \"url\": \"vvv\",\n            \"__v\": 0,\n            \"imagePath\": \"./Pictures/default.png\",\n            \"likes\": 0,\n            \"rating\": 9\n        },\n        {\n            \"_id\": \"5e88ce838d92547020e1a656\",\n            \"artistId\": \"5e88ce838d92547020e1a650\",\n            \"trackName\": \"Hello\",\n            \"duration\": 360000,\n            \"genre\": \"pop\",\n            \"url\": \"uuu\",\n            \"__v\": 0,\n            \"imagePath\": \"./Pictures/default.png\",\n            \"likes\": 0,\n            \"rating\": 10\n        }\n    ]\n}",
           "type": "JSON"
         }
       ]
@@ -1869,15 +1874,15 @@
             "group": "Success 200",
             "type": "object",
             "optional": false,
-            "field": "object",
-            "description": "<p>of type track in JSON formatwith status code 200</p>"
+            "field": "tracks",
+            "description": "<p>object of type track in JSON formatwith status code 200</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n {\n     \"\"tracks\": {\n    \"rating\": 10,\n    \"duration\": 360000,\n    \"_id\": \"5e6b7dac91cb724878446635\",\n    \"trackName\": \"Hello\",\n    \"url\": \"cccc\",\n    \"__v\": 0\n}\n }",
+          "content": "HTTP/1.1 200 OK\n {\n     \"tracks\": {\n    \"rating\": 10,\n    \"duration\": 360000,\n    \"_id\": \"5e6b7dac91cb724878446635\",\n    \"trackName\": \"Hello\",\n    \"url\": \"cccc\",\n    \"__v\": 0\n}\n }",
           "type": "JSON"
         }
       ]
@@ -2063,6 +2068,12 @@
             "optional": false,
             "field": "401",
             "description": "<p>authentication failed</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>user not found</p>"
           }
         ]
       },
@@ -2070,6 +2081,11 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed or invalid token\"\n }",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404\n {\n   \"message\":\"not found\"\n }",
           "type": "json"
         }
       ]
@@ -2732,7 +2748,7 @@
             "type": "string",
             "optional": false,
             "field": "x-auth",
-            "description": "<p>Only users</p>"
+            "description": "<p>the token Only users</p>"
           }
         ]
       }
@@ -2756,6 +2772,11 @@
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 OK\n{\n  \"message\": \"Your account has been changed to regular account\"\n}",
           "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 200\n {\n   \"message\":\"you are not premium , you already have a regular account \"\n }",
+          "type": "json"
         }
       ]
     },
@@ -2765,23 +2786,12 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "404",
-            "description": "<p>[You are  not premium in the firstplace]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
             "field": "401",
             "description": "<p>[ authentication failed]</p>"
           }
         ]
       },
       "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404\n {\n   \"message\":\"you are not premium , you already have a regular account \"\n }",
-          "type": "json"
-        },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed\" \"\n }",

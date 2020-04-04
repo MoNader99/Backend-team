@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const User = require('./models/users');
 const album = require('./models/album');
 //const artist = require('./models/artists');
-const image = require('./models/images');
 //const track = require('./models/track');
 
 
@@ -16,7 +15,6 @@ const image = require('./models/images');
 const usersRoutes = require('./Controllers/UserController');
 const albumsRoutes = require('./Controllers/AlbumController');
 const artistRoutes = require('./Controllers/ArtistController');
-const imageRoutes = require('./Controllers/ImageController');
 const playlistRoutes = require('./Controllers/PlaylistController');
 const trackRoutes = require('./Controllers/TracksController');
 const searchRoute = require('./Controllers/SearchController');
@@ -31,7 +29,6 @@ app.use(bodyParser.json());
 app.use("/", usersRoutes);
 app.use("/", albumsRoutes);
 app.use("/", artistRoutes);
-app.use("/", imageRoutes);
 app.use("/", playlistRoutes);
 app.use("/", trackRoutes);
 app.use("/", searchRoute);

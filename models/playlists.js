@@ -1,6 +1,5 @@
 var mongoose= require("mongoose");
-var{images,ImagesSchema}= require("./images.js"); // images model
-const defaultModule=require("./../defaultimage");
+/////
 
 var playlist=mongoose.model("Playlists",{
 
@@ -23,10 +22,10 @@ var playlist=mongoose.model("Playlists",{
       type:String,
       unique:true
   },
-  image:{
-    type:ImagesSchema,
+  imagePath:{
+    type:String,
     required:true,
-    default:defaultModule.defaultImage._doc
+    default:"./Pictures/default.png",
     },
 
     tracks: [
