@@ -21,7 +21,7 @@ const userservices = require("./../Services/UserServices");
 
 var AuthenticationServices = require("./../Services/AuthenticationService");
 //{ $regex: "s", $options: "i" }
-AuthenticationServices.AuthenticateFrontend
+//AuthenticationServices.AuthenticateFrontend
 router.get('/Search', AuthenticationServices.AuthenticateFrontend,(req, res) => {
             var wordtosearch = req.query.word;
             console.log(wordtosearch);

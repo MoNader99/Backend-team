@@ -68,7 +68,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "404",
-            "description": "<p>Not found                [this album is not found]</p>"
+            "description": "<p>Not found                [this album is not found or the id is not an object id]</p>"
           }
         ]
       },
@@ -523,7 +523,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n  {\n          \"artist\": {\n    \"_id\": \"5e6942b6646c86bc20fc9a93\",\n    \"email\": \"beeka70@hotmail.com\",\n    \"password\": \"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS\",\n    \"artistName\": \"HAmo Beeka\",\n    \"about\": \"Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter \\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\\n      commercial success unsurpassed among her peers.\",\n    \"__v\": 0,\n    \"isActive\": false,\n    \"rating\": -1,\n    \"genres\": [\n        \"sha3by\",\n        \"R&B\"\n    ]\n}\n  }",
+          "content": "    HTTP/1.1 200 OK{\n     \n{\n   \"_id\" : ObjectId(\"5e8902475501bd142cbeff13\"),\n   \"email\" : \"be12@hotmail.com\",\n   \"password\" : \"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS\",\n   \"artistName\" : \"Billie Eilish\",\n   \"about\" : \"Billie Eilish is an American singer-songwriter who first shot to prominence when she uploaded her breakout hit \\n    \\\"Ocean Eyes\\\" to SoundCloud in 2015. ... She worked with her brother, Finneas O'Connell, to record \\\"Ocean Eyes,\\\"\\n     a song O'Connell had initially written for his band\",\n   \"gender\" : \"M\",\n   \"birthDate\" : ISODate(\"2001-12-18T00:00:00.000Z\"),\n   \"imagePath\" : \"./Pictures/Billie-Eilish.png\",\n   \"isActive\" : false,\n   \"rating\" : -1,\n   \"genres\" : [\n       \"sha3by\",\n       \"R&B\"\n   ],\n   \"__v\" : 0\n}\n   \n     }",
           "type": "JSON"
         }
       ]
@@ -547,7 +547,7 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "400",
-            "description": "<p>Bad Request                    [Error while executing request</p>"
+            "description": "<p>Bad Request                    [Error while executing request]</p>"
           }
         ]
       },
@@ -1359,7 +1359,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n     {\n{\n   \"artists\": [\n       {\n           \"_id\": \"5e6942b6646c86bc20fc9a92\",\n           \"artistName\": \"Adele\",\n           \"image\": {\n               \"data\": {\n                   \"type\": \"Buffer\",\n                   \"data\": [                  ]\n               },\n               \"_id\": \"5e7f8d10cf1f565c1d21a6cd\"\n           }\n       }\n   ],\n   \"Albums\": [\n       {\n          \"_id\": \"5e7a8bb2a986d07c0c22277d\",\n           \"albumName\": \"25\",\n           \"image\": {\n               \"data\": {\n                   \"type\": \"Buffer\",\n                   \"data\": [                  ]\n               },\n               \"_id\": \"5e7f8d10cf1f565c1d21a6cd\"\n           }\n       },\n           \"artistName\": \"Adele\",\n           \"artistId\": \"5e6942b6646c86bc20fc9a92\"\n       }\n   ],\n   \"Tracks\": [\n       {\n           \"_id\": \"5e7e626d4849be7c17be3552\",\n           \"trackName\": \"Hello\",\n           \"image\": {\n               \"data\": {\n                   \"type\": \"Buffer\",\n                   \"data\": [                  ]\n               },\n               \"_id\": \"5e7f8d10cf1f565c1d21a6cd\"\n           }\n       },\n           \"artistId\": \"5e6942b6646c86bc20fc9a92\"\n       }\n   ],\n       \"Playlists\": \"Playlists\": [\n       {\n           \"_id\": \"5e6942b6646c86bc20fc9a89\",\n           \"playlistName\": \"Dejavu\",\n           \"image\": {\n               \"data\": {\n                   \"type\": \"Buffer\",\n                   \"data\": [                  ]\n               },\n               \"_id\": \"5e7f8d10cf1f565c1d21a6cd\"\n           },\n           \"userName\": \"hamadaaa\",\n           \"userId\": \"5e6d547b639f2ca419a1c08d\"\n       }\n],\n                   ,\n  \"Users\": [{\n                   \"_id\": \"5e6d547b639f2ca419a1c08d\",\n           \"userName\": \"hamadaaa\",\n           \"image\": {\n               \"data\": {\n                   \"type\": \"Buffer\",\n                   \"data\": []\n                                   },\n               \"_id\": \"5e7f8d10cf1f565c1d21a6cd\"\n           }\n       }]\n     }",
+          "content": "    HTTP/1.1 200 OK\n     {\n{\n   \"artists\": [\n       {\n           \"_id\": \"5e6942b6646c86bc20fc9a92\",\n           \"artistName\": \"Adele\",\n           \"imagePath\" : \"./Pictures/default.png\",\n       }\n   ],\n   \"Albums\": [\n       {\n          \"_id\": \"5e7a8bb2a986d07c0c22277d\",\n           \"albumName\": \"25\",\n           \"imagePath\" : \"./Pictures/default.png\",\n           \"artistName\": \"Adele\",\n           \"artistId\": \"5e6942b6646c86bc20fc9a92\"\n       }\n   ],\n   \"Tracks\": [\n       {\n           \"_id\": \"5e7e626d4849be7c17be3552\",\n           \"trackName\": \"Hello\",\n           \"imagePath\" : \"./Pictures/default.png\",\n           \"artistId\": \"5e6942b6646c86bc20fc9a92\"\n       }\n   ],\n       \"Playlists\": \"Playlists\": [\n       {\n           \"_id\": \"5e6942b6646c86bc20fc9a89\",\n           \"playlistName\": \"Dejavu\",\n           \"imagePath\" : \"./Pictures/default.png\",\n           \"userName\": \"hamadaaa\",\n           \"userId\": \"5e6d547b639f2ca419a1c08d\"\n       }\n],\n                   ,\n  \"Users\": [{\n                   \"_id\": \"5e6d547b639f2ca419a1c08d\",\n           \"userName\": \"hamadaaa\",\n           \"imagePath\" : \"./Pictures/default.png\",\n       }]\n     }",
           "type": "JSON"
         },
         {

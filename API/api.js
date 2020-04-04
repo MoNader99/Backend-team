@@ -1297,7 +1297,7 @@
 *       "can not find artist"
 *     }
 *
-* @apiError  400 Bad Request                    [Error while executing request
+* @apiError  400 Bad Request                    [Error while executing request]
  */
 
 
@@ -1417,14 +1417,13 @@
  *
  *
  *
-  * @apiError  404  Not found                [this album is not found]
+  * @apiError  404  Not found                [this album is not found or the id is not an object id]
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not found 
  *     {
  *        "Notfound"
  *     }
- * 
- * @apiError  404  Not found                [The id is not an objectid]
+ *
  *  @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
