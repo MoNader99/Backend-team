@@ -656,7 +656,7 @@
  * @api {patch} /users/:id/regular    User wants to unsubscribe from premium features
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
- * @apiHeader {string} x-auth          Only users
+ * @apiHeader {string} x-auth        the token Only users
  * @apiParam {String} id          the id of the user has to be passed
  *
  * @apiSuccessExample {json} Success-Response:
@@ -665,10 +665,9 @@
  *       "message": "Your account has been changed to regular account"
  *     }
  *
- * @apiError 404         [You are  not premium in the firstplace]
  *
- * @apiErrorExample {json} Error-Response:
- *    HTTP/1.1 404
+ * @apiSuccessExample {json} Error-Response:
+ *    HTTP/1.1 200
  *     {
  *       "message":"you are not premium , you already have a regular account "
  *     }
@@ -751,7 +750,12 @@
  *       "message":"authentication Failed or invalid token"
  *     }
  *
- *
+ *@apiError 404    user not found
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 404
+ *     {
+ *       "message":"not found"
+ *     }
  *
  *
  *
@@ -769,12 +773,12 @@
 *
 * @apiParam {string}    id           the id of the track that the artist wants to delete
 *
-* @apiSuccess {object}               object of type track in JSON formatwith status code 200
+* @apiSuccess {object}  tracks             object of type track in JSON formatwith status code 200
 *
 * @apiSuccessExample {JSON} Success-Response:
 *     HTTP/1.1 200 OK
 *      {
-*          ""tracks": {
+*          "tracks": {
         "rating": 10,
         "duration": 360000,
         "_id": "5e6b7dac91cb724878446635",
@@ -817,42 +821,38 @@
  *
  * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
  *
- * @apiSuccess {object[]}     200          a set objects of type tracks in JSON format with status code 200
+ * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
  *
  * * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
-[
-    {
-        "rating": 8,
-        "_id": "5e74925ca9200c404c566eff",
-        "artistId": "5e74925ca9200c404c566ef5",
-        "trackName": "set fire to the rain",
-        "duration": 240000,
-        "image": {
-            "_id": "5e74925ca9200c404c566ef2",
-            "url": "www.images/imag23e/23454",
-            "height": 176,
-            "width": 65
+{
+    "tracks": [
+        {
+            "_id": "5e88ce838d92547020e1a65a",
+            "artistId": "5e88ce838d92547020e1a652",
+            "trackName": "Godzilla",
+            "duration": 223000,
+            "genre": "rap",
+            "url": "vvv",
+            "__v": 0,
+            "imagePath": "./Pictures/default.png",
+            "likes": 0,
+            "rating": 9
         },
-        "url": "nnnn",
-        "__v": 0
-    },
-    {
-        "rating": 9,
-        "_id": "5e74925ca9200c404c566f03",
-        "artistId": "5e74925ca9200c404c566ef7",
-        "trackName": "Godzilla",
-        "duration": 223000,
-        "image": {
-            "_id": "5e74925ca9200c404c566ef2",
-            "url": "www.images/imag23e/23454",
-            "height": 176,
-            "width": 65
-        },
-        "url": "vvv",
-        "__v": 0
-    }
-]
+        {
+            "_id": "5e88ce838d92547020e1a656",
+            "artistId": "5e88ce838d92547020e1a650",
+            "trackName": "Hello",
+            "duration": 360000,
+            "genre": "pop",
+            "url": "uuu",
+            "__v": 0,
+            "imagePath": "./Pictures/default.png",
+            "likes": 0,
+            "rating": 10
+        }
+    ]
+}
  *
  *
  * *@apiError  404                      [Track not found]
@@ -920,13 +920,20 @@
  *
  *
  *
- * @apiError 404     [playlist not found]
+ * @apiError 404     [playlist or tracks not found]
 *@apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404
  *     {
  *        "message":  "playlist not found"
  *     }
  *
+ * 
+ * 
+*@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404
+ *     {
+ *        "message":  "tracks not found"
+ *     }
  *
  */
 
@@ -942,7 +949,7 @@
  * 
  * @apiParam {string[]}   id               ids array of each Artist's unique ID.
  *
- * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
+ * @apiSuccess {object[]} artists           An array of Artist objects containing the full details of each  Artist.
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK

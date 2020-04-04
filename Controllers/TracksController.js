@@ -30,7 +30,7 @@ const router=express.Router();
 * 
 * @apiParam {string}    id           the id of the track that the artist wants to delete 
 * 
-* @apiSuccess {object}               object of type track in JSON formatwith status code 200
+* @apiSuccess {object}     tracks          object of type track in JSON formatwith status code 200
 *
 * @apiSuccessExample {JSON} Success-Response:
 *     HTTP/1.1 200 OK
@@ -353,7 +353,7 @@ router.get('/tracks',async (req,res)=>{
 
 
     }
-res.send(returnedTrackArray);
+res.send({"tracks":returnedTrackArray});    //need to send an object with a name "tracks":returnedTrackArray
     })
 
 

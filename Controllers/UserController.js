@@ -407,7 +407,7 @@ router.patch('/users/:id/regular', async (req, res) => {
   }
   else if(user.isPremium===false)
   {
-    return res.status(404).json({"message":"you are not premium , you already have a regular account"});
+    return res.status(200).json({"message":"you are not premium , you already have a regular account"});
 
   }
 else
