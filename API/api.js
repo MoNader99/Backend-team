@@ -367,14 +367,11 @@
  *
 * @apiParam {string} playlistName       Name of the playlist he wants to get its cover image
  *
- * @apiSuccess 302                     [The response of the sucess case is the image object]
+ * @apiSuccess 302                     [The response of the sucess case is the url to the image file]
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
  *     {
- *            "_id" : ObjectId("5e7511fa1a2c59902efa5527"),
- *            "contentType": image/png
-              "data":array of image pixels(HUGE)
- *            "__v" : 0
+              .real Server Url will  be here/Pictures/default.png
  *     }
  *
  * @apiError  400                     [playlist name is missing (Obligatory filed)]
@@ -619,7 +616,6 @@
  *       "message":"Sending Failed"
  *     }
 * @apiError  404       [email of the user not found ]
-
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 not found
  *     {
@@ -668,7 +664,6 @@
  *     {
  *       "message": "Your account has been changed to regular account"
  *     }
-
  *
  * @apiError 404         [You are  not premium in the firstplace]
  *
@@ -756,7 +751,6 @@
  *       "message":"authentication Failed or invalid token"
  *     }
  *
-
  *
  *
  *
@@ -940,7 +934,6 @@
 
 
 /** 
-
 * @api {get} /artists Get several Artists
  * @apiName GetSeveralArtists
  * @apiGroup Artists
@@ -1580,5 +1573,3 @@
  */
 
  
-
-

@@ -9,7 +9,6 @@ const{playlist}=require("./../models/playlists");
 const{album}=require('./../models/album');
 //const{artist}=require('./../models/artists');
 var { User } = require("./../models/users.js");
-var{images}= require("./../models/images.js"); // images model
 var{artist}= require("./../models/artists.js"); 
 
 const {ObjectID}=require('mongodb');
@@ -395,7 +394,7 @@ router.delete('/tracks',(req,res)=>{
 
 
 //ADD A TRACK
-router.post('/tracks',(req,res)=>{
+/*router.post('/tracks',(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
         if(!myartist){
@@ -481,7 +480,7 @@ router.post('/tracks',(req,res)=>{
 });
 
 
-    
+ */   
 
     // Add a track
 //     app.post('/tracks',async (req,res)=>

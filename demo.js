@@ -7,57 +7,19 @@ var{followArtist}= require("./models/followArtist.js");  // follow artist model
 var{playlist}= require("./models/playlists.js"); // playlists model
 var{followPlaylist}= require("./models/followPlaylist.js"); // followplaylist model
 var{album}= require("./models/album.js"); // playlists model
-var{images}= require("./models/images.js"); // images model
-///monica
 var{track}=require("./models/track.js");//track model
-var{playlistTracks}=require("./models/playlistTracks.js") //playlist_track model
 const {ObjectID}=require('mongodb');
 const Schema = mongoose.Schema;
 
 
 
-//IMAGES OBJECTS
+//PATH OF IMAGES
 
-var imgPath1 = "./Pictures/default.png";
-var image1 = new images;
-    image1.data = fs.readFileSync(imgPath1);
-    image1.contentType = 'png';
-    image1.path=imgPath1;
-    image1.save(function (err, a) {
-      if (err) throw err;
-      console.error('saved img to mongo');
-    });
-
+var imgPath1 = "./Pictures/default.png";   //default picture of playlist
 var imgPath2 = "./Pictures/Billie-Eilish.png";
-var image2 = new images;
-    image2.data = fs.readFileSync(imgPath2);
-    image2.contentType = 'png';
-    image2.path=imgPath2;
-    image2.save(function (err, a) {
-      if (err) throw err;
-      console.error('saved img to mongo');
-    });
-
 var imgPath3 = "./Pictures/Adele.png";
-var image3 = new images;
-        image3.data = fs.readFileSync(imgPath3);
-        image3.contentType = 'png';
-        image3.path=imgPath3;
-        image3.save(function (err, a) {
-          if (err) throw err;
-          console.error('saved img to mongo');
-        });
+var imgPath4 = "./Pictures/defaultuser.png";
 
-
-/*var imgPath4 = "./Pictures/defaultuser.png";
-var image4 = new images;
-        image4.data = fs.readFileSync(imgPath4);
-        image4.contentType = 'png';
-        image4.path=imgPath4;
-        image4.save(function (err, a) {
-        if (err) throw err;
-            console.error('saved img to mongo');
-        });   */
 
 
 
@@ -72,7 +34,6 @@ var user1= new User({
     userName:"hamadaaa  ",
     gender:"M",
     birthDate: '1990-06-19',
-    image:image1
 });
 
 //SAVING AND RETURNING ID OF THE NEW USER
@@ -88,7 +49,6 @@ var user2= new User({
     userName:"Mario1",
     gender:"F",
     birthDate: '1990-06-19',
-    image:image1
 });
 
 
@@ -110,7 +70,7 @@ var artist1= new artist({
       commercial success unsurpassed among her peers.`,
     genres:["pop","R&B"],
     rating: 4,
-    image:image3,
+    imagePath:imgPath3,
     gender:"F",
     birthDate:"1988-05-05"
 });
@@ -126,17 +86,16 @@ artist1.save().then((res)=>{
 //CREATING A third ARTIST
 
 var artist2= new artist({
-    email:"beeka70@hotmail.com",
+    email:"be12@hotmail.com",
     password:"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS",
-    artistName:"HAmo Beeka",
-    about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter
-    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
-     Adele's first two albums, 19 and 21, earned her critical praise and a level of
-      commercial success unsurpassed among her peers.`,
+    artistName:"Billie Eilish",
+    about:`Billie Eilish is an American singer-songwriter who first shot to prominence when she uploaded her breakout hit 
+    "Ocean Eyes" to SoundCloud in 2015. ... She worked with her brother, Finneas O'Connell, to record "Ocean Eyes,"
+     a song O'Connell had initially written for his band`,
     genres: ["sha3by", "R&B"],
-    image:image2,
+    imagePath:imgPath2,
     gender:"M",
-    birthDate:"1988-05-05"
+    birthDate:"2001-12-18"
 });
 
 artist2.save().then((res)=>{
@@ -155,7 +114,6 @@ var artist3= new artist({
      record executive and actor. He is one of the most successful musical artists of the 21st century.`,
     genres:["Trap","Jazz","pop","Rap"],
     rating: 4.6,
-    image:image3,
     gender:"M",
     birthDate:"1988-05-05"
 });
@@ -200,7 +158,6 @@ var track1=new track({
     rating:10,
     duration:360000,
     genre:"pop",
-    image:image1,
     url:"uuu"  // until we get real urls
     });
     track1.save().then((res)=>{
@@ -216,7 +173,6 @@ var track1=new track({
         rating:9,
         duration:360000,
         genre:"pop",
-        image:image1,
         url:"qqq"  // until we get real urls
         });
         track2.save().then((res)=>{
@@ -231,7 +187,6 @@ var track1=new track({
             rating:8,
             duration:240000,
             genre:"pop",
-            image:image1,
             url:"nnnn"  // until we get real urls
             });
 
@@ -247,7 +202,6 @@ var track1=new track({
                 rating:10,
                 duration:262000,
                 genre:"rap",
-                image:image1,
                 url:"lll"  // until we get real urls
                 });
 
@@ -262,7 +216,6 @@ var track1=new track({
                     trackName:"Godzilla",
                     rating:9,
                     duration:223000,
-                    image:image1,
                     genre:"rap",
                     url:"vvv"  // until we get real urls
                     });
@@ -286,7 +239,7 @@ var track1=new track({
         artistId:artist2._id,
         albumName:"25",
         tracks: [track1, track2],
-        image:image1
+
 
     });
 
@@ -304,7 +257,6 @@ var playlist1 = new playlist({
     playlistName:"Dejavu",
     privacy:true,
     tracks:[track1,track2],
-    image: image1,
     href:1
 });
 
@@ -320,7 +272,6 @@ var playlist2 = new playlist({
     playlistName:"Classics",
     privacy:true,
     tracks:[track1,track2,track3,track4],
-    image: image1,
     href:2
 
 });
@@ -336,7 +287,6 @@ var playlist3 = new playlist({
     userId:user1._id,
     playlistName:"X",
     privacy:false,
-    image:image1,
     tracks: [track1, track2, track3, track4, track5],
     href:3
     //This playlist will have the deafult image of the playlist
@@ -352,7 +302,6 @@ playlist3.save().then((res)=>{
 var playlist4 = new playlist({
     userId:user2._id,
     playlistName:"Likes",
-    image:image1,
     tracks: [track5],
     href:5
 
@@ -368,7 +317,6 @@ playlist4.save().then((res)=>{
 var playlist5 = new playlist({
     userId:user2._id,
     playlistName:"RecyleBin",
-    image: image1,
     href:6
 });
 

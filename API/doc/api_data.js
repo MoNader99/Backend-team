@@ -1225,14 +1225,14 @@ define({ "api": [
             "group": "Success 200",
             "optional": false,
             "field": "302",
-            "description": "<p>[The response of the sucess case is the image object]</p>"
+            "description": "<p>[The response of the sucess case is the url to the image file]</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 302\n{\n       \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5527\"),\n       \"contentType\": image/png\n          \"data\":array of image pixels(HUGE)\n       \"__v\" : 0\n}",
+          "content": "HTTP/1.1 302\n{\n          .real Server Url will  be here/Pictures/default.png\n}",
           "type": "JSON"
         }
       ]

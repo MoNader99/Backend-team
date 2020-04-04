@@ -1,6 +1,5 @@
 var mongoose= require("mongoose");
-var{images,ImagesSchema}= require("./images.js"); // images model
-
+/////
 var track=mongoose.model("Tracks",{
     artistId:{     //the artist who sang this track
       type:String,
@@ -33,9 +32,10 @@ var track=mongoose.model("Tracks",{
 
   },
 
-  image:{
-    type:ImagesSchema,
-    required:true
+  imagePath:{
+    type:String,
+    required:true,
+    default:"./Pictures/default.png",
     },
 
 

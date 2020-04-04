@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const Schema=mongoose.Schema;
 var ObjectID = require('mongodb').ObjectID;
-var { images, ImagesSchema } = require("./images.js"); // images model
 //var { artist } = require("../models/artists.js");
-const defaultModule = require("./../defaultimage");
+
 var { track } = require("../models/track.js");
 
 
@@ -14,10 +13,10 @@ var AlbumSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    image: {
-        type: ImagesSchema,
+    imagePath: {
+        type: String,
         required: true,
-        default: defaultModule.defaultImage._doc
+        default: "./Pictures/default.png",
     },
 
     artistId: {

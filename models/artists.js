@@ -2,7 +2,6 @@ var mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
 const password = "2032";
 const jwt = require('jsonwebtoken');
-var { images, ImagesSchema } = require("./images.js"); // images model
 const validator = require('validator');
 
 bcrypt.genSalt(10, (err, salt) => {
@@ -50,9 +49,10 @@ var ArtistSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    image: {
-        type: ImagesSchema,
-      //  required: true
+    imagePath: {
+        type:String,
+        required: true,
+        default:"./Pictures/defaultuser.png",
     },
     gender: {
         type: String,
