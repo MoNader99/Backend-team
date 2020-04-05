@@ -593,7 +593,7 @@
  /**
  * forgot password
  * ----------------------
- * @api {post} /users/forgot      Request to send email after forgetting password
+ * @api {post} /users/forgot     forget password      [Request to send email after forgetting password]
  * @apiName ForgotPasswordRequest
  * @apiGroup User privacy
  *
@@ -628,7 +628,7 @@
  /**
  * Reset password
  * ----------------------
- * @api {patch} /users/reset      Request to reset password
+ * @api {patch} /users/reset      reset Password  [Request to reset password after triggering forget password]
  * @apiName ResetRequest
  * @apiGroup User privacy
  *
@@ -653,7 +653,7 @@
 
  //REGULAR ACCOUNT
 /**
- * @api {patch} /users/:id/regular    User wants to unsubscribe from premium features
+ * @api {patch} /users/:id/regular     return to regular    [ User wants to unsubscribe from premium features]
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
  * @apiHeader {string} x-auth        the token Only users
@@ -686,7 +686,7 @@
 
  //REQUEST FOR A PREMIUM ACCOUNT
 /**
- * @api {get} /users/:id/premium    Send a confirmation mail to be a premium user
+ * @api {get} /users/:id/premium       request for a premium account   [ Send a confirmation mail to be a premium user]
  * @apiName Join Premium Request
  * @apiGroup Users
  * @apiHeader {string} x-auth            token Only users can request to premium
@@ -729,7 +729,7 @@
 
 //CONFIRMATION OF A PREMIUM ACCOUNT
 /**
- * @api {patch} /users/confirmPremium     User is confirmed to be a premium user
+ * @api {patch} /users/confirmPremium    confirmation of premium account [ User is confirmed to be a premium user]
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
  * @apiParam {String} token               the token that was sent in the link snet to the user's email
@@ -814,7 +814,7 @@
   * GetSeveralTracks
  * ---------------------
  *
- * @api {Get} /tracks               Get several Track
+ * @api {Get} /tracks               Get several Tracks
  * @apiName GetSeveralTracks
  * @apiGroup Tracks
  *
@@ -1656,7 +1656,7 @@
  * Get album by id
  * -------------------------------------
  * @api {get} /album/:id          
- * @apiName  GetAlbum
+ * @apiName GetArtistRelatedArtists
  * @apiGroup Album
  *
  * @apiHeader {string}  x-auth   

@@ -1914,7 +1914,7 @@
   {
     "type": "Get",
     "url": "/tracks",
-    "title": "Get several Track",
+    "title": "Get several Tracks",
     "name": "GetSeveralTracks",
     "group": "Tracks",
     "parameter": {
@@ -2059,7 +2059,7 @@
   {
     "type": "post",
     "url": "/users/forgot",
-    "title": "Request to send email after forgetting password",
+    "title": "forget password      [Request to send email after forgetting password]",
     "name": "ForgotPasswordRequest",
     "group": "User_privacy",
     "parameter": {
@@ -2128,7 +2128,7 @@
   {
     "type": "patch",
     "url": "/users/reset",
-    "title": "Request to reset password",
+    "title": "reset Password  [Request to reset password after triggering forget password]",
     "name": "ResetRequest",
     "group": "User_privacy",
     "parameter": {
@@ -2263,7 +2263,7 @@
   {
     "type": "patch",
     "url": "/users/confirmPremium",
-    "title": "User is confirmed to be a premium user",
+    "title": "confirmation of premium account [ User is confirmed to be a premium user]",
     "name": "Acceptance_of_Premium_Request",
     "group": "Users",
     "parameter": {
@@ -2632,7 +2632,7 @@
   {
     "type": "get",
     "url": "/users/:id/premium",
-    "title": "Send a confirmation mail to be a premium user",
+    "title": "request for a premium account   [ Send a confirmation mail to be a premium user]",
     "name": "Join_Premium_Request",
     "group": "Users",
     "header": {
@@ -2965,7 +2965,7 @@
   {
     "type": "patch",
     "url": "/users/:id/regular",
-    "title": "User wants to unsubscribe from premium features",
+    "title": "return to regular    [ User wants to unsubscribe from premium features]",
     "name": "WithdrawPremiumServies",
     "group": "Users",
     "header": {
