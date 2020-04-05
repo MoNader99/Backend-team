@@ -22,7 +22,7 @@ User.find().then((users)=>{
        artist.find().then( (artists)=>{
             for(var i=0;i<artists.length;i++)
             { id[i]=artists[i]._id.toHexString()
-             test.push(_.pick(artists[i].toJSON(),['artistName','genres','about','rating']))
+             test.push(_.pick(artists[i].toJSON(),['artistName','genres','about','rating','imagePath']))
             }
            
             //console.log({id});

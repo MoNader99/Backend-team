@@ -29,7 +29,7 @@ it('should return array of tracks with the given ids',(done)=>{
         .send({id})
         .expect(200)
         .expect((res)=>{
-           expect(JSON.stringify( res.body)).toEqual(test)  
+           expect(JSON.stringify( res.body.tracks)).toEqual(test)  
         })
         .end(done)
           })
