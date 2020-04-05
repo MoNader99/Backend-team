@@ -37,17 +37,13 @@ router.post('/playlists',(req,res)=>{
                     playlistName: req.body.playlistName,
                     privacy: req.body.privacy,
                     
-                    
-                   // href:playlistInstance.href         // to be uncommented when href is known
                 },(e)=>{
                     return res.status(500).send("Coult not create playlist");
                 });
             
                 playlistInstance.save().then((doc)=>{
-                    //myduplicate=[];
                     res.status(201).send(doc);  
                 }).catch((e)=>{
-                    //myduplicate=[];
                     res.status(500).send("Could not save the playlist");
                 });
                 

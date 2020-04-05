@@ -10,7 +10,7 @@ describe("Get Image of a playlist",()=>{
 
             users[0].save()
             users[0].generateAuthToken().then((token)=>{
-                var testPlaylistName="Dejavu";
+                var testPlaylistName="Classics";
                 request(app)
                 .get('/playlists/image')
                 .set('x-auth',token)

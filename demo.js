@@ -257,7 +257,6 @@ var playlist1 = new playlist({
     playlistName:"Dejavu",
     privacy:true,
     tracks:[track1,track2],
-    href:1
 });
 
 playlist1.save().then((res)=>{
@@ -272,7 +271,6 @@ var playlist2 = new playlist({
     playlistName:"Classics",
     privacy:true,
     tracks:[track1,track2,track3,track4],
-    href:2
 
 });
 
@@ -288,7 +286,6 @@ var playlist3 = new playlist({
     playlistName:"X",
     privacy:false,
     tracks: [track1, track2, track3, track4, track5],
-    href:3
     //This playlist will have the deafult image of the playlist
 });
 
@@ -303,7 +300,6 @@ var playlist4 = new playlist({
     userId:user2._id,
     playlistName:"Likes",
     tracks: [track5],
-    href:5
 
 });
 
@@ -317,7 +313,6 @@ playlist4.save().then((res)=>{
 var playlist5 = new playlist({
     userId:user2._id,
     playlistName:"RecyleBin",
-    href:6
 });
 
 playlist5.save().then((res)=>{
