@@ -1651,3 +1651,60 @@
  
 
 
+//GET Album by ID
+ /**
+ * Get album by id
+ * -------------------------------------
+ * @api {get} /album/:id          
+ * @apiName GetArtistRelatedArtists
+ * @apiGroup Album
+ *
+ * @apiHeader {string}  x-auth   
+ * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
+ *
+ * @apiParam {string} albumId           Id of the album
+ *
+ * @apiSuccess 302                     [The response of the success case is an album object]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ * {
+ *       {
+ *  "album": {
+ *       "_id": "5e89f2caaaa6bd3f481675f5",
+ *       "artistId": "5e89f2caaaa6bd3f481675eb",
+ *       "albumName": "25",
+ *       "__v": 0,
+ *       "likes": 1,
+ *       "rating": null,
+ *       "tracks": [
+ *           "5e89f2caaaa6bd3f481675f0",
+ *           "5e89f2caaaa6bd3f481675f1"
+ *       ],
+ *       "imagePath": "./Pictures/default.png"
+ *   }
+* }
+ *
+ * }
+ * @apiError  404   Not found                   [the album id is not found ]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found 
+ *     {
+ *       "error": "Id not found"
+ *     }
+ *  * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ * 
+ * 
+ */
