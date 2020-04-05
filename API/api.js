@@ -1735,7 +1735,7 @@
  *   "__v": 0,
  *   "likedAlbums": [],
  *   "likedTracks": [],
- *   "imagePath": "./Pictures/defaultuser.png",
+ *   "imagePath": "defaultuser.png",
  *   "isActive": true,
  *   "isPremium": false
 *}

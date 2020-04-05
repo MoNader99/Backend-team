@@ -259,7 +259,7 @@ describe('Get user profile /users/me', () => {
         request(app)
         .get(`/users/me`)
         .set('x-auth',token)
-        .expect(400)
+        .expect(401)
         .end(done)
     })
 

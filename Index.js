@@ -23,6 +23,7 @@ const searchRoute = require('./Controllers/SearchController');
 const app = express();
 var cors = require('cors');
 app.use(cors());
+
 app.use('/Images',express.static(__dirname + '/Pictures'));
 app.use(bodyParser.json());
 
