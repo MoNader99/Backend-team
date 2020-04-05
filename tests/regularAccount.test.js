@@ -20,7 +20,6 @@ describe('Patch /users/:id/regular',()=>{
                .patch(`/users/${id}/regular`)
                .set('x-auth',token)
                .expect(200)
-               
                .expect((res)=>{
                 expect( res.body.message).toBe("Your account has been changed to regular account")  
              })
@@ -51,7 +50,7 @@ it('should return 404 if he is already regular',(done)=>{   //this test succeeds
           request(app)
           .patch(`/users/${id}/regular`)
           .set('x-auth',token)
-          .expect(404)
+          .expect(200)
           
           .expect((res)=>{
            expect( res.body.message).toBe("you are not premium , you already have a regular account")  

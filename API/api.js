@@ -311,7 +311,7 @@
  *         "_id" : ObjectId("5e7511fa1a2c59902efa5544"),
  *         "userId" : "5e7511fa1a2c59902efa552a",
  *         "playlistName" : "RecyleBin",
- *         "image" : image object
+ *         "imagePath" : url of the server here./Pictures/defaultimage.png
  *         "tracks" : [],
  *        "privacy" : false,
  *         "__v" : 0
