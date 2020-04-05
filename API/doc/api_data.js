@@ -100,6 +100,103 @@ define({ "api": [
     "groupTitle": "Album"
   },
   {
+    "type": "get",
+    "url": "/album/:id",
+    "title": "",
+    "name": "GetArtistRelatedArtists",
+    "group": "Album",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": ""
+          },
+          {
+            "group": "Header",
+            "type": "JSON",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>The content of the request body in JSON format.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "albumId",
+            "description": "<p>Id of the album</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the success case is an album object]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 302\n{\n      {\n \"album\": {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"./Pictures/default.png\"\n  }\n}\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                   [the album id is not found ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found \n{\n  \"error\": \"Id not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
     "type": "post",
     "url": "api/album//like/:id",
     "title": "like album",
@@ -923,7 +1020,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5544\"),\n     \"userId\" : \"5e7511fa1a2c59902efa552a\",\n     \"playlistName\" : \"RecyleBin\",\n     \"image\" : image object\n     \"tracks\" : [],\n    \"privacy\" : false,\n     \"__v\" : 0\n\n}",
+          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5544\"),\n     \"userId\" : \"5e7511fa1a2c59902efa552a\",\n     \"playlistName\" : \"RecyleBin\",\n     \"imagePath\" : url of the server here./Pictures/defaultimage.png\n     \"tracks\" : [],\n    \"privacy\" : false,\n     \"__v\" : 0\n\n}",
           "type": "JSON"
         }
       ]
