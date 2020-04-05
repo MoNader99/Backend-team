@@ -1481,7 +1481,7 @@
 * Like album
  * ---------------------
  * 
- * @api {post} api/album//like/:id              like album
+ * @api {post} album/like/:id              like album
  * @apiName  Like album
  * @apiGroup Album
  *   
@@ -1544,7 +1544,7 @@
 * Like track
  * ---------------------
  * 
- * @api {post} api/track/like/:id              like track
+ * @api {post} track/like/:id              like track
  * @apiName  Like track
  * @apiGroup Track
  *   
@@ -1659,7 +1659,7 @@
  * @apiName GetAlbum
  * @apiGroup Album
  *
- * @apiHeader {string}  x-auth   
+ * @apiHeader {string}  x-auth          Required
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {string} albumId           Id of the album
@@ -1680,7 +1680,7 @@
  *           "5e89f2caaaa6bd3f481675f0",
  *           "5e89f2caaaa6bd3f481675f1"
  *       ],
- *       "imagePath": "./Pictures/default.png"
+ *       "imagePath": "default.png"
  *   }
 * }
  *
@@ -1708,3 +1708,60 @@
  * 
  * 
  */
+
+//GET User Profile
+ /**
+ * Get User Profile
+ * -------------------------------------
+ * @api {get} /users/me   Get User Profile 
+ * @apiName GetUserProfile 
+ * @apiGroup Users
+ *
+ * @apiHeader {string}  x-auth          Required
+ * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
+ *
+ *
+ * @apiSuccess 302                     [The response of the success case is an album object]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ * {
+ *      {
+ *  "_id": "5e8a0d954b4daf4ee08a2f65",
+ *   "userName": "ranime",
+ *   "email": "ranimemohamed8@gmail.com",
+ *   "password": "$2b$10$lPLeQWsAgsQHywSK1VS/GO6bN/uCA9v/aWVPf18HlNXFPzFnpSzxC",
+ *   "gender": "F",
+ *   "birthDate": "1999-05-30T00:00:00.000Z",
+ *   "__v": 0,
+ *   "likedAlbums": [],
+ *   "likedTracks": [],
+ *   "imagePath": "./Pictures/defaultuser.png",
+ *   "isActive": true,
+ *   "isPremium": false
+*}
+ *
+ * }
+ * @apiError  404   Not found                   [the album id is not found ]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not found 
+ *     {
+ *       "error": "Id not found"
+ *     }
+ *  * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ * 
+ * 
+ */
+
