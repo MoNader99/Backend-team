@@ -1655,8 +1655,8 @@
  /**
  * Get album by id
  * -------------------------------------
- * @api {get} /album/:id          
- * @apiName GetArtistRelatedArtists
+ * @api {get} /album/:id   Get Album 
+ * @apiName GetAlbum
  * @apiGroup Album
  *
  * @apiHeader {string}  x-auth   
