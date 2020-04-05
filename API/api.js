@@ -1689,7 +1689,7 @@
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not found 
  *     {
- *       "error": "Id not found"
+ *       "Id not found"
  *     }
  *  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
@@ -1741,11 +1741,11 @@
 *}
  *
  * }
- * @apiError  404   Not found                   [the album id is not found ]
+ * @apiError  404   Not found                   [the user id is not found ]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 Not found 
  *     {
- *       "error": "Id not found"
+ *       "Id not found"
  *     }
  *  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
