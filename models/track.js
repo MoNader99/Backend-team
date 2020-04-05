@@ -35,7 +35,7 @@ var track=mongoose.model("Tracks",{
   imagePath:{
     type:String,
     required:true,
-    default:"./Pictures/default.png",
+    default:"default.png",
     },
 
 

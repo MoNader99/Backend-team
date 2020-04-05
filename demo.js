@@ -15,10 +15,10 @@ const Schema = mongoose.Schema;
 
 //PATH OF IMAGES
 
-var imgPath1 = "./Pictures/default.png";   //default picture of playlist
-var imgPath2 = "./Pictures/Billie-Eilish.png";
-var imgPath3 = "./Pictures/Adele.png";
-var imgPath4 = "./Pictures/defaultuser.png";
+var imgPath1 = "default.png";   //default picture of playlist
+var imgPath2 = "Billie-Eilish.png";
+var imgPath3 = "Adele.png";
+var imgPath4 = "defaultuser.png";
 
 
 

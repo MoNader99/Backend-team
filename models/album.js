@@ -16,7 +16,7 @@ var AlbumSchema = new mongoose.Schema({
     imagePath: {
         type: String,
         required: true,
-        default: "./Pictures/default.png",
+        default: "default.png",
     },
 
     artistId: {

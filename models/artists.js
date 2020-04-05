@@ -52,7 +52,7 @@ var ArtistSchema = new mongoose.Schema({
     imagePath: {
         type:String,
         required: true,
-        default:"./Pictures/defaultuser.png",
+        default:"defaultuser.png",
     },
     gender: {
         type: String,

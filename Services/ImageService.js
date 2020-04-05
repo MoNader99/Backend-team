@@ -41,7 +41,7 @@ exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
     if(req.file){
         imageName=userId+Date.now()+".png"
         req.file.filename=imageName;
-        newImagePath="./Pictures/"+imageName;
+        newImagePath=imageName;
         sharp(req.file.buffer)
         .resize(600,600)               //default is centre allignment
         .toFormat("png")

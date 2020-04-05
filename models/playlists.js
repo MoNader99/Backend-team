@@ -25,7 +25,7 @@ var playlist=mongoose.model("Playlists",{
   imagePath:{
     type:String,
     required:true,
-    default:"./Pictures/default.png",
+    default:"default.png",
     },
 
     tracks: [
