@@ -18,10 +18,6 @@ var playlist=mongoose.model("Playlists",{
       type:Boolean,
       default:false,
   },
-  href:{           //TO BE DETERMINED LATER
-      type:String,
-      unique:true
-  },
   imagePath:{
     type:String,
     required:true,

@@ -41,7 +41,7 @@ exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
     if(req.file){
         imageName=userId+Date.now()+".png"
         req.file.filename=imageName;
-        newImagePath='./Pictures/'+imageName;
+        newImagePath="./Pictures/"+imageName;
         sharp(req.file.buffer)
         .resize(600,600)               //default is centre allignment
         .toFormat("png")
@@ -71,7 +71,7 @@ exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
 //
 
 exports.AssignUserImage =AssignUserImage= async(req, res)=>{
-    User.findByIdAndUpdate({_id:userId},{$set:{imagePath:newImagePath}}).then((n)=>{
+    User.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
     });
     
@@ -79,7 +79,7 @@ exports.AssignUserImage =AssignUserImage= async(req, res)=>{
 }
 
 exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
-    artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:newImagePath}}).then((n)=>{
+    artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
     });
     
