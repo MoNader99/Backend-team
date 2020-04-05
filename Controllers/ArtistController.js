@@ -350,4 +350,83 @@ res.json({"artists":returnedArtistArray});
 
 
 
+
+
+
+
+/**
+ * @api {get} /artists/homepage/popular    Get popular Artists for homepage
+ * @apiName GetPopularArtists
+ * @apiGroup Artists
+            
+ *
+ * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *      "artists": [
+        {
+            "_id": "5e88ce838d92547020e1a652",
+            "artistName": "Eminem",
+            "genres": [
+                "Trap",
+                "Jazz",
+                "pop",
+                "Rap"
+            ],
+            "about": "Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,\n     record executive and actor. He is one of the most successful musical artists of the 21st century.",
+            "rating": 4.6,
+            "imagePath": "./Pictures/defaultuser.png"
+        },
+        {
+            "_id": "5e88ce838d92547020e1a650",
+            "artistName": "Adele",
+            "genres": [
+                "pop",
+                "R&B"
+            ],
+            "about": "Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\n      commercial success unsurpassed among her peers.",
+            "rating": 4,
+            "imagePath": "./Pictures/Adele.png"
+        }
+    ]
+}
+ *
+ *
+ *
+ */
+
+
+
+
+//get popular artists for homepage
+
+router.get('/artists/homepage/popular',async (req,res)=>{
+
+    var returnedArtistArray=[{}];
+    await artist.find({rating:{$gte:3}}).then(async(artists)=>{
+
+        for (var i=0;i<artists.length;i++)
+        {
+            
+            if(!artists[i])
+            {
+                continue;
+            }
+
+            returnedArtistArray[i]= _.pick(artists[i], ['_id','artistName', 'genres','about','rating','imagePath']);
+        
+        }
+
+        res.send({"artists":returnedArtistArray});
+    })
+    
+
+    })
+
+
+
+
+
 module.exports= router;

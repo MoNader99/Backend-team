@@ -383,6 +383,36 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/artists/homepage/popular",
+    "title": "Get popular Artists for homepage",
+    "name": "GetPopularArtists",
+    "group": "Artists",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "artists[]",
+            "optional": false,
+            "field": "artists",
+            "description": "<p>An array of Artist objects containing the full details of each  Artist.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n     \"artists\": [\n        {\n            \"_id\": \"5e88ce838d92547020e1a652\",\n            \"artistName\": \"Eminem\",\n            \"genres\": [\n                \"Trap\",\n                \"Jazz\",\n                \"pop\",\n                \"Rap\"\n            ],\n            \"about\": \"Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem\\n     (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,\\n     record executive and actor. He is one of the most successful musical artists of the 21st century.\",\n            \"rating\": 4.6,\n            \"imagePath\": \"./Pictures/defaultuser.png\"\n        },\n        {\n            \"_id\": \"5e88ce838d92547020e1a650\",\n            \"artistName\": \"Adele\",\n            \"genres\": [\n                \"pop\",\n                \"R&B\"\n            ],\n            \"about\": \"Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter\\n    who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.\\n     Adele's first two albums, 19 and 21, earned her critical praise and a level of\\n      commercial success unsurpassed among her peers.\",\n            \"rating\": 4,\n            \"imagePath\": \"./Pictures/Adele.png\"\n        }\n    ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Artists"
+  },
+  {
+    "type": "get",
     "url": "/artists",
     "title": "Get several Artists",
     "name": "GetSeveralArtists",
