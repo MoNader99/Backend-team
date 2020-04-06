@@ -108,9 +108,9 @@ describe('POST /artists/signup', () => {
         console.log(a);
         expect (a.artistName).toBe("testuser");
         expect (a.gender).toBe("F");
-        // var d= new Date("1990-06-19");
-        // expect (a.birthDate.toString()).toEqual(d);
-        // expect(a.isActive).toBe(false);
+        var d= new Date("1999-07-29");
+        expect (a.birthDate.toString()).toEqual(d);
+        expect(a.isActive).toBe(false);
         done();
       }).catch((e)=>done(e));
 

@@ -498,17 +498,37 @@ describe('Patch /users/me/editprofile', () => {
       .patch(`/users/me/editprofile`)
       .set('x-auth',token)
       .send({
- "userName":"test1",
-  "gender":"F",
-  "day":"29",
+     "userName":"test1",
+      "gender":"F",
+      "day":"29",
      "month":"07",
      "year":"1999"
-})
+            })
+
+//           .expect((res)=>{
+//           })
+//
+//
+//           .end((err, res)=>{
+//             if (err)
+//             {
+//               return done(err);
+//             }
+//             expect (res.status).toBe(200)
+//             User.find({"userName":"test1"}).then((user)=>{
+//               expect (user.gender).toBe("F");
+//               var d= new Date("1999-07-29");
+//               expect (user.birthDate.toString()).toEqual(d);
+//               done();
+//
+//           })
+// })
       .expect(200)
       .end(done)
+        })
       })
-  })
-  });
+})
+
 
   it('should reject empty token', (done) =>
   {
@@ -795,4 +815,3 @@ describe('GET /users/confirm/:code', () => {
 
 
         });
-        
