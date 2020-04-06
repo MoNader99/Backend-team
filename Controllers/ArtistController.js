@@ -53,7 +53,7 @@ router.get('/artists/:id', AuthenticationServices.AuthenticateFrontend, (req, re
 });
 
 
-router.post('/artists/login', (req, res) => {
+router.post('/artists/login', AuthenticationServices.AuthenticateFrontend, (req, res) => {
     console.log("email");
     console.log(req.body.email);
     var body = _.pick(req.body, ['email', 'password']);

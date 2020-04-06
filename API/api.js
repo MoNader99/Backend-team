@@ -1222,7 +1222,7 @@
  *@apiParam {string}  email
  *
  * @apiParam {string} password
- *
+ * @apiHeader {string}  x-auth       token for frontend to send the response
  * @apiParamExample {json} Request-Example:
  *     {
  *       "email": "ayamahmoudabdelfatah99@gmail.com",
@@ -1262,7 +1262,7 @@
  *@apiParam {string}  email
  *
  * @apiParam {string} password
- *
+ * @apiHeader {string}  x-auth       token for frontend to send the response
  * @apiParamExample {json} Request-Example:
  *     {
  *       "email": "ayamahmoudabdelfatah99@gmail.com",
@@ -1918,7 +1918,60 @@
  * /
  * */
 
-
+/** UnLike playlist
+ * ---------------------
+ * 
+ * @api { post } /playlists/unlike/:id              unlike playlist
+ * @apiName  unLikeplaylist
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } id
+ * 
+ * @apiHeader { string } x - auth       user token to unlike playlist
+ *
+ * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ * 
+ * }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Unauthorized
+ * {
+ *        "Token is Empty"
+ *     }
+ * 
+ * 
+ *  @apiError  404  Not found[this playlist is not found]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        " Notfound in liked playlists"
+ *     }
+ * 
+ * 
+ * @apiError  404  Not found[this is not an ID]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "Invalid id"
+ *     }
+ * 
+ * /
+ * */
 ///monica////////////////////////////
  
 /**
