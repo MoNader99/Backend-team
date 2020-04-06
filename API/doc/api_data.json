@@ -252,6 +252,92 @@
     "groupTitle": "Album"
   },
   {
+    "type": "get",
+    "url": "/albums/byartist/:artistId",
+    "title": "Get Albums by an artist",
+    "name": "Get_Albums_by_an_artist",
+    "group": "Album",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "artistId",
+            "description": "<p>Id of the artist</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "albums",
+            "description": "<p>array of objects of type album in JSON format with status code 200</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200\n\n      {\n \"ALBUMS\":[ {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  },\n{\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  }\n]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                   [the album id is not found ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"Id not found\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
     "type": "post",
     "url": "album/like/:id",
     "title": "like album",
@@ -357,24 +443,11 @@
     "groupTitle": "Album"
   },
   {
-    "type": "get",
-    "url": "/albums/byartist/:artistId",
-    "title": "Get Albums by an artist",
-    "name": "Get_Albums_by_an_artist",
-    "group": "Albums",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>Required</p>"
-          }
-        ]
-      }
-    },
+    "type": " post ",
+    "url": "/album/unlike/:id",
+    "title": "unlike album",
+    "name": "unLikealbum",
+    "group": "Album",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -382,28 +455,39 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "artistId",
-            "description": "<p>Id of the artist</p>"
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x",
+            "description": "<ul> <li>auth       user token to unlike album</li> </ul>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x",
+            "description": "<ul> <li>auth[token given for the logging in user]</li> </ul>"
           }
         ]
       }
     },
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "object[]",
-            "optional": false,
-            "field": "albums",
-            "description": "<p>array of objects of type album in JSON format with status code 200</p>"
-          }
-        ]
-      },
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200\n\n      {\n \"ALBUMS\":[ {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  },\n{\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  }\n]\n}",
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n{\n\n}",
           "type": "JSON"
         }
       ]
@@ -414,33 +498,43 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "404",
-            "description": "<p>Not found                   [the album id is not found ]</p>"
+            "field": "401",
+            "description": "<p>Unauthorized[authentication failed]</p>"
           },
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "401",
-            "description": "<p>Unauthorized               [authentication failed]</p>"
+            "field": "404",
+            "description": "<p>Not found[this album is not found]</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found\n{\n  \"Id not found\"\n}",
-          "type": "string"
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"Token is not valid\"\n    }",
+          "type": "JSON"
         },
         {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
-          "type": "string"
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401  Unauthorized\n{\n       \"Token is Empty\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 404 Not found\n{\n       \" Notfound in liked albums\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 404 Not found\n{\n       \"Invalid id\"\n    }",
+          "type": "JSON"
         }
       ]
     },
     "version": "0.0.0",
     "filename": "./api.js",
-    "groupTitle": "Albums"
+    "groupTitle": "Album"
   },
   {
     "type": "post",
@@ -544,8 +638,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an artist who has a verified account can edit his/her profile picture</p>"
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an artist who has a verified account can edit his/her profile picture</p>"
           },
           {
             "group": "Header",
@@ -1283,8 +1377,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can create a playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can create a playlist</p>"
           },
           {
             "group": "Header",
@@ -1398,8 +1492,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only a user  who has a verified account can delete his/her playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only a user  who has a verified account can delete his/her playlist</p>"
           },
           {
             "group": "Header",
@@ -1512,8 +1606,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only a user  who has a verified account can delete a track from his playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only a user  who has a verified account can delete a track from his playlist</p>"
           },
           {
             "group": "Header",
@@ -1648,8 +1742,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can get the image of a playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get the image of a playlist</p>"
           },
           {
             "group": "Header",
@@ -2102,111 +2196,6 @@
   },
   {
     "type": "post",
-    "url": "track/like/:id",
-    "title": "like track",
-    "name": "Like_track",
-    "group": "Track",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "id",
-            "description": ""
-          }
-        ]
-      }
-    },
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>user token to like track</p>"
-          }
-        ],
-        "Response Header": [
-          {
-            "group": "Response Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>[token given for the logging in user]</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n     {\n\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "401",
-            "description": "<p>[authentication failed]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "403",
-            "description": "<p>Forbidden                [Repeating the request more than once for the same user and the same album]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "404",
-            "description": "<p>Not found                [this album is not found]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401\n{\n   \"Token is Invalid\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401\n{\n   \"Token is Empty\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 403 Forbidden\n{\n   \"You have already liked that track\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found\n{\n   \"No album found\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Track"
-  },
-  {
-    "type": "post",
     "url": "/tracks",
     "title": "Add Track",
     "name": "AddTrack",
@@ -2218,8 +2207,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an Artist who has a verified account can add a track</p>"
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an Artist who has a verified account can add a track</p>"
           },
           {
             "group": "Header",
@@ -2385,8 +2374,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an Artist who has a verified account can delete his tracks</p>"
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an Artist who has a verified account can delete his tracks</p>"
           },
           {
             "group": "Header",
@@ -2686,6 +2675,111 @@
           "title": "Error-Response:",
           "content": "  HTTP/1.1 404 Not Found\n {\n\"Track not found\"\n  }",
           "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "post",
+    "url": "track/like/:id",
+    "title": "like track",
+    "name": "Like_track",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user token to like track</p>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>[token given for the logging in user]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n     {\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Forbidden                [Repeating the request more than once for the same user and the same album]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                [this album is not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n{\n   \"Token is Invalid\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n{\n   \"Token is Empty\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 Forbidden\n{\n   \"You have already liked that track\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"No album found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
+          "type": "JSON"
         }
       ]
     },
@@ -3090,8 +3184,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can edit his/her profile picture</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can edit his/her profile picture</p>"
           },
           {
             "group": "Header",
@@ -3262,8 +3356,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get artist related artists</p>"
           },
           {
             "group": "Header",
@@ -3498,6 +3592,96 @@
   },
   {
     "type": "get",
+    "url": "/users/:id",
+    "title": "GET User Profile By ID",
+    "name": "GetUserProfileByID",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>token for frontend to send the response</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>Id of the user</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the success case is a user object]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 302\n{\n    \n     \"likedAlbums\": [\"5e8a701954fe752c1498f729\",\n              \"5e8a701954fe752c1498f72a\"]\n     \"likedTracks\": [\"5e8a701954fe752c1498f72c\",\n              \"5e8a701954fe752c1498f72d\"] \n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                   [the user id is not found ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"Token Invalid\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "get",
     "url": "/users/premium",
     "title": "request for a premium account   [ Send a confirmation mail to be a premium user]",
     "name": "Join_Premium_Request",
@@ -3581,8 +3765,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can get the last 5 tracks he/she played</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get the last 5 tracks he/she played</p>"
           }
         ]
       }
@@ -3845,8 +4029,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only a User who has a verified account can get top 5 tracks of an artist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only a User who has a verified account can get top 5 tracks of an artist</p>"
           },
           {
             "group": "Header",

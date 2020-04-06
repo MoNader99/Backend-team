@@ -7,7 +7,7 @@
  * @apiName RecentlyPlayed
  * @apiGroup Users
  *
- * @apiHeader {string} Authorization    Only an User who has a verified account can get the last 5 tracks he/she played
+ * @apiHeader {string} x-auth     (UserToken)Only an User who has a verified account can get the last 5 tracks he/she played
  *
  * @apiSuccess 302                     [The response of the sucess case is the track info , the actual track will not be sent]
  * @apiSuccessExample {JSON} Success-Response:
@@ -65,7 +65,7 @@
  * @apiName TopTracks
  * @apiGroup Users
  *
- * @apiHeader {string} Authorization    Only a User who has a verified account can get top 5 tracks of an artist
+ * @apiHeader {string} x-auth    (UserToken)Only a User who has a verified account can get top 5 tracks of an artist
  * @apiHeader {string} artistId    ID of the artist to get his/her top 5 tracks 
  * @apiSuccess 302                     [The response of the sucess case is the track info , the actual track will not be sent]
  * @apiSuccessExample {JSON} Success-Response:
@@ -131,7 +131,7 @@
  * @apiName AddTrack
  * @apiGroup Tracks
  *
- * @apiHeader {string} Authorization    Only an Artist who has a verified account can add a track
+ * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can add a track
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {String}      name              Track name. (Obligatory)
@@ -238,7 +238,7 @@
  * @apiName DeleteTrack
  * @apiGroup Tracks
  *
- * @apiHeader {string} Authorization    Only an Artist who has a verified account can delete his tracks
+ * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can delete his tracks
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {string}    trackName           the name of the track that the artist wants to delete(an artist cannot have 2 tracks with the same name)
@@ -294,7 +294,7 @@
  * @apiName DeleteTrackFromPlaylist
  * @apiGroup Playlists
  *
- * @apiHeader {string} Authorization    Only a user  who has a verified account can delete a track from his playlist
+ * @apiHeader {string} x-auth    (UserToken)Only a user  who has a verified account can delete a track from his playlist
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {string}    playlistName           the name of the playlist he want to delete a track from
@@ -369,7 +369,7 @@
  * @apiName DeletePlaylist
  * @apiGroup Playlists
  *
- * @apiHeader {string} Authorization    Only a user  who has a verified account can delete his/her playlist
+ * @apiHeader {string} x-auth   (UserToken)Only a user  who has a verified account can delete his/her playlist
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {string}    playlistName           the name of the playlist he want to delete a track from
@@ -421,7 +421,7 @@
  * @apiName CreatePlaylist
  * @apiGroup Playlists
  *
- * @apiHeader {string} Authorization    Only an User who has a verified account can create a playlist
+ * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can create a playlist
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {string}      playlistName      Playlist name. (Obligatory)
@@ -485,7 +485,7 @@
  * @apiName GetPlaylistCoverImage
  * @apiGroup Playlists
  *
- * @apiHeader {string} Authorization    Only an User who has a verified account can get the image of a playlist
+ * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can get the image of a playlist
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  *
@@ -543,7 +543,7 @@
  * @apiName Edit profile picture of the user
  * @apiGroup Users
  *
- * @apiHeader {string} Authorization    Only an User who has a verified account can edit his/her profile picture
+ * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can edit his/her profile picture
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  *
@@ -588,7 +588,7 @@
 * @apiName Edit profile picture of the artist
 * @apiGroup Artists
 *
-* @apiHeader {string} Authorization    Only an artist who has a verified account can edit his/her profile picture
+* @apiHeader {string} x-auth    (ArtistToken)Only an artist who has a verified account can edit his/her profile picture
 * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
 *
 *
@@ -644,7 +644,7 @@
  * @apiName GetArtistRelatedArtists
  * @apiGroup Users
  *
- * @apiHeader {string} Authorization    Only an User who has a verified account
+ * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can get artist related artists
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  *
@@ -712,8 +712,7 @@
  *       "error": "Send the artist ID"
  *     }
  */
-
- ////////////////////////////////Monica/////////////////////////////////////////////////
+////////////////////////////////Monica/////////////////////////////////////////////////
  /**
  * forgot password
  * ----------------------
@@ -1243,11 +1242,67 @@
  */
 
 
+
+
+
+
+//GET User Profile By ID
+ /**
+ * GET User Profile By ID
+ * -------------------------------------
+ * @api {get} /users/:id         GET User Profile By ID      
+ * @apiName GetUserProfileByID
+ * @apiGroup Users
+ *
+ * @apiHeader {string}  x-auth          token for frontend to send the response
+ *
+ * @apiParam {string} userId           Id of the user
+ *
+ * @apiSuccess 302                     [The response of the success case is a user object]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ * {
+ *     
+ *      "likedAlbums": ["5e8a701954fe752c1498f729",
+ *               "5e8a701954fe752c1498f72a"]
+ *      "likedTracks": ["5e8a701954fe752c1498f72c",
+ *               "5e8a701954fe752c1498f72d"] 
+ *
+ * }
+ * @apiError  404   Not found                   [the user id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found 
+ *     {
+ *       "Id not found"
+ *     }
+ * @apiError 401   Unauthorized               [authentication failed]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "Token Invalid"
+ *     }
+ * 
+ * 
+ * 
+ */
+
+
+
+
+
+
  //GET ALBUMS BY ARTIST
 /**
 * @api {get} /albums/byartist/:artistId  Get Albums by an artist
 * @apiName Get Albums by an artist
-* @apiGroup Albums
+* @apiGroup Album
 *
 * @apiHeader {string}  x-auth          Required
 *
@@ -1258,7 +1313,6 @@
 *     HTTP/1.1 200
 *
 *       {
-
 *  "ALBUMS":[ {
 *       "_id": "5e89f2caaaa6bd3f481675f5",
 *       "artistId": "5e89f2caaaa6bd3f481675eb",
@@ -1813,7 +1867,7 @@
  * 
  * @api {post} track/like/:id              like track
  * @apiName  Like track
- * @apiGroup Track
+ * @apiGroup Tracks
  *   
  *  
  *@apiParam {string}  id
@@ -2509,4 +2563,3 @@
  * 
  * 
  */
-
