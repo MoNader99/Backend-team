@@ -82,16 +82,13 @@ router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (
 
 
 ///////// Like album /////////////
-router.post('/album/like/:id',(req, res) => {
+router.post('/album/like/:id',async (req, res) => {
     var albumId = req.params.id;
     var token = req.header('x-auth');
-    console.log('token = '+ token)
     if(!token)
     {
-        console.log('da5alt');
-        res.status(401).send('Token is Empty');
+        return res.status(401).send('Token is Empty');
     }
-    console.log('md5ltsh');
     if(!ObjectID.isValid(albumId))
     {
         return res.status(404).send("Invalid id");
@@ -104,9 +101,8 @@ router.post('/album/like/:id',(req, res) => {
     User.findByToken(token).then((user) =>{
         if(!user)
         {
-            res.status(401).send('Token Invalid');
+            return res.status(401).send('Token Invalid');
         }
-        console.log('user was found');
         var len =user.likedAlbums.length;
         if(len == 0)
         {
