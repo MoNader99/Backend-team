@@ -1440,6 +1440,111 @@ define({ "api": [
     "groupTitle": "Playlists"
   },
   {
+    "type": " post ",
+    "url": "/playlists/like/:id",
+    "title": "like playlist",
+    "name": "Likeplaylist",
+    "group": "Playlists",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x",
+            "description": "<ul> <li>auth       user token to like playlist</li> </ul>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x",
+            "description": "<ul> <li>auth[token given for the logging in user]</li> </ul>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n{\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Forbidden[Repeating the request more than once for the same user and the same album]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found[this playlist is not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"Token is not valid\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401  Unauthorized\n{\n       \"Token is Empty\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 403 Forbidden\n{\n       \"You have already liked that playlist\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 404 Not found\n{\n       \"No playlist found\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 404 Not found\n{\n       \"Invalid id\"\n    }\n\n/",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Playlists"
+  },
+  {
     "type": "Get",
     "url": "api/Search",
     "title": "Search about a word",

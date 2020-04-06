@@ -69,7 +69,7 @@ router.post('/artists/login', (req, res) => {
             var decodedtoken = jwt.verify(token, 'secretkeyforartist')
             console.log(4);
             console.log(decodedtoken._id);
-            res.header('x-auth', token).send(artist);
+            res.header('x-auth', token).send();
             console.log(5);
         });
 	}

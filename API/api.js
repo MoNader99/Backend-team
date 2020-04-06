@@ -1773,3 +1773,67 @@
  * 
  */
 
+/////////////Aya Mahmoud /////////////////////////////
+/** Like playlist
+ * ---------------------
+ * 
+ * @api { post } /playlists/like/:id              like playlist
+ * @apiName  Likeplaylist
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } id
+ * 
+ * @apiHeader { string } x - auth       user token to like playlist
+ *
+ * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ * 
+ * }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Unauthorized
+ * {
+ *        "Token is Empty"
+ *     }
+ *
+ *
+ *  @apiError  403  Forbidden[Repeating the request more than once for the same user and the same album]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 403 Forbidden
+ * {
+ *        "You have already liked that playlist"
+ *     }
+ *
+ * 
+ * 
+ *  @apiError  404  Not found[this playlist is not found]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "No playlist found"
+ *     }
+ * 
+ * 
+ * @apiError  404  Not found[this is not an ID]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "Invalid id"
+ *     }
+ * 
+ * /
+ * */
