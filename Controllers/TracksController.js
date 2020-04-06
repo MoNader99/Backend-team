@@ -527,7 +527,7 @@ router.post('/tracks/like/:id', (req,res) =>
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(401).send('Token is Empty');
+        return res.status(401).send('Token is Empty');
     }
     if(!ObjectID.isValid(trackId))
     {
@@ -535,13 +535,13 @@ router.post('/tracks/like/:id', (req,res) =>
     }
     track.findOne({_id:trackId}).then((track) => {
     if(!track){
-        res.status(404).send('No track found');
+        return res.status(404).send('No track found');
     }
     })
     User.findByToken(token).then((user) =>{
         if(!user)
         {
-            res.status(401).send('Token Invalid');
+            return res.status(401).send('User does not have access or does not exist');
         }
         console.log('user was found');
         var len =user.likedTracks.length;
@@ -585,18 +585,18 @@ router.get('/tracks/like/me', (req,res) =>
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(400).send('You should Pass a token to access your liked tracks');
+        res.status(401).send('Token is Empty');
     }
     User.findByToken(token).then((user) =>
     {
         if(!user)
         {
-            res.status(401).send('you are not a user or your token is expired');
+            res.status(401).send('User does not have access or does not exist');
         }
         res.status(302).send(user.likedTracks);
     }).catch((e) =>
     {
-        res.status(500).send('invalid token');
+        res.status(401).send('User does not have access or does not exist');
     })
 })
 

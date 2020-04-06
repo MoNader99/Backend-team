@@ -1574,7 +1574,7 @@
  *@apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401
  *     {
- *        "Token is not valid"
+ *        "Token is Invalid"
  *     }
  *
  *
@@ -1847,6 +1847,46 @@
  *        "User does not have access or does not exist"
  *     }
  * 
+ * 
+ * 
+ * 
+ */
+
+
+
+/**
+ * Get user's current Liked Tracks
+ * -------------------------------------
+ * @api {get} /tracks/like/me            Get user's current Liked Tracks
+ * @apiName GetUserCurrentLikedTracks
+ * @apiGroup Library
+ *
+ * @apiHeader {string} x-auth          Required
+ *      
+ * 
+ * @apiSuccess 302                     [The response of the success case is playlist object(s)]
+ * @apiSuccessExample {Array} Success-Response:
+ *     HTTP/1.1 302
+ * [
+ *  "5e8b45fb97022f4d7cd9907e"
+ * ]
+ *
+ * 
+*  @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ *
  * 
  * 
  * 
