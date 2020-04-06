@@ -8,7 +8,7 @@ const app=require('./../Index')
 //const {User}=require("./../Controllers/UserController")
 const{User}=require('./../models/users')
 
-describe('Get /users/:id/premium',()=>{
+describe('Get /users/premium',()=>{
 
     it('should send an email to the user to confirm changing to premium ',(done)=>{
         User.find().then((users)=>{
@@ -19,7 +19,7 @@ describe('Get /users/:id/premium',()=>{
              users[users.length-1].generateAuthToken().then((token)=>{
 
                request(app)
-               .get(`/users/${id}/premium`)
+               .get(`/users/premium`)
                .set('x-auth',token)
                .expect(200)
                
@@ -50,7 +50,7 @@ it('should return 200 if he is already premium',(done)=>{   //this test succeeds
         
          
             request(app)
-            .get(`/users/${id}/premium`)
+            .get(`/users/premium`)
             .set('x-auth',token)
             .expect(200)
             
@@ -66,30 +66,30 @@ it('should return 200 if he is already premium',(done)=>{   //this test succeeds
    })
 
 
-it('should return 401 if authentication failed',(done)=>{
+// it('should return 401 if authentication failed',(done)=>{
 
-    User.find().then((users)=>{
-        var id= users[users.length-1]._id.toHexString()+1;
+//     User.find().then((users)=>{
+//         var id= users[users.length-1]._id.toHexString()+1;
       
-        users[users.length-1].generateAuthToken().then((token)=>{
+//         users[users.length-1].generateAuthToken().then((token)=>{
 
-            request(app)
-            .get(`/users/${id}/premium`)
-            .set('x-auth',token)
-            .expect(401)
+//             request(app)
+//             .get(`/users/premium`)
+//             .set('x-auth',token)
+//             .expect(401)
             
-            .expect((res)=>{
-           expect( res.body.message).toBe("authentication Failed")  
-        })   
-        .end(done)
+//             .expect((res)=>{
+//            expect( res.body.message).toBe("authentication Failed")  
+//         })   
+//         .end(done)
 
-        })
+//         })
        
 
-   })
+//    })
 
 
-})
+// })
 
    it('should return 401 if authentication failed invalid token',(done)=>{
 
@@ -99,7 +99,7 @@ it('should return 401 if authentication failed',(done)=>{
         users[users.length-1].generateAuthToken().then((token)=>{
 
             request(app)
-            .get(`/users/${id}/premium`)
+            .get(`/users/premium`)
             .set('x-auth',token+1)
             .expect(401)
             

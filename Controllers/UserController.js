@@ -364,7 +364,6 @@ router.patch('/users/reset',async (req,res)=>{
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
  * @apiHeader {string} x-auth          Only users
- * @apiParam {String} id          the id of the user has to be passed
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -390,9 +389,9 @@ router.patch('/users/reset',async (req,res)=>{
  *
  */
 
-router.patch('/users/:id/regular', async (req, res) => {
+router.patch('/users/regular', async (req, res) => {
     var userId;
-    var id=req.params.id;
+    //var id=req.params.id;
     //console.log(id);
     var token = req.header('x-auth');
     User.findByToken(token).then((user) => {
@@ -401,11 +400,11 @@ router.patch('/users/:id/regular', async (req, res) => {
     }
   userId=user._id;
   //console.log(userId);
-  if(! (userId.toString()===id))
-  {
-      return res.status(401).json({"message":"authentication Failed"})
-  }
-  else if(user.isPremium===false)
+//   if(! (userId.toString()===id))
+//   {
+//       return res.status(401).json({"message":"authentication Failed"})
+//   }
+   if(user.isPremium===false)
   {
     return res.status(200).json({"message":"you are not premium , you already have a regular account"});
 
@@ -471,7 +470,7 @@ else
 */
 
 
-router.get('/users/:id/premium', async (req, res) =>
+router.get('/users/premium', async (req, res) =>
 {
 
              var id=req.params.id;
@@ -484,11 +483,11 @@ router.get('/users/:id/premium', async (req, res) =>
                 }
               userId=user._id;
               //console.log(userId);
-              if(! (userId.toString()===id))
-              {
-                  return res.status(401).json({"message":"authentication Failed"})
-              }
-              else if(user.isPremium===true)
+            //   if(! (userId.toString()===id))
+            //   {
+            //       return res.status(401).json({"message":"authentication Failed"})
+            //   }
+             if(user.isPremium===true)
               {
                 return res.status(200).json({"message":"you are already a premium user, thanks for that"});
 
@@ -592,11 +591,19 @@ try{
         user.isPremium=true;
         user.save()
         res.status(200).json({"message":"Email confirmed successfully,Welcome To Premium Life!"});
-    }).catch((e) => {
+    }
+    
+    
+    ).catch((e) => {
        return res.status(401).json({"message":"authentication failed"});
 
     })
 }
+else
+{
+    return res.status(401).json({"message":"authentication failed or invalid token"});
+}
+
 }
 catch{
     res.status(401).json({"message":"authentication failed or invalid token"});

@@ -102,8 +102,8 @@
   {
     "type": "get",
     "url": "/album/:id",
-    "title": "",
-    "name": "GetArtistRelatedArtists",
+    "title": "Get Album",
+    "name": "GetAlbum",
     "group": "Album",
     "header": {
       "fields": {
@@ -113,7 +113,7 @@
             "type": "string",
             "optional": false,
             "field": "x-auth",
-            "description": ""
+            "description": "<p>Required</p>"
           },
           {
             "group": "Header",
@@ -152,7 +152,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 302\n{\n      {\n \"album\": {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"./Pictures/default.png\"\n  }\n}\n\n}",
+          "content": "    HTTP/1.1 302\n{\n      {\n \"album\": {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  }\n}\n\n}",
           "type": "JSON"
         }
       ]
@@ -177,7 +177,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found \n{\n  \"error\": \"Id not found\"\n}",
+          "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
           "type": "JSON"
         },
         {
@@ -198,7 +198,7 @@
   },
   {
     "type": "post",
-    "url": "api/album//like/:id",
+    "url": "album/like/:id",
     "title": "like album",
     "name": "Like_album",
     "group": "Album",
@@ -1527,7 +1527,7 @@
   },
   {
     "type": "post",
-    "url": "api/track/like/:id",
+    "url": "track/like/:id",
     "title": "like track",
     "name": "Like_track",
     "group": "Track",
@@ -2631,7 +2631,91 @@
   },
   {
     "type": "get",
-    "url": "/users/:id/premium",
+    "url": "/users/me",
+    "title": "Get User Profile",
+    "name": "GetUserProfile",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required</p>"
+          },
+          {
+            "group": "Header",
+            "type": "JSON",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>The content of the request body in JSON format.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the success case is an album object]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 302\n{\n     {\n \"_id\": \"5e8a0d954b4daf4ee08a2f65\",\n  \"userName\": \"ranime\",\n  \"email\": \"ranimemohamed8@gmail.com\",\n  \"password\": \"$2b$10$lPLeQWsAgsQHywSK1VS/GO6bN/uCA9v/aWVPf18HlNXFPzFnpSzxC\",\n  \"gender\": \"F\",\n  \"birthDate\": \"1999-05-30T00:00:00.000Z\",\n  \"__v\": 0,\n  \"likedAlbums\": [],\n  \"likedTracks\": [],\n  \"imagePath\": \"defaultuser.png\",\n  \"isActive\": true,\n  \"isPremium\": false\n}\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                   [the user id is not found ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "get",
+    "url": "/users/premium",
     "title": "request for a premium account   [ Send a confirmation mail to be a premium user]",
     "name": "Join_Premium_Request",
     "group": "Users",
@@ -2644,19 +2728,6 @@
             "optional": false,
             "field": "x-auth",
             "description": "<p>token Only users can request to premium</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>the id of the user should be passed in the path</p>"
           }
         ]
       }
@@ -2701,6 +2772,11 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 500 server Error\n{\n  \"message\":\"error,failed to send\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed or invalid token \"\n }",
           "type": "json"
         }
       ]
@@ -2964,7 +3040,7 @@
   },
   {
     "type": "patch",
-    "url": "/users/:id/regular",
+    "url": "/users/regular",
     "title": "return to regular    [ User wants to unsubscribe from premium features]",
     "name": "WithdrawPremiumServies",
     "group": "Users",
@@ -2981,19 +3057,6 @@
         ]
       }
     },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>the id of the user has to be passed</p>"
-          }
-        ]
-      }
-    },
     "success": {
       "examples": [
         {
@@ -3002,7 +3065,7 @@
           "type": "json"
         },
         {
-          "title": "Error-Response:",
+          "title": "Success-Response:",
           "content": "HTTP/1.1 200\n {\n   \"message\":\"you are not premium , you already have a regular account \"\n }",
           "type": "json"
         }
