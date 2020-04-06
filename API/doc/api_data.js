@@ -1424,7 +1424,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5544\"),\n     \"userId\" : \"5e7511fa1a2c59902efa552a\",\n     \"playlistName\" : \"RecyleBin\",\n     \"imagePath\" : url of the server here./Pictures/defaultimage.png\n     \"tracks\" : [],\n    \"privacy\" : false,\n     \"__v\" : 0\n\n}",
+          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5544\"),\n     \"userId\" : \"5e7511fa1a2c59902efa552a\",\n     \"playlistName\" : \"RecyleBin\",\n     \"imagePath\" : defaultimage.png\n     \"tracks\" : [],\n    \"privacy\" : false,\n     \"__v\" : 0\n\n}",
           "type": "JSON"
         }
       ]
@@ -1747,23 +1747,10 @@ define({ "api": [
           },
           {
             "group": "Header",
-            "type": "JSON",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>The content of the request body in JSON format.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "playlistName",
-            "description": "<p>Name of the playlist he wants to get its cover image</p>"
+            "description": "<p>The playlist that you want to get its image</p>"
           }
         ]
       }
@@ -1782,7 +1769,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 302\n{\n          .real Server Url will  be here/Pictures/default.png\n}",
+          "content": "HTTP/1.1 302\n{\n       default.png\n}",
           "type": "JSON"
         }
       ]

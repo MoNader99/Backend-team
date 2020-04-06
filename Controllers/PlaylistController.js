@@ -181,10 +181,10 @@ router.get('/playlists/image',(req,res)=>{
             return Promise.reject();
         }
     var userId2=user._id;
-    if(!req.body.playlistName){
+    var pName = req.header('playlistName');
+    if(!pName){
         return res.status(400).send("Pass the playlistname to get it's image");
     }
-    var pName = req.body.playlistName;
     playlist.findOne({$and:[{userId:userId2},{playlistName:pName}]}).then((fetched)=>{
         if(!fetched){
             return res.status(404).send('Playlist does not exist');
