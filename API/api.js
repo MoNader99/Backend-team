@@ -1864,7 +1864,7 @@
  * @apiHeader {string} x-auth          Required
  *      
  * 
- * @apiSuccess 302                     [The response of the success case is playlist object(s)]
+ * @apiSuccess 302                     [The response of the success case is track ID(s)]
  * @apiSuccessExample {Array} Success-Response:
  *     HTTP/1.1 302
  * [
@@ -1889,6 +1889,46 @@
  *
  * 
  */
+
+
+
+ /**
+ * Get user's current Liked Albums
+ * -------------------------------------
+ * @api {get} /album/like/me            Get user's current Liked Albums
+ * @apiName GetUserCurrentLikedAlbums
+ * @apiGroup Library
+ *
+ * @apiHeader {string} x-auth          Required
+ *      
+ * 
+ * @apiSuccess 302                     [The response of the success case is Albums ID(s)]
+ * @apiSuccessExample {Array} Success-Response:
+ *     HTTP/1.1 302
+ * [
+ *  "5e8b45fb97022f4d7cd9907e"
+ * ]
+ *
+ * 
+*  @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ *
+ * 
+ */
+
+
 
 /////////////Aya Mahmoud /////////////////////////////
 
