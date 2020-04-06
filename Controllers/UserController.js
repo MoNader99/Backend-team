@@ -70,11 +70,13 @@ var smtpTransport = nodemailer.createTransport({
 router.post('/users/profilepicture',AuthenticateUser,upload,reSizeUserImage,uploadImagefn,AssignUserImage);
 ///////////////////////////////////////////
 router.post('/users/signup', async (req, res) => {
-  if(!req.body.userName||!req.body.email||!req.body.password||!req.body.gender||!req.body.birthDate)
+  if(!req.body.userName||!req.body.email||!req.body.password||!req.body.gender||!req.body.day||!req.body.month||!req.body.year)
   {
     return res.status(400).send("Missing some fields in the request body");
   }
-  var timestamp = Date.parse(req.body.birthDate);
+  var birthDate=req.body.year+"-"+req.body.month+"-"+req.body.day;
+//  console.log(birthDate);
+  var timestamp = Date.parse(birthDate);
 
   if (isNaN(timestamp))
   {
@@ -139,7 +141,7 @@ router.post('/users/signup', async (req, res) => {
             })
 }
 });
-  
+
 });
 
 
@@ -592,8 +594,8 @@ try{
         user.save()
         res.status(200).json({"message":"Email confirmed successfully,Welcome To Premium Life!"});
     }
-    
-    
+
+
     ).catch((e) => {
        return res.status(401).json({"message":"authentication failed"});
 
@@ -682,9 +684,10 @@ try{
 		{
 			return res.status(404).json({"message":"not found"});
         }
-		if(req.body.birthDate)
+		if(req.body.day&&req.body.month&&req.body.year)
 			{
-				var timestamp = Date.parse(req.body.birthDate);
+        var birthDate=req.body.year+"-"+req.body.month+"-"+req.body.day;
+				var timestamp = Date.parse(birthDate);
 
 				if (isNaN(timestamp) == false)
 				{
@@ -729,7 +732,7 @@ try{
 
 				user.gender= req.body.gender;
 			}
-			if(req.body.birthDate)
+      if(req.body.day&&req.body.month&&req.body.year)
 			{
 
 					user.birthDate=correctDate
