@@ -653,11 +653,10 @@
 
  //REGULAR ACCOUNT
 /**
- * @api {patch} /users/:id/regular     return to regular    [ User wants to unsubscribe from premium features]
+ * @api {patch} /users/regular     return to regular    [ User wants to unsubscribe from premium features]
  * @apiName WithdrawPremiumServies
  * @apiGroup Users
  * @apiHeader {string} x-auth        the token Only users
- * @apiParam {String} id          the id of the user has to be passed
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -666,7 +665,7 @@
  *     }
  *
  *
- * @apiSuccessExample {json} Error-Response:
+ * @apiSuccessExample {json} Success-Response:
  *    HTTP/1.1 200
  *     {
  *       "message":"you are not premium , you already have a regular account "
@@ -686,12 +685,11 @@
 
  //REQUEST FOR A PREMIUM ACCOUNT
 /**
- * @api {get} /users/:id/premium       request for a premium account   [ Send a confirmation mail to be a premium user]
+ * @api {get} /users/premium       request for a premium account   [ Send a confirmation mail to be a premium user]
  * @apiName Join Premium Request
  * @apiGroup Users
  * @apiHeader {string} x-auth            token Only users can request to premium
  *
- * @apiParam {String} id             the id of the user should be passed in the path
  *
  *
  * @apiSuccessExample {json} Success-Response:
@@ -723,6 +721,16 @@
  *       "message":"error,failed to send"
  *     }
  *
+ *
+ * 
+ * 
+ * 
+ * * @apiError 401  authentication failed
+ * @apiErrorExample {json} Error-Response:
+ *    HTTP/1.1 401
+ *     {
+ *       "message":"authentication Failed or invalid token "
+ *     }
  *
 */
 
