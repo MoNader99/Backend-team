@@ -435,7 +435,7 @@
  *         "_id" : ObjectId("5e7511fa1a2c59902efa5544"),
  *         "userId" : "5e7511fa1a2c59902efa552a",
  *         "playlistName" : "RecyleBin",
- *         "imagePath" : url of the server here./Pictures/defaultimage.png
+ *         "imagePath" : defaultimage.png
  *         "tracks" : [],
  *        "privacy" : false,
  *         "__v" : 0
@@ -486,16 +486,15 @@
  * @apiGroup Playlists
  *
  * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can get the image of a playlist
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
+ * @apiHeader {string}   playlistName    The playlist that you want to get its image
  *
  *
-* @apiParam {string} playlistName       Name of the playlist he wants to get its cover image
  *
  * @apiSuccess 302                     [The response of the sucess case is the url to the image file]
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
  *     {
-              .real Server Url will  be here/Pictures/default.png
+           default.png
  *     }
  *
  * @apiError  400                     [playlist name is missing (Obligatory filed)]
@@ -645,10 +644,7 @@
  * @apiGroup Users
  *
  * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can get artist related artists
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
- *
- *
-* @apiParam {string} artistId       Id of the artist the  user wants to get his/her related artists
+ * @apiHeader {string}   artistId     Id of the artist the  user wants to get his/her related artists   
  *
  * @apiSuccess 302                     [The response of the sucess case is an array of artists]
  * @apiSuccessExample {JSON} Success-Response:
@@ -945,7 +941,7 @@
   * GetSeveralTracks
  * ---------------------
  *
- * @api {Get} /tracks               Get several Tracks
+ * @api {post} /tracks               Get several Tracks
  * @apiName GetSeveralTracks
  * @apiGroup Tracks
  *
@@ -1115,7 +1111,7 @@
 
 
 /** 
-* @api {get} /artists Get several Artists
+* @api {post} /artists Get several Artists
  * @apiName GetSeveralArtists
  * @apiGroup Artists
  *
@@ -1668,7 +1664,7 @@
 /** Search
 * ---------------------
 *
-* @api {Get} api/Search             Search about a word
+* @api {Get} /Search             Search about a word
 * @apiName Search
 * @apiGroup Search
 *

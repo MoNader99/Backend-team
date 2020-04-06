@@ -28,7 +28,7 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "test": "nyc mocha tests/createplaylist.test.js --exit --inspect=0.0.0.0:3000",
+    "test": "nyc mocha tests/*.test.js --exit --inspect=0.0.0.0:3000",
     "test-watch": "nyc nodemon --exec \"npm test\""
   },
   "author": "",

@@ -291,7 +291,7 @@ router.get('/artists/confirm/:code',(req,res) => {
  */
 
 
-router.get('/artists',async (req,res)=>{
+router.post('/artists',async (req,res)=>{
 
     
     var token=req.header('x-auth');

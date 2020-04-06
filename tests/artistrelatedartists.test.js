@@ -20,10 +20,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
                 request(app)
                 .get('/users/artists/related')
                 .set('x-auth',token)
-                .send({
-
-                    artistId:myArt._id.toString(),
-                }) 
+                .set('artistId',myArt._id.toString())
                 .expect(302)
                 .end(done)
              })
@@ -36,13 +33,11 @@ describe("Get artists playing the same genre as the sent artist",()=>{
 
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
-                var testArtistId;
+                var testArtistId="";
                 request(app)
                 .get('/users/artists/related')
                 .set('x-auth',token)
-                .send({
-                    artistId:testArtistId,
-                }) 
+                .set('artistId',testArtistId)
                 .expect(400,"Send the artist ID")
                 .end(done)
              })
@@ -51,14 +46,12 @@ describe("Get artists playing the same genre as the sent artist",()=>{
     
     it("Should not get an array of artists invalid token",(done)=>{
         var testToken2="any invalid test token";
-        var testArtistId;
+        var testArtistId="ssss";
 
         request(app)
         .get('/users/artists/related')
         .set('x-auth',testToken2)
-        .send({
-            artistId:testArtistId,
-        }) 
+        .set('artistId',testArtistId)
         .expect(401,"Unauthorized Access")
         .end(done)
 
@@ -74,9 +67,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
                 request(app)
                 .get('/users/artists/related')
                 .set('x-auth',token)
-                .send({
-                    artistId:testArtistId,
-                }) 
+                .set('artistId',testArtistId)
                 .expect(404,"Invalid Id")
                 .end(done)
              })
@@ -93,9 +84,7 @@ describe("Get artists playing the same genre as the sent artist",()=>{
                 request(app)
                 .get('/users/artists/related')
                 .set('x-auth',token)
-                .send({
-                    artistId:testArtistId,
-                }) 
+                .set('artistId',testArtistId) 
                 .expect(404,"Id not found")
                 .end(done)
              })

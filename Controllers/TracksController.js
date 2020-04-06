@@ -325,7 +325,7 @@ return res.status(200).json({"message":'tracks added successfully'});
  * 
  */
 
-router.get('/tracks',async (req,res)=>{
+router.post('/tracks',async (req,res)=>{
     var arr=req.body.id;
   
     var returnedTrackArray=[{}];
@@ -345,14 +345,24 @@ router.get('/tracks',async (req,res)=>{
         return res.status(404).json({"message":"invalid id"});
     }
 
+    var flag=0
     await track.findById(req.body.id[i]).then((tracks)=>
     {
-       if(!tracks){return res.status(404).json({"message":"can not find track"});}
+       if(!tracks) {flag=1;
+           return res.status(404).json({"message":"can not find track"});}
         returnedTrackArray[i]=tracks;
     }).catch((e)=>res.status(400).send(e));
-
+    if(flag)
+    {
+        break;
+    }
 
     }
+    if (flag)
+    {
+        return 
+    }
+ 
 res.send({"tracks":returnedTrackArray});    //need to send an object with a name "tracks":returnedTrackArray
     })
 
