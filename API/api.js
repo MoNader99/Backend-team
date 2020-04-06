@@ -945,7 +945,7 @@
   * GetSeveralTracks
  * ---------------------
  *
- * @api {Get} /tracks               Get several Tracks
+ * @api {post} /tracks               Get several Tracks
  * @apiName GetSeveralTracks
  * @apiGroup Tracks
  *

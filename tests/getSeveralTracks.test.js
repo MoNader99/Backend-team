@@ -8,7 +8,7 @@ const {track}=require("./../models/track")
 console.log('mmmmmmmm')
 
 
-describe('Get /tracks',()=>{
+describe('post /tracks',()=>{
 
 
 it('should return array of tracks with the given ids',(done)=>{
@@ -25,7 +25,7 @@ it('should return array of tracks with the given ids',(done)=>{
         //console.log(id)
         var test=JSON.stringify( tracks)
         request(app)
-        .get('/tracks')
+        .post('/tracks')
         .send({id})
         .expect(200)
         .expect((res)=>{
@@ -52,10 +52,11 @@ it ('should return 404 if track was not found',(done)=>{
           }
           id.push(new ObjectID())
      request(app)
-     .get(`/tracks/${new ObjectID()}`)
+     .post(`/tracks`)
+     .send({id})
      .expect(404)
      .expect((res)=>{
-        expect( res.body.message).toBe("Track not found")
+        expect( res.body.message).toBe("can not find track")
      })
      .end(done)
     })
@@ -67,7 +68,7 @@ it ('should return 404 if track was not found',(done)=>{
       it ('should return 404 in case of invalid id',(done)=>{
 
           request(app)
-          .get('/tracks')
+          .post('/tracks')
           .send({id:"1234"})
           .expect(404)
           .expect((res)=>{
@@ -86,7 +87,7 @@ it ('should return 404 if track was not found',(done)=>{
                 id.push(new ObjectID())
             }
             request(app)
-            .get('/tracks')
+            .post('/tracks')
             .send({id})
             .expect(403)
             .expect((res)=>{

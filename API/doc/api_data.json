@@ -2110,7 +2110,7 @@
   },
   {
     "type": "Get",
-    "url": "api/Search",
+    "url": "/Search",
     "title": "Search about a word",
     "name": "Search",
     "group": "Search",
@@ -2476,7 +2476,7 @@
     "groupTitle": "Tracks"
   },
   {
-    "type": "Get",
+    "type": "post",
     "url": "/tracks",
     "title": "Get several Tracks",
     "name": "GetSeveralTracks",
