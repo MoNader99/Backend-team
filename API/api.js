@@ -1,4 +1,128 @@
 /////////////////////////// Ahmed /////////////////////////////////////////
+
+/**
+ * Get recently played tracks
+ * -------------------------------------
+ * @api {get} /users/recentlyplayed/EndPointIsNotFinal   RecentlyPlayedTracks
+ * @apiName RecentlyPlayed
+ * @apiGroup Users
+ *
+ * @apiHeader {string} Authorization    Only an User who has a verified account can get the last 5 tracks he/she played
+ *
+ * @apiSuccess 302                     [The response of the sucess case is the track info , the actual track will not be sent]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ *     {
+            Array of 5 tracks including the track info
+            [{
+                trackName:
+                trackImage;
+                name of the artist of the track 
+                duration of the track
+                imageName of the track
+                genre of thr track(if needed)
+                
+
+            },{
+                same as above for track2
+            },{
+                same as above to track 3
+            },{
+                same as above to track 4
+            },{
+                same as above to track 5 
+            }] 
+ *     }
+ *
+ * @apiError  404                    [The user didnot play any tracks ]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "You did not play any tracks yet"
+ *     }
+ *
+ *
+ * @apiError  401                      [Cannot get last 5 played tracks without auth token]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+
+/**
+ * Get Artists top songs
+ * -------------------------------------
+ * @api {get} /tracks/top/EndPointIsNotFinal              ArtistTopTracks
+ * @apiName TopTracks
+ * @apiGroup Users
+ *
+ * @apiHeader {string} Authorization    Only a User who has a verified account can get top 5 tracks of an artist
+ * @apiHeader {string} artistId    ID of the artist to get his/her top 5 tracks 
+ * @apiSuccess 302                     [The response of the sucess case is the track info , the actual track will not be sent]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ *     {
+            Array of 5 tracks including the track info
+            [{
+                trackName:
+                trackImage;
+                duration of the track
+                imageName of the track
+                genre of thr track(if needed)
+                wether if the track is single or in an album(to be introduced later in the database)
+                
+
+            },{
+                same as above for track2
+            },{
+                same as above to track 3
+            },{
+                same as above to track 4
+            },{
+                same as above to track 5 
+            }] 
+ *     }
+ *
+ * @apiError  404                    [The artist did not release any tracks ]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "The artist did not release any tracks"
+ *     }
+ * 
+ * @apiError  400                    [The artist id is not passed ]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Missing artist Id"
+ *     }
+ *
+ *
+ * @apiError  401                      [Cannot get last top 5 tracks of an artist without auth token]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+
 /**
  * AddTrack
  * ---------------------
