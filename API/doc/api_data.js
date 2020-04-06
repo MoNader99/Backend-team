@@ -114,13 +114,6 @@ define({ "api": [
             "optional": false,
             "field": "x-auth",
             "description": "<p>Required</p>"
-          },
-          {
-            "group": "Header",
-            "type": "JSON",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>The content of the request body in JSON format.</p>"
           }
         ]
       }
@@ -178,16 +171,78 @@ define({ "api": [
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "get",
+    "url": "/albums/homepage/popular",
+    "title": "Get popular Albums for homepage",
+    "name": "GetPopularAlbums",
+    "group": "Album",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required token of the user</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "albums",
+            "description": "<p>An array of Album objects containing the full details of each  Album</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n     \"albums\": \n[\n   {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 88,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n},\n\n  {\n      \"_id\": \"5e89f2caaaa6bd3f481675f6\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675e8\",\n      \"albumName\": \"bla bla\",\n      \"__v\": 0,\n      \"likes\": 100,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n}\n],\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"authenticaton failed\"\n}",
           "type": "JSON"
         }
       ]
@@ -489,7 +544,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "artists[]",
+            "type": "object[]",
             "optional": false,
             "field": "artists",
             "description": "<p>An array of Artist objects containing the full details of each  Artist.</p>"
@@ -1440,6 +1495,72 @@ define({ "api": [
     "groupTitle": "Playlists"
   },
   {
+    "type": "get",
+    "url": "/playlists/me",
+    "title": "Get current user's playlist",
+    "name": "GetUserCurrentPlaylist",
+    "group": "Playlists",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the success case is playlist object(s)]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "   HTTP/1.1 302\n\n {\n\"playlist\": [\n     {\n         \"privacy\": true,\n         \"imagePath\": \"default.png\",\n         \"tracks\": [\n             \"5e8a701954fe752c1498f729\",\n             \"5e8a701954fe752c1498f72a\"\n         ],\n         \"_id\": \"5e8a701954fe752c1498f72f\",\n         \"userId\": \"5e8a701954fe752c1498f721\",\n         \"playlistName\": \"Dejavu\",\n         \"__v\": 0\n    },\n    {\n         \"privacy\": true,\n         \"imagePath\": \"default.png\",\n         \"tracks\": [\n             \"5e8a701954fe752c1498f729\",\n             \"5e8a701954fe752c1498f72a\",\n             \"5e8a701954fe752c1498f72b\",\n             \"5e8a701954fe752c1498f72c\"\n         ],\n         \"_id\": \"5e8a701954fe752c1498f730\",\n         \"userId\": \"5e8a701954fe752c1498f721\",\n         \"playlistName\": \"Classics\",\n         \"__v\": 0\n     },\n     {\n         \"privacy\": false,\n         \"imagePath\": \"default.png\",\n         \"tracks\": [\n             \"5e8a701954fe752c1498f729\",\n             \"5e8a701954fe752c1498f72a\",\n             \"5e8a701954fe752c1498f72b\",\n             \"5e8a701954fe752c1498f72c\",\n             \"5e8a701954fe752c1498f72d\"\n         ],\n         \"_id\": \"5e8a701954fe752c1498f731\",\n         \"userId\": \"5e8a701954fe752c1498f721\",\n         \"playlistName\": \"X\",\n         \"__v\": 0\n     }\n ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Playlists"
+  },
+  {
     "type": " post ",
     "url": "/playlists/like/:id",
     "title": "like playlist",
@@ -2305,14 +2426,14 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "oldPassword",
-            "description": ""
+            "description": "<p>In the Body of the request</p>"
           },
           {
             "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "newPassword",
-            "description": ""
+            "description": "<p>In the Body of the request</p>"
           }
         ]
       }
@@ -2627,6 +2748,81 @@ define({ "api": [
     "groupTitle": "Users"
   },
   {
+    "type": "post",
+    "url": "/users/:artistId/follow",
+    "title": "follow an artist",
+    "name": "FollowAnArtist",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required token of the user</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "artistId",
+            "description": "<p>id of artist you want to follow</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n  \"message\":\"followed\"\n\n\n   \n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[artist not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"authenticaton failed\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404   Not-Found  \n{\n   \"message\":\"artist not found\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
     "type": "get",
     "url": "/users/artists/related",
     "title": "Get Artists who sing at least 1 same genre as the passed artist",
@@ -2736,6 +2932,68 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/users/followed/artists",
+    "title": "Get followed artists of the user",
+    "name": "GetFollowedArtitsOfTheUser",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required token of the user</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "artists",
+            "description": "<p>simplified array of artists objects</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n   \"artists\":\n[\n{  \"artistName\":\"Adele\",\n    \"followDate\": \"2020-04-04T18:14:27.889Z\",\n  \n  \"rate\":\"3\"\n },\n  {\n\n    \"artistName\":\"Eminem\",\n    \"followDate\": \"2020-04-04T18:14:27.889Z\",\n    \"rate\":\"7\"\n   }\n\n\n   ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"authenticaton failed\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "get",
     "url": "/users/me",
     "title": "Get User Profile",
     "name": "GetUserProfile",
@@ -2749,13 +3007,6 @@ define({ "api": [
             "optional": false,
             "field": "x-auth",
             "description": "<p>Required</p>"
-          },
-          {
-            "group": "Header",
-            "type": "JSON",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>The content of the request body in JSON format.</p>"
           }
         ]
       }
@@ -2800,17 +3051,17 @@ define({ "api": [
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
-          "type": "JSON"
+          "type": "string"
         }
       ]
     },
