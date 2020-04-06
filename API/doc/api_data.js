@@ -357,6 +357,92 @@ define({ "api": [
     "groupTitle": "Album"
   },
   {
+    "type": "get",
+    "url": "/albums/byartist/:artistId",
+    "title": "Get Albums by an artist",
+    "name": "Get_Albums_by_an_artist",
+    "group": "Albums",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "artistId",
+            "description": "<p>Id of the artist</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "albums",
+            "description": "<p>array of objects of type album in JSON format with status code 200</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200\n\n      {\n \"ALBUMS\":[ {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  },\n{\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  }\n]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found                   [the album id is not found ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"Id not found\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Albums"
+  },
+  {
     "type": "post",
     "url": "api/users/login",
     "title": "login for artist",
@@ -768,7 +854,7 @@ define({ "api": [
     "type": "get",
     "url": "api/artists/confirm/:code",
     "title": "SignUp Confrimation",
-    "name": "SignUp_Confirmed_for_artists",
+    "name": "SignUp_Confirmed_for_artist",
     "group": "Artists",
     "parameter": {
       "fields": {
@@ -797,8 +883,8 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"Email confirmed successfully!\"\n}",
-          "type": "json"
+          "content": "    HTTP/1.1 200 OK\n{\n      \"Email confirmed successfully!\"\n}",
+          "type": "string"
         }
       ]
     },
@@ -820,7 +906,14 @@ define({ "api": [
             "description": "<p>not found.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Unauthorized Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n      \"artistName and/or Email already exists \"\n\n}",
+          "type": "string"
+        }
+      ]
     },
     "version": "0.0.0",
     "filename": "./api.js",
@@ -858,10 +951,31 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "day",
+            "description": "<p>birthdate of the artist-day: 2 digits</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "month",
+            "description": "<p>birthdate of the artist-month: 2 digits</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "year",
+            "description": "<p>birthdate of the artist-year: 2 digits</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Srting",
             "optional": false,
-            "field": "about",
-            "description": "<p>A minimum of 100 characters that describe the artist</p>"
+            "field": "gender",
+            "description": "<p>gender of the artist-Limited to 'M' or 'F'</p>"
           }
         ]
       }
@@ -880,8 +994,8 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"Artist added Successfully as inActive. Waiting for Email Confirmation \"\n}",
-          "type": "json"
+          "content": "    HTTP/1.1 200 OK\n{\n       \"Artist added Successfully as inActive. Waiting for Email Confirmation \"\n}",
+          "type": "string"
         }
       ]
     },
@@ -907,7 +1021,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Conflict Error-Response:",
-          "content": "\"artistName and/or Email already exists \"",
+          "content": "{\n     \"artistName and/or Email already exists \"\n}",
           "type": "string"
         }
       ]
@@ -915,6 +1029,138 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "./api.js",
     "groupTitle": "Artists"
+  },
+  {
+    "type": "get",
+    "url": "/album/like/me",
+    "title": "Get user's current Liked Albums",
+    "name": "GetUserCurrentLikedAlbums",
+    "group": "Library",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the success case is Albums ID(s)]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 302\n[\n \"5e8b45fb97022f4d7cd9907e\"\n]",
+          "type": "Array"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Library"
+  },
+  {
+    "type": "get",
+    "url": "/tracks/like/me",
+    "title": "Get user's current Liked Tracks",
+    "name": "GetUserCurrentLikedTracks",
+    "group": "Library",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the success case is track ID(s)]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 302\n[\n \"5e8b45fb97022f4d7cd9907e\"\n]",
+          "type": "Array"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized               [authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Library"
   },
   {
     "type": "post",
@@ -1930,7 +2176,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401\n{\n   \"Token is not valid\"\n}",
+          "content": "HTTP/1.1 401\n{\n   \"Token is Invalid\"\n}",
           "type": "JSON"
         },
         {
@@ -2386,6 +2632,68 @@ define({ "api": [
     "groupTitle": "Tracks"
   },
   {
+    "type": "Get",
+    "url": "/tracks/byartist/:id",
+    "title": "Get tracks by artist",
+    "name": "GetTrack",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the id of the artist</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "tracks",
+            "description": "<p>array of objects of type track in JSON format with status code 200</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n     \"tracks\": [{\n     \"rating\": 10,\n     \"duration\": 360000,\n     \"_id\": \"5e6b7dac91cb724878446635\",\n     \"trackName\": \"Hello\",\n     \"url\": \"cccc\",\n     \"__v\": 0\n },\n {\n       \"rating\": 10,\n       \"duration\": 360000,\n       \"_id\": \"5e6b7dac91cb724878446635\",\n       \"trackName\": \"Hello\",\n       \"url\": \"cccc\",\n       \"__v\": 0\n   }]\n }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[Track not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "  HTTP/1.1 404 Not Found\n {\n\"Track not found\"\n  }",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
     "type": "post",
     "url": "/users/forgot",
     "title": "forget password      [Request to send email after forgetting password]",
@@ -2603,7 +2911,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "token",
-            "description": "<p>the token that was sent in the link snet to the user's email</p>"
+            "description": "<p>should be passed in query of url the token that was sent in the link sent to the user's email</p>"
           }
         ]
       }
@@ -2684,15 +2992,31 @@ define({ "api": [
             "group": "Body Parameters",
             "type": "string",
             "optional": false,
-            "field": "birthDate",
-            "description": "<p>user's birthdate.</p>"
-          },
-          {
-            "group": "Body Parameters",
-            "type": "string",
-            "optional": false,
             "field": "gender",
             "description": "<p>user's gender 'M' or 'F'.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "day",
+            "description": "<p>birthdate of the user-day: 2 digits</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "month",
+            "description": "<p>birthdate of the user-month: 2 digits</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "year",
+            "description": "<p>birthdate of the user-year: 2 digits</p>"
           }
         ]
       }
@@ -2701,8 +3025,8 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK",
-          "type": "JSON"
+          "content": "    HTTP/1.1 200 OK\n  {\n   \"updated\"\n}",
+          "type": "string"
         }
       ]
     },
@@ -2744,7 +3068,7 @@ define({ "api": [
       "examples": [
         {
           "title": "AuthError-Response:",
-          "content": "HTTP/1.1 401 Access denied\n{\n  \"error\": \"Authentication failed or invalied token.\"\n}",
+          "content": "    HTTP/1.1 401 Access denied\n{\n   \"Authentication failed or invalied token.\"\n}",
           "type": "string"
         }
       ]
@@ -3246,6 +3570,78 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/users/recentlyplayed/EndPointIsNotFinal",
+    "title": "RecentlyPlayedTracks",
+    "name": "RecentlyPlayed",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Only an User who has a verified account can get the last 5 tracks he/she played</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the sucess case is the track info , the actual track will not be sent]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 302\n{\n        Array of 5 tracks including the track info\n        [{\n            trackName:\n            trackImage;\n            name of the artist of the track \n            duration of the track\n            imageName of the track\n            genre of thr track(if needed)\n            \n\n        },{\n            same as above for track2\n        },{\n            same as above to track 3\n        },{\n            same as above to track 4\n        },{\n            same as above to track 5 \n        }] \n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[The user didnot play any tracks ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Cannot get last 5 played tracks without auth token]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"You did not play any tracks yet\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 No access\n{\n  \"error\": \"Unauthorized Access\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "get",
     "url": "api/users/confirm/:code",
     "title": "SignUp Confrimation",
     "name": "SignUp_Confirmed_for_user",
@@ -3277,8 +3673,8 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"Email confirmed successfully!\"\n}",
-          "type": "json"
+          "content": "    HTTP/1.1 200 OK\n{\n      \"Email confirmed successfully!\"\n}",
+          "type": "string"
         }
       ]
     },
@@ -3300,7 +3696,14 @@ define({ "api": [
             "description": "<p>not found.</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Unauthorized Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n     \"userName and/or Email already exists \"\n}",
+          "type": "string"
+        }
+      ]
     },
     "version": "0.0.0",
     "filename": "./api.js",
@@ -3345,17 +3748,24 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Boolean",
+            "type": "string",
             "optional": false,
-            "field": "isActive",
-            "description": "<p>default is false until the email is confirmed</p>"
+            "field": "day",
+            "description": "<p>birthdate of the user-day: 2 digits</p>"
           },
           {
             "group": "Parameter",
-            "type": "Date",
+            "type": "string",
             "optional": false,
-            "field": "birthDate",
-            "description": "<p>birthdate of the user</p>"
+            "field": "month",
+            "description": "<p>birthdate of the user-month: 2 digits</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "year",
+            "description": "<p>birthdate of the user-year: 2 digits</p>"
           },
           {
             "group": "Parameter",
@@ -3381,13 +3791,21 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"User added Successfully as inActive. Waiting for Email Confirmation \"\n}",
-          "type": "json"
+          "content": "    HTTP/1.1 200 OK\n{\n       \"User added Successfully as inActive. Waiting for Email Confirmation \"\n}",
+          "type": "string"
         }
       ]
     },
     "error": {
       "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "Bad",
+            "description": "<p>request.some/all parameters are missing or sent in an invalid form.</p>"
+          }
+        ],
         "409": [
           {
             "group": "409",
@@ -3395,21 +3813,108 @@ define({ "api": [
             "field": "Conflict.",
             "description": "<p>the user already exists: duplicate userName or email</p>"
           }
-        ],
-        "500": [
-          {
-            "group": "500",
-            "optional": false,
-            "field": "Internal",
-            "description": "<p>Server Error</p>"
-          }
         ]
       },
       "examples": [
         {
           "title": "Conflict Error-Response:",
-          "content": "HTTP/1.1 409\n   \"UserName and/or Email already exists \"",
+          "content": "   HTTP/1.1 409\n{\n      \"UserName and/or Email already exists \"\n}",
           "type": "string"
+        },
+        {
+          "title": "Bad request Error-Response:",
+          "content": "   HTTP/1.1 400\n{\n      \"Missing some fields in the request body\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "get",
+    "url": "/tracks/top/EndPointIsNotFinal",
+    "title": "ArtistTopTracks",
+    "name": "TopTracks",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Only a User who has a verified account can get top 5 tracks of an artist</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "artistId",
+            "description": "<p>ID of the artist to get his/her top 5 tracks</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the sucess case is the track info , the actual track will not be sent]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 302\n{\n        Array of 5 tracks including the track info\n        [{\n            trackName:\n            trackImage;\n            duration of the track\n            imageName of the track\n            genre of thr track(if needed)\n            wether if the track is single or in an album(to be introduced later in the database)\n            \n\n        },{\n            same as above for track2\n        },{\n            same as above to track 3\n        },{\n            same as above to track 4\n        },{\n            same as above to track 5 \n        }] \n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[The artist did not release any tracks ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[The artist id is not passed ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Cannot get last top 5 tracks of an artist without auth token]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"The artist did not release any tracks\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Missing artist Id\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 No access\n{\n  \"error\": \"Unauthorized Access\"\n}",
+          "type": "JSON"
         }
       ]
     },

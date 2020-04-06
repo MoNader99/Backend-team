@@ -864,7 +864,7 @@
  * @api {patch} /users/confirmPremium    confirmation of premium account [ User is confirmed to be a premium user]
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
- * @apiParam {String} token               the token that was sent in the link snet to the user's email
+ * @apiParam {String} token              should be passed in query of url the token that was sent in the link sent to the user's email
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -1363,7 +1363,7 @@
  /**
   * @api {get} api/artists/confirm/:code      SignUp Confrimation
   * @apiName SignUp Confirmed for artist
-  * @apiGroup
+  * @apiGroup Artists
   *
   * @apiParam {String} code    artist-specific code to activate his account
   *
