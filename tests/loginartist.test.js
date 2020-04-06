@@ -6,6 +6,7 @@ const app = require('./../Index');
 var { artist } = require("../models/artists.js");
 const jwt = require('jsonwebtoken');
 //const defaultModule = require("./../defaultimage");
+var testToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZyb250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s';
 
 describe('POST /artists/login', () => {
 
@@ -29,6 +30,7 @@ describe('POST /artists/login', () => {
         testartist.save().then((res) => {
             request(app)
                 .post('/artists/login')
+                .set('x-auth', testToken)
                 .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
                 .expect(403)
                 .expect((res) => {
@@ -82,6 +84,7 @@ describe('POST /artists/login', () => {
         testartist.save().then((res) => {
             request(app)
                 .post('/artists/login')
+                .set('x-auth', testToken)
                 .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
                 .expect(200)
                 .expect((res) => {
@@ -117,6 +120,7 @@ describe('POST /artists/login', () => {
 
         request(app)
             .post('/artists/login')
+            .set('x-auth', testToken)
             .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
             .expect(401)
             .expect((res) => {
@@ -150,6 +154,7 @@ describe('POST /artists/login', () => {
         testartist.save().then((res) => {
             request(app)
                 .post('/artists/login')
+                .set('x-auth', testToken)
                 .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abck" })
                 .expect(401)
                 .expect((res) => {
@@ -183,5 +188,21 @@ describe('POST /artists/login', () => {
 
     })
 
+    it('It  refuses wrong token', (done) => {
+        var wrongToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZy250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s'
+        request(app)
+            .post('/artists/login')
+            .set('x-auth', wrongToken)
+            .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
+            .expect(401)
+            .expect((res) => {
+                //console.log(res.header.(x-auth));
+                //console.log(res.header['x-auth']);
+                expect(res.error.text).toBe("Token is not valid")
+                // console.log(res);
+                //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
+            })
+            .end(done);
 
+    });
 })
