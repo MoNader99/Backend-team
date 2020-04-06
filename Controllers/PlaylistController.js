@@ -65,11 +65,11 @@ router.get('/playlists/me',(req,res) => {
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(400).send('You should Pass a token to access the profile');
+        res.status(401).send('Token is Empty');
     }
     User.findByToken(token).then((user) => {
         if(!user){
-            res.status(401).send();
+            res.status(401).send('User does not have access or does not exist');
         }
         playlist.find({userId:user._id}).then((playlist) =>
         {

@@ -1622,8 +1622,8 @@
  *
  * @apiHeader {string}  x-auth    
  * 
- * @apiParam {string} oldPassword
- * @apiParam {string} newPassword
+ * @apiParam {string} oldPassword      In the Body of the request
+ * @apiParam {string} newPassword      In the Body of the request
  * 
  * 
  * @apiSuccessExample {json} Success-Response:
@@ -1663,12 +1663,11 @@
  /**
  * Get album by id
  * -------------------------------------
- * @api {get} /album/:id   Get Album 
+ * @api {get} /album/:id              Get Album 
  * @apiName GetAlbum
  * @apiGroup Album
  *
  * @apiHeader {string}  x-auth          Required
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  * @apiParam {string} albumId           Id of the album
  *
@@ -1694,20 +1693,20 @@
  *
  * }
  * @apiError  404   Not found                   [the album id is not found ]
- * @apiErrorExample {JSON} Error-Response:
+ * @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found 
  *     {
  *       "Id not found"
  *     }
  *  * @apiError 401   Unauthorized               [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
+ *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is Empty"
  *     }
  * 
  * @apiError 401   Unauthorized               [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
+ *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized 
  *     {
  *        "User does not have access or does not exist"
@@ -1721,12 +1720,11 @@
  /**
  * Get User Profile
  * -------------------------------------
- * @api {get} /users/me   Get User Profile 
+ * @api {get} /users/me                 Get User Profile 
  * @apiName GetUserProfile 
  * @apiGroup Users
  *
  * @apiHeader {string}  x-auth          Required
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  *
  * @apiSuccess 302                     [The response of the success case is an album object]
@@ -1750,20 +1748,20 @@
  *
  * }
  * @apiError  404   Not found                   [the user id is not found ]
- * @apiErrorExample {JSON} Error-Response:
+ * @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found 
  *     {
  *       "Id not found"
  *     }
- *  * @apiError 401   Unauthorized               [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
+ *   @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is Empty"
  *     }
  * 
  * @apiError 401   Unauthorized               [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
+ *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized 
  *     {
  *        "User does not have access or does not exist"
@@ -1772,6 +1770,88 @@
  * 
  * 
  */
+/**
+ * Get user's current playlists
+ * -------------------------------------
+ * @api {get} /playlists/me            Get current user's playlist
+ * @apiName GetUserCurrentPlaylist
+ * @apiGroup Playlists
+ *
+ * @apiHeader {string} x-auth          Required
+ *      
+ * 
+ * @apiSuccess 302                     [The response of the success case is playlist object(s)]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ * 
+ *   {
+ *  "playlist": [
+ *       {
+ *           "privacy": true,
+ *           "imagePath": "default.png",
+ *           "tracks": [
+ *               "5e8a701954fe752c1498f729",
+ *               "5e8a701954fe752c1498f72a"
+ *           ],
+ *           "_id": "5e8a701954fe752c1498f72f",
+ *           "userId": "5e8a701954fe752c1498f721",
+ *           "playlistName": "Dejavu",
+ *           "__v": 0
+ *      },
+ *      {
+ *           "privacy": true,
+ *           "imagePath": "default.png",
+ *           "tracks": [
+ *               "5e8a701954fe752c1498f729",
+ *               "5e8a701954fe752c1498f72a",
+ *               "5e8a701954fe752c1498f72b",
+ *               "5e8a701954fe752c1498f72c"
+ *           ],
+ *           "_id": "5e8a701954fe752c1498f730",
+ *           "userId": "5e8a701954fe752c1498f721",
+ *           "playlistName": "Classics",
+ *           "__v": 0
+ *       },
+ *       {
+ *           "privacy": false,
+ *           "imagePath": "default.png",
+ *           "tracks": [
+ *               "5e8a701954fe752c1498f729",
+ *               "5e8a701954fe752c1498f72a",
+ *               "5e8a701954fe752c1498f72b",
+ *               "5e8a701954fe752c1498f72c",
+ *               "5e8a701954fe752c1498f72d"
+ *           ],
+ *           "_id": "5e8a701954fe752c1498f731",
+ *           "userId": "5e8a701954fe752c1498f721",
+ *           "playlistName": "X",
+ *           "__v": 0
+ *       }
+ *   ]
+ *  } 
+ *
+ * 
+ * 
+ * 
+*  @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ * 
+ * 
+ * 
+ */
+
 
 /////////////Aya Mahmoud /////////////////////////////
 /** Like playlist

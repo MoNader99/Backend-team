@@ -25,7 +25,7 @@ describe('Get User playlists /playlists/me', () => {
         request(app)
         .get(`/playlists/me`)
         .set('x-auth',token)
-        .expect(400)
+        .expect(401)
         .end(done)
     })
  
