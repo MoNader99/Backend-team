@@ -1668,7 +1668,7 @@
 /** Search
 * ---------------------
 *
-* @api {Get} api/Search             Search about a word
+* @api {Get} /Search             Search about a word
 * @apiName Search
 * @apiGroup Search
 *
