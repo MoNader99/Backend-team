@@ -26,38 +26,6 @@ var imgPath4 = "defaultuser.png";
 
 
 
-//CREATING NEW USER INSTANCES AND SAVING THEM
-var user1= new User({
-    email:"        ayaelsackaan.1999@gmail.com      ",
-    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111 
-    isActive:true,
-    userName:"hamadaaa  ",
-    gender:"M",
-    birthDate: '1990-06-19',
-});
-
-//SAVING AND RETURNING ID OF THE NEW USER
-user1.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-//
-var user2= new User({
-    email:"mario123@gmail.com",
-    password:"kok123",
-    userName:"Mario1",
-    gender:"F",
-    birthDate: '1990-06-19',
-});
-
-
-user2.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
 
 
 var artist1= new artist({
@@ -126,28 +94,6 @@ artist3.save().then((res)=>{
 
 
 
-
-var followArtist1= new followArtist({
-    user_id: user1._id,
-    followedArtistInfo:[{
-        artistName: artist1.artistName,
-        followDate: Date.now(),
-        //rate:2,
-    },
-    {
-        artistName: artist2.artistName,
-        followDate: Date.now(),
-        rate:5,
-    }
-]
-});
-
-//SAVING AND RETURNING ID OF THE FOLLOW REQUEST
-followArtist1.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
 
 
 //////////////MONICA
@@ -230,10 +176,6 @@ var track1=new track({
 
 
 
-
-
-
-
 ///////////Creating Albums//////////////////
     var album1 = new album({
         artistId:artist2._id,
@@ -249,6 +191,69 @@ var track1=new track({
 
         console.log(err);
     });
+
+//CREATING NEW USER INSTANCES AND SAVING THEM
+var user1= new User({
+    email:"        ayaelsackaan.1999@gmail.com      ",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111 
+    isActive:true,
+    userName:"hamadaaa  ",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4], 
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user1.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+//
+var user2= new User({
+    email:"mario123@gmail.com",
+    password:"kok123",
+    userName:"Mario1",
+    gender:"F",
+    birthDate: '1990-06-19',
+    
+});
+
+
+user2.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var followArtist1= new followArtist({
+    user_id: user1._id,
+    followedArtistInfo:[{
+        artistName: artist1.artistName,
+        followDate: Date.now(),
+        //rate:2,
+    },
+    {
+        artistName: artist2.artistName,
+        followDate: Date.now(),
+        rate:5,
+    }
+]
+});
+
+//SAVING AND RETURNING ID OF THE FOLLOW REQUEST
+followArtist1.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+
+
 
 /////////////////////////////////////////////////
 //CREATING NEW PLAYLISTS
