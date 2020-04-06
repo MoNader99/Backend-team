@@ -28,7 +28,7 @@ User.find().then((users)=>{
             //console.log({id});
             //console.log(test)
             request(app)
-            .get('/artists')
+            .post('/artists')
             .send({id})
             .set('x-auth',token)
             .expect(200)
@@ -67,7 +67,7 @@ it('should return 401 if invalid token', (done)=>{
                 //console.log({id});
                 //console.log(test)
                 request(app)
-                .get('/artists')
+                .post('/artists')
                 .send({id})
                 .set('x-auth',token+1)
                 .expect(401)
@@ -106,7 +106,7 @@ it('should return 401 if invalid token', (done)=>{
                     //console.log({id});
                     //console.log(test)
                     request(app)
-                    .get('/artists')
+                    .post('/artists')
                     .send({id})
                     .set('x-auth',token)
                     .expect(400)
@@ -148,7 +148,7 @@ it('should return 401 if invalid token', (done)=>{
                         //console.log({id});
                         //console.log(test)
                         request(app)
-                        .get('/artists')
+                        .post('/artists')
                         .send({id})
                         .set('x-auth',token)
                         .expect(403)
@@ -196,7 +196,7 @@ it('should return 404 if artist was not found', (done)=>{
                 //console.log({id});
                 //console.log(test)
                 request(app)
-                .get('/artists')
+                .post('/artists')
                 .send({id})
                 .set('x-auth',token)
                 .expect(404)

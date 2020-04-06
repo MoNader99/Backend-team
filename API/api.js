@@ -1115,7 +1115,7 @@
 
 
 /** 
-* @api {get} /artists Get several Artists
+* @api {post} /artists Get several Artists
  * @apiName GetSeveralArtists
  * @apiGroup Artists
  *

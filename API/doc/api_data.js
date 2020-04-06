@@ -753,7 +753,7 @@ define({ "api": [
     "groupTitle": "Artists"
   },
   {
-    "type": "get",
+    "type": "post",
     "url": "/artists",
     "title": "Get several Artists",
     "name": "GetSeveralArtists",
