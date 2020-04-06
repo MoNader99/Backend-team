@@ -1,8 +1,8 @@
-const expect =require('expect');
+/*const expect =require('expect');
 const request = require('supertest')
 //local imports
 const {app}= require("../Controllers/PlaylistController.js");
-var{User}= require("../models/users.js"); 
+var{User}= require("../models/users.js");
 
 describe('Get User playlists /playlists/me', () => {
 
@@ -28,7 +28,7 @@ describe('Get User playlists /playlists/me', () => {
         .expect(401)
         .end(done)
     })
- 
+
     it('Passing an Invalid', (done) =>
     {
         var token = "any invalid token";
@@ -50,5 +50,6 @@ describe('Get User playlists /playlists/me', () => {
     })
 
 
-   
+
 });
+*/

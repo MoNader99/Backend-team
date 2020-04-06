@@ -36,8 +36,8 @@ app.use("/", trackRoutes);
 app.use("/", searchRoute);
 
 
-app.listen(3000,()=>{
-    console.log("Started on port 3000");
+app.listen(8000,()=>{
+    console.log("Started on port 8000");
 });
 
 module.exports=app
