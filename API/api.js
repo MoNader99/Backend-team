@@ -1081,6 +1081,8 @@
 
  ///////////////////////Aya Magdy/////////////////////////////
 
+ ///////////////////////Aya Magdy/////////////////////////////
+
  //Sign up user
  /**
  * @api {post} api/users/signup   Create a new user
@@ -1091,45 +1093,115 @@
  * @apiParam {String} email         email of the user
  * @apiParam {String} password      password of the user
  * @apiParam  {Boolean} isPremium   default is false
- * @apiParam  {Boolean} isActive    default is false until the email is confirmed
- * @apiParam  {Date} birthDate      birthdate of the user
+ * @apiParam  {string} day      birthdate of the user-day: 2 digits
+ * @apiParam  {string} month      birthdate of the user-month: 2 digits
+ * @apiParam  {string} year      birthdate of the user-year: 2 digits
  * @apiParam  {Srting} gender       gender of the user-Limited to 'M' or 'F'
  *
  * @apiSuccess  (200) User added Successfully as inActive. Waiting for Email Confirmation
- * @apiSuccessExample {json} Success-Response:
+ * @apiSuccessExample {string} Success-Response:
  *     HTTP/1.1 200 OK
- *     {
+ *{
  *        "User added Successfully as inActive. Waiting for Email Confirmation "
- *     }
+ *}
  * @apiError (409)  Conflict. the user already exists: duplicate userName or email
- * @apiError (500) Internal Server Error
+ * @apiError (400) Bad request.some/all parameters are missing or sent in an invalid form.
  * @apiErrorExample {string} Conflict Error-Response:
  *    HTTP/1.1 409
+ *{
  *       "UserName and/or Email already exists "
- *
+ *}
+ * @apiErrorExample {string} Bad request Error-Response:
+ *    HTTP/1.1 400
+ *{
+ *       "Missing some fields in the request body"
+ *}
  */
 
 
-
-
-//CONFIRMATION OF USER SIGNUP
+ //GET ALBUMS BY ARTIST
 /**
- * @api {get} api/users/confirm/:code      SignUp Confrimation
- * @apiName SignUp Confirmed for user
- * @apiGroup Users
- *
- * @apiParam {String} code    user-specific code to activate his account
- *
- * @apiSuccess  (200) User was activated successfully
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
+* @api {get} /albums/byartist/:artistId  Get Albums by an artist
+* @apiName Get Albums by an artist
+* @apiGroup Albums
+*
+* @apiHeader {string}  x-auth          Required
+*
+* @apiParam {string} artistId           Id of the artist
+*
+* @apiSuccess {object[]}  albums           array of objects of type album in JSON format with status code 200
+* @apiSuccessExample {JSON} Success-Response:
+*     HTTP/1.1 200
+*
+*       {
+
+*  "ALBUMS":[ {
+*       "_id": "5e89f2caaaa6bd3f481675f5",
+*       "artistId": "5e89f2caaaa6bd3f481675eb",
+*       "albumName": "25",
+*       "__v": 0,
+*       "likes": 1,
+*       "rating": null,
+*       "tracks": [
+ *           "5e89f2caaaa6bd3f481675f0",
+ *           "5e89f2caaaa6bd3f481675f1"
+ *       ],
+ *       "imagePath": "default.png"
+ *   },
+ * {
+   *       "_id": "5e89f2caaaa6bd3f481675f5",
+   *       "artistId": "5e89f2caaaa6bd3f481675eb",
+   *       "albumName": "25",
+   *       "__v": 0,
+   *       "likes": 1,
+   *       "rating": null,
+   *       "tracks": [
+     *           "5e89f2caaaa6bd3f481675f0",
+     *           "5e89f2caaaa6bd3f481675f1"
+     *       ],
+     *       "imagePath": "default.png"
+     *   }
+     *]
+     * }
+* @apiError  404   Not found                   [the album id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
  *     {
- *       "Email confirmed successfully!"
+ *       "Id not found"
  *     }
- * @apiError (404)  User not found.
- * @apiError (401) Unauthorized. Recieved a corrupted code.
+ *  @apiError 401   Unauthorized               [authentication failed]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
  *
  */
+
+
+
+ //CONFIRMATION OF USER SIGNUP
+ /**
+  * @api {get} api/users/confirm/:code      SignUp Confrimation
+  * @apiName SignUp Confirmed for user
+  * @apiGroup Users
+  *
+  * @apiParam {String} code    user-specific code to activate his account
+  *
+  * @apiSuccess  (200) User was activated successfully
+  * @apiSuccessExample {string} Success-Response:
+  *     HTTP/1.1 200 OK
+  *{
+  *       "Email confirmed successfully!"
+  *}
+  * @apiError (404)  User not found.
+  * @apiError (401) Unauthorized. Recieved a corrupted code.
+  * @apiErrorExample {string} Unauthorized Error-Response:
+  * HTTP/1.1 401 Unauthorized
+  *{
+  *      "userName and/or Email already exists "
+  *}
+  */
 
 
 
@@ -1142,40 +1214,50 @@
  * @apiParam {String} artistName    Unique name of the artist
  * @apiParam {String} email         email of the artist
  * @apiParam {String} password      password of the artist
- * @apiParam  {Srting} about        A minimum of 100 characters that describe the artist
+ * @apiParam  {string} day      birthdate of the artist-day: 2 digits
+ * @apiParam  {string} month      birthdate of the artist-month: 2 digits
+ * @apiParam  {string} year      birthdate of the artist-year: 2 digits
+ * @apiParam  {Srting} gender       gender of the artist-Limited to 'M' or 'F'
  *
  * @apiSuccess  (200) Artist added Successfully as inActive. Waiting for Email Confirmation
- * @apiSuccessExample {json} Success-Response:
+ * @apiSuccessExample {string} Success-Response:
  *     HTTP/1.1 200 OK
- *     {
+ *{
  *        "Artist added Successfully as inActive. Waiting for Email Confirmation "
- *     }
+ *}
  * @apiError (409)  Conflict. the Artist already exists: duplicate artistName or email
  * @apiError (500) Internal Server Error
  * @apiErrorExample {string} Conflict Error-Response:
- *       "artistName and/or Email already exists "
+ *{
+ *      "artistName and/or Email already exists "
+ *}
  */
 
 
 
  //CONFIRMATION OF ARTIST SIGNUP
-/**
- * @api {get} api/artists/confirm/:code      SignUp Confrimation
- * @apiName SignUp Confirmed for artists
- * @apiGroup Artists
- *
- * @apiParam {String} code    artist-specific code to activate his account
- *
- * @apiSuccess  (200) artist was activated successfully
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "Email confirmed successfully!"
- *     }
- * @apiError (404)  artist not found.
- * @apiError (401) Unauthorized. Recieved a corrupted code.
- *
- */
+ /**
+  * @api {get} api/artists/confirm/:code      SignUp Confrimation
+  * @apiName SignUp Confirmed for artist
+  * @apiGroup
+  *
+  * @apiParam {String} code    artist-specific code to activate his account
+  *
+  * @apiSuccess  (200) artist was activated successfully
+  * @apiSuccessExample {string} Success-Response:
+  *     HTTP/1.1 200 OK
+  *{
+  *       "Email confirmed successfully!"
+  *}
+  * @apiError (404)  artist not found.
+  * @apiError (401) Unauthorized. Recieved a corrupted code.
+  * @apiErrorExample {string} Unauthorized Error-Response:
+  * HTTP/1.1 401 Unauthorized
+  *{
+  *       "artistName and/or Email already exists "
+  *
+  *}
+  */
 
 
 
@@ -1188,11 +1270,16 @@
   * @apiHeader (Header Fields) {string} Authorization Required. A valid access token.
   *
   * @apiParam (Body Parameters) {string} userName the name visible to othe users.
-  * @apiParam (Body Parameters) {string} birthDate user's birthdate.
+  * @apiParam  {string} day      birthdate of the user-day: 2 digits
+  * @apiParam  {string} month      birthdate of the user-month: 2 digits
+  * @apiParam  {string} year      birthdate of the user-year: 2 digits
   * @apiParam (Body Parameters) {string} gender user's gender 'M' or 'F'.
   *
-  * @apiSuccessExample {JSON} Success-Response:
+  * @apiSuccessExample {string} Success-Response:
   *     HTTP/1.1 200 OK
+  *   {
+  *    "updated"
+  *}
   *
   * @apiError (401) Authentication failed.
   * @apiError (404) user not found.
@@ -1201,11 +1288,59 @@
   *
   * @apiErrorExample {string} AuthError-Response:
   *     HTTP/1.1 401 Access denied
-  *     {
-  *       "error": "Authentication failed or invalied token."
-  *     }
-  *     
+  *{
+  *    "Authentication failed or invalied token."
+  *}
+  *
   */
+
+//GET TRACKS BY ARTIST
+  /**
+  * ---------------------
+  *
+  * @api {Get} /tracks/byartist/:id   Get tracks by artist
+  * @apiName GetTrack
+  * @apiGroup Tracks
+  *
+  *
+  * @apiParam {string}    id           the id of the artist
+  *
+  * @apiSuccess {object[]}  tracks           array of objects of type track in JSON format with status code 200
+  *
+  * @apiSuccessExample {JSON} Success-Response:
+  *     HTTP/1.1 200 OK
+  *      {
+  *          "tracks": [{
+         "rating": 10,
+         "duration": 360000,
+         "_id": "5e6b7dac91cb724878446635",
+         "trackName": "Hello",
+         "url": "cccc",
+         "__v": 0
+     },
+     {
+           "rating": 10,
+           "duration": 360000,
+           "_id": "5e6b7dac91cb724878446635",
+           "trackName": "Hello",
+           "url": "cccc",
+           "__v": 0
+       }]
+  *      }
+  *
+  *
+  *
+  * @apiError  404                      [Track not found]
+  *  @apiErrorExample {string} Error-Response:
+  *     HTTP/1.1 404 Not Found
+  *    {
+  *   "Track not found"
+  *     }
+  *
+  *
+  *
+  */
+
 
 
 ////////////////////////Aya Mahmoud //////////////////////
