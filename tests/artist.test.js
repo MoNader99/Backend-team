@@ -81,42 +81,42 @@ beforeEach((done)=>{
 
 describe('POST /artists/signup', () => {
 
-  // it('should create new inactive artist ', (done) =>
-  // {
-  //   request(app)
-  //   .post('/artists/signup')
-  //   .send({
-  //     "email":"sw.project.verify@gmail.com",
-  //     "password":"1234",
-  //     "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  //     "artistName":"testuser",
-  //     "gender":"F",
-  //     "birthDate":"1990-06-19"
-  //   })
-  //   .expect((res)=>{
-  //     //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
-  //   })
-  //
-  //
-  //   .end((err, res)=>{
-  //     if (err)
-  //     {
-  //       return done(err);
-  //     }
-  //     artist.findByEmail("sw.project.verify@gmail.com").then((a)=>{
-  //       console.log(a);
-  //       expect (a.artistName).toBe("testuser");
-  //       expect (a.gender).toBe("F");
-  //       var d= new Date("1990-06-19");
-  //       expect (a.birthDate.toString()).toEqual(d);
-  //       expect(a.isActive).toBe(false);
-  //       expect(a.about).toBe("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-  //       done();
-  //     }).catch((e)=>done(e));
-  //
-  //   })
-  //
-  // })
+  it('should create new inactive artist ', (done) =>
+  {
+    request(app)
+    .post('/artists/signup')
+    .send({
+      "email":"sw.project.verify@gmail.com",
+      "password":"1234",
+      "artistName":"testuser",
+      "gender":"F",
+      "day":"29",
+         "month":"07",
+         "year":"1999"
+    })
+    .expect((res)=>{
+      //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
+    })
+
+
+    .end((err, res)=>{
+      if (err)
+      {
+        return done(err);
+      }
+      artist.findByEmail("sw.project.verify@gmail.com").then((a)=>{
+        console.log(a);
+        expect (a.artistName).toBe("testuser");
+        expect (a.gender).toBe("F");
+        // var d= new Date("1990-06-19");
+        // expect (a.birthDate.toString()).toEqual(d);
+        // expect(a.isActive).toBe(false);
+        done();
+      }).catch((e)=>done(e));
+
+    })
+
+  })
 
   it('should reject invalid gender ', (done) =>
   {
@@ -125,10 +125,11 @@ describe('POST /artists/signup', () => {
     .send({
       "email":"sw.project.verify@gmail.com",
       "password":"1234",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "artistName":"testuser2",
       "gender":"x",
-      "birthDate":"1990-06-19"
+      "day":"29",
+         "month":"07",
+         "year":"1999"
     })
     .expect(400)
 
@@ -144,10 +145,11 @@ describe('POST /artists/signup', () => {
     .send({
 
       "password":"1234",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "artistName":"testuser3",
       "gender":"M",
-      "birthDate":"1990-06-19"
+      "day":"29",
+         "month":"07",
+         "year":"1999"
     })
     .expect(400)
 
@@ -162,9 +164,10 @@ describe('POST /artists/signup', () => {
     .send({
       "email":"sw222.project.verify@gmail.com",
       "password":"1234",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "gender":"M",
-      "birthDate":"1990-06-19"
+      "day":"29",
+         "month":"07",
+         "year":"1999"
     })
     .expect(400)
 
@@ -177,26 +180,11 @@ describe('POST /artists/signup', () => {
     .post('/artists/signup')
     .send({
       "email":"sw.project.verify@gmail.com",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "artistName":"testuser2",
       "gender":"x",
-      "birthDate":"1990-06-19"
-    })
-    .expect(400)
-
-    .end(done)
-
-  })
-  it('should reject empty about ', (done) =>
-  {
-    request(app)
-    .post('/artists/signup')
-    .send({
-      "email":"sw.project.verify@gmail.com",
-      "password":"1234",
-      "artistName":"testuser2",
-      "gender":"x",
-      "birthDate":"1990-06-19"
+      "day":"29",
+         "month":"07",
+         "year":"1999"
     })
     .expect(400)
 
@@ -211,9 +199,10 @@ describe('POST /artists/signup', () => {
     .send({
       "email":"sw.project.verify@gmail.com",
       "password":"1234",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "artistName":"testuser2",
-      "birthDate":"1990-06-19"
+      "day":"29",
+         "month":"07",
+         "year":"1999"
     })
     .expect(400)
 
@@ -227,7 +216,6 @@ describe('POST /artists/signup', () => {
     .send({
       "email":"sw.project.verify@gmail.com",
       "password":"1234",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "artistName":"testuser2",
       "gender":"M"
     })
@@ -246,8 +234,9 @@ describe('POST /artists/signup', () => {
         "gender":"M",
         "email":"sw.project.verify@gmail.com",
         "password":"1234",
-        "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "birthDate":"1990-06-19"
+        "day":"29",
+           "month":"07",
+           "year":"1999"
 
       })
       .expect(409)
@@ -265,8 +254,9 @@ describe('POST /artists/signup', () => {
         "email":a[a.length-1].email,
         "gender":"M",
         "artistName":"testuser",
-        "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "birthDate":"1990-06-19",
+        "day":"29",
+           "month":"07",
+           "year":"1999",
         "password":"1234"
       })
       .expect(409)
@@ -282,10 +272,11 @@ describe('POST /artists/signup', () => {
     .send({
       "email":"sw.project.verify@gmail.com",
       "password":"1234",
-      "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "artistName":"testuser2",
       "gender":"M",
-      "birthDate":"invalid"
+      "day":"29",
+         "month":"invalid",
+         "year":"1999"
     })
     .expect(400)
 
@@ -303,8 +294,9 @@ describe('POST /artists/signup', () => {
         "gender":"M",
         "email":"invalid",
         "password":"1234",
-        "about":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "birthDate":"1990-06-19"
+        "day":"29",
+           "month":"07",
+           "year":"1999"
 
       })
       .expect(409)

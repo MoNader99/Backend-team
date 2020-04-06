@@ -110,11 +110,12 @@ router.post('/artists/login', AuthenticationServices.AuthenticateFrontend, (req,
  */
 
  router.post('/artists/signup', async (req, res) => {
-   if(!req.body.artistName||!req.body.email||!req.body.password||!req.body.gender||!req.body.birthDate||!req.body.about)
+   if(!req.body.artistName||!req.body.email||!req.body.password||!req.body.gender||!req.body.day||!req.body.month||!req.body.year)
    {
      return res.status(400).send("Missing some fields in the request body");
    }
-   var timestamp = Date.parse(req.body.birthDate);
+   var birthDate=req.body.year+"-"+req.body.month+"-"+req.body.day;
+   var timestamp = Date.parse(birthDate);
 
    if (isNaN(timestamp))
    {
@@ -141,7 +142,6 @@ router.post('/artists/login', AuthenticationServices.AuthenticateFrontend, (req,
                  artistName: req.body.artistName,
                  email: req.body.email,
                  password: hashedPass,
-                 about:req.body.about,
                  gender: req.body.gender,
                  birthDate: correctDate
 
@@ -222,7 +222,7 @@ router.get('/artists/confirm/:code',(req,res) => {
  * @apiGroup Artists
  *
  * @apiHeader {string}  x-auth          Authorization Required. A valid access token.
- * 
+ *
  * @apiParam {string[]}   id               ids array of each Artist's unique ID.
  *
  * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
@@ -293,13 +293,13 @@ router.get('/artists/confirm/:code',(req,res) => {
 
 router.post('/artists',async (req,res)=>{
 
-    
+
     var token=req.header('x-auth');
 
     User.findByToken(token).then(async(user)=>{
 
         if(!user) {
-             
+
             //Promise.reject("authenticaton failed");
             return res.status(401).json( {"message" :'authentication failed'})
      };
@@ -325,7 +325,7 @@ router.post('/artists',async (req,res)=>{
        {
           flag=1;
          return Promise.reject("artists not found")
-          
+
 
        }
 
@@ -358,7 +358,7 @@ res.json({"artists":returnedArtistArray});
  * @api {get} /artists/homepage/popular    Get popular Artists for homepage
  * @apiName GetPopularArtists
  * @apiGroup Artists
-            
+
  *
  * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
  *
@@ -409,19 +409,19 @@ router.get('/artists/homepage/popular',async (req,res)=>{
 
         for (var i=0;i<artists.length;i++)
         {
-            
+
             if(!artists[i])
             {
                 continue;
             }
 
             returnedArtistArray[i]= _.pick(artists[i], ['_id','artistName', 'genres','about','rating','imagePath']);
-        
+
         }
 
         res.send({"artists":returnedArtistArray});
     })
-    
+
 
     })
 

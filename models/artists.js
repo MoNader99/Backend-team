@@ -36,7 +36,7 @@ var ArtistSchema = new mongoose.Schema({
     },
     about:{
         type:String,
-        required:true,
+    //    required:true,
         trim:true,
         minlength:100
     },
