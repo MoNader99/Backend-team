@@ -2309,6 +2309,61 @@
  * 
  * /
  * */
+/** UnLike album
+ * ---------------------
+ * 
+ * @api { post } /album/unlike/:id              unlike album
+ * @apiName  unLikealbum
+ * @apiGroup Album
+ *   
+ *  
+ * @apiParam { string } id
+ * 
+ * @apiHeader { string } x - auth       user token to unlike album
+ *
+ * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ * 
+ * }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Unauthorized
+ * {
+ *        "Token is Empty"
+ *     }
+ * 
+ * 
+ *  @apiError  404  Not found[this album is not found]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        " Notfound in liked albums"
+ *     }
+ * 
+ * 
+ * @apiError  404  Not found[this is not an ID]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "Invalid id"
+ *     }
+ * 
+ * 
+ * */
+
 ///monica////////////////////////////
  
 /**
