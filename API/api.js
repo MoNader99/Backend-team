@@ -1242,11 +1242,67 @@
  */
 
 
+
+
+
+
+//GET User Profile By ID
+ /**
+ * GET User Profile By ID
+ * -------------------------------------
+ * @api {get} /users/:id         GET User Profile By ID      
+ * @apiName GetUserProfileByID
+ * @apiGroup Users
+ *
+ * @apiHeader {string}  x-auth          token for frontend to send the response
+ *
+ * @apiParam {string} userId           Id of the user
+ *
+ * @apiSuccess 302                     [The response of the success case is a user object]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 302
+ * {
+ *     
+ *      "likedAlbums": ["5e8a701954fe752c1498f729",
+ *               "5e8a701954fe752c1498f72a"]
+ *      "likedTracks": ["5e8a701954fe752c1498f72c",
+ *               "5e8a701954fe752c1498f72d"] 
+ *
+ * }
+ * @apiError  404   Not found                   [the user id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found 
+ *     {
+ *       "Id not found"
+ *     }
+ * @apiError 401   Unauthorized               [authentication failed]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError 401   Unauthorized               [authentication failed]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "Token Invalid"
+ *     }
+ * 
+ * 
+ * 
+ */
+
+
+
+
+
+
  //GET ALBUMS BY ARTIST
 /**
 * @api {get} /albums/byartist/:artistId  Get Albums by an artist
 * @apiName Get Albums by an artist
-* @apiGroup Albums
+* @apiGroup Album
 *
 * @apiHeader {string}  x-auth          Required
 *
@@ -1811,7 +1867,7 @@
  * 
  * @api {post} track/like/:id              like track
  * @apiName  Like track
- * @apiGroup Track
+ * @apiGroup Tracks
  *   
  *  
  *@apiParam {string}  id
