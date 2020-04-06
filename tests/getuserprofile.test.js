@@ -20,14 +20,16 @@ describe('POST /users/signup', () => {
     .send({
       "email":"sw.project.verify@gmail.com",
       "gender":"F",
-      "birthDate":"1990-06-19",
+      "day":"29",
+     "month":"07",
+     "year":"1999",
       "password":"abc1234",
       "isPremium":false,
       "userName":"testuser"
 
     })
     .expect((res)=>{
-      //  expect(res.body.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
+       //expect(res.text).toBe("User added Successfully as inActive. Waiting for Email Confirmation")
     })
 
 
@@ -42,7 +44,7 @@ describe('POST /users/signup', () => {
         expect (user.userName).toBe("testuser");
         expect (user.gender).toBe("F");
         expect(user.isActive).toBe(false);
-        var d= new Date("1990-06-19");
+        var d= new Date("1999-07-29");
         expect (user.birthDate.toString()).toEqual(d);
         done();
       }).catch((e)=>done(e));
@@ -61,8 +63,9 @@ describe('POST /users/signup', () => {
       "isPremium":false,
       "userName":"testuser2",
       "gender":"x",
-      "birthDate":"1990-06-19"
-    })
+      "day":"29",
+         "month":"07",
+         "year":"1999"    })
     .expect(400)
 
     .end(done)
@@ -80,8 +83,10 @@ describe('POST /users/signup', () => {
       "isPremium":false,
       "userName":"testuser3",
       "gender":"M",
-      "birthDate":"1990-06-19"
-    })
+      "day":"29",
+         "month":"07",
+         "year":"1999"
+           })
     .expect(400)
 
     .end(done)
@@ -97,8 +102,10 @@ describe('POST /users/signup', () => {
       "password":"1234",
       "isPremium":false,
       "gender":"M",
-      "birthDate":"1990-06-19"
-    })
+      "day":"29",
+         "month":"07",
+         "year":"1999"
+           })
     .expect(400)
 
     .end(done)
@@ -113,8 +120,10 @@ describe('POST /users/signup', () => {
       "isPremium":false,
       "userName":"testuser2",
       "gender":"x",
-      "birthDate":"1990-06-19"
-    })
+      "day":"29",
+         "month":"07",
+         "year":"1999"
+           })
     .expect(400)
 
     .end(done)
@@ -129,8 +138,10 @@ describe('POST /users/signup', () => {
       "password":"1234",
       "isPremium":false,
       "userName":"testuser2",
-      "birthDate":"1990-06-19"
-    })
+      "day":"29",
+         "month":"07",
+         "year":"1999"
+           })
     .expect(400)
 
     .end(done)
@@ -164,8 +175,9 @@ describe('POST /users/signup', () => {
         "password":"1234",
         "isPremium":false,
         "gender":"M",
-        "birthDate":"1990-06-19"
-
+        "day":"29",
+           "month":"07",
+           "year":"1999"
       })
       .expect(409)
       .end(done)
@@ -185,8 +197,9 @@ describe('POST /users/signup', () => {
         "password":"1234",
         "isPremium":false,
         "gender":"M",
-        "birthDate":"1990-06-19"
-
+        "day":"29",
+           "month":"07",
+           "year":"1999"
       })
       .expect(409)
       .end(done)
@@ -204,8 +217,9 @@ describe('POST /users/signup', () => {
       "isPremium":false,
       "userName":"testuser2",
       "gender":"M",
-      "birthDate":"invalid"
-    })
+      "day":"invalid",
+         "month":"07",
+         "year":"1999"    })
     .expect(400)
 
     .end(done)
@@ -224,8 +238,9 @@ describe('POST /users/signup', () => {
         "password":"1234",
         "isPremium":false,
         "gender":"M",
-        "birthDate":"1990-06-19"
-
+        "day":"29",
+           "month":"07",
+           "year":"1999"
       })
       .expect(409)
       .end(done)
@@ -303,8 +318,9 @@ describe('Patch /users/me/editprofile', () => {
       .send({
  "userName":"test1",
   "gender":"F",
-  "birthDate":"1955-12-05"
-
+  "day":"29",
+     "month":"07",
+     "year":"1999"
 })
       .expect(200)
       .end(done)
@@ -321,8 +337,9 @@ describe('Patch /users/me/editprofile', () => {
       .send({
     "userName":"bbb",
     "gender":"F",
-    "birthDate":"1955-12-05"
-
+    "day":"29",
+       "month":"07",
+       "year":"1999"
     })
       .expect(401)
       .end(done)
@@ -337,8 +354,9 @@ describe('Patch /users/me/editprofile', () => {
       .send({
  "userName":"test2",
   "gender":"F",
-  "birthDate":"1955-12-05"
-
+  "day":"29",
+     "month":"07",
+     "year":"1999"
 })
       .expect(401)
       .end(done)
@@ -353,8 +371,9 @@ describe('Patch /users/me/editprofile', () => {
       .send({
  "userName":"test3",
   "gender":"F",
-  "birthDate":"1955-12-05"
-
+  "day":"29",
+     "month":"07",
+     "year":"1999"
 })
       .expect(404)
       .end(done)
@@ -372,8 +391,9 @@ describe('Patch /users/me/editprofile', () => {
       .send({
         "userName":"test4",
           "gender":"invalid",
-          "birthDate":"1955-12-05"
-
+          "day":"29",
+             "month":"07",
+             "year":"1999"
         })
       .expect(400)
       .end(done)
@@ -393,8 +413,9 @@ describe('Patch /users/me/editprofile', () => {
        .send({
          "userName":"test4",
            "gender":"M",
-           "birthDate":"invalid"
-
+           "day":"29",
+              "month":"invalid",
+              "year":"1999"
          })
        .expect(400)
        .end(done)
@@ -413,7 +434,9 @@ describe('Patch /users/me/editprofile', () => {
         .send({
           "userName":  users[users.length-1].userName,
             "gender":  users[users.length-1].gender,
-            "birthDate":  users[users.length-1].birthDate
+            "day":  users[users.length-1].birthDate.getDay(),
+            "month":users[users.length-1].birthDate.getMonth(),
+            "year":users[users.length-1].birthDate.getFullYear()
 
           })
         .expect(200)
@@ -434,7 +457,9 @@ describe('Patch /users/me/editprofile', () => {
          .send({
            "userName":users[users.length-2].userName,
              "gender":"M",
-             "birthDate": users[users.length-1].birthDate
+             "day":  users[users.length-1].birthDate.getDay(),
+             "month":users[users.length-1].birthDate.getMonth(),
+             "year":users[users.length-1].birthDate.getFullYear()
 
            })
          .expect(409)
