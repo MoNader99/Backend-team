@@ -298,7 +298,7 @@ playlist3.save().then((res)=>{
 ///playlist4
 var playlist4 = new playlist({
     userId:user2._id,
-    playlistName:"Likes",
+    playlistName:"90's",
     tracks: [track5],
 
 });
