@@ -623,7 +623,7 @@ router.get('/users/artists/related',(req,res)=>{
             return Promise.reject();
         }
 
-    var sentId=req.body.artistId;
+    var sentId=req.header('artistId');
     if(!sentId){
         return res.status(400).send("Send the artist ID");
     }

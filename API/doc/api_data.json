@@ -3361,19 +3361,6 @@
           },
           {
             "group": "Header",
-            "type": "JSON",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>The content of the request body in JSON format.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "artistId",

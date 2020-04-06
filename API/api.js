@@ -645,10 +645,7 @@
  * @apiGroup Users
  *
  * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can get artist related artists
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
- *
- *
-* @apiParam {string} artistId       Id of the artist the  user wants to get his/her related artists
+ * @apiHeader {string}   artistId     Id of the artist the  user wants to get his/her related artists   
  *
  * @apiSuccess 302                     [The response of the sucess case is an array of artists]
  * @apiSuccessExample {JSON} Success-Response:
