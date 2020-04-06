@@ -951,7 +951,7 @@
  * @apiGroup Artists
             
  *
- * @apiSuccess {artists[]}               artists An array of Artist objects containing the full details of each  Artist.
+ * @apiSuccess {object[]}     artists     An array of Artist objects containing the full details of each  Artist.
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
@@ -1222,7 +1222,7 @@
  *@apiParam {string}  email
  *
  * @apiParam {string} password
- *
+ * @apiHeader {string}  x-auth       token for frontend to send the response
  * @apiParamExample {json} Request-Example:
  *     {
  *       "email": "ayamahmoudabdelfatah99@gmail.com",
@@ -1262,7 +1262,7 @@
  *@apiParam {string}  email
  *
  * @apiParam {string} password
- *
+ * @apiHeader {string}  x-auth       token for frontend to send the response
  * @apiParamExample {json} Request-Example:
  *     {
  *       "email": "ayamahmoudabdelfatah99@gmail.com",
@@ -1888,8 +1888,271 @@
  * 
  *
  * 
+ */
+
+/////////////Aya Mahmoud /////////////////////////////
+
+/** Like playlist
+ * ---------------------
+ * 
+ * @api { post } /playlists/like/:id              like playlist
+ * @apiName  Likeplaylist
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } id
+ * 
+ * @apiHeader { string } x - auth       user token to like playlist
+ *
+ * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ * 
+ * }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Unauthorized
+ * {
+ *        "Token is Empty"
+ *     }
+ *
+ *
+ *  @apiError  403  Forbidden[Repeating the request more than once for the same user and the same album]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 403 Forbidden
+ * {
+ *        "You have already liked that playlist"
+ *     }
+ *
+ * 
+ * 
+ *  @apiError  404  Not found[this playlist is not found]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "No playlist found"
+ *     }
+ * 
+ * 
+ * @apiError  404  Not found[this is not an ID]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "Invalid id"
+ *     }
+ * 
+ * /
+ * */
+
+/** UnLike playlist
+ * ---------------------
+ * 
+ * @api { post } /playlists/unlike/:id              unlike playlist
+ * @apiName  unLikeplaylist
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } id
+ * 
+ * @apiHeader { string } x - auth       user token to unlike playlist
+ *
+ * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ * 
+ * }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "Token is not valid"
+ *     }
+ *
+ *
+ * @apiError 401   Unauthorized[authentication failed]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Unauthorized
+ * {
+ *        "Token is Empty"
+ *     }
+ * 
+ * 
+ *  @apiError  404  Not found[this playlist is not found]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        " Notfound in liked playlists"
+ *     }
+ * 
+ * 
+ * @apiError  404  Not found[this is not an ID]
+ *  @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 404 Not found
+ * {
+ *        "Invalid id"
+ *     }
+ * 
+ * /
+ * */
+///monica////////////////////////////
+ 
+/**
+ * @api {get} /albums/homepage/popular    Get popular Albums for homepage
+ * @apiName GetPopularAlbums
+ * @apiGroup Album
+ *          
+ ** @apiHeader {string}  x-auth          Required token of the user
+ * @apiSuccess {object[]}   albums        An array of Album objects containing the full details of each  Album
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *      "albums": 
+ * [
+ *    {
+ *       "_id": "5e89f2caaaa6bd3f481675f5",
+ *       "artistId": "5e89f2caaaa6bd3f481675eb",
+ *       "albumName": "25",
+ *       "__v": 0,
+ *       "likes": 88,
+ *       "rating": 5,
+ *       "tracks": [
+ *           "5e89f2caaaa6bd3f481675f0",
+ *           "5e89f2caaaa6bd3f481675f1"
+ *       ],
+ *       "imagePath": "default.png"
+ * },
+ * 
+ *   {
+ *       "_id": "5e89f2caaaa6bd3f481675f6",
+ *       "artistId": "5e89f2caaaa6bd3f481675e8",
+ *       "albumName": "bla bla",
+ *       "__v": 0,
+ *       "likes": 100,
+ *       "rating": 5,
+ *       "tracks": [
+ *           "5e89f2caaaa6bd3f481675f0",
+ *           "5e89f2caaaa6bd3f481675f1"
+ *       ],
+ *       "imagePath": "default.png"
+ * }
+ * ],
+ * 
+}
+ *
+ *
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "message":"authenticaton failed"
+ *     }
+ * 
  * 
  * 
  */
 
+
+
+
+
+
+
+/**
+ * @api {get} /users/followed/artists    Get followed artists of the user
+ * @apiName GetFollowedArtitsOfTheUser
+ * @apiGroup Users
+ *          
+ ** @apiHeader {string}  x-auth          Required token of the user
+ * @apiSuccess {object[]} artists              simplified array of artists objects
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *    "artists":
+ * [
+ * {  "artistName":"Adele",
+ *     "followDate": "2020-04-04T18:14:27.889Z",
+ *   
+ *   "rate":"3"
+ *  },
+ *   {
+ * 
+ *     "artistName":"Eminem",
+ *     "followDate": "2020-04-04T18:14:27.889Z",
+ *     "rate":"7"
+ *    }
+ * 
+ * 
+ *    ]
+ * }
+ *
+ *
+ * @apiError 401   Unauthorized               [authentication failed]
+ *@apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "message":"authenticaton failed"
+ *     }
+ * 
+ * 
+ * 
+ */
+
+
+/**
+ * @api {post} /users/:artistId/follow     follow an artist
+ * @apiName FollowAnArtist
+ * @apiGroup Users
+ *          
+ * @apiHeader {string}  x-auth          Required token of the user
+ * @apiParam {string}  artistId         id of artist you want to follow
+ * 
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"followed"
+ * 
+ * 
+ *    
+ * }
+ *
+ *
+ * @apiError 401              [authentication failed]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "message":"authenticaton failed"
+ *     }
+ * 
+ * @apiError 404               [artist not found]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404   Not-Found  
+ *     {
+ *        "message":"artist not found"
+ *     }
+ * 
+ * 
+ * 
+ *  
+ * 
+ * 
+ */
 

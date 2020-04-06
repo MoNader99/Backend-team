@@ -25,7 +25,7 @@ var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
 var upload=require("./../Services/ImageService.js").UploadUserPhoto;
 var AuthenticateUser= require("./../Services/ImageService.js").AuthenticateUser;
 var AssignUserImage=require("./../Services/ImageService.js").AssignUserImage;
-
+var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
 var smtpTransport = nodemailer.createTransport({
@@ -177,7 +177,7 @@ router.get('/users/confirm/:code',(req,res) => {
 
 
 
-router.post('/users/login', async (req, res) => {
+router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (req, res) => {
     console.log(1);
     var body = _.pick(req.body, ['email', 'password']);
     console.log(2);
