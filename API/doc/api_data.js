@@ -443,6 +443,100 @@ define({ "api": [
     "groupTitle": "Albums"
   },
   {
+    "type": " post ",
+    "url": "/album/unlike/:id",
+    "title": "unlike album",
+    "name": "unLikealbum",
+    "group": "Album",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x",
+            "description": "<ul> <li>auth       user token to unlike album</li> </ul>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x",
+            "description": "<ul> <li>auth[token given for the logging in user]</li> </ul>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n{\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not found[this album is not found]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"Token is not valid\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401  Unauthorized\n{\n       \"Token is Empty\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 404 Not found\n{\n       \" Notfound in liked albums\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 404 Not found\n{\n       \"Invalid id\"\n    }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
     "type": "post",
     "url": "api/users/login",
     "title": "login for artist",
@@ -544,8 +638,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an artist who has a verified account can edit his/her profile picture</p>"
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an artist who has a verified account can edit his/her profile picture</p>"
           },
           {
             "group": "Header",
@@ -1283,8 +1377,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can create a playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can create a playlist</p>"
           },
           {
             "group": "Header",
@@ -1398,8 +1492,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only a user  who has a verified account can delete his/her playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only a user  who has a verified account can delete his/her playlist</p>"
           },
           {
             "group": "Header",
@@ -1512,8 +1606,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only a user  who has a verified account can delete a track from his playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only a user  who has a verified account can delete a track from his playlist</p>"
           },
           {
             "group": "Header",
@@ -1648,8 +1742,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can get the image of a playlist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get the image of a playlist</p>"
           },
           {
             "group": "Header",
@@ -2218,8 +2312,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an Artist who has a verified account can add a track</p>"
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an Artist who has a verified account can add a track</p>"
           },
           {
             "group": "Header",
@@ -2385,8 +2479,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an Artist who has a verified account can delete his tracks</p>"
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an Artist who has a verified account can delete his tracks</p>"
           },
           {
             "group": "Header",
@@ -3090,8 +3184,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can edit his/her profile picture</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can edit his/her profile picture</p>"
           },
           {
             "group": "Header",
@@ -3262,8 +3356,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get artist related artists</p>"
           },
           {
             "group": "Header",
@@ -3581,8 +3675,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only an User who has a verified account can get the last 5 tracks he/she played</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get the last 5 tracks he/she played</p>"
           }
         ]
       }
@@ -3845,8 +3939,8 @@ define({ "api": [
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "Authorization",
-            "description": "<p>Only a User who has a verified account can get top 5 tracks of an artist</p>"
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only a User who has a verified account can get top 5 tracks of an artist</p>"
           },
           {
             "group": "Header",
