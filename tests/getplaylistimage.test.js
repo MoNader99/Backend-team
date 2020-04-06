@@ -14,9 +14,7 @@ describe("Get Image of a playlist",()=>{
                 request(app)
                 .get('/playlists/image')
                 .set('x-auth',token)
-                .send({
-                    playlistName:testPlaylistName,
-                }) 
+                .set('playlistName',testPlaylistName)
                 .expect(302)
                 .end(done)
              })
@@ -29,9 +27,7 @@ describe("Get Image of a playlist",()=>{
         request(app)
         .get('/playlists/image')
         .set('x-auth',testToken2)
-        .send({
-            playlistName:testPlaylistName,
-        }) 
+        .set('playlistName',testPlaylistName)
         .expect(401,"Unauthorized Access")
         .end(done)
     });    
@@ -42,13 +38,11 @@ describe("Get Image of a playlist",()=>{
 
             users[users.length-1].save()
             users[users.length-1].generateAuthToken().then((token)=>{
-                var testPlaylistName;
+                var testPlaylistName="";
                 request(app)
                 .get('/playlists/image')
                 .set('x-auth',token)
-                .send({
-                    playlistName:testPlaylistName,
-                }) 
+                .set('playlistName',testPlaylistName)
                 .expect(400,"Pass the playlistname to get it's image")
                 .end(done)
             })
@@ -65,9 +59,7 @@ describe("Get Image of a playlist",()=>{
                 request(app)
                 .get('/playlists/image')
                 .set('x-auth',token)
-                .send({
-                    playlistName:testPlaylistName,
-                }) 
+                .set('playlistName',testPlaylistName)
                 .expect(404,"Playlist does not exist")
                 .end(done)
             })
