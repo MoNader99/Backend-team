@@ -786,12 +786,12 @@ catch{
     var token=req.header('x-auth');
     if(!token)
     {
-        res.status(401).send('Token is Empty')
+        return res.status(401).send('Token is Empty')
     }
     User.findByToken(token).then((user) => {
         if(!user)
         {
-            res.status(404).send('User not found');
+            return res.status(401).send('User does not have access or does not exist');
         }
     console.log("you are my user");
     var done = 0;
@@ -806,16 +806,20 @@ catch{
                 user.save();
                 console.log('saving user');
                 done = 1;
-                res.status(200).send("Password has been changed successfully");
+                return res.status(200).send("Password has been changed successfully");
 
         } else {
             console.log(user.password);
             console.log(oldPassword);
             console.log('Your password not mached.');
             done = 0
-            res.status(403).send("Password is incorrect");
-        }}).catch(err);
-    }).catch(e);
+            return res.status(403).send("Password is incorrect");
+        }}).catch((e) => {
+            res.status(500).send();
+        })
+    }).catch((e) => {
+        res.status(401).send();
+    })
 });
 
 

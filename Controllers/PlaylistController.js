@@ -65,17 +65,17 @@ router.get('/playlists/me',(req,res) => {
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(401).send('Token is Empty');
+        return res.status(401).send('Token is Empty');
     }
     User.findByToken(token).then((user) => {
         if(!user){
-            res.status(401).send('User does not have access or does not exist');
+            return res.status(401).send('User does not have access or does not exist');
         }
         playlist.find({userId:user._id}).then((playlist) =>
         {
-            res.status(302).send({playlist});
+            return res.status(302).send({playlist});
         }).catch((e) => {
-            res.status(401).send();
+            return res.status(401).send();
         })
     }).catch((e) => {
         res.status(401).send();
