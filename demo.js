@@ -38,7 +38,7 @@ var imgPath12 = "coldplay.png";
 
 var artist1= new artist({
     email:"adele@music.com",
-    password:"2020",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Adele",
     about:`Adele Laurie Blue Adkins (born May 5, 1988) is a British singer-songwriter
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
@@ -104,7 +104,7 @@ artist3.save().then((res)=>{
 
 var artist4= new artist({
     email:"amrdiab@abc.com",
-    password:"2020",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"AmrDiab",
     about:`Amr Diabis an Egyptian singer, composer and former actor. He has established himself as an acclaimed recording artist and author in most Mediterranean countries. According to a research by Michael Frishkopf, he has created his style termed as "Mediterranean Music", a blend of Western and Egyptian rhythms. By 1992, he became the first Egyptian and Middle Eastern artist to start making high-tech music videos.`,
     genres:["pop","R&B"],
@@ -125,7 +125,7 @@ artist4.save().then((res)=>{
 
 var artist5= new artist({
     email:"sia@abc.com",
-    password:"2020",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Sia",
     about:" is an Australian singer, songwriter, voice actress and music video director. She started her career as a singer in the acid jazz band Crisp in the mid-1990s in Adelaide. In 1997, when Crisp disbanded, she released her debut studio album titled OnlySee in Australia. She moved to London, England, and provided lead vocals for the British duo Zero 7. In 2000, Sia released her second studio album, Healing Is Difficult, and her third studio album, Colour the Small One, in 2004, but all of these struggled to connect with a mainstream audience.",
     genres:["pop","R&B"],
@@ -146,7 +146,7 @@ artist5.save().then((res)=>{
 
 var artist6= new artist({
     email:"miley@abc.com",
-    password:"2020",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Miley Cyrus",
     about:"is an American singer, songwriter, and actress. Her music has spanned a range of styles, including pop, country pop, and hip hop. Cyrus' personal life, public image, and performances have often sparked controversy and received widespread media coverage.",
     genres:["pop","R&B"],
@@ -165,7 +165,7 @@ artist6.save().then((res)=>{
 
 var artist7= new artist({
     email:"jen@abc.com",
-    password:"2020",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Jennifer Grout",
     about:"Jennifer Grout was born in Mesa (Arizona, US) and studied in McGill University in Canada. She is the daughter of a pianist and a violinist and began studying music at 5. In 2012 and after her summer trip to Morocco, Jennifer Grout got interested in Arabic and Amazigh culture and music. She competed in Arabs Got Talent and was finalist in 2013",
     genres:["pop","R&B"],
@@ -184,7 +184,7 @@ artist7.save().then((res)=>{
 
 var artist8= new artist({
     email:"edsh@abc.com",
-    password:"2020",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Ed Sheeran",
     about:"Ed Sheeran may be the quintessential pop star of the 2010s: a singer/songwriter who seems to acknowledge no boundaries between styles or eras, creating a sound that's idiosyncratic and personal. Sheeran borrows from any style that crosses his path -- elements of folk, hip-hop, pop, dance, soul, and rock can be heard in his big hits The A Team,Sing,Thinking Out Loud, and Shape of You -- which gives him a broad appeal among different demographics, helping to elevate him to international stardom not long after the release of his 2011 debut, +.",
     genres:["pop","R&B"],
@@ -203,7 +203,8 @@ artist8.save().then((res)=>{
 
 var artist9= new artist({
     email:"Sel@abc.com",
-    password:"2020",
+
+password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Selena Gomez",
     about:"Selena Gomez is a multi-talented performer with featured roles on the screen, both small and big, and a musical career that reached the summit of the charts from the very beginning. Her group Selena Gomez & the Scene issued a trio of breezy modern pop albums from 2009 to 2011 that each reached the Top Ten. After going solo, she scored a pair of number ones with the more adult-oriented Stars Dance (2013) and Revival (2015), then branched out into new sounds on collaborations with Kygo (It Ain't Me) and Marshmello (Wolves). She hit the top of the singles chart for the first time with (Lose You to Love Me) (2019), a soul-searching ballad that delved into Gomez's real-life relationships and marked a new openness in her lyrical approach. The single's subsequent parent release, Rare (2020), became her third straight number one album.",
     genres:["pop","R&B"],
@@ -223,7 +224,8 @@ artist9.save().then((res)=>{
 
 var artist10= new artist({
     email:"coldplay@abc.com",
-    password:"2020",
+
+password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Coldplay",
     about:"Coldplay came together as a band in late 1997 when Guy Berryman, Jonny Buckland, Will Champion and Chris Martin met at University College, London.  The band have gone on to become one of the planet’s most popular acts, selling more than 75 million copies of their seven Number One albums, which have spawned a string of classic hits including Yellow, Clocks, Fix You, Paradise, Viva La Vida and A Sky Full Of Stars. They’ve also filled their trophy cabinet with almost every major music award there is (including seven Grammys and nine BRITs). ",
     genres:["pop","R&B"],
@@ -357,7 +359,7 @@ user1.save().then((res)=>{
 //
 var user2= new User({
     email:"mario123@gmail.com",
-    password:"kok123",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     userName:"Mario1",
     gender:"F",
     birthDate: '1990-06-19',
