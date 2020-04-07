@@ -689,6 +689,9 @@ var track1=new track({
                                                                 });
 
 
+                                                             
+    
+
 
 ///////////Creating Albums//////////////////
     var album1 = new album({
@@ -1327,6 +1330,28 @@ var playlist13 = new playlist({
 });
 
 playlist13.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist14 = new playlist({
+    playlistName:"Arab Songs",
+    tracks:[track8,track9,track16],
+});
+
+playlist14.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist15 = new playlist({
+    playlistName:"Pop Songs",
+    tracks:[track1,track2,track10,track11,track12,track13,track14,track15,track17,track18,track19,track20,track21,track22,track23],
+});
+
+playlist15.save().then((res)=>{
     console.log(res._id);
 },(err)=>{
     console.log(err);

@@ -783,6 +783,14 @@ catch{
  router.put('/users/changePassword',async (req,res)=>{
     var oldPassword=req.body.oldPassword;
     var newPassword=req.body.newPassword;
+    if(!oldPassword)
+    {
+        return res.status(400).send('You did not enter your old password');
+    }
+    if(!newPassword)
+    {
+        return res.status(400).send('You did not enter your  password');
+    }
     var token=req.header('x-auth');
     if(!token)
     {
@@ -814,12 +822,8 @@ catch{
             console.log('Your password not mached.');
             done = 0
             return res.status(403).send("Password is incorrect");
-        }}).catch((e) => {
-            res.status(500).send();
-        })
-    }).catch((e) => {
-        res.status(401).send();
-    })
+        }}).catch(e);
+    }).catch(e);
 });
 
 
