@@ -15,12 +15,12 @@ const Schema = mongoose.Schema;
 
 //PATH OF IMAGES
 
-var imgPath1 = "default.png";   //default picture of playlist
-var imgPath2 = "Billie-Eilish.png";
+var imgPath1 = "default.jpeg";   //default picture of playlist
+var imgPath2 = "Billie-Eilish.jpg";
 var imgPath3 = "Adele.png";
 var imgPath4 = "defaultuser.png";
-var imgPath5 = "AmrDiab.png";
-var imgPath6 = "eminem.png";
+var imgPath5 = "AmrDiab1.jpg";
+var imgPath6 = "eminem.jpg";
 var imgPath7 = "sia.png";
 var imgPath8 = "miley.png";
 var imgPath9 = "JenGr.png";
@@ -1240,9 +1240,97 @@ playlist5.save().then((res)=>{
     console.log(err);
 });
 
+var playlist6 = new playlist({
+    playlistName:"New Pop",
+    tracks:[track1,track15,track12],
+});
 
+playlist6.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
 
+var playlist7 = new playlist({
+    playlistName:"Party Time",
+    tracks:[track9,track21,track22,track5],
+});
 
+playlist7.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist8 = new playlist({
+    playlistName:"New Soft Pop",
+    tracks:[track1,track2,track10,track11],
+});
+
+playlist8.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist9 = new playlist({
+    playlistName:"Adele",
+    tracks:[track1,track2,track3],
+    imagePath:imgPath3,
+});
+
+playlist9.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist10 = new playlist({
+    playlistName:"Eminem",
+    tracks:[track4,track5],
+    imagePath:imgPath6,
+});
+
+playlist10.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist11 = new playlist({
+    playlistName:"Amr Diab",
+    tracks:[track8,track9],
+    imagePath:imgPath5,
+});
+
+playlist11.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist12 = new playlist({
+    playlistName:"Billie Eillish",
+    tracks:[track6,track7],
+    imagePath:imgPath2,
+});
+
+playlist12.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+var playlist13 = new playlist({
+    playlistName:"Recently Played",
+    tracks:[track1,track7,track12,track21,track4],
+});
+
+playlist13.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
 // User 2 following 2 playlists from user1
 var followPlaylist1= new followPlaylist({
     userId: user2._id,

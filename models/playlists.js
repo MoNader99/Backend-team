@@ -5,7 +5,7 @@ var playlist=mongoose.model("Playlists",{
 
   userId:{   //to whom the playlist belongs to 
     type:String,
-    required:true,   // the user id will not be unique here as his id can be assigned with more than 1 playlist
+    required:false,   // the user id will not be unique here as his id can be assigned with more than 1 playlist
 
   },
   playlistName:{        //playlist name is not unique(logically) so it has be identified by the _id attribute

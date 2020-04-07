@@ -38,11 +38,11 @@ router.get('/album/tracks/:id', (req,res)=>{
         var token = req.header('x-auth');
         if(!token)
         {
-            res.status(401).send('You should pass the token');
+            return res.status(401).send('You should pass the token');
         }
         User.findByToken(token).then((user)=>{
             if(!user){
-                return Promise.reject();
+                return res.status(401).send('User does not have access or does not exist');
             }
         album.findById(id).then((album) => {
             if(!album){return res.status(404).send("can not find album");}
