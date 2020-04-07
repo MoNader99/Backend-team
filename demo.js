@@ -371,6 +371,282 @@ user2.save().then((res)=>{
     console.log(err);
 });
 
+
+var user3= new User({
+    email:"user3@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"john  ",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user3.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+
+var user4= new User({
+    email:"user4@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"paul  ",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user4.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user5= new User({
+    email:"user5@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"mark  ",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user5.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user6= new User({
+    email:"user6@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"sandy",
+    gender:"F",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user6.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+
+var user7= new User({
+    email:"user7@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"noura  ",
+    gender:"F",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user7.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user8= new User({
+    email:"user8@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"mohamed",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user8.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user9= new User({
+    email:"user9@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"ahmed ",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user9.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+
+var user10= new User({
+    email:"user10@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"mona",
+    gender:"F",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user10.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user11= new User({
+    email:"user11@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"aya  ",
+    gender:"F",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user11.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user12= new User({
+    email:"user12@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"Samy",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user12.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user13= new User({
+    email:"user13@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"william ",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user13.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+var user14= new User({
+    email:"user14@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"harryPotter",
+    gender:"M",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user14.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
+
+
+
+var user15= new User({
+    email:"user15@example.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    isActive:true,
+    userName:"karma",
+    gender:"F",
+    birthDate: '1990-06-19',
+    likedTracks:[track1,track2,track4],
+    likedAlbums:[album1],
+
+});
+
+//SAVING AND RETURNING ID OF THE NEW USER
+user15.save().then((res)=>{
+    console.log(res._id);
+},(err)=>{
+    console.log(err);
+});
+
 var followArtist1= new followArtist({
     user_id: user1._id,
     followedArtistInfo:[{
@@ -385,6 +661,8 @@ var followArtist1= new followArtist({
     }
 ]
 });
+
+
 
 //SAVING AND RETURNING ID OF THE FOLLOW REQUEST
 followArtist1.save().then((res)=>{
