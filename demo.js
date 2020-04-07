@@ -30,12 +30,6 @@ var imgPath12 = "coldplay.png";
 
 
 
-
-
-
-
-
-
 var artist1= new artist({
     email:"adele@music.com",
     password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
@@ -227,7 +221,7 @@ var artist10= new artist({
 
 password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Coldplay",
-    about:"Coldplay came together as a band in late 1997 when Guy Berryman, Jonny Buckland, Will Champion and Chris Martin met at University College, London.  The band have gone on to become one of the planet’s most popular acts, selling more than 75 million copies of their seven Number One albums, which have spawned a string of classic hits including Yellow, Clocks, Fix You, Paradise, Viva La Vida and A Sky Full Of Stars. They’ve also filled their trophy cabinet with almost every major music award there is (including seven Grammys and nine BRITs). ",
+    about:"Coldplay came together as a band in late 1997 when Guy Berryman, Jonny Buckland, Will Champion and Chris Martin met at University College, London .The band have gone on to become one of the planet’s most popular acts, selling more than 75 million copies of their seven Number One albums, which have spawned a string of classic hits including Yellow, Clocks, Fix You, Paradise, Viva La Vida and A Sky Full Of Stars. They’ve also filled their trophy cabinet with almost every major music award there is (including seven Grammys and nine BRITs). ",
     genres:["pop","R&B"],
     rating: 4,
     imagePath:imgPath5,
@@ -247,6 +241,7 @@ var track1=new track({
     artistId:artist1._id,
     trackName:"Hello",
     rating:10,
+    imagePath:imgPath3,
     duration:360000,
     genre:"pop",
     url:"uuu"  // until we get real urls
@@ -262,6 +257,7 @@ var track1=new track({
         artistId:artist1._id,
         trackName:"someone like you",
         rating:9,
+        imagePath:imgPath3,
         duration:360000,
         genre:"pop",
         url:"qqq"  // until we get real urls
@@ -276,6 +272,7 @@ var track1=new track({
             artistId:artist1._id,
             trackName:"set fire to the rain",
             rating:8,
+            imagePath:imgPath3,
             duration:240000,
             genre:"pop",
             url:"nnnn"  // until we get real urls
@@ -291,6 +288,7 @@ var track1=new track({
                 artistId:artist3._id,
                 trackName:"When I'm Gone",
                 rating:10,
+                imagePath:imgPath6,
                 duration:262000,
                 genre:"rap",
                 url:"lll"  // until we get real urls
@@ -302,9 +300,11 @@ var track1=new track({
                     console.log(err);
                 });
 
+
                 var track5=new track({
                     artistId:artist3._id,
                     trackName:"Godzilla",
+                    imagePath:imgPath6,
                     rating:9,
                     duration:223000,
                     genre:"rap",
@@ -318,6 +318,375 @@ var track1=new track({
                     });
 
 
+
+
+                    var track6=new track({
+                        artistId:artist2._id,
+                        trackName:"Six Feet Under",
+                        rating:8,
+                        imagePath:imgPath2,
+                        likes:9,
+                        duration:180000,
+                        genre:"Alternative R&B",
+                        url:"vvv1"  // until we get real urls
+                        });
+    
+                        track6.save().then((res)=>{
+                            console.log(res._id);
+                        },(err)=>{
+                            console.log(err);
+                        });
+    
+
+
+                        var track7=new track({
+                            artistId:artist2._id,
+                            trackName:"Fingers Crossed",
+                            imagePath:imgPath2,
+                            rating:7,
+                            likes:6,
+                            duration:229000,
+                            genre:"Electropop",
+                            url:"vvv2"  // until we get real urls
+                            });
+        
+                            track7.save().then((res)=>{
+                                console.log(res._id);
+                            },(err)=>{
+                                console.log(err);
+                            });
+
+
+
+
+                            var track8=new track({
+                                artistId:artist4._id,
+                                trackName:"Garaly Eh",
+                                imagePath:imgPath5,
+                                rating:10,
+                                likes:8,
+                                duration:225000,
+                                genre:"arab",
+                                url:"vvv4"  // until we get real urls
+                                });
+            
+                                track8.save().then((res)=>{
+                                    console.log(res._id);
+                                },(err)=>{
+                                    console.log(err);
+                                });
+    
+
+
+
+
+                                
+                            var track9=new track({
+                                artistId:artist4._id,
+                                trackName:"AL Leila",
+                                imagePath:imgPath5,
+                                rating:10,
+                                likes:7,
+                                duration:238000,
+                                genre:"arab",
+                                url:"vvv5"  // until we get real urls
+                                });
+            
+                                track9.save().then((res)=>{
+                                    console.log(res._id);
+                                },(err)=>{
+                                    console.log(err);
+                                });
+
+
+                                      
+                            var track10=new track({
+                                artistId:artist5._id,
+                                trackName:"Bird Set Free",
+                                imagePath:imgPath7,
+                                rating:10,
+                                likes:6,
+                                duration:251000,
+                                genre:"pop",
+                                url:"vvv6"  // until we get real urls
+                                });
+            
+                                track10.save().then((res)=>{
+                                    console.log(res._id);
+                                },(err)=>{
+                                    console.log(err);
+                                });
+
+
+
+
+                                        
+                            var track11=new track({
+                                artistId:artist5._id,
+                                trackName:"Alive",
+                                imagePath:imgPath7,
+                                rating:10,
+                                likes:5,
+                                duration:301000,
+                                genre:"pop",
+                                url:"vvv7"  // until we get real urls
+                                });
+            
+                                track11.save().then((res)=>{
+                                    console.log(res._id);
+                                },(err)=>{
+                                    console.log(err);
+                                });
+
+
+                                var track12=new track({
+                                    artistId:artist5._id,
+                                    trackName:"Clap Your Hands",
+                                    imagePath:imgPath7,
+                                    rating:10,
+                                    likes:5,
+                                    duration:239000,
+                                    genre:"pop",
+                                    url:"vvv8"  // until we get real urls
+                                    });
+                
+                                    track12.save().then((res)=>{
+                                        console.log(res._id);
+                                    },(err)=>{
+                                        console.log(err);
+                                    });
+
+
+
+
+
+
+
+                                    var track13=new track({
+                                        artistId:artist6._id,
+                                        trackName:"Adore You",
+                                        rating:9,
+                                        likes:5,
+                                        imagePath:imgPath8,
+                                        duration:279000,
+                                        genre:"pop",
+                                        url:"vvv9"  // until we get real urls
+                                        });
+                    
+                                        track13.save().then((res)=>{
+                                            console.log(res._id);
+                                        },(err)=>{
+                                            console.log(err);
+                                        });
+    
+    
+                                        var track14=new track({
+                                            artistId:artist6._id,
+                                            trackName:"We Can't Stop",
+                                            rating:9,
+                                            imagePath:imgPath8,
+                                            likes:7,
+                                            duration:232000,
+                                            genre:"pop",
+                                            url:"vvv10"  // until we get real urls
+                                            });
+                        
+                                            track14.save().then((res)=>{
+                                                console.log(res._id);
+                                            },(err)=>{
+                                                console.log(err);
+                                            });
+
+
+                                            var track15=new track({
+                                                artistId:artist6._id,
+                                                trackName:"Party In the USA",
+                                                imagePath:imgPath8,
+                                                rating:8,
+                                                likes:5,
+                                                duration:218000,
+                                                genre:"pop",
+                                                url:"vvv11"  // until we get real urls
+                                                });
+                            
+                                                track15.save().then((res)=>{
+                                                    console.log(res._id);
+                                                },(err)=>{
+                                                    console.log(err);
+                                                });
+
+
+                                                var track16=new track({
+                                                    artistId:artist7._id,
+                                                    trackName:"Merhaba",
+                                                    imagePath:imgPath9,
+                                                    rating:8,
+                                                    likes:3,
+                                                    duration:307000,
+                                                    genre:"arab",
+                                                    url:"vvv12"  // until we get real urls
+                                                    });
+                                
+                                                    track16.save().then((res)=>{
+                                                        console.log(res._id);
+                                                    },(err)=>{
+                                                        console.log(err);
+                                                    });
+
+
+                                                    
+                                                var track17=new track({
+                                                    artistId:artist8._id,
+                                                    trackName:"Castle On The Hill ",
+                                                    imagePath:imgPath10,
+                                                    rating:10,
+                                                    likes:7,
+                                                    duration:261000,
+                                                    genre:"pop",
+                                                    url:"vvv13"  // until we get real urls
+                                                    });
+                                
+                                                    track17.save().then((res)=>{
+                                                        console.log(res._id);
+                                                    },(err)=>{
+                                                        console.log(err);
+                                                    });
+
+
+
+
+                                                            
+                                                var track18=new track({
+                                                    artistId:artist8._id,
+                                                    trackName:"Dive",
+                                                    rating:10,
+                                                    likes:6,
+                                                    imagePath:imgPath10,
+                                                    duration:239000,
+                                                    genre:"pop",
+                                                    url:"vvv14"  // until we get real urls
+                                                    });
+                                
+                                                    track18.save().then((res)=>{
+                                                        console.log(res._id);
+                                                    },(err)=>{
+                                                        console.log(err);
+                                                    });
+
+
+
+                                                                   
+                                                var track19=new track({
+                                                    artistId:artist8._id,
+                                                    trackName:"Eraser",
+                                                    rating:10,
+                                                    likes:6,
+                                                    imagePath:imgPath10,
+                                                    duration:228000,
+                                                    genre:"pop",
+                                                    url:"vvv15"  // until we get real urls
+                                                    });
+                                
+                                                    track19.save().then((res)=>{
+                                                        console.log(res._id);
+                                                    },(err)=>{
+                                                        console.log(err);
+                                                    });
+
+
+
+                                                                       
+                                                var track20=new track({
+                                                    artistId:artist9._id,
+                                                    trackName:"Come & Get It",
+                                                    rating:10,
+                                                    likes:6,
+                                                    imagePath:imgPath11,
+                                                    duration:242000,
+                                                    genre:"pop",
+                                                    url:"vvv16"  // until we get real urls
+                                                    });
+                                
+                                                    track20.save().then((res)=>{
+                                                        console.log(res._id);
+                                                    },(err)=>{
+                                                        console.log(err);
+                                                    });
+
+
+                       
+                                                    var track21=new track({
+                                                        artistId:artist9._id,
+                                                        trackName:"Dance Again",
+                                                        rating:10,
+                                                        likes:6,
+                                                        imagePath:imgPath11,
+                                                        duration:171000,
+                                                        genre:"pop",
+                                                        url:"vvv17"  // until we get real urls
+                                                        });
+                                    
+                                                        track21.save().then((res)=>{
+                                                            console.log(res._id);
+                                                        },(err)=>{
+                                                            console.log(err);
+                                                        });
+
+
+                                                        var track22=new track({
+                                                            artistId:artist9._id,
+                                                            trackName:"Look At Her Now",
+                                                            rating:10,
+                                                            likes:6,
+                                                            imagePath:imgPath11,
+                                                            duration:163000,
+                                                            genre:"pop",
+                                                            url:"vvv18"  // until we get real urls
+                                                            });
+                                        
+                                                            track22.save().then((res)=>{
+                                                                console.log(res._id);
+                                                            },(err)=>{
+                                                                console.log(err);
+                                                            });
+
+
+
+                                                            var track23=new track({
+                                                                artistId:artist10._id,
+                                                                trackName:"Something Just Like This",
+                                                                rating:10,
+                                                                likes:6,
+                                                                imagePath:imgPath12,
+                                                                duration:154000,
+                                                                genre:"pop",
+                                                                url:"vvv19"  // until we get real urls
+                                                                });
+                                            
+                                                                track23.save().then((res)=>{
+                                                                    console.log(res._id);
+                                                                },(err)=>{
+                                                                    console.log(err);
+                                                                });
+
+
+                                                                
+                                                            var track24=new track({
+                                                                artistId:artist10._id,
+                                                                trackName:"A Sky Full Of Stars",
+                                                                rating:10,
+                                                                likes:6,
+                                                                imagePath:imgPath12,
+                                                                duration:275000,
+                                                                genre:"Indie",
+                                                                url:"vvv20"  // until we get real urls
+                                                                });
+                                            
+                                                                track24.save().then((res)=>{
+                                                                    console.log(res._id);
+                                                                },(err)=>{
+                                                                    console.log(err);
+                                                                });
 
 
 
@@ -336,6 +705,130 @@ var track1=new track({
 
         console.log(err);
     });
+
+
+    var album2 = new album({
+        artistId:artist4._id,
+        albumName:"El Leila",
+        likes:8,
+        imagePath:imgPath5,
+        tracks: [track8, track9],
+
+
+    });
+
+    album2.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+
+        console.log(err);
+    });
+
+
+
+
+
+    var album3 = new album({
+        artistId:artist5._id,
+        albumName:"This Acting",
+        imagePath:imgPath7,
+        likes:9,
+        tracks: [track10, track11],
+
+
+    });
+
+    album3.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+
+        console.log(err);
+    });
+
+
+
+    
+    var album4 = new album({
+        artistId:artist6._id,
+        albumName:"Bangerz",
+        imagePath:imgPath8,
+        likes:5,
+        tracks: [track13, track14],
+
+
+    });
+
+    album4.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+
+        console.log(err);
+    });
+
+
+
+
+
+    
+    var album5 = new album({
+        artistId:artist7._id,
+        albumName:"Amz Lkhatm",
+        imagePath:imgPath9,
+        likes:9,
+        tracks: [track16],
+
+
+    });
+
+    album5.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+
+        console.log(err);
+    });
+
+    
+    var album6 = new album({
+        artistId:artist8._id,
+        imagePath:imgPath10,
+        albumName:"Divide",
+        likes:10,
+        tracks: [track17,track18,track19],
+
+
+    });
+
+    album6.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+
+        console.log(err);
+    });
+
+
+    
+    
+    var album7 = new album({
+        artistId:artist9._id,
+        albumName:"Rare",
+        imagePath:imgPath11,
+        likes:10,
+        tracks: [track21,track22],
+
+
+    });
+
+    album7.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+
+        console.log(err);
+    });
+
+
+
+
+
 
 //CREATING NEW USER INSTANCES AND SAVING THEM
 var user1= new User({
