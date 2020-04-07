@@ -838,8 +838,6 @@ var user1= new User({
     userName:"hamadaaa  ",
     gender:"M",
     birthDate: '1990-06-19',
-    likedTracks:[track1,track2,track4],
-    likedAlbums:[album1],
 
 });
 
