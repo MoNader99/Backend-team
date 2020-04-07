@@ -65,6 +65,9 @@ router.post('/artists/login', AuthenticationServices.AuthenticateFrontend, (req,
 		if(artist.isActive==true)
 	{
             return artist.generateAuthToken().then((token) => {
+                res.header("Access-Control-Allow-Headers", "x-auth");
+                res.header("Access-Control-Expose-Headers", "x-auth");
+                console.log("login 2el gededa");
             console.log("da5a5aalapd");
             var decodedtoken = jwt.verify(token, 'secretkeyforartist')
             console.log(4);

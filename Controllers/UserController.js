@@ -188,9 +188,12 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
 		if(user.isActive==true)
 		{
 			return user.generateAuthToken().then((token) => {
-            console.log(4);
-            res.header('x-auth', token).send();
-		    console.log(5);
+                console.log(4);
+                res.header("Access-Control-Allow-Headers" , "x-auth");
+                res.header("Access-Control-Expose-Headers", "x-auth");
+                console.log("login 2el gededa");
+                res.header('x-auth', token).send();
+		        console.log(5);
 			});
 		}
 		else

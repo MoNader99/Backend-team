@@ -50,12 +50,11 @@ var GetArtistById = function (id) {
     console.log(id);
     console.log(artist.findById(id).artistName);
     return artist.findById(id).then((Art) => {
+        if (!Art) return "undefined";
         console.log(Art.artistName);
         return Art.artistName;
 
     })
-    
-
 }
 
 var SearchInArtists = function (wordtosearch) {

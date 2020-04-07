@@ -52,6 +52,7 @@ var GetUserById = function (id) {
   //  console.log(artist.findById(id).artistName);
     return User.findById(id).then((user) => {
        // console.log(Art.artistName);
+        if(!user) return "undefined"
         return user.userName;
 
     })
