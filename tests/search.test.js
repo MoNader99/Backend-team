@@ -60,10 +60,20 @@ describe('search /Search', () => {
         })
     });
     it('return playlist when the user searches for', (done) => {
-        playlist.find().then((playlists) => {
-            var testplaylist = playlists[playlists.length - 1];
-            userservices.GetUserById(testplaylist.userId.toString()).then((name) => {
-                console.log(name);
+        
+        User.find().then((users) => {
+            var testuser = users[users.length-1];
+           // userservices.GetUserById(id).then((name) => {
+                var testplaylist = new playlist({
+                    userId: testuser._id.toString(),
+                    playlistName: "testing",
+                    "tracks": [
+                    ],
+                    privacy: false,
+                    __v: 0
+                });
+           
+            testplaylist.save().then((res1) => {
                 request(app)
                     .get(`/Search`)
                     .set('x-auth', testToken)
@@ -74,15 +84,33 @@ describe('search /Search', () => {
 
                         expect(res.body.Playlists.map(function (value) { return value._id })).to.include(testplaylist._id.toString());
 
-                        expect(res.body.Playlists.map(function (value) { return value.userName })).to.include(name);
+                        expect(res.body.Playlists.map(function (value) { return value.userName })).to.include(testuser.userName);
                         // end(done);
 
                     })
-                    .end(done)
-            })
+                    .end((err, res) => {
+                        if (err) {
+                            done(err)
+                        }
+                        else {
+                            album.findOneAndRemove({ _id: testplaylist._id }, function (err) {
+                                if (err) {
+                                    done(err)
+                                }
+                                else {
+                                    done();
+                                }
+                            });
+                        }
+                    })
+            }, (err) => {
+
+                    done(err);
+                });
+                })
 
 
-        })
+       // })
     });
     it('return tracks when the user searches for', (done) => {
         track.find().then((tracks) => {
