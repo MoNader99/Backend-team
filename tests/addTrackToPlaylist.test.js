@@ -15,8 +15,8 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
 
       playlist.find().then((playlists)=>{
-          var playlistId=playlists[playlists.length-1]._id.toHexString()
-          var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+          var playlistId=playlists[0]._id.toHexString()
+          var userId=playlists[0].userId;  //get a random playlist then find its user
           User.findById(userId).then((users)=>{
               users.generateAuthToken().then((token)=>{
                 track.find().then((tracks)=>{
@@ -48,8 +48,8 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
 
         playlist.find().then((playlists)=>{
-            var playlistId=playlists[playlists.length-1]._id.toHexString()
-            var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+            var playlistId=playlists[0]._id.toHexString()
+            var userId=playlists[0].userId;  //get a random playlist then find its user
             User.findById(userId).then((users)=>{
                 users.generateAuthToken().then((token)=>{
                   track.find().then((tracks)=>{
@@ -81,8 +81,8 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
 
         playlist.find().then((playlists)=>{
-            var playlistId=playlists[playlists.length-1]._id.toHexString()+'gggg';
-            var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+            var playlistId=playlists[0]._id.toHexString()+'gggg';
+            var userId=playlists[0].userId;  //get a random playlist then find its user
             User.findById(userId).then((users)=>{
                 users.generateAuthToken().then((token)=>{
                   track.find().then((tracks)=>{
@@ -118,7 +118,7 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
         playlist.find().then((playlists)=>{
             var playlistId=new ObjectID()
-            var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+            var userId=playlists[0].userId;  //get a random playlist then find its user
             User.findById(userId).then((users)=>{
                 users.generateAuthToken().then((token)=>{
                   track.find().then((tracks)=>{
@@ -146,8 +146,8 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
 
         playlist.find().then((playlists)=>{
-            var playlistId=playlists[playlists.length-1]._id.toHexString();
-            var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+            var playlistId=playlists[0]._id.toHexString();
+            var userId=playlists[0].userId;  //get a random playlist then find its user
             User.findById(userId).then((users)=>{
                 users.generateAuthToken().then((token)=>{
                   track.find().then((tracks)=>{
@@ -178,8 +178,8 @@ describe('Post /tracks/:playlistId/playlists',()=>{
 
 
         playlist.find().then((playlists)=>{
-            var playlistId=playlists[playlists.length-1]._id.toHexString();
-            var userId=playlists[playlists.length-1].userId;  //get a random playlist then find its user
+            var playlistId=playlists[0]._id.toHexString();
+            var userId=playlists[0].userId;  //get a random playlist then find its user
             User.findById(userId).then((users)=>{
                 users.generateAuthToken().then((token)=>{
                   track.find().then((tracks)=>{
