@@ -76,5 +76,17 @@ Seed ex: Classics that belongs to the user whose username is Hamadaaa , it is pr
 # Running unit tests
 
 ```sh
-npm test                    #runs all tests
+npm test               
+```
+
+# Generating Doc file 
+
+```sh
+npm run doc
+```
+
+# Generating API Doc 
+
+```sh
+apidoc -f “api\.js$”
 ```
