@@ -525,7 +525,7 @@
     
 
     
-    <h4 class="name" id="AssignArtistImage"><span class="type-signature"></span>AssignArtistImage<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="AssignPictureToArtist"><span class="type-signature"></span>AssignPictureToArtist<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -639,6 +639,13 @@
     
 
     
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Ahmed</li>
+        </ul>
+    </dd>
+    
 
     
 
@@ -649,7 +656,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="docs_functions.js.html">docs/functions.js</a>, <a href="docs_functions.js.html#line44">line 44</a>
+        <a href="Services_ImageService.js.html">Services/ImageService.js</a>, <a href="Services_ImageService.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -707,7 +714,7 @@
     
 
     
-    <h4 class="name" id="AssignUserImage"><span class="type-signature"></span>AssignUserImage<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="AssignPictureToUser"><span class="type-signature"></span>AssignPictureToUser<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -821,6 +828,13 @@
     
 
     
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Ahmed</li>
+        </ul>
+    </dd>
+    
 
     
 
@@ -831,7 +845,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="docs_functions.js.html">docs/functions.js</a>, <a href="docs_functions.js.html#line32">line 32</a>
+        <a href="Services_ImageService.js.html">Services/ImageService.js</a>, <a href="Services_ImageService.js.html#line90">line 90</a>
     </li></ul></dd>
     
 
@@ -1216,6 +1230,195 @@
     <dd>
         
 <span class="param-type">User</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="ChooseAssiging"><span class="type-signature"></span>ChooseAssiging<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Determine which type of user to assign picture to
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The request that contains the passed image in the request body</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The response to return</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Ahmed</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_ImageService.js.html">Services/ImageService.js</a>, <a href="Services_ImageService.js.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -Returns ans error message if the passed file is not an image
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
 
 
     </dd>
@@ -2751,7 +2954,7 @@
     
 
     
-    <h4 class="name" id="reSizeUserImage"><span class="type-signature"></span>reSizeUserImage<span class="signature">(req, res, uploadImagefn)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="ResizeUserImage"><span class="type-signature"></span>ResizeUserImage<span class="signature">(req, res, uploadImagefn)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -2888,6 +3091,13 @@
     
 
     
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Ahmed</li>
+        </ul>
+    </dd>
+    
 
     
 
@@ -2898,7 +3108,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="docs_functions.js.html">docs/functions.js</a>, <a href="docs_functions.js.html#line8">line 8</a>
+        <a href="Services_ImageService.js.html">Services/ImageService.js</a>, <a href="Services_ImageService.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -2966,13 +3176,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignArtistImage">AssignArtistImage</a></li><li><a href="global.html#AssignUserImage">AssignUserImage</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#reSizeUserImage">reSizeUserImage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 02:41:22 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 17:18:47 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
