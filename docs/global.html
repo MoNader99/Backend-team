@@ -432,7 +432,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line138">line 138</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line154">line 154</a>
     </li></ul></dd>
     
 
@@ -930,7 +930,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line116">line 116</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line132">line 132</a>
     </li></ul></dd>
     
 
@@ -4559,6 +4559,172 @@
     
 
     
+    <h4 class="name" id="GetAlbumsOfArtists"><span class="type-signature"></span>GetAlbumsOfArtists<span class="signature">(id)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function that get albums of an artist
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">id of the artist</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>aya</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -array of albums of the artist
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="GetArtistById"><span class="type-signature"></span>GetArtistById<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
@@ -4667,7 +4833,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line66">line 66</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line82">line 82</a>
     </li></ul></dd>
     
 
@@ -4725,7 +4891,7 @@
     
 
     
-    <h4 class="name" id="GetArtistObjectArray"><span class="type-signature"></span>GetArtistObjectArray<span class="signature">(wordtosearch)</span><span class="type-signature"> &rarr; {artist}</span></h4>
+    <h4 class="name" id="GetArtistObjectArray"><span class="type-signature"></span>GetArtistObjectArray<span class="signature">(wordtosearch)</span><span class="type-signature"> &rarr; {array}</span></h4>
     
 
     
@@ -4833,7 +4999,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line32">line 32</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -4862,7 +5028,7 @@
 
         
 <div class="param-desc">
-    artist object
+    -array of artists matching the search
 </div>
 
 
@@ -4873,7 +5039,7 @@
     </dt>
     <dd>
         
-<span class="param-type">artist</span>
+<span class="param-type">array</span>
 
 
     </dd>
@@ -5223,7 +5389,7 @@
     
 
     
-    <h4 class="name" id="GetSimplifiedArtist"><span class="type-signature"></span>GetSimplifiedArtist<span class="signature">(artists)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="GetSimplifiedArtist"><span class="type-signature"></span>GetSimplifiedArtist<span class="signature">(artist)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -5267,7 +5433,7 @@
 
         <tr>
             
-                <td class="name"><code>artists</code></td>
+                <td class="name"><code>artist</code></td>
             
 
             <td class="type">
@@ -5331,7 +5497,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line160">line 160</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -5721,6 +5887,172 @@
     
 
     
+    <h4 class="name" id="GetSimplifiedUser"><span class="type-signature"></span>GetSimplifiedUser<span class="signature">(user)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function that gets simplified users
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the user we want to simplify</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>aya</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -user after simplification
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="GetTrackObjectArray"><span class="type-signature"></span>GetTrackObjectArray<span class="signature">(wordtosearch, -the)</span><span class="type-signature"> &rarr; {array}</span></h4>
     
 
@@ -5910,6 +6242,504 @@
     
 
     
+    <h4 class="name" id="GetTracksOfArtists"><span class="type-signature"></span>GetTracksOfArtists<span class="signature">(id)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function that get tracks of an artist
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">id of the artist</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>aya</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -array of tracks of the artist
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="GetUserById"><span class="type-signature"></span>GetUserById<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function that return user by id
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the id of user to search for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>aya</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -return userName of the user
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="GetUsersObjectArray"><span class="type-signature"></span>GetUsersObjectArray<span class="signature">(wordtosearch)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    gets an array of user objects
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>wordtosearch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>aya</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -array of users matching the search
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="HashPassword"><span class="type-signature"></span>HashPassword<span class="signature">(password)</span><span class="type-signature"> &rarr; {String}</span></h4>
     
 
@@ -6018,7 +6848,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line63">line 63</a>
+        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -7344,7 +8174,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line48">line 48</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -7510,7 +8340,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line84">line 84</a>
+        <a href="Services_ArtistServices.js.html">Services/ArtistServices.js</a>, <a href="Services_ArtistServices.js.html#line100">line 100</a>
     </li></ul></dd>
     
 
@@ -7918,6 +8748,172 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="SearchInUsers"><span class="type-signature"></span>SearchInUsers<span class="signature">(wordtosearch)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    function that handles search in users in search requests
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>wordtosearch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the word I want to search about</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>aya</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    -return array of users that is the result of the search
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -7933,13 +8929,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#AddUserName">AddUserName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetPlaylistObjectArray">GetPlaylistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#GetSimplifiedPlaylist">GetSimplifiedPlaylist</a></li><li><a href="global.html#GetSimplifiedTrack">GetSimplifiedTrack</a></li><li><a href="global.html#GetTrackObjectArray">GetTrackObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li><li><a href="global.html#SearchInPlaylists">SearchInPlaylists</a></li><li><a href="global.html#SearchInTracks">SearchInTracks</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#AddUserName">AddUserName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetAlbumsOfArtists">GetAlbumsOfArtists</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetPlaylistObjectArray">GetPlaylistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#GetSimplifiedPlaylist">GetSimplifiedPlaylist</a></li><li><a href="global.html#GetSimplifiedTrack">GetSimplifiedTrack</a></li><li><a href="global.html#GetSimplifiedUser">GetSimplifiedUser</a></li><li><a href="global.html#GetTrackObjectArray">GetTrackObjectArray</a></li><li><a href="global.html#GetTracksOfArtists">GetTracksOfArtists</a></li><li><a href="global.html#GetUserById">GetUserById</a></li><li><a href="global.html#GetUsersObjectArray">GetUsersObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li><li><a href="global.html#SearchInPlaylists">SearchInPlaylists</a></li><li><a href="global.html#SearchInTracks">SearchInTracks</a></li><li><a href="global.html#SearchInUsers">SearchInUsers</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:17:40 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:25:03 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

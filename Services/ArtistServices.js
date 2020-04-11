@@ -4,9 +4,25 @@ var { artist } = require("./../models/artists.js");  //artists model
 
 var { album } = require("./../models/album.js");
 var { track } = require("./../models/track.js");//track model
+/**
+ * function that get tracks of an artist
+ * @method GetTracksOfArtists
+ * @author aya
+ * @param   {string} id -id of the artist
+ * @returns {array} -array of tracks of the artist
+ * 
+ */
 var GetTracksOfArtists = function (id) {
     return track.find({ artistId: id });
 }
+/**
+ * function that get albums of an artist
+ * @method GetAlbumsOfArtists
+ * @author aya
+ * @param   {string} id -id of the artist
+ * @returns {array} -array of albums of the artist
+ * 
+ */
 var GetAlbumsOfArtists = function (id) {
     return album.find({ artistId: id });
 }
@@ -35,7 +51,7 @@ var addartist = (Email, Password, Artistname, About, Genres) => {
  * @method GetArtistObjectArray
  * 
  *@param {string} wordtosearch
- *@returns {artist}  artist object    
+ *@returns {array}  -array of artists matching the search
  * 
  */
 
@@ -161,7 +177,7 @@ var AddAlbums = async function (artists) {
  * function that gets simplified albums
  * @method GetSimplifiedArtist
  * @author aya
- * @param   {object} artists -the artist we want to simplify
+ * @param   {object} artist -the artist we want to simplify
  * @returns {object} -artist after simplification
  * 
  */

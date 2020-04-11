@@ -3,6 +3,15 @@ const bcrypt = require('bcrypt');
 
 var { mongoose } = require("./../db/mongoose.js");
 var { User } = require("./../models/users.js");  //artists model
+/**
+ * gets an array of user objects
+ * @author aya
+ * @method GetUsersObjectArray
+ * 
+ *@param {string} wordtosearch
+ *@returns {array}  -array of users matching the search  
+ * 
+ */
 var GetUserObjectArray = async function (wordtosearch) {
     //return track.find({ trackName: wordtosearch });
     // return track.find({ 'trackName': { '$regex': wordtosearch, $options: 'i' } , 'artistId': { $in: Artists.map(function (value) { return value._id }) } } );
@@ -25,7 +34,14 @@ var GetUserObjectArray = async function (wordtosearch) {
     // var tracks = await track.find({ 'artistId':  });
 
 }
-
+/**
+ * function that handles search in users in search requests
+ * @method SearchInUsers
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of users that is the result of the search
+ * 
+ */
 var SearchInUsers = function (wordtosearch) {
     return GetUserObjectArray(wordtosearch).then(async (users) => {
         if (users.length === 0) return Promise.resolve([]);
@@ -42,11 +58,26 @@ var SearchInUsers = function (wordtosearch) {
         })
 
 }
-
+/**
+ * function that gets simplified users
+ * @method GetSimplifiedUser
+ * @author aya
+ * @param   {object} user -the user we want to simplify
+ * @returns {object} -user after simplification
+ * 
+ */
 var GetSimplifiedUser = function (user) {
     return ((({ _id, userName, imagePath }) => ({ _id, userName, imagePath}))(user));
 
 }
+/**
+ * function that return user by id
+ * @method GetUserById
+ * @author aya
+ * @param   {string} id -the id of user to search for
+ * @returns {string} -return userName of the user
+ * 
+ */
 var GetUserById = function (id) {
     console.log(id);
   //  console.log(artist.findById(id).artistName);
