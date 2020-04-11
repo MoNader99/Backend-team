@@ -180,6 +180,150 @@
     
 
     
+    <h4 class="name" id="ActivateByToken"><span class="type-signature"></span>ActivateByToken<span class="signature">(token)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Activates the user whose token is passed.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Token of the user to be activated.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Aya Magdy</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line142">line 142</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="arrayToRegexp"><span class="type-signature"></span>arrayToRegexp<span class="signature">(path, keys, options)</span><span class="type-signature"> &rarr; {RegExp}</span></h4>
     
 
@@ -1031,7 +1175,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line207">line 207</a>
+        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -1352,7 +1496,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line235">line 235</a>
+        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -1624,7 +1768,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line185">line 185</a>
+        <a href="models_users.js.html">models/users.js</a>, <a href="models_users.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -1831,6 +1975,172 @@
     <dd>
         
 <span class="param-type">artist</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="HashPassword"><span class="type-signature"></span>HashPassword<span class="signature">(password)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Hashes a given password.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>password</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">original password.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Aya Magdy</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Services_UserServices.js.html">Services/UserServices.js</a>, <a href="Services_UserServices.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    hashed password.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
 
 
     </dd>
@@ -2656,13 +2966,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignArtistImage">AssignArtistImage</a></li><li><a href="global.html#AssignUserImage">AssignUserImage</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#reSizeUserImage">reSizeUserImage</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignArtistImage">AssignArtistImage</a></li><li><a href="global.html#AssignUserImage">AssignUserImage</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#reSizeUserImage">reSizeUserImage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Fri Apr 10 2020 21:44:40 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 02:41:22 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

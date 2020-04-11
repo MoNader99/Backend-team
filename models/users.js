@@ -139,6 +139,13 @@ UserSchema.statics.findByToken = function (token) {
 
 };
 
+ /**
+ * Activates the user whose token is passed.
+ * @method ActivateByToken
+ * @author Aya Magdy
+ * @param {String} token - Token of the user to be activated.
+ * 
+ */
 UserSchema.statics.ActivateByToken = function (token) {
     var User = this;
     var decoded;
