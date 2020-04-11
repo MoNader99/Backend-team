@@ -124,6 +124,16 @@ UserSchema.methods.generateAuthToken = function () {
     });
 }
 
+/**
+ * Retrieves a user by token.
+ * @method findByToken
+ * @author ranime
+ * @param {String} token - User token
+ * @returns {User} User object
+ * 
+ */
+
+
 UserSchema.statics.findByToken = function (token) {
     var User = this;
     var decoded;
