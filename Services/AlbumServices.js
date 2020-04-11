@@ -59,11 +59,11 @@ var DeleteByArtist = function (albumid, artistid) {
    })
     }
 /**
- * Get result albums of the search
+ * Get result albums of the word to search
  * @method GetAlbumObjectArray
  * @author aya
  * @param   {string} wordtosearch -the word I want to search about
- * @param   {array} Artists -the artists array resulting from search
+ * @param   {array}  -the artists array resulting from search
  * @returns {array} -return array of albums that is the result of the search
  * 
  */
