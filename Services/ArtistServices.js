@@ -45,7 +45,15 @@ var GetArtistObjectArray = function (wordtosearch) {
 
     
 }
-var SearchInArtists = function (wordtosearch) {
+/**
+ * function that handles search in artists in search requests
+ * @method SearchInArtists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of artists that is the result of the search
+ * 
+ */
+/*var SearchInArtists = function (wordtosearch) {
     console.log("D5al");
     return GetArtistObjectArray(wordtosearch).then((artists) => {
         console.log("ijgifjgf" + artists.map(function (value) { return value._id }));
@@ -54,7 +62,15 @@ var SearchInArtists = function (wordtosearch) {
     ).catch((err) => {
         return Promise.reject(err);
     })
-}
+}*/
+/**
+ * function that return artist by id
+ * @method GetArtistById
+ * @author aya
+ * @param   {string} id -the id of artist to search for
+ * @returns {string} -return artistname of the artist
+ * 
+ */
 var GetArtistById = function (id) {
     console.log(id);
     console.log(artist.findById(id).artistName);
@@ -65,7 +81,14 @@ var GetArtistById = function (id) {
 
     })
 }
-
+/**
+ * function that handles search in artists in search requests
+ * @method SearchInArtists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of artists that is the result of the search
+ * 
+ */
 var SearchInArtists = function (wordtosearch) {
     console.log("adadadadadadadadadadadadadadada");
     return GetArtistObjectArray(wordtosearch).then(async (artists) => {
@@ -90,6 +113,14 @@ var SearchInArtists = function (wordtosearch) {
         })
 
 }
+/**
+ * function that adds tracks to the array of artists objects
+ * @method AddTracks
+ * @author aya
+ * @param   {array} artists -the array of artists we want to add tracks to
+ * @returns {array} -return array of artists after adding tracks
+ * 
+ */
 var AddTracks = async function (artists) {
 
     const promises = artists.map(async artist => {
@@ -104,6 +135,14 @@ var AddTracks = async function (artists) {
     return Promise.resolve(await Promise.all(promises));
 
 }
+/**
+ * function that adds albums to the array of artists objects
+ * @method AddAlbums
+ * @author aya
+ * @param   {array} artists -the array of artists we want to add albums to
+ * @returns {array} -return array of artists after adding albums
+ * 
+ */
 var AddAlbums = async function (artists) {
 
     const promises = artists.map(async artist => {
@@ -117,6 +156,15 @@ var AddAlbums = async function (artists) {
     return Promise.resolve(await Promise.all(promises));
 
 }
+
+/**
+ * function that gets simplified albums
+ * @method GetSimplifiedArtist
+ * @author aya
+ * @param   {object} artists -the artist we want to simplify
+ * @returns {object} -artist after simplification
+ * 
+ */
 var GetSimplifiedArtist = function (artist) {
     console.log("beysimplifyartist");
     console.log(artist.image);

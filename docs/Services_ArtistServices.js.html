@@ -73,7 +73,15 @@ var GetArtistObjectArray = function (wordtosearch) {
 
     
 }
-var SearchInArtists = function (wordtosearch) {
+/**
+ * function that handles search in artists in search requests
+ * @method SearchInArtists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of artists that is the result of the search
+ * 
+ */
+/*var SearchInArtists = function (wordtosearch) {
     console.log("D5al");
     return GetArtistObjectArray(wordtosearch).then((artists) => {
         console.log("ijgifjgf" + artists.map(function (value) { return value._id }));
@@ -82,7 +90,15 @@ var SearchInArtists = function (wordtosearch) {
     ).catch((err) => {
         return Promise.reject(err);
     })
-}
+}*/
+/**
+ * function that return artist by id
+ * @method GetArtistById
+ * @author aya
+ * @param   {string} id -the id of artist to search for
+ * @returns {string} -return artistname of the artist
+ * 
+ */
 var GetArtistById = function (id) {
     console.log(id);
     console.log(artist.findById(id).artistName);
@@ -93,7 +109,14 @@ var GetArtistById = function (id) {
 
     })
 }
-
+/**
+ * function that handles search in artists in search requests
+ * @method SearchInArtists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of artists that is the result of the search
+ * 
+ */
 var SearchInArtists = function (wordtosearch) {
     console.log("adadadadadadadadadadadadadadada");
     return GetArtistObjectArray(wordtosearch).then(async (artists) => {
@@ -118,6 +141,14 @@ var SearchInArtists = function (wordtosearch) {
         })
 
 }
+/**
+ * function that adds tracks to the array of artists objects
+ * @method AddTracks
+ * @author aya
+ * @param   {array} artists -the array of artists we want to add tracks to
+ * @returns {array} -return array of artists after adding tracks
+ * 
+ */
 var AddTracks = async function (artists) {
 
     const promises = artists.map(async artist => {
@@ -132,6 +163,14 @@ var AddTracks = async function (artists) {
     return Promise.resolve(await Promise.all(promises));
 
 }
+/**
+ * function that adds albums to the array of artists objects
+ * @method AddAlbums
+ * @author aya
+ * @param   {array} artists -the array of artists we want to add albums to
+ * @returns {array} -return array of artists after adding albums
+ * 
+ */
 var AddAlbums = async function (artists) {
 
     const promises = artists.map(async artist => {
@@ -145,6 +184,15 @@ var AddAlbums = async function (artists) {
     return Promise.resolve(await Promise.all(promises));
 
 }
+
+/**
+ * function that gets simplified albums
+ * @method GetSimplifiedArtist
+ * @author aya
+ * @param   {object} artists -the artist we want to simplify
+ * @returns {object} -artist after simplification
+ * 
+ */
 var GetSimplifiedArtist = function (artist) {
     console.log("beysimplifyartist");
     console.log(artist.image);
@@ -170,13 +218,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 20:57:14 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:05:35 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
