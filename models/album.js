@@ -44,9 +44,26 @@ var AlbumSchema = new mongoose.Schema({
       min:0,
     },
 })
+/**
+ * delte tracks of certain album
+ * @method deletealbumtracks
+ * @author aya
+ * @param {object} album
+ * @returns {object} query result of deleting
+ * 
+ */
 var deletealbumtracks = function (album) {
    return track.deleteMany({ '_id': { $in: album.tracks.map(function (value) { return value.toString() }) } });
 }
+/**
+ * function handling deleting album request
+ * @method deletebyartist
+ * @author aya
+ * @param {string} artistid -the id of the artist
+ * @param {string} albumid -the id of the album
+ * @returns {string} -string represents if album is deleted
+ * 
+ */
 AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
     album = this;
    // artistid = new ObjectID(artistid);

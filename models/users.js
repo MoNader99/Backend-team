@@ -84,7 +84,15 @@ var UserSchema = new mongoose.Schema({
 
 });
 
-
+/**
+ * return the user of certain password and email
+ * @method findByCredentials
+ * @author aya
+ * @param {String} email - User email
+ * @param {string} password -User password
+ * @returns {User} User object 
+ * 
+ */
 UserSchema.statics.findByCredentials = function (email, password) {
     console.log("2elgedeed");
     var User = this;
@@ -110,7 +118,13 @@ UserSchema.statics.findByCredentials = function (email, password) {
     });
 
 };
-
+/**
+ * generate token of a user
+ * @method generateAuthToken
+ * @author aya
+ * @returns {string} token
+ * 
+ */
 UserSchema.methods.generateAuthToken = function () {
     var user = this;
     var access = 'auth';
