@@ -2183,7 +2183,7 @@
   },
   {
     "type": "post",
-    "url": "/tracks",
+    "url": "/tracks/single",
     "title": "Add Track",
     "name": "AddTrack",
     "group": "Tracks",
@@ -2196,13 +2196,6 @@
             "optional": false,
             "field": "x-auth",
             "description": "<p>(ArtistToken)Only an Artist who has a verified account can add a track</p>"
-          },
-          {
-            "group": "Header",
-            "type": "JSON",
-            "optional": false,
-            "field": "Content-Type",
-            "description": "<p>The content of the request body in JSON format.</p>"
           }
         ]
       }
@@ -2214,36 +2207,22 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>Track name. (Obligatory)</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "URL",
-            "description": "<p>the track URL  (Obligatory)</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "Duration",
-            "description": "<p>Duration of the track in ms  (Obligatory)</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "object[]",
-            "optional": false,
-            "field": "image",
-            "description": "<p>object      the cover image of the track (Obligatory)</p>"
+            "field": "trackName",
+            "description": "<p>Track name. (Obligatory) sent as multipart data</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "genre",
-            "description": "<p>each track has only 1 genre. (Obligatory)</p>"
+            "description": "<p>each track has only 1 genre. (Obligatory) sent as multipart data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "track",
+            "description": "<p>the audio track the artist wants to upload sent as multipart data</p>"
           }
         ]
       }
@@ -2262,7 +2241,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 201 OK\n{\n     \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5539\"),\n     \"artistId\" : \"5e7511fa1a2c59902efa552d\",\n     \"trackName\" : \"Godzilla\",\n      \"duration\" : 223000,\n      \"image\" : {\n         \"url\" : \"www.images/imag23e/23454\",\n         \"height\" : 176,\n         \"width\" : 65,\n         \"_id\" : ObjectId(\"5e7511fa1a2c59902efa5528\")\n      },\n     \"url\" : \"vvv\",\n     \"genre\" :\"Trap\"\n     \"rating\" : 9,\n     \"__v\" : 0\n\n}",
+          "content": "    HTTP/1.1 201 OK\n   \n{\n  \"__v\": 0,\n  \"artistId\": \"5e9cb30adf88aea050c0778a\",\n  \"trackName\": \"Amaro\",\n  \"genre\": \"Arabic\",\n  \"trackPath\": \"Amaro--5e9cb30adf88aea050c0778a.mp3\",\n  \"_id\": \"5e9cbdb92728b58c0f310d13\",\n \"type\": \"Single\",\n  \"imagePath\": \"default.jpeg\",\n  \"likes\": 0\n }",
           "type": "JSON"
         }
       ]
@@ -2286,7 +2265,7 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "409",
-            "description": "<p>[url of an aleardy created track is passed.Cannot create 2 tracks with the same url ]</p>"
+            "description": "<p>[The artist is trying to add a new track with the same name of one of his tracks (the same artist cannot have 2 tracks with the same exact name)]</p>"
           },
           {
             "group": "Error 4xx",
@@ -2304,32 +2283,22 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Track name is required\"\n}",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Missing trackName\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Track image is required\"\n}",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Please upload a track\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Track url is required\"\n}",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Track is above limit size\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Track duration is required\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Image Info of track has to be provided\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 409 No access\n{\n  \"error\": \"This track is already created\"\n}",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Missing genre\"\n}",
           "type": "JSON"
         },
         {

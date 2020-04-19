@@ -127,40 +127,32 @@
  * AddTrack
  * ---------------------
  *
- * @api {post} /tracks               Add Track
+ * @api {post} /tracks/single               Add Track
  * @apiName AddTrack
  * @apiGroup Tracks
  *
- * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can add a track
- * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
- *
- * @apiParam {String}      name              Track name. (Obligatory)
- * @apiParam {string}      URL               the track URL  (Obligatory)
- * @apiParam {int}         Duration          Duration of the track in ms  (Obligatory)
- * @apiParam {object[]}    image object      the cover image of the track (Obligatory)
- * @apiParam {String}      genre              each track has only 1 genre. (Obligatory)
+ * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can add a track 
+ * 
+ * @apiParam {String}      trackName              Track name. (Obligatory) sent as multipart data 
+ * @apiParam {String}      genre              each track has only 1 genre. (Obligatory) sent as multipart data 
+ * @apiParam {file}        track              the audio track the artist wants to upload sent as multipart data 
  *
  * @apiSuccess 201                      [The response of the sucess case is the created track object]
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 201 OK
- *    {
- *         "_id" : ObjectId("5e7511fa1a2c59902efa5539"),
- *         "artistId" : "5e7511fa1a2c59902efa552d",
- *         "trackName" : "Godzilla",
- *          "duration" : 223000,
- *          "image" : {
- *             "url" : "www.images/imag23e/23454",
- *             "height" : 176,
- *             "width" : 65,
- *             "_id" : ObjectId("5e7511fa1a2c59902efa5528")
- *          },
- *         "url" : "vvv",
- *         "genre" :"Trap"
- *         "rating" : 9,
- *         "__v" : 0
- *
- *    }
+ *    
+ * {
+ *   "__v": 0,
+ *   "artistId": "5e9cb30adf88aea050c0778a",
+ *   "trackName": "Amaro",
+ *   "genre": "Arabic",
+ *   "trackPath": "Amaro--5e9cb30adf88aea050c0778a.mp3",
+ *   "_id": "5e9cbdb92728b58c0f310d13",
+ *  "type": "Single",
+ *   "imagePath": "default.jpeg",
+ *   "likes": 0
+ *  }
  *
  *
  *
@@ -175,42 +167,29 @@
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 400 No access
  *     {
- *       "error": "Track name is required"
+ *       "error": "Missing trackName"
  *     }
  *
- * @apiError  400                     [Cannot upload the track without an image for the track]
+ * @apiError  400                     [Cannot upload the track without the track (audio) file]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 400 No access
  *     {
- *       "error": "Track image is required"
+ *       "error": "Please upload a track"
  *     }
- *
- * @apiError  400                     [Cannot upload the track without the track url]
+ * 
+ * @apiError  400                     [Cannot upload a track file longer than 10 minutes (15052800 bytes)]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 400 No access
  *     {
- *       "error": "Track url is required"
+ *       "error": "Track is above limit size"
  *     }
  *
- * @apiError  400                     [Cannot upload the track without the track duration]
+ *
+ * @apiError  400                     [Cannot upload the track without the track genre]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 400 No access
  *     {
- *       "error": "Track duration is required"
- *     }
- *
- * @apiError  400                     [Cannot upload the track with any missing information from the image object(image url,image height, image width)]
- * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 400 No access
- *     {
- *       "error": "Image Info of track has to be provided"
- *     }
- *
- * @apiError  409                    [url of an aleardy created track is passed.Cannot create 2 tracks with the same url ]
- * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 409 No access
- *     {
- *       "error": "This track is already created"
+ *       "error": "Missing genre"
  *     }
  *
  * @apiError  409                    [The artist is trying to add a new track with the same name of one of his tracks (the same artist cannot have 2 tracks with the same exact name)]

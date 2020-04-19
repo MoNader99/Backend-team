@@ -1,70 +1,79 @@
 const express=require('express');
-//const bodyParser=require('body-parser');
 const _=require ('lodash');
 const { mongoose } = require("./../db/mongoose.js");
 const{track}=require("./../models/track");
-
-
+var bodyParser= require('body-parser');
+const multer = require("multer");
 const{playlist}=require("./../models/playlists");
 const{album}=require('./../models/album');
-//const{artist}=require('./../models/artists');
 var { User } = require("./../models/users.js");
 var{artist}= require("./../models/artists.js"); 
-
+var upload=require("./../Services/uploadTrack").uploadTrack;
+var{notification}=require("./../models/notifications.js");
 const {ObjectID}=require('mongodb');
 
 const router=express.Router();
 
 
-//app.listen(3000,()=>{console.log('started on port 3000');});
-//app.use(bodyParser.json());
-
-
-/** GetATrack
-* ---------------------
-* 
-* @api {Get} api/Tracks/:id               Get a Track
-* @apiName GetTrack
-* @apiGroup Tracks
-*
-* 
-* @apiParam {string}    id           the id of the track that the artist wants to delete 
-* 
-* @apiSuccess {object}     tracks          object of type track in JSON formatwith status code 200
-*
-* @apiSuccessExample {JSON} Success-Response:
-*     HTTP/1.1 200 OK
-*      {
-*          ""tracks": {
-        "rating": 10,
-        "duration": 360000,
-        "_id": "5e6b7dac91cb724878446635",
-        "trackName": "Hello",
-        "url": "cccc",
-        "__v": 0
+//ADD A SINGLE TRACK
+router.post('/tracks/single',upload,(req,res)=>{
+    var token = req.header('x-auth');
+    artist.findByToken(token).then((myartist)=>{
+    var atristId2= myartist._id; 
+    var artistName=myartist.artistName;
+    if(!req.body.trackName){
+        return res.status(400).send("Missing trackName");
     }
-*      }
-* 
-*    
-* 
-* @apiError  404                      [Track not found]
-*  @apiErrorExample {JSON} Error-Response:
-*     HTTP/1.1 404 Not Found
-*     {
-*       "message": "Track not found"
-*     }
-* 
-* @apiError  404                    [Track not found]
-*  @apiErrorExample {JSON} Error-Response:
-*     HTTP/1.1 404 
-*     {
-*       "message": "invalid id"
-*     }
-*
-*
-*
-* 
-*/
+    if(!req.body.genre){
+        return res.status(400).send("Missing genre");
+    }
+    if(!req.file){  // no file is sent
+        return res.status(401).send('Please upload a track');
+    }
+    if(req.fileError){    // the upladed file is not a track
+        return res.status(401).send('Please upload a track');
+    }
+    track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
+            if(trackduplicate.length!=0){  //409 is code for conflict
+                return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+            };
+            var not2 = new notification({
+                text:artistName+" released a new Song ("+req.body.trackName +")",
+                sourceId:atristId2,
+                userType:"artist"
+                
+            });
+            not2.save();
+            var trackInstance = new track({
+                artistId: atristId2,
+                trackName: req.body.trackName,
+                genre:req.body.genre,
+                trackPath:req.body.trackName+"--"+atristId2+"."+"mp3"
+
+            },(e)=>{
+                res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+            });
+            trackInstance.save().then((doc)=>{
+                res.status(201).send(doc);  
+            }).catch((e)=>{
+                res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+            });
+        });
+
+}).catch((e)=>{
+    res.status(401).send('Unauthorized Access');
+})
+});
+
+
+
+
+
+
+
+
+//GET TRACK
+////
 router.get('/tracks/:id', (req,res)=>{
 var id=req.params.id;
 if(!ObjectID.isValid(id))
@@ -80,56 +89,8 @@ if(!ObjectID.isValid(id))
 
 })
 
-
-/**
-* AddTracksToAPlaylist
- * ---------------------
- * 
- * @api {post} api/Playlists/:playlistId/Tracks               Add tracks to a playlist
- * @apiName AddTracksToAPlaylist
- * @apiGroup Playlists
- *
- * @apiHeader {string}  x-auth     
- *  
- *@apiParam {string}  playlistId
- * 
- * @apiParam {string[]}   url            a list of Urls to be passed in the body parameters
- * @apiSuccess 200                      [tracks has been successfully added to playlist]
- *   @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *      
- *       "message": "tracks added successfully"
- *     }
- * 
- * 
- * *@apiError  403                      [Forbidden because you crossed the limiting number of tracks in a playlist which is 1000]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 403 Forbidden
- *     {
- *        "message":  "Forbidden because you crossed the limiting number of tracks in a playlist which is 1000"
- *     }
- * 
- * @apiError 401   [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401 
- *     {
- *        "message":  "authentication failed"
- *     }
- * 
- * 
- * 
- * 
- * @apiError 404     [playlist not found]
-*@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 
- *     {
- *        "message":  "playlist not found"
- *     }
- * 
- * 
- */
-
+//ADD TRACKS TO PLAYLIST
+////
 router.post('/tracks/:playlistId/playlists',async (req,res)=>
 {
     var flagg=0
@@ -250,82 +211,9 @@ return res.status(200).json({"message":'tracks added successfully'});
 
 
 
-
-/** 
- * GetSeveralTracks
- * ---------------------
- * 
- * @api {Get} api/Tracks               Get several Track
- * @apiName GetSeveralTracks
- * @apiGroup Tracks
- *
- * 
- * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 50 IDs. 
- * 
- * @apiSuccess {object[]}     200          a set objects of type tracks in JSON format with status code 200
- *
- * * @apiSuccessExample {JSON} Success-Response:
- *     HTTP/1.1 200 OK
-[
-    {
-        "rating": 8,
-        "_id": "5e74925ca9200c404c566eff",
-        "artistId": "5e74925ca9200c404c566ef5",
-        "trackName": "set fire to the rain",
-        "duration": 240000,
-        "image": {
-            "_id": "5e74925ca9200c404c566ef2",
-            "url": "www.images/imag23e/23454",
-            "height": 176,
-            "width": 65
-        },
-        "url": "nnnn",
-        "__v": 0
-    },
-    {
-        "rating": 9,
-        "_id": "5e74925ca9200c404c566f03",
-        "artistId": "5e74925ca9200c404c566ef7",
-        "trackName": "Godzilla",
-        "duration": 223000,
-        "image": {
-            "_id": "5e74925ca9200c404c566ef2",
-            "url": "www.images/imag23e/23454",
-            "height": 176,
-            "width": 65
-        },
-        "url": "vvv",
-        "__v": 0
-    }
-]
- *
- * 
- * *@apiError  404                      [Track not found]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Not Found
- *     {
- *      "message": "can not find track"
- *     }
- * 
- * @apiError  404                      [invalid id]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Not Found
- *     {
- *       "message" : "invalid id"
- *     }
- *
- *  @apiError  403                      
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 403 forbidden
- *     {
- *       "message" : "max 50 Ids"
- *     }
- *  
- * 
- * 
- */
-
-router.post('/tracks',async (req,res)=>{
+//GET SEVERAL TRACKS
+///////
+/*router.post('/tracks',async (req,res)=>{
     var arr=req.body.id;
   
     var returnedTrackArray=[{}];
@@ -364,7 +252,7 @@ router.post('/tracks',async (req,res)=>{
     }
  
 res.send({"tracks":returnedTrackArray});    //need to send an object with a name "tracks":returnedTrackArray
-    })
+    })*/
 
 
 
@@ -401,134 +289,6 @@ router.delete('/tracks',(req,res)=>{
 });
 
 
-
-
-//ADD A TRACK
-/*router.post('/tracks',(req,res)=>{
-    var token = req.header('x-auth');
-    artist.findByToken(token).then((myartist)=>{
-        if(!myartist){
-            return Promise.reject();
-        }
-        var atristId2= myartist._id;   
-        if(!req.body.trackName){
-            return res.status(400).send("Track name is required");
-        }
-        if(!req.body.genre){
-            return res.status(400).send("Track genre is required");
-        }
-        if(!req.body.image){
-           return  res.status(400).send("Track image is required");
-        }
-        if(!req.body.url){
-            return res.status(400).send("Track url is required");
-        }
-        if(!req.body.duration){
-            return res.status(400).send("Track duration is required");
-        }
-        //IF HEIGHT AND WIDTH ARE NOT REQUIRED -> TO BE REMOVED FROM THE OR CONDITION HERE
-        if(!req.body.image.height || !req.body.image.width || !req.body.image.url){
-            return res.status(400).send("Image Info of track has to be provided");
-        }
-
-        track.findOne({url:req.body.url}).then((duptrackurl)=>{
-            if(duptrackurl){
-                return res.status(409).send("This track is already created");
-                
-            }
-            var savedImage;
-            images.findOne({url:req.body.image.url}).then((isImage)=>{
-                if(!isImage){
-                        savedImage= new images ({
-                        url:req.body.image.url,
-                        height:req.body.image.height,
-                        width:req.body.image.width,});
-                        savedImage.save();
-                    }
-                    else if(isImage){
-                        savedImage=isImage
-                    }
-            });
-    
-    
-    
-            track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
-                if(trackduplicate.length==0){
-                        var trackInstance = new track({
-                        artistId: atristId2,
-                        trackName: req.body.trackName,
-                        duration:req.body.duration,
-                        url:req.body.url,
-                        image:savedImage,
-                        genre:req.body.genre,
-    
-                    },(e)=>{
-                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
-                    });
-                
-                    trackInstance.save().then((doc)=>{
-                        res.status(201).send(doc);  
-                    }).catch((e)=>{
-                        res.status(500).send("Coult not add Track ("+req.body.trackName+")");
-                    });
-                    
-                }
-                else if(trackduplicate.length!=0){  //409 is code for conflict
-                    return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
-                };
-            });
-            
-
-        });
-
-
-
-    
-    }).catch((e)=>{
-        res.status(401).send('Unauthorized Access');
-    })
-});
-
-
- */   
-
-    // Add a track
-//     app.post('/tracks',async (req,res)=>
-// {
-//         var token = req.header('x-auth');
-//          artist.findByToken(token).then((artist) => {
-//          if(!artist){
-//              console.log("you are not authorized to add a track")
-//              return Promise.reject();
-//          }
-//          console.log("you are authorized to add a track");
-        
-//          var newTrack = new track(
-//          {
-//              artistId : artist._id,
-//              trackName : req.body.trackName,
-//              duration : req.body.duration,
-//              url : req.body.url
-//          })
-//          console.log('Recieved info successfully');
-//             newTrack.save().then((res)=>{
-//                 console.log(res._id);
-//                 console.log('saved')
-//             },(err)=>{
-//                 console.log(err);
-//                 res.status(500).send('Insertion of new track has failed');
-//             }
-//             ).catch((e) => {
-//                 console.log(e);
-//                 return Promise.reject();
-//             })
-//         }).catch((e)=>{
-//             console.log(e);
-//             return Promise.reject();
-//            });
-           
-//            res.status(200).send('Inserted succesfully');
-//         });
 
 ///////// Like a track ///////////
 router.post('/tracks/like/:id', (req,res) =>

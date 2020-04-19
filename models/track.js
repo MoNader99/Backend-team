@@ -11,25 +11,11 @@ var track=mongoose.model("Tracks",{
     trim:true,
     minlength:1
   },
-  rating:{
-      type:Number,
-      default:null,
-      required:false,
-      min:1,
-      max:10,
-
-  },
   likes:{
     type:Number,
     default:0,
     required:true,
     min:0,
-  },
-  duration:   //in ms
-  { type:Number,  //not sure about the field type
-    required:true,
-    
-
   },
 
   imagePath:{
@@ -37,14 +23,18 @@ var track=mongoose.model("Tracks",{
     required:true,
     default:"default.jpeg",
     },
-
-
-
-  url:
-  { type:String,
-    unique: true,
+    
+  type:{    //wether the track is single or in an album
+    type:String,
     trim:true,
-    required:true
+    minlength:5,
+    required:true,
+    default:"Single"
+
+  },
+  trackPath:
+  { type:String,
+    trim:true,
   },
   genre:{
     type:String,
