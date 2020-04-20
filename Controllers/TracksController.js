@@ -11,8 +11,19 @@ var{artist}= require("./../models/artists.js");
 var upload=require("./../Services/uploadTrack").uploadTrack;
 var{notification}=require("./../models/notifications.js");
 const {ObjectID}=require('mongodb');
-
+//edit image imports
+var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
+var upload2=require("./../Services/ImageService.js").UploadUserPhoto;
+var AuthenticateArtistTrack= require("./../Services/ImageService.js").AuthenticateArtistTrack;
+var AssignTrackImage=require("./../Services/ImageService.js").AssignTrackImage;
+////////////////////////
 const router=express.Router();
+///////////////////////
+
+//EDIT TRACK COVER IMAGE
+router.post("/tracks/coverimage",AuthenticateArtistTrack,upload2,reSizeUserImage,uploadImagefn,AssignTrackImage);
+
+
 
 
 //ADD A SINGLE TRACK
