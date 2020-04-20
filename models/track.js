@@ -23,6 +23,10 @@ var track=mongoose.model("Tracks",{
     required:true,
     default:"default.jpeg",
     },
+  numberOfTimesPlayed:{
+    type:Number,
+    default:0
+    },   
     
   type:{    //wether the track is single or in an album
     type:String,
