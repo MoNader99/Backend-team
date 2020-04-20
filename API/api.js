@@ -999,7 +999,7 @@
  *
  *@apiParam {string}  playlistId
  *
- * @apiParam {string[]}   url            a list of Urls to be passed in the body parameters
+ * @apiParam {string[]}   trackId            a list of tracks ids to be passed in the body parameters
  * @apiSuccess 200                      [tracks has been successfully added to playlist]
  *   @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK

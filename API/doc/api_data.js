@@ -1289,8 +1289,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "string[]",
             "optional": false,
-            "field": "url",
-            "description": "<p>a list of Urls to be passed in the body parameters</p>"
+            "field": "trackId",
+            "description": "<p>a list of tracks ids to be passed in the body parameters</p>"
           }
         ]
       }
