@@ -29,8 +29,13 @@ var playlist=mongoose.model("Playlists",{
           type: mongoose.Schema.Types.ObjectId,
           ref: "track"
       }
-  ]
-
+  ],
+  likes:{
+    type:Number,
+    default:0,
+    required:true,
+    min:0,
+  },
 
 
 });

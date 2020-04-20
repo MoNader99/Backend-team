@@ -80,6 +80,14 @@ var UserSchema = new mongoose.Schema({
             ref: "album"
         }
     ],
+
+
+    likedPlaylists: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "playlist"
+        }
+    ],
     
 
 });
