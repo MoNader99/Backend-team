@@ -283,7 +283,7 @@ router.post('/users/forgot', async (req, res) => {
     user.generateResetToken().then((token)=>{
     //console.log(token);
     var host=req.get('host');
-    var link="http://"+req.get('host')+"/users/reset/front/?token= "+token;
+    var link="http://"+req.get('host')+"/logIn/forgotpassword/newpassword/?token= "+token;
     var mailOptions={
         to : reqEmail,
         subject : "Reset the password ",

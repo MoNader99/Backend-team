@@ -97,7 +97,8 @@ router.post('/tracks/:playlistId/playlists',async (req,res)=>
     var userId;
      var token = req.header('x-auth');
 
-var url= req.body.url;
+var url= req.body.trackId;  //will change it tracks id but will leave variable name as it is
+//var url=req.body.url
 //console.log(url);
 
 
@@ -110,7 +111,18 @@ var flag=0;
 for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
 {
     
-    await track.find({url: url[i]}).then((tracks)=>
+   
+if(!ObjectID.isValid(url[i]))  //validate the playlist id
+{
+return res.status(404).json({"message":"the track was not found"});
+}
+
+
+
+
+   
+   await track.find({_id: url[i]}).then((tracks)=>
+  //await track.findById(ObjectID(url[i])).then((tracks)=>
 {
     //console.log("gowaaaaaaalllllllllllllll")
     //console.log("el tracks ely rag3a");
@@ -125,7 +137,7 @@ for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given
      tracksarr[i]=tracks;
  
 
-}).catch((e)=>{ return })//res.status(400).send(e)});
+}).catch((e)=>{return})//res.status(400).send(e)});
 
 if(flag) {
     //console.log(flag);

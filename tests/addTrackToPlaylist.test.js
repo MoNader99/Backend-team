@@ -23,12 +23,12 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                     var urls=[];
                     for(var i=0;i<tracks.length;i++)
                     {
-                        urls[i]=tracks[i].url;
+                        urls[i]=tracks[i]._id;
                     }
                       request(app)
                 .post(`/tracks/${playlistId}/playlists`)
                 .set('x-auth',token)
-                .send({url:[urls[urls.length-1],urls[urls.length-2]]})
+                .send({trackId:[urls[urls.length-1],urls[urls.length-2]]})
                 .expect(200)
                 .expect((res)=>{
                     expect( res.body.message).toBe('tracks added successfully')
@@ -56,12 +56,12 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                       var urls=[];
                       for(var i=0;i<tracks.length;i++)
                       {
-                          urls[i]=tracks[i].url;
+                          urls[i]=tracks[i]._id;
                       }
                         request(app)
                   .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token+1)   //invalid token
-                  .send({url:[urls[urls.length-1],urls[urls.length-2]]})
+                  .send({trackId:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(401)
                   .expect((res)=>{
                       expect( res.body.message).toBe('authentication failed')
@@ -89,12 +89,12 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                       var urls=[];
                       for(var i=0;i<tracks.length;i++)
                       {
-                          urls[i]=tracks[i].url;
+                          urls[i]=tracks[i]._id;
                       }
                         request(app)
                   .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
-                  .send({url:[urls[urls.length-1],urls[urls.length-2]]})
+                  .send({trackId:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(404)
                   .expect((res)=>{
                       expect( res.body.message).toBe('invalid id')
@@ -125,12 +125,12 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                       var urls=[];
                       for(var i=0;i<tracks.length;i++)
                       {
-                          urls[i]=tracks[i].url;
+                          urls[i]=tracks[i]._id;
                       }
                         request(app)
                   .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
-                  .send({url:[urls[urls.length-1],urls[urls.length-2]]})
+                  .send({trackId:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(404)
                   .expect((res)=>{
                       expect( res.body.message).toBe('playlist not found')
@@ -154,12 +154,12 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                       var urls=[];
                       for(var i=0;i<tracks.length;i++)
                       {
-                          urls[i]=tracks[i].url+'llalla';
+                          urls[i]=tracks[i]._id+'llalla';
                       }
                         request(app)
                   .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
-                  .send({url:[urls[urls.length-1],urls[urls.length-2]]})
+                  .send({trackId:[urls[urls.length-1],urls[urls.length-2]]})
                   .expect(404)
                   .expect((res)=>{
                       expect( res.body.message).toBe('the track was not found')
@@ -186,12 +186,12 @@ describe('Post /tracks/:playlistId/playlists',()=>{
                       var url=[];
                       for(var i=0;i<12;i++)
                       {
-                          url[i]=tracks[1].url;
+                          url[i]=tracks[1]._id;
                       }
                         request(app)
                   .post(`/tracks/${playlistId}/playlists`)
                   .set('x-auth',token)   //invalid token
-                  .send({url})
+                  .send({trackId:url})
                   .expect(403)
                   .expect((res)=>{
                       expect( res.body.message).toBe(' Forbidden because you crossed the limit of tracks in a playlist which is 10')
