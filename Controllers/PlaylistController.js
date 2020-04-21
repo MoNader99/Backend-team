@@ -200,4 +200,122 @@ router.get('/playlists/image',(req,res)=>{
 
 
 
+
+router.post('/playlists/:playlistId/like/unlike/me', (req,res)=>{
+    
+    //console.log("helooo");
+    var flag=0;
+    var token = req.header('x-auth');
+   // console.log(token);
+    var playlistId=req.params.playlistId;
+    //console.log(playlistId);
+     User.findByToken(token).then( (user)=>{
+        
+
+        if(!user)
+        {
+    
+              return Promise.reject();
+           
+       }
+       
+       
+        if(!ObjectID.isValid(playlistId))
+        {
+            return res.status(404).json({"message":"Invalid id"});
+        }
+
+       playlist.findById(playlistId).then((playlists)=>{
+        //console.log(playlists); 
+        
+        if(!playlists)
+          {
+              return Promise.reject();
+          }
+        
+        
+            if (playlists.privacy==false)
+           {  
+             var len=user.likedPlaylists.length;
+              //console.log(len);
+
+             if(len === 0)
+                 {
+                     user.likedPlaylists[0]=ObjectID(playlistId.toString());
+                     user.markModified('likedPlaylists')
+                     user.save();
+                    
+
+                     playlists.likes = playlists.likes +1;
+                     playlists.markModified('likes');
+                     playlists.save();
+             
+                     res.status(200).send();
+                 }
+
+                 else{
+                        for(var i = 0;i<len;i++)
+                        {
+                            
+                            if(playlistId.toString() ===user.likedPlaylists[i].toString())
+                            {
+                                 
+                                user.likedPlaylists.splice(i,1);
+                                user.markModified('likedPlaylists')
+                                user.save();
+        
+                              
+                                 playlists.likes = playlists.likes -1;
+                                 playlists.markModified('likes');
+                                 playlists.save();
+                                
+                                flag=1;
+                                break;
+                            }
+                        }
+                        if(flag)
+                        {
+                            return res.status(200).json({"message":"unliked a playlist"});
+                        }
+                        user.likedPlaylists[len]=ObjectID(playlistId.toString());
+                        user.markModified('likedPlaylists')
+                        user.save();
+
+
+                        playlists.likes = playlists.likes +1;
+                        playlists.markModified('likes');
+                        playlists.save();
+             
+                        res.status(200).json({"message":"liked a playlist"});
+                 }
+
+
+
+           }
+else
+{
+    return res.status(400).json({"message":"forbidden you can not like a private playlist"});
+
+}
+
+       }).catch((e)=>{
+
+        return res.status(404).json({"message":"playlist not found"});
+       })
+
+}).catch((e)=>{
+
+    return res.status(401).json({"message":"authentication failed"});
+})
+
+});
+
+
+
+
+
+
+
+
+
 module.exports=router;

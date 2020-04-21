@@ -951,7 +951,7 @@
 *
 *
 *
-* @apiError  404                      [Track not found]
+*  @apiError  404                      [Track not found]
 *  @apiErrorExample {JSON} Error-Response:
 *     HTTP/1.1 404 Not Found
 *     {
@@ -2275,124 +2275,6 @@
 
 /////////////Aya Mahmoud /////////////////////////////
 
-/** Like playlist
- * ---------------------
- * 
- * @api { post } /playlists/like/:id              like playlist
- * @apiName  Likeplaylist
- * @apiGroup Playlists
- *   
- *  
- * @apiParam { string } id
- * 
- * @apiHeader { string } x - auth       user token to like playlist
- *
- * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
- * 
- * @apiSuccessExample { JSON } Success - Response:
- * HTTP / 1.1 200 OK
- * {
- * 
- * }
- *
- *
- * @apiError 401   Unauthorized[authentication failed]
- * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401   Unauthorized
- * {
- *        "Token is not valid"
- *     }
- *
- *
- * @apiError 401   Unauthorized[authentication failed]
- * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401  Unauthorized
- * {
- *        "Token is Empty"
- *     }
- *
- *
- *  @apiError  403  Forbidden[Repeating the request more than once for the same user and the same album]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 403 Forbidden
- * {
- *        "You have already liked that playlist"
- *     }
- *
- * 
- * 
- *  @apiError  404  Not found[this playlist is not found]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 404 Not found
- * {
- *        "No playlist found"
- *     }
- * 
- * 
- * @apiError  404  Not found[this is not an ID]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 404 Not found
- * {
- *        "Invalid id"
- *     }
- * 
- * /
- * */
-
-/** UnLike playlist
- * ---------------------
- * 
- * @api { post } /playlists/unlike/:id              unlike playlist
- * @apiName  unLikeplaylist
- * @apiGroup Playlists
- *   
- *  
- * @apiParam { string } id
- * 
- * @apiHeader { string } x - auth       user token to unlike playlist
- *
- * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
- * 
- * @apiSuccessExample { JSON } Success - Response:
- * HTTP / 1.1 200 OK
- * {
- * 
- * }
- *
- *
- * @apiError 401   Unauthorized[authentication failed]
- * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401   Unauthorized
- * {
- *        "Token is not valid"
- *     }
- *
- *
- * @apiError 401   Unauthorized[authentication failed]
- * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401  Unauthorized
- * {
- *        "Token is Empty"
- *     }
- * 
- * 
- *  @apiError  404  Not found[this playlist is not found]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 404 Not found
- * {
- *        " Notfound in liked playlists"
- *     }
- * 
- * 
- * @apiError  404  Not found[this is not an ID]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 404 Not found
- * {
- *        "Invalid id"
- *     }
- * 
- * /
- * */
 /** UnLike album
  * ---------------------
  * 
@@ -2639,3 +2521,68 @@
  * 
  * 
  */
+
+ //monica////
+ /** Like and Unlike a playlist
+ * ---------------------
+ * 
+ * @api { post } /playlists/:playlistId/like/unlike/me             Like and Unlike a playlist
+ * @apiName  Like and unlike playlist
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } playlistId    should be passed in params
+ * 
+ * @apiHeader { string }  x-auth       user token to like playlist
+ *
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *    "message":"liked a playlist"
+ * }
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *    "message":"unliked a playlist"
+ * }
+ * 
+ * 
+ * 
+*  @apiError  404                      [playlist not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "playlist not found"
+*     }
+*
+* @apiError  404                    [invalid playlist id]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "invalid id"
+*     }
+*
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ *
+ * @apiError 400         [trying to like a private playlist]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Bad Request
+ * {
+ *           "message":"forbidden you can not like a private playlist"
+
+ *     }
+ *
+ *
+ * 
+ * /
+ * */
