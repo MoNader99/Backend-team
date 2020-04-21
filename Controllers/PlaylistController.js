@@ -198,6 +198,326 @@ router.get('/playlists/image',(req,res)=>{
     })
 });
 
+/** Like and Unlike a playlist
+ * ---------------------
+ * 
+ * @api { post } /playlists/:playlistId/like/unlike/me             Like and Unlike a playlist
+ * @apiName  Like and unlike playlist
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } playlistId    should be passed in params
+ * 
+ * @apiHeader { string }  x-auth       user's token
+ *
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *    "message":"liked a playlist"
+ * }
+ * 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *    "message":"unliked a playlist"
+ * }
+ * 
+ * 
+ * 
+*  @apiError  404                      [playlist not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "playlist not found"
+*     }
+*
+* @apiError  404                    [invalid playlist id]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "invalid id"
+*     }
+*
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ *
+ * @apiError 400         [trying to like a private playlist]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Bad Request
+ * {
+ *           "message":"forbidden you can not like a private playlist"
+
+ *     }
+ *
+ *
+ * 
+ * /
+ * */
+
+
+
+router.post('/playlists/:playlistId/like/unlike/me', (req,res)=>{
+    
+    //console.log("helooo");
+    var flag=0;
+    var token = req.header('x-auth');
+   // console.log(token);
+    var playlistId=req.params.playlistId;
+    //console.log(playlistId);
+     User.findByToken(token).then( (user)=>{
+        
+
+        if(!user)
+        {
+    
+              return Promise.reject();
+           
+       }
+       
+       
+        if(!ObjectID.isValid(playlistId))
+        {
+            return res.status(404).json({"message":"Invalid id"});
+        }
+
+       playlist.findById(playlistId).then((playlists)=>{
+        //console.log(playlists); 
+        
+        if(!playlists)
+          {
+              return Promise.reject();
+          }
+        
+        
+            if (playlists.privacy==false)
+           {  
+             var len=user.likedPlaylists.length;
+              //console.log(len);
+
+             if(len === 0)
+                 {
+                     user.likedPlaylists[0]=ObjectID(playlistId.toString());
+                     user.markModified('likedPlaylists')
+                     user.save();
+                    
+
+                     playlists.likes = playlists.likes +1;
+                     playlists.markModified('likes');
+                     playlists.save();
+             
+                     res.status(200).send();
+                 }
+
+                 else{
+                        for(var i = 0;i<len;i++)
+                        {
+                            
+                            if(playlistId.toString() ===user.likedPlaylists[i].toString())
+                            {
+                                 
+                                user.likedPlaylists.splice(i,1);
+                                user.markModified('likedPlaylists')
+                                user.save();
+        
+                              
+                                 playlists.likes = playlists.likes -1;
+                                 playlists.markModified('likes');
+                                 playlists.save();
+                                
+                                flag=1;
+                                break;
+                            }
+                        }
+                        if(flag)
+                        {
+                            return res.status(200).json({"message":"unliked a playlist"});
+                        }
+                        user.likedPlaylists[len]=ObjectID(playlistId.toString());
+                        user.markModified('likedPlaylists')
+                        user.save();
+
+
+                        playlists.likes = playlists.likes +1;
+                        playlists.markModified('likes');
+                        playlists.save();
+             
+                        res.status(200).json({"message":"liked a playlist"});
+                 }
+
+
+
+           }
+else
+{
+    return res.status(400).json({"message":"forbidden you can not like a private playlist"});
+
+}
+
+       }).catch((e)=>{
+
+        return res.status(404).json({"message":"playlist not found"});
+       })
+
+}).catch((e)=>{
+
+    return res.status(401).json({"message":"authentication failed"});
+})
+
+});
+
+
+
+
+
+
+
+/** edit a playlist 's name
+ * ---------------------
+ * 
+ * @api { post } /playlists/:playlistId/edit            edit a playlist 's name
+ * @apiName  edit a playlist 's name
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } playlistId    should be passed in params
+ * @apiParam {string} playlistName    should be passed in body
+ * @apiHeader { string }  x-auth       user's token
+ *
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *     "message": "playlist name changed successfully"
+ * }
+ * 
+ * 
+ * 
+*  @apiError  404                      [playlist not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "playlist not found"
+*     }
+*
+* @apiError  404                    [invalid playlist id]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "invalid id"
+*     }
+*
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ *
+ * @apiError 403         [changing another user's playlist]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Forbidden
+ * {
+ *           
+    "message": "you are not allowed to make this request"
+ *     }
+ *
+ *
+ * 
+ * /
+ * */
+
+
+
+router.post('/playlists/:playlistId/edit', (req,res)=>{
+    
+    //console.log("helooo");
+    var flag=0;
+    var token = req.header('x-auth');
+   // console.log(token);
+   var playlistId=req.params.playlistId;
+    var playlistName=req.body.playlistName;
+    //console.log(playlistId);
+     User.findByToken(token).then( (user)=>{
+        
+           
+        if(!user)
+        {  console.log("heloooo")
+    
+              return Promise.reject();
+           
+       }
+       
+       
+        if(!ObjectID.isValid(playlistId))
+        {
+            return res.status(404).json({"message":"Invalid id"});
+        }
+
+       playlist.findById(playlistId).then((playlists)=>{
+        //console.log(playlists); 
+        
+        if(!playlists)
+          {
+              return Promise.reject();
+          }
+         
+
+          if (playlists.userId.toString()===user._id.toString())
+          {
+
+          playlists.playlistName=playlistName;
+          playlists.markModified('playlistName');
+          playlists.save();
+          return res.status(200).json({"message":"playlist name changed successfully"});
+        
+           }          
+       else
+       {
+           return res.status(403).json({"message":"you are not allowed to make this request"})
+       }
+
+
+       }).catch((e)=>{
+
+        return res.status(404).json({"message":"playlist not found"});
+       })
+
+}).catch((e)=>{
+
+    return res.status(401).json({"message":"authentication failed"});
+})
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports=router;

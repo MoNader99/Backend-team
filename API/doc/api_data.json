@@ -1257,6 +1257,57 @@
     "groupTitle": "Library"
   },
   {
+    "type": "get",
+    "url": "/notification/artistupadtes",
+    "title": "get notification of artist updates",
+    "name": "GetArtistUpdatesNotifications",
+    "group": "Notifications",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required token of the user</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n  [\n  {\n      \"_id\": \"5e9e5c54d8f9952f3060cfb5\",\n      \"text\": \"Eminem released a new Song (Lose Ypurself)\",\n      \"sourceId\": \"5e9e3b99f2196e181a41e089\",\n      \"userType\": \"artist\",\n      \"__v\": 0,\n      \"sentTo\": [\n          \"5e9e6287e1bd0b278ce05fb4\"\n      ],\n      \"sent\": true\n  }\n]\n\n\n   \n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"Token is not valid\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Notifications"
+  },
+  {
     "type": "post",
     "url": "/tracks/:playlistId/playlists",
     "title": "Add tracks to a playlist",
@@ -1898,9 +1949,9 @@
   },
   {
     "type": " post ",
-    "url": "/playlists/like/:id",
-    "title": "like playlist",
-    "name": "Likeplaylist",
+    "url": "/playlists/:playlistId/like/unlike/me",
+    "title": "Like and Unlike a playlist",
+    "name": "Like_and_unlike_playlist",
     "group": "Playlists",
     "parameter": {
       "fields": {
@@ -1909,8 +1960,8 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "id",
-            "description": ""
+            "field": "playlistId",
+            "description": "<p>should be passed in params</p>"
           }
         ]
       }
@@ -1922,17 +1973,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "x",
-            "description": "<ul> <li>auth       user token to like playlist</li> </ul>"
-          }
-        ],
-        "Response Header": [
-          {
-            "group": "Response Header",
-            "type": "String",
-            "optional": false,
-            "field": "x",
-            "description": "<ul> <li>auth[token given for the logging in user]</li> </ul>"
+            "field": "x-auth",
+            "description": "<p>user's token</p>"
           }
         ]
       }
@@ -1941,7 +1983,12 @@
       "examples": [
         {
           "title": "Success - Response:",
-          "content": "HTTP / 1.1 200 OK\n{\n\n}",
+          "content": "HTTP / 1.1 200 OK\n{\n   \"message\":\"liked a playlist\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n{\n   \"message\":\"unliked a playlist\"\n}",
           "type": "JSON"
         }
       ]
@@ -1952,47 +1999,42 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "401",
-            "description": "<p>Unauthorized[authentication failed]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "403",
-            "description": "<p>Forbidden[Repeating the request more than once for the same user and the same album]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
             "field": "404",
-            "description": "<p>Not found[this playlist is not found]</p>"
+            "description": "<p>[playlist not found]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[trying to like a private playlist]</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"Token is not valid\"\n    }",
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"playlist not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"invalid id\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 401  Unauthorized\n{\n       \"Token is Empty\"\n    }",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"message\":\"authentication failed\"\n    }",
           "type": "JSON"
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 403 Forbidden\n{\n       \"You have already liked that playlist\"\n    }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 404 Not found\n{\n       \"No playlist found\"\n    }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 404 Not found\n{\n       \"Invalid id\"\n    }\n\n/",
+          "content": "HTTP / 1.1 401  Bad Request\n{\n          \"message\":\"forbidden you can not like a private playlist\"\n    }\n\n\n\n/",
           "type": "JSON"
         }
       ]
@@ -2003,9 +2045,9 @@
   },
   {
     "type": " post ",
-    "url": "/playlists/unlike/:id",
-    "title": "unlike playlist",
-    "name": "unLikeplaylist",
+    "url": "/playlists/:playlistId/edit",
+    "title": "edit a playlist 's name",
+    "name": "edit_a_playlist_'s_name",
     "group": "Playlists",
     "parameter": {
       "fields": {
@@ -2014,8 +2056,15 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "id",
-            "description": ""
+            "field": "playlistId",
+            "description": "<p>should be passed in params</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "playlistName",
+            "description": "<p>should be passed in body</p>"
           }
         ]
       }
@@ -2027,17 +2076,8 @@
             "group": "Header",
             "type": "string",
             "optional": false,
-            "field": "x",
-            "description": "<ul> <li>auth       user token to unlike playlist</li> </ul>"
-          }
-        ],
-        "Response Header": [
-          {
-            "group": "Response Header",
-            "type": "String",
-            "optional": false,
-            "field": "x",
-            "description": "<ul> <li>auth[token given for the logging in user]</li> </ul>"
+            "field": "x-auth",
+            "description": "<p>user's token</p>"
           }
         ]
       }
@@ -2046,7 +2086,7 @@
       "examples": [
         {
           "title": "Success - Response:",
-          "content": "HTTP / 1.1 200 OK\n{\n\n}",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"message\": \"playlist name changed successfully\"\n}",
           "type": "JSON"
         }
       ]
@@ -2057,36 +2097,42 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "401",
-            "description": "<p>Unauthorized[authentication failed]</p>"
+            "field": "404",
+            "description": "<p>[playlist not found]</p>"
           },
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "404",
-            "description": "<p>Not found[this playlist is not found]</p>"
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>[changing another user's playlist]</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"Token is not valid\"\n    }",
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"playlist not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"invalid id\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 401  Unauthorized\n{\n       \"Token is Empty\"\n    }",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"message\":\"authentication failed\"\n    }",
           "type": "JSON"
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 404 Not found\n{\n       \" Notfound in liked playlists\"\n    }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 404 Not found\n{\n       \"Invalid id\"\n    }\n\n/",
+          "content": "HTTP / 1.1 401  Forbidden\n{\n          \n    \"message\": \"you are not allowed to make this request\"\n    }\n\n\n\n/",
           "type": "JSON"
         }
       ]

@@ -38,6 +38,22 @@ var AuthenticateArtists = (req, res, next) => {
         res.status(401).send("Token is not valid");
     }
 }
+var AuthenticateUsers = (req, res, next) => {
+    var token = req.header('x-auth');
+    try {
+        console.log("da5a5aalapd");
+        var decodedtoken = jwt.verify(token, 'secretkeyforuser')
+        console.log(decodedtoken._id);
+        var token = decodedtoken;
+        req.userId = decodedtoken._id;
+        req.usertype = "user"
+        next();
+    }
+    catch (err) {
+        res.status(401).send("Token is not valid");
+    }
+}
+
 var AuthenticateFrontend = (req, res, next) => {
     var token = req.header('x-auth');
     try {
@@ -54,5 +70,6 @@ var AuthenticateFrontend = (req, res, next) => {
 module.exports = {
     AuthenticateAllUsers,
     AuthenticateArtists,
-    AuthenticateFrontend
+    AuthenticateFrontend,
+    AuthenticateUsers
 }

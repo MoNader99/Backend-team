@@ -1,5 +1,6 @@
 var mongoose= require("mongoose");
-
+const Schema = mongoose.Schema;
+var ObjectID = require('mongodb').ObjectID;
 var notification = mongoose.model("notifications",{
     text:{
         type:String,
@@ -21,7 +22,13 @@ var notification = mongoose.model("notifications",{
         required:true,
         enum:["user","artist"],
 
-    }
+    },
+    sentTo:[
+        {
+            type: String,
+            required: false,
+        }
+    ]
 })
 
 module.exports={notification};

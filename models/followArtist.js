@@ -3,7 +3,11 @@ const Schema=mongoose.Schema;
 
 //Schema for the followed artist information attribute in the followArtist Collection
 //
-const followInfoSchema = new Schema ({
+const followInfoSchema = new Schema({
+    artistId: {
+        type: String,
+        required: true,
+    },
     artistName:{
       type:String,
       required:true,
