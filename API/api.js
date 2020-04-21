@@ -2593,3 +2593,49 @@
  * 
  * 
  */
+
+
+/**
+ * @api {get} /notification/artistupadtes    get notification of artist updates
+ * @apiName GetArtistUpdatesNotifications
+ * @apiGroup Notifications
+ *          
+ * @apiHeader {string}  x-auth          Required token of the user
+ * 
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   [
+ *   {
+ *       "_id": "5e9e5c54d8f9952f3060cfb5",
+ *       "text": "Eminem released a new Song (Lose Ypurself)",
+ *       "sourceId": "5e9e3b99f2196e181a41e089",
+ *       "userType": "artist",
+ *       "__v": 0,
+ *       "sentTo": [
+ *           "5e9e6287e1bd0b278ce05fb4"
+ *       ],
+ *       "sent": true
+ *   }
+ *]
+ * 
+ * 
+ *    
+ * }
+ *
+ *
+ * @apiError 401              [authentication failed]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized 
+ *     {
+ *        "message":"Token is not valid"
+ *     }
+ * 
+ * 
+ * 
+ * 
+ *  
+ * 
+ * 
+ */
