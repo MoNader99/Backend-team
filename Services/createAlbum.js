@@ -11,6 +11,38 @@ mongoose.Promise = global.Promise;
 const path = require('path');
 var app=express();
 
+async function f(artistIdSent,albumname,myfiles) {
+    
+    var i = 0;var tracksArr = [];
+    while(myfiles[i])
+    {
+        var trackpath = myfiles[i].originalname;
+        await track.findOne({trackPath:trackpath}).then((myTrack) =>
+        {
+            tracksArr.push(new track);
+            tracksArr[i]=myTrack;
+            //console.log(albumInstance.albumName+" "+i+" "+albumInstance.tracks[i]);
+        })
+        i++;
+        
+    }
+    var albumInstance = new album({
+        artistId:artistIdSent,
+        albumName:albumname,
+        tracks:tracksArr
+    });
+    albumInstance.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+        console.log(err);
+    });
+    //await album.findOne({albumName:"ddddd"}).then((myAlbum) =>{
+    //    console.log("Album info" + myAlbum);
+    //});
+    console.log(albumInstance.albumName+" "+albumInstance.tracks);
+
+}
+
 app.post('/album/newRelease', upload, async (req,res,next) =>
 {
     var token = req.header('x-auth');
@@ -30,32 +62,9 @@ app.post('/album/newRelease', upload, async (req,res,next) =>
             error.httpStatusCode = 400;
             return next(error);
         }
-        var albumInstance = new album({
-            artistId:myartist._id,
-            albumName:req.body.AlbumName,
-        });
-        albumInstance.save().then((res)=>{
-            console.log(res._id);
-        },(err)=>{
-            console.log(err);
-        });
-        var i = 0;
-        while(files[i])
-        {
-            console.log("d5alt");
-            var trackpath = files[i].originalname;
-            await track.findOne({trackPath:trackpath}).then((myTrack) =>
-            {
-                albumInstance.tracks[i]=myTrack;
-                console.log("what is inside "+i+" "+albumInstance.tracks[i]);
-                albumInstance.save().then((res)=>{
-                    console.log(res._id);
-                },(err)=>{
-                    console.log(err);
-                });
-            })
-            i++;
-        }
+        f(myartist._id,req.body.AlbumName,files);
+
+        res.status(201).send();
     
     })
 
