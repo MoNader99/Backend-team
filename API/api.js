@@ -525,7 +525,7 @@
  * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
  *
  *
-* @apiParam {object} Image      Image he/she wants to upload to be his/her profile picture (MUST BE AN IMAGE with any extension)
+ * @apiParam {file} photo      sent as file in in form-data
  *
  * @apiSuccess 200                     [The response of the sucess case is a message]
  * @apiSuccessExample {JSON} Success-Response:
@@ -570,7 +570,7 @@
 * @apiHeader {JSON}   Content-Type     The content of the request body in JSON format.
 *
 *
-* @apiParam {object} Image      Image he/she wants to upload to be his/her profile picture (MUST BE AN IMAGE with any extension)
+* @apiParam {file} photo      sent as file in in form-data
 *
 * @apiSuccess 200                     [The response of the sucess case is a message]
 * @apiSuccessExample {JSON} Success-Response:
@@ -605,6 +605,61 @@
 */
 
 
+/**
+ * EDIT TRACK COVER IMAGE
+ * -------------------------------------
+ * @api {post} /tracks/coverimage   Edit cover image of the track
+ * @apiName Edit Track cover image
+ * @apiGroup Tracks
+ *
+ * @apiHeader {string} x-auth    (artistToken)Only an artist who has a verified account can edit his/her track cover image 
+ * @apiHeader {string} trackName    Name of the track the artist wants to edit it's cover image
+ *
+ * @apiParam {file} photo      sent as file in in form-data
+ *
+ * @apiSuccess 200                     [The response of the sucess case is a message]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200
+ *     {
+ *            "Track Image changed successfully"
+ *     }
+ *
+ * @apiError  400                  [no image file]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "Please Upload an image"
+ *     }
+ *
+ * @apiError  400                 [file that is not an image]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": Please Upload an image
+ *     }
+ * @apiError  400                 [Missing track Name]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Missing track Name"
+ *     }
+ * 
+ * @apiError  404                [Track doesnot belong to the user]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Track is not found"
+ *     }
+ * @apiError  401                      [Cannot change track cover image without auth token]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ *
+ *
+ */
 
 
 

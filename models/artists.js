@@ -112,7 +112,7 @@ ArtistSchema.methods.generateAuthToken = function () {
 
 
 //////////////////
-ArtistSchema.statics.findByToken = function (token) {
+ArtistSchema.statics.findByToken = async function (token) {
     var artist = this;
     var decoded;
 
