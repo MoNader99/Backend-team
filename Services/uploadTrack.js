@@ -5,7 +5,7 @@ var newTrackPath=undefined;
 
 const multerStorage= multer.diskStorage({
     destination:(req,res,cb)=>{
-        cb(null,"./../tracks")
+        cb(null,"./tracks")
     },
     filename:(req,file,cb)=>{
         cb(null,newTrackPath);

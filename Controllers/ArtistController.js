@@ -18,6 +18,7 @@ var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
 var upload=require("./../Services/ImageService.js").UploadUserPhoto;
 var AuthenticateArtist= require("./../Services/ImageService.js").AuthenticateArtist;
 var AssignArtistImage=require("./../Services/ImageService.js").AssignArtistImage;
+//
 var userservices = require("./../Services/UserServices.js");
 
 

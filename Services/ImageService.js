@@ -7,11 +7,14 @@ var { mongoose } = require("./../db/mongoose.js");
 var bodyParser= require('body-parser');
 var{User}= require("./../models/users.js"); // users model
 var{artist}= require("./../models/artists.js");  //artists model
+var{track}= require("./../models/track.js");  //tracks model
+const {ObjectID}=require('mongodb');
 
 ////////vars
 var userId=undefined
 var imageName=undefined;
-var type=undefined;   //wether an artist or a user to know which fns to call
+var type=undefined;   //wether an artist or a user or a request to change track image
+var trackName2=undefined;
 var newImagePath=undefined;
 ///////
 const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
@@ -65,8 +68,9 @@ exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
     if(type=="artist"){
         AssignArtistImage(req,res);
     }
-
-
+    if(type=="track"){
+        AssignTrackImage(req,res);
+    }
 };
 //
 
@@ -81,6 +85,16 @@ exports.AssignUserImage =AssignUserImage= async(req, res)=>{
 exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
     artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
+    });
+    
+
+}
+
+exports.AssignTrackImage =AssignTrackImage= async(req, res)=>{
+    track.findOneAndUpdate({$and:[{artistId:userId},{trackName:trackName2}]},{$set:{imagePath:imageName}}).then((n)=>{
+            if(n){return res.status(200).send("Track Image changed successfully");}
+    }).catch((e)=>{
+        return res.status(500).send("Could not change track profile picture");
     });
     
 
@@ -109,6 +123,33 @@ exports.AuthenticateArtist =AuthenticateArtist=async(req,res,uploadImagefn)=>{
         if(myArtist){
             userId=myArtist._id.toString();
             type="artist";
+            uploadImagefn();
+
+        }
+        if(!myArtist){
+            return res.status(401).send('Unauthorized Access');
+        }
+    }).catch((e)=>{
+        return res.status(401).send('Unauthorized Access');
+    });
+};
+
+exports.AuthenticateArtistTrack =AuthenticateArtistTrack=async(req,res,uploadImagefn)=>{
+    var token = req.header('x-auth');
+    var trackName = req.header('trackName');
+    if(!trackName){
+        return res.status(400).send("Missing track Name");
+    }
+    artist.findByToken(token).then((myArtist)=>{
+        if(myArtist){
+            userId=myArtist._id.toString();
+            type="track";
+            trackName2= trackName;
+            track.findOne({$and:[{artistId:userId},{trackName:trackName2}]}).then((present)=>{
+                if(!present){
+                    return res.status(404).send("Track is not found");
+                }
+            });
             uploadImagefn();
 
         }

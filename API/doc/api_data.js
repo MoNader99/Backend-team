@@ -656,10 +656,10 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "object",
+            "type": "file",
             "optional": false,
-            "field": "Image",
-            "description": "<p>Image he/she wants to upload to be his/her profile picture (MUST BE AN IMAGE with any extension)</p>"
+            "field": "photo",
+            "description": "<p>sent as file in in form-data</p>"
           }
         ]
       }
@@ -2433,6 +2433,119 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/tracks/coverimage",
+    "title": "Edit cover image of the track",
+    "name": "Edit_Track_cover_image",
+    "group": "Tracks",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>(artistToken)Only an artist who has a verified account can edit his/her track cover image</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "trackName",
+            "description": "<p>Name of the track the artist wants to edit it's cover image</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "photo",
+            "description": "<p>sent as file in in form-data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "200",
+            "description": "<p>[The response of the sucess case is a message]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200\n{\n       \"Track Image changed successfully\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[no image file]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[Track doesnot belong to the user]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Cannot change track cover image without auth token]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"Please Upload an image\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": Please Upload an image\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Missing track Name\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Track is not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 No access\n{\n  \"error\": \"Unauthorized Access\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "post",
     "url": "/tracks",
     "title": "Get several Tracks",
     "name": "GetSeveralTracks",
@@ -3158,10 +3271,10 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "object",
+            "type": "file",
             "optional": false,
-            "field": "Image",
-            "description": "<p>Image he/she wants to upload to be his/her profile picture (MUST BE AN IMAGE with any extension)</p>"
+            "field": "photo",
+            "description": "<p>sent as file in in form-data</p>"
           }
         ]
       }
