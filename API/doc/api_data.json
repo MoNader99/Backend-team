@@ -1974,7 +1974,7 @@
             "type": "string",
             "optional": false,
             "field": "x-auth",
-            "description": "<p>user token to like playlist</p>"
+            "description": "<p>user's token</p>"
           }
         ]
       }
@@ -2035,6 +2035,104 @@
         {
           "title": "Error - Response:",
           "content": "HTTP / 1.1 401  Bad Request\n{\n          \"message\":\"forbidden you can not like a private playlist\"\n    }\n\n\n\n/",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Playlists"
+  },
+  {
+    "type": " post ",
+    "url": "/playlists/:playlistId/edit",
+    "title": "edit a playlist 's name",
+    "name": "edit_a_playlist_'s_name",
+    "group": "Playlists",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "playlistId",
+            "description": "<p>should be passed in params</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "playlistName",
+            "description": "<p>should be passed in body</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user's token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"message\": \"playlist name changed successfully\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[playlist not found]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>[changing another user's playlist]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"playlist not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"invalid id\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"message\":\"authentication failed\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401  Forbidden\n{\n          \n    \"message\": \"you are not allowed to make this request\"\n    }\n\n\n\n/",
           "type": "JSON"
         }
       ]

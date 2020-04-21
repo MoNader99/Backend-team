@@ -2533,7 +2533,7 @@
  *  
  * @apiParam { string } playlistId    should be passed in params
  * 
- * @apiHeader { string }  x-auth       user token to like playlist
+ * @apiHeader { string }  x-auth       user's token
  *
  * @apiSuccessExample { JSON } Success - Response:
  * HTTP / 1.1 200 OK
@@ -2580,6 +2580,63 @@
  * {
  *           "message":"forbidden you can not like a private playlist"
 
+ *     }
+ *
+ *
+ * 
+ * /
+ * */
+/** edit a playlist 's name
+ * ---------------------
+ * 
+ * @api { post } /playlists/:playlistId/edit            edit a playlist 's name
+ * @apiName  edit a playlist 's name
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiParam { string } playlistId    should be passed in params
+ * @apiParam {string} playlistName    should be passed in body
+ * @apiHeader { string }  x-auth       user's token
+ *
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *     "message": "playlist name changed successfully"
+ * }
+ * 
+ * 
+ * 
+*  @apiError  404                      [playlist not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "playlist not found"
+*     }
+*
+* @apiError  404                    [invalid playlist id]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "invalid id"
+*     }
+*
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ *
+ * @apiError 403         [changing another user's playlist]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 401  Forbidden
+ * {
+ *           
+    "message": "you are not allowed to make this request"
  *     }
  *
  *
