@@ -19,6 +19,8 @@ var _ = require('lodash');
 //var rand=Math.floor((Math.random() * 100) + 54); //random confirmation code
 const jwt = require('jsonwebtoken');
 var userservices = require("./../Services/UserServices.js");
+var artistservices = require("./../Services/ArtistServices.js");
+
 
 //edit user pp imports
 var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
@@ -207,6 +209,21 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
     //res.send(body)
 
 
+
+});
+router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
+    var artistId = req.params.id;
+    console.log("da5al");
+
+    artistservices.unFollowArtist(artistId, req.userId).then((str) => {
+        console.log(str);
+        if (str == "unfollowed") res.status(200).send("You have un followed the artist");
+        if (str == "notfound") res.status(200).send("You are not following the artist");
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send(err);
+    })
 
 });
 

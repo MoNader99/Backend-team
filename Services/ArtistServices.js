@@ -26,12 +26,26 @@ var getFollowedArtists = async function (userId) {
         console.log(fol.followedArtistInfo);
     })*/
 }
-var wawa = function (userId) {
-    
+var deleteArtistFromSchema = function (artistId, userId) {
+   // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
+    console.log(userId);
+    console.log(artistId);
+    //return followArtist.update({ 'user_id': userId }, { $pullAll: { artistId: [artistId] } })
+    return followArtist.update({ user_id: userId }, { "$pull": { "followedArtistInfo": { "artistId": artistId } } });
+
+}
+var unFollowArtist = function (artistId, userId) {
+    return deleteArtistFromSchema(artistId, userId).then((artist) => {
+        console.log(artist);
+        if (artist.nModified==0) return "notfound";
+        if (artist.nModified==1) return "unfollowed"
+
+    }).catch((err) => {
+        Promise.reject(err);
+    })
 
 
 }
-
 var addartist = (Email, Password, Artistname, About, Genres) => {
     var artist1 = new artist({
         email: Email,
@@ -140,7 +154,8 @@ module.exports = {
     artist,
     GetArtistById,
     GetArtistObjectArray,
-    getFollowedArtists
+    getFollowedArtists,
+    unFollowArtist
 
 }
 
