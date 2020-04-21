@@ -247,18 +247,21 @@ user2.save().then((res)=>{
 
 var followArtist1= new followArtist({
     user_id: user1._id,
-    followedArtistInfo:[{
+    followedArtistInfo: [{
+        artistId: artist1._id.toString(),
         artistName: artist1.artistName,
         followDate: Date.now(),
         //rate:2,
     },
     {
+        artistId: artist2._id.toString(),
         artistName: artist2.artistName,
         followDate: Date.now(),
         rate:5,
     }
 ]
 });
+
 
 
 

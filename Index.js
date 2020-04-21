@@ -18,6 +18,7 @@ const artistRoutes = require('./Controllers/ArtistController');
 const playlistRoutes = require('./Controllers/PlaylistController');
 const trackRoutes = require('./Controllers/TracksController');
 const searchRoute = require('./Controllers/SearchController');
+const notificationRoute = require('./Controllers/NotificationController');
 
 
 const app = express();
@@ -34,6 +35,7 @@ app.use("/", artistRoutes);
 app.use("/", playlistRoutes);
 app.use("/", trackRoutes);
 app.use("/", searchRoute);
+app.use("/", notificationRoute);
 
 
 app.listen(8000,()=>{

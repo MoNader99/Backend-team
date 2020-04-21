@@ -4,13 +4,33 @@ var { artist } = require("./../models/artists.js");  //artists model
 
 var { album } = require("./../models/album.js");
 var { track } = require("./../models/track.js");//track model
+var { followArtist } = require("./../models/followArtist.js");//track model
+
 var GetTracksOfArtists = function (id) {
     return track.find({ artistId: id });
 }
 var GetAlbumsOfArtists = function (id) {
     return album.find({ artistId: id });
 }
+var getFollowArtistObject = function () {
+    return followArtist.find({ 'userId': { $in: Artists.map(function (value) { return value.user_id.toString() }) } });
 
+}
+var getFollowedArtists = async function (userId) {
+    var FollowedArtists = await followArtist.findOne({ 'user_id': userId });//.followedArtistInfo;
+    return FollowedArtists.followedArtistInfo.map(function (value) { return value.artistId.toString(); });
+        /*return followArtist.findOne({ 'user_id': userId }).followedArtistInfo;//.map(function (value) { return value.artistId.toString() }) ;
+   then((fol) => {
+        //console.log(userId);
+        //console.log(fol);
+        console.log(fol.followedArtistInfo);
+    })*/
+}
+var wawa = function (userId) {
+    
+
+
+}
 
 var addartist = (Email, Password, Artistname, About, Genres) => {
     var artist1 = new artist({
@@ -119,7 +139,8 @@ module.exports = {
     SearchInArtists,
     artist,
     GetArtistById,
-    GetArtistObjectArray
+    GetArtistObjectArray,
+    getFollowedArtists
 
 }
 
