@@ -8,6 +8,7 @@ var bodyParser= require('body-parser');
 var{User}= require("./../models/users.js"); // users model
 var{artist}= require("./../models/artists.js");  //artists model
 var{track}= require("./../models/track.js");  //tracks model
+var{album}= require("./../models/album.js");  //albums model
 const {ObjectID}=require('mongodb');
 
 ////////vars
@@ -16,6 +17,7 @@ var imageName=undefined;
 var type=undefined;   //wether an artist or a user or a request to change track image
 var trackName2=undefined;
 var newImagePath=undefined;
+var albumId=undefined;
 ///////
 const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
 
@@ -58,19 +60,11 @@ exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
 };
 //
 exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
-    if(req.fileError)
-    {
-        return res.status(400).send("Not an image , please upload an image");
-    }
-    if(type=="user"){
-        AssignUserImage(req,res);
-    }
-    if(type=="artist"){
-        AssignArtistImage(req,res);
-    }
-    if(type=="track"){
-        AssignTrackImage(req,res);
-    }
+    if(req.fileError){return res.status(400).send("Not an image , please upload an image");}
+    if(type=="user"){AssignUserImage(req,res);}
+    if(type=="artist"){AssignArtistImage(req,res);}
+    if(type=="track"){AssignTrackImage(req,res);}
+    if(type=="album"){AssignAlbumImage(req,res);}
 };
 //
 
@@ -96,9 +90,16 @@ exports.AssignTrackImage =AssignTrackImage= async(req, res)=>{
     }).catch((e)=>{
         return res.status(500).send("Could not change track profile picture");
     });
-    
-
 }
+
+exports.AssignAlbumImage =AssignAlbumImage= async(req, res)=>{
+    album.findByIdAndUpdate({_id:albumId},{$set:{imagePath:imageName}}).then((n)=>{
+            if(n){return res.status(200).send("Album Image changed successfully");}
+    }).catch((e)=>{
+        return res.status(500).send("Could not change Album Cover Image");
+    });
+}
+
 exports.AuthenticateUser =AuthenticateUser=async(req,res,uploadImagefn)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
@@ -148,6 +149,33 @@ exports.AuthenticateArtistTrack =AuthenticateArtistTrack=async(req,res,uploadIma
             track.findOne({$and:[{artistId:userId},{trackName:trackName2}]}).then((present)=>{
                 if(!present){
                     return res.status(404).send("Track is not found");
+                }
+            });
+            uploadImagefn();
+
+        }
+        if(!myArtist){
+            return res.status(401).send('Unauthorized Access');
+        }
+    }).catch((e)=>{
+        return res.status(401).send('Unauthorized Access');
+    });
+};
+
+exports.AuthenticateArtistAlbum =AuthenticateArtistAlbum=async(req,res,uploadImagefn)=>{
+    var token = req.header('x-auth');
+    albumId= req.header('albumId');
+    if(!albumId){
+        return res.status(400).send("Missing Album Id");
+    }
+    if(!ObjectID.isValid(albumId)){return res.status(404).send("Invalid Album ID");}
+    artist.findByToken(token).then((myArtist)=>{
+        if(myArtist){
+            type="album";
+            userId=myArtist._id.toString();
+            album.findById({_id:albumId}).then((present)=>{
+                if(!present){
+                    return res.status(404).send('Album is not found.May be removed by the artist');
                 }
             });
             uploadImagefn();
