@@ -426,10 +426,17 @@ else
  *
  * @apiError 403         [changing another user's playlist]
  * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401  Forbidden
+ * HTTP / 1.1 403  Forbidden
  * {
  *           
     "message": "you are not allowed to make this request"
+ *     }
+ *@apiError 400         [user can not have two or more playlists with the same name]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 400  Bad Request
+ * {
+ *           
+    "message": "you already have a playlist with the same name"
  *     }
  *
  *
@@ -443,6 +450,7 @@ router.post('/playlists/:playlistId/edit', (req,res)=>{
     
     //console.log("helooo");
     var flag=0;
+    var flag2=0;
     var token = req.header('x-auth');
    // console.log(token);
    var playlistId=req.params.playlistId;
@@ -464,34 +472,91 @@ router.post('/playlists/:playlistId/edit', (req,res)=>{
             return res.status(404).json({"message":"Invalid id"});
         }
 
-       playlist.findById(playlistId).then((playlists)=>{
-        //console.log(playlists); 
+
+        playlist.find({$and:[{userId:user._id},{playlistName},{_id:{$ne:playlistId}}]}).then((myduplicate)=>{
+            if(myduplicate.length>0){
+               
+                //console.log(myduplicate.length);
+                //console.log(myduplicate.toString());
+                flag2=1;
+                return Promise.reject();
+
+               // db.inventory.find( { qty: { $ne: 20 } } )
+                
+            }
+
+        else{
+            playlist.findById(playlistId).then((playlists)=>{
+                //console.log(playlists); 
+                
+                if(!playlists)
+                  {
+                      return Promise.reject();
+                  }
+                 
         
-        if(!playlists)
-          {
-              return Promise.reject();
-          }
+                  if (playlists.userId.toString()===user._id.toString())
+                  {
+        
+                  playlists.playlistName=playlistName;
+                  playlists.markModified('playlistName');
+                  playlists.save();
+                  return res.status(200).json({"message":"playlist name changed successfully"});
+                
+                   }          
+               else
+               {
+                   return res.status(403).json({"message":"you are not allowed to make this request"})
+               }
+        
+        
+               }).catch((e)=>{
+        
+                return res.status(404).json({"message":"playlist not found"});
+               })
+
+            }
+
+
+
+
+        }).catch((e)=>{
+            return res.status(500).json({"message":"you already have a playlist with the same name"});
+        })
+
+        if(flag2)
+        {
+            return 
+        }
+
+    //    playlist.findById(playlistId).then((playlists)=>{
+    //     //console.log(playlists); 
+        
+    //     if(!playlists)
+    //       {
+    //           return Promise.reject();
+    //       }
          
 
-          if (playlists.userId.toString()===user._id.toString())
-          {
+    //       if (playlists.userId.toString()===user._id.toString())
+    //       {
 
-          playlists.playlistName=playlistName;
-          playlists.markModified('playlistName');
-          playlists.save();
-          return res.status(200).json({"message":"playlist name changed successfully"});
+    //       playlists.playlistName=playlistName;
+    //       playlists.markModified('playlistName');
+    //       playlists.save();
+    //       return res.status(200).json({"message":"playlist name changed successfully"});
         
-           }          
-       else
-       {
-           return res.status(403).json({"message":"you are not allowed to make this request"})
-       }
+    //        }          
+    //    else
+    //    {
+    //        return res.status(403).json({"message":"you are not allowed to make this request"})
+    //    }
 
 
-       }).catch((e)=>{
+    //    }).catch((e)=>{
 
-        return res.status(404).json({"message":"playlist not found"});
-       })
+    //     return res.status(404).json({"message":"playlist not found"});
+    //    })
 
 }).catch((e)=>{
 

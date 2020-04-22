@@ -2588,6 +2588,8 @@
  * 
  * /
  * */
+
+ 
 /** edit a playlist 's name
  * ---------------------
  * 
@@ -2635,10 +2637,17 @@
  *
  * @apiError 403         [changing another user's playlist]
  * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401  Forbidden
+ * HTTP / 1.1 403  Forbidden
  * {
  *           
     "message": "you are not allowed to make this request"
+ *     }
+ *@apiError 400         [user can not have two or more playlists with the same name]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 400  Bad Request
+ * {
+ *           
+    "message": "you already have a playlist with the same name"
  *     }
  *
  *
