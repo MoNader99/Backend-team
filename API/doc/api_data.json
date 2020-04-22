@@ -2111,6 +2111,12 @@
             "optional": false,
             "field": "403",
             "description": "<p>[changing another user's playlist]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[user can not have two or more playlists with the same name]</p>"
           }
         ]
       },
@@ -2132,7 +2138,12 @@
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 401  Forbidden\n{\n          \n    \"message\": \"you are not allowed to make this request\"\n    }\n\n\n\n/",
+          "content": "HTTP / 1.1 403  Forbidden\n{\n          \n    \"message\": \"you are not allowed to make this request\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 400  Bad Request\n{\n          \n    \"message\": \"you already have a playlist with the same name\"\n    }\n\n\n\n/",
           "type": "JSON"
         }
       ]
