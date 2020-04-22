@@ -5,7 +5,8 @@ var{User}= require("./models/users.js");   //users model
 var{artist}= require("./models/artists.js");  //artists model
 var{followArtist}= require("./models/followArtist.js");  // follow artist model
 var{playlist}= require("./models/playlists.js"); // playlists model
-var{followPlaylist}= require("./models/followPlaylist.js"); // followplaylist model
+var { followPlaylist } = require("./models/followPlaylist.js"); // followplaylist model
+var { followUser } = require("./models/followUser.js"); // followplaylist model
 var{album}= require("./models/album.js"); // albums model
 var{track}=require("./models/track.js");//track model
 var{notification}=require("./models/notifications.js");//notifications model
@@ -244,7 +245,21 @@ user2.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
+var user3 = new User({
+    email: "ayamahmoud99@gmail.com",
+    password: "$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    userName: "Aya",
+    gender: "F",
+    birthDate: '1999-09-09',
 
+});
+
+
+user3.save().then((res) => {
+    console.log(res._id);
+}, (err) => {
+    console.log(err);
+});
 
 var followArtist1= new followArtist({
     user_id: user1._id,
@@ -262,7 +277,20 @@ var followArtist1= new followArtist({
     }
 ]
 });
-
+var followUser1 = new followUser({
+    user_id: user1._id,
+    followedUserInfo: [{
+        userId: user2._id.toString(),
+        followDate: Date.now(),
+        //rate:2,
+    },
+    {
+        userId: user3._id.toString(),
+        followDate: Date.now(),
+        rate: 5,
+    }
+    ]
+});
 
 
 
@@ -273,7 +301,11 @@ followArtist1.save().then((res)=>{
     console.log(err);
 });
 
-
+followUser1.save().then((res) => {
+    console.log(res._id);
+}, (err) => {
+    console.log(err);
+})
 
 
 
