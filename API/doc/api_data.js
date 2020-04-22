@@ -2153,6 +2153,79 @@ define({ "api": [
     "groupTitle": "Playlists"
   },
   {
+    "type": "get",
+    "url": "/playlists/liked/me",
+    "title": "get a user's liked playlists",
+    "name": "get_a_user's_liked_playlists",
+    "group": "Playlists",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user's token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "likedPlaylists",
+            "description": "<p>array of likedPlaylists object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n\n{\n\n\"likedPlaylists\": [\n     \n       {\n          \"creator\": \"monica\",\n          \"playlistId\": \"5e9d5c3c682ddc25100e72cd\",\n          \"playlistName\": \"favs\",\n          \"likes\": 1,\n          \"tracks\": [\n              \"5e9d5ba78d6d7148a8860da3\"\n          ],\n          \"imagePath\": \"default.jpeg\",\n          \"privacy\": false\n      },\n      {\n          \"creator\": \"Spotify\",\n          \"playlistId\": \"5ea08233370ecb40db0e0b68\",\n          \"playlistName\": \"indies\",\n          \"likes\": 2,\n          \"tracks\": [\n              \"5e9d5ba78d6d7148a8860da3\",\n              \"5e9d5ba78d6d7148a8860da4\",\n              \"5e9d5ba78d6d7148a8860da5\",\n              \"5e9d5ba78d6d7148a8860da7\",\n              \"5e9d5ba78d6d7148a8860da6\"\n          ],\n         \"imagePath\": \"default.jpeg\",\n          \"privacy\": false\n     }\n  ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[no liked playlists]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"the user has not liked any playlist yet\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"message\":\"authentication failed\"\n    }\n\n\n/",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Playlists"
+  },
+  {
     "type": "Get",
     "url": "/Search",
     "title": "Search about a word",

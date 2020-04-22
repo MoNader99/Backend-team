@@ -2654,3 +2654,74 @@
  * 
  * /
  * */
+
+
+ 
+/** get a user's liked playlists
+ * ---------------------
+ * 
+ * @api {get} /playlists/liked/me           get a user's liked playlists
+ * @apiName  get a user's liked playlists
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiHeader { string }  x-auth       user's token
+ * @apiSuccess {object[]}   likedPlaylists     array of likedPlaylists object 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * 
+ * {
+ * 
+ * "likedPlaylists": [
+ *      
+ *        {
+ *           "creator": "monica",
+ *           "playlistId": "5e9d5c3c682ddc25100e72cd",
+ *           "playlistName": "favs",
+ *           "likes": 1,
+ *           "tracks": [
+ *               "5e9d5ba78d6d7148a8860da3"
+ *           ],
+ *           "imagePath": "default.jpeg",
+ *           "privacy": false
+ *       },
+ *       {
+ *           "creator": "Spotify",
+ *           "playlistId": "5ea08233370ecb40db0e0b68",
+ *           "playlistName": "indies",
+ *           "likes": 2,
+ *           "tracks": [
+ *               "5e9d5ba78d6d7148a8860da3",
+ *               "5e9d5ba78d6d7148a8860da4",
+ *               "5e9d5ba78d6d7148a8860da5",
+ *               "5e9d5ba78d6d7148a8860da7",
+ *               "5e9d5ba78d6d7148a8860da6"
+ *           ],
+ *          "imagePath": "default.jpeg",
+ *           "privacy": false
+ *      }
+ *   ]
+ * }
+ * 
+*  @apiError  404                      [no liked playlists]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "the user has not liked any playlist yet"
+*     }
+*
+
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ 
+ * 
+ * /
+ * */
