@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 
 var { mongoose } = require("./../db/mongoose.js");
 var { User } = require("./../models/users.js");  //artists model
+var { followUser } = require("./../models/followUser.js");//track model
+
 var GetUserObjectArray = async function (wordtosearch) {
     //return track.find({ trackName: wordtosearch });
     // return track.find({ 'trackName': { '$regex': wordtosearch, $options: 'i' } , 'artistId': { $in: Artists.map(function (value) { return value._id }) } } );
@@ -25,7 +27,26 @@ var GetUserObjectArray = async function (wordtosearch) {
     // var tracks = await track.find({ 'artistId':  });
 
 }
+var deleteUserFromSchema = function (followeduserid, userId) {
+    // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
+    //console.log(userId);
+   // console.log(artistId);
+    //return followArtist.update({ 'user_id': userId }, { $pullAll: { artistId: [artistId] } })
+    return followUser.update({ user_id: userId }, { "$pull": { "followedUserInfo": { "userId": followeduserid } } });
 
+}
+var unFollowUser = function (followeduserid, userId) {
+    return deleteUserFromSchema(followeduserid, userId).then((user) => {
+       // console.log(artist);
+        if (user.nModified == 0) return "notfound";
+        if (user.nModified == 1) return "unfollowed"
+
+    }).catch((err) => {
+        Promise.reject(err);
+    })
+
+
+}
 var SearchInUsers = function (wordtosearch) {
     return GetUserObjectArray(wordtosearch).then(async (users) => {
         if (users.length === 0) return Promise.resolve([]);
@@ -78,5 +99,6 @@ module.exports = {
     SearchInUsers,
     User,
     GetUserById,
-    HashPassword
+    HashPassword,
+    unFollowUser
 }

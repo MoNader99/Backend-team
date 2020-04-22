@@ -226,7 +226,21 @@ router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, as
     })
 
 });
+router.post('/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
+    var userId = req.params.id;
+    console.log("da5al");
 
+    userservices.unFollowUser(userId, req.userId).then((str) => {
+        console.log(str);
+        if (str == "unfollowed") res.status(200).send("You have un followed the user");
+        if (str == "notfound") res.status(200).send("You are not following the user");
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+
+});
 // Get User Profile Request
 router.get('/users/me',(req,res) => {
     var token = req.header('x-auth');
