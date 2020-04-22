@@ -47,7 +47,7 @@ app.post('/album/newRelease', upload, async (req,res,next) =>
 {
     var token = req.header('x-auth');
     const files = req.files;
-    artist.findByToken(token).then((myartist)=>{
+    await artist.findByToken(token).then((myartist)=>{
     
         if(!req.body.AlbumName){
             return res.status(400).send("Missing albumName");
@@ -64,24 +64,20 @@ app.post('/album/newRelease', upload, async (req,res,next) =>
         }
         f(myartist._id,req.body.AlbumName,files);
 
-        res.status(201).send();
+        var notificationInstance = new notification({
+            text:myartist.artistName+" released a new Album ("+req.body.AlbumName +")",
+            sourceId:myartist._id,
+            userType:"artist"
+            
+        });
+        notificationInstance.save();
+
+        res.status(201).send(files); 
     
+    }).catch((e) =>
+    {
+        res.status(401).send();
     })
-
-      
-    
-    var notificationInstance = new notification({
-        text:myartist.artistName+" released a new Album ("+req.body.AlbumName +")",
-        sourceId:myartist._id,
-        userType:"artist"
-        
-    });
-    notificationInstance.save();
-    
-
-   
-
-    return res.status(201).send(files); 
 
 });
 
