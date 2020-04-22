@@ -280,7 +280,7 @@ return res.status(200).json({"message":'tracks added successfully'});
 
 //GET SEVERAL TRACKS
 ///////
-/*router.post('/tracks',async (req,res)=>{
+router.post('/tracks',async (req,res)=>{
     var arr=req.body.id;
   
     var returnedTrackArray=[{}];
@@ -319,7 +319,7 @@ return res.status(200).json({"message":'tracks added successfully'});
     }
  
 res.send({"tracks":returnedTrackArray});    //need to send an object with a name "tracks":returnedTrackArray
-    })*/
+    })
 
 
 
