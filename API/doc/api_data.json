@@ -2670,73 +2670,6 @@
   },
   {
     "type": "Get",
-    "url": "/tracks/:id",
-    "title": "Get a Track",
-    "name": "GetTrack",
-    "group": "Tracks",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "id",
-            "description": "<p>the id of the track that the artist wants to delete</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "object",
-            "optional": false,
-            "field": "tracks",
-            "description": "<p>object of type track in JSON formatwith status code 200</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n {\n     \"tracks\": {\n    \"rating\": 10,\n    \"duration\": 360000,\n    \"_id\": \"5e6b7dac91cb724878446635\",\n    \"trackName\": \"Hello\",\n    \"url\": \"cccc\",\n    \"__v\": 0\n}\n }",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "404",
-            "description": "<p>[Track not found]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"Track not found\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404\n{\n  \"message\": \"invalid id\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Tracks"
-  },
-  {
-    "type": "Get",
     "url": "/tracks/byartist/:id",
     "title": "Get tracks by artist",
     "name": "GetTrack",
@@ -2894,6 +2827,101 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "get",
+    "url": "/tracks/stream",
+    "title": "Stream a single track",
+    "name": "Streaming",
+    "group": "Tracks",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>(User Token)Only an user who has a verified account can play a track</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "trackId",
+            "description": "<p>Id of the track the user wants to listen to</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "201",
+            "description": "<p>[Explanation of wht is going to happen]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "The connection is going to remain open to send chuncks of the track 7000 bytes after each other\nThe user is eligible to pause, fast foward or go backwards while playing a song",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Cannot play a track without auth token]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[Cannot play the track without track ID]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[Cannot play a track if the track id is wrong or the track is deleted by the artist]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 No access\n{\n  \"error\": \"Unauthorized Access\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Missing track ID\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"Track not found. Maybe deleted by the artist\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"Invalid track ID\"\n}",
           "type": "JSON"
         }
       ]

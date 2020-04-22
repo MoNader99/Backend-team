@@ -208,6 +208,55 @@
  */
 
 
+//SETRAM A TRACK
+/**
+ * StreamTrack
+ * ---------------------
+ *
+ * @api {get} /tracks/stream               Stream a single track
+ * @apiName Streaming
+ * @apiGroup Tracks
+ *
+ * @apiHeader {string} x-auth    (User Token)Only an user who has a verified account can play a track
+ * @apiHeader {string} trackId    Id of the track the user wants to listen to
+ * 
+ *@apiSuccess 201                      [Explanation of wht is going to happen]
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     The connection is going to remain open to send chuncks of the track 7000 bytes after each other
+ *     The user is eligible to pause, fast foward or go backwards while playing a song
+ *
+ * 
+ * @apiError  401                      [Cannot play a track without auth token]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ * @apiError  400                     [Cannot play the track without track ID]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Missing track ID"
+ *     }
+ *
+ * @apiError  404                    [Cannot play a track if the track id is wrong or the track is deleted by the artist]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "Track not found. Maybe deleted by the artist"
+ *     }
+ * 
+ * @apiError  404                   [Cannot play a track with invalid track ID]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "Invalid track ID"
+ *     }
+ *
+ */
+
 
  /**
  * DeleteTrack
@@ -922,53 +971,6 @@
  *
  *
  */
-
-
- /** GetATrack
-* ---------------------
-*
-* @api {Get} /tracks/:id               Get a Track
-* @apiName GetTrack
-* @apiGroup Tracks
-*
-*
-* @apiParam {string}    id           the id of the track that the artist wants to delete
-*
-* @apiSuccess {object}  tracks             object of type track in JSON formatwith status code 200
-*
-* @apiSuccessExample {JSON} Success-Response:
-*     HTTP/1.1 200 OK
-*      {
-*          "tracks": {
-        "rating": 10,
-        "duration": 360000,
-        "_id": "5e6b7dac91cb724878446635",
-        "trackName": "Hello",
-        "url": "cccc",
-        "__v": 0
-    }
-*      }
-*
-*
-*
-*  @apiError  404                      [Track not found]
-*  @apiErrorExample {JSON} Error-Response:
-*     HTTP/1.1 404 Not Found
-*     {
-*       "message": "Track not found"
-*     }
-*
-* @apiError  404                    [Track not found]
-*  @apiErrorExample {JSON} Error-Response:
-*     HTTP/1.1 404
-*     {
-*       "message": "invalid id"
-*     }
-*
-*
-*
-*
-*/
 
 
 /**

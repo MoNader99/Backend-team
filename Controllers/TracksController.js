@@ -5,6 +5,7 @@ const{track}=require("./../models/track");
 var bodyParser= require('body-parser');
 const multer = require("multer");
 const{playlist}=require("./../models/playlists");
+const fs=require('fs');
 const{album}=require('./../models/album');
 var { User } = require("./../models/users.js");
 var{artist}= require("./../models/artists.js"); 
@@ -39,10 +40,10 @@ router.post('/tracks/single',upload,(req,res)=>{
         return res.status(400).send("Missing genre");
     }
     if(!req.file){  // no file is sent
-        return res.status(401).send('Please upload a track');
+        return res.status(400).send('Please upload a track');
     }
     if(req.fileError){    // the upladed file is not a track
-        return res.status(401).send('Please upload a track');
+        return res.status(400).send('Please upload a track');
     }
     track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
             if(trackduplicate.length!=0){  //409 is code for conflict
@@ -76,6 +77,62 @@ router.post('/tracks/single',upload,(req,res)=>{
 })
 });
 
+//////////////////////////////////////
+//STREAM A TRACK
+router.get('/tracks/stream',(req,res)=>{
+    var token = req.header('x-auth'); 
+    User.findByToken(token).then((user)=>{
+        if(!user){return Promise.reject();}
+        var trackId = req.header('trackId'); 
+        if(!trackId){
+            return res.status(400).send("Missing track ID");
+        }
+        if(!ObjectID.isValid(trackId)){return res.status(404).send("Invalid track ID");}
+        track.findByIdAndUpdate({_id:trackId}).then((streamedTrack)=>{
+            if(!streamedTrack){return res.status(404).send("Track not found. Maybe deleted by the artist");}
+            // if there is a track document but no track file
+            if(!streamedTrack.trackPath){return res.status(404).send("Cannot play track")}
+            //
+            var path = './tracks/'+streamedTrack.trackPath;
+            const stat= fs.statSync(path);   //returns inofrmation about a given file asynchronouslly
+            const fileSize= stat.size;  
+            var range = req.headers.range;  //the requested number of bytes 0-50 (from 0 to 50) -> sent intially empty 0 only
+            if(range){
+                const parts=range.replace(/bytes=/,"").split("-");
+                var start= parseInt(parts[0],10);
+                var end; 
+                if(start+7000<fileSize){  //7000 bytes per send
+                    end=start+7000;
+                }
+                else{
+                    end=fileSize-1;
+                }
+                const chunckSize= (end-start)+1;
+                const stream = fs.createReadStream(path,{start,end});
+                const head={
+                    "Content-Range":`bytes ${start}-${end}/${fileSize}` ,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length":chunckSize,
+                    "Content-Type":"audio/mp3"
+                };
+                res.writeHead(206,head)
+                stream.pipe(res);
+                
+            }
+            else{
+                const head= {
+                    "Content-Length" : fileSize,
+                    "Content-Type": "audio/mp3",
+                };
+
+                res.writeHead(200,head);
+                track.findByIdAndUpdate({_id:trackId},{$inc:{numberOfTimesPlayed:1}}).then((res)=>{});
+                fs.createReadStream(path).pipe(res);
+            }
+
+        });
+    }).catch((e)=>{res.status(401).send('Unauthorized Access');})
+});
 
 
 
@@ -83,22 +140,9 @@ router.post('/tracks/single',upload,(req,res)=>{
 
 
 
-//GET TRACK
-////
-router.get('/tracks/:id', (req,res)=>{
-var id=req.params.id;
-if(!ObjectID.isValid(id))
-{
-    return res.status(404).json({"message":"invalid id"});
-}
 
- track.findById(id).then((tracks)=>{
-    if(!tracks){return res.status(404).json({"message":"Track not found"});}
-    res.send({tracks})
 
-}).catch((e)=>res.status(400).send());
 
-})
 
 //ADD TRACKS TO PLAYLIST
 ////

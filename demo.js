@@ -15,16 +15,15 @@ const Schema = mongoose.Schema;
 
 
 //PATH OF IMAGES
-
 var imgPath1 = "default.jpeg";   //default picture of playlist
 var imgPath2 = "Billie-Eilish.jpg";
 var imgPath3 = "Adele.png";
 var imgPath4 = "defaultuser.png";
 var imgPath5 = "AmrDiab1.jpg";
 var imgPath6 = "eminem.jpg";
-var imgPath7 = "sia.png";
-var imgPath8 = "miley.png";
-var imgPath9 = "JenGr.png";
+var imgPath7 = "When_I'm_Gone_(Eminem_song).jpg";
+var imgPath8 = "LoseYourselfPicEminem.jpg";
+var imgPath9 = "AmrDiabAlbumTalat.jpg";
 var imgPath10 = "ed.png";
 var imgPath11 = "sel.png";
 var imgPath12 = "coldplay.png";
@@ -85,6 +84,7 @@ var artist3= new artist({
      (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,
      record executive and actor. He is one of the most successful musical artists of the 21st century.`,
     genres:["Trap","Jazz","pop","Rap"],
+    imagePath:imgPath6,
     rating: 4.6,
     gender:"M",
     birthDate:"1988-05-05"
@@ -136,7 +136,7 @@ track1.save().then((res)=>{
 var track2=new track({
     artistId:artist3._id,
     trackName:"Lose Yourself",
-    imagePath:imgPath1,
+    imagePath:imgPath8,
     likes:7,
     genre:"Rap",
     trackPath:"Lose Yourself-Eminem-seeds.mp3"  
@@ -184,7 +184,7 @@ track5.save().then((res)=>{
 var track4=new track({
     artistId:artist3._id,
     trackName:"When I'm Gone",
-    imagePath:imgPath1,
+    imagePath:imgPath7,
     likes:10,
     genre:"Rap",
     trackPath:"When I'm Gone-Eminem-seeds.mp3"  
@@ -199,6 +199,7 @@ track4.save().then((res)=>{
 var album1 = new album({
     artistId:artist4._id,
     albumName:"El Leila",
+    imagePath:imgPath9,
     tracks: [track3, track5],
 });
 
