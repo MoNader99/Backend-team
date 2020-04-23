@@ -358,7 +358,7 @@ router.delete('/tracks',(req,res)=>{
 
 
 ///////// Like a track ///////////
-router.post('/tracks/like/:id', (req,res) =>
+router.post('/tracks/like/unlike/:id', (req,res) =>
 {
     var trackId = req.params.id;
     var token = req.header('x-auth');

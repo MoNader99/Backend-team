@@ -91,7 +91,7 @@ router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (
 
 
 ///////// Like album /////////////
-router.post('/album/like/:id',async (req, res) => {
+router.post('/album/like/unlike/:id',async (req, res) => {
     var albumId = req.params.id;
     var token = req.header('x-auth');
     if(!token)
