@@ -1,13 +1,16 @@
 const express=require('express');
 var { mongoose } = require("../db/mongoose.js");
 const{track}=require("../models/track");
+var bodyParser= require('body-parser');
 var {album} = require("../models/album.js");
 var { User } = require("../models/users.js");
 const jwt = require('jsonwebtoken');
-
-var ArtistServices = require("./../Services/AlbumServices.js");
-
+var{artist}= require("./../models/artists.js");
+var service = require("./../Services/AlbumServices.js");
+var upload=require("./../Services/uploadAlbum.js").uploadAlbum;
+var{notification}=require("./../models/notifications.js");//notifications model
 const {ObjectID}=require('mongodb');
+mongoose.Promise = global.Promise;
 
 const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
@@ -20,7 +23,6 @@ var AssignAlbumImage=require("./../Services/ImageService.js").AssignAlbumImage;
 
 //EDIT ALBUM COVER IMAGE
 router.post("/album/coverimage",AuthenticateArtistAlbum,upload2,reSizeUserImage,uploadImagefn,AssignAlbumImage);
-
 
 /////Get Album Tracks
 
@@ -55,8 +57,12 @@ router.get('/album/tracks/:id', (req,res)=>{
             return res.status(302).send({album});
         }).catch((e)=>res.status(404).send());
     }).catch((e)=>res.status(401).send());
-        });    
+        });  
+        
+        
 
+
+        
 router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
     var decoded = req.token;
@@ -88,7 +94,7 @@ router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (
 
 
 ///////// Like album /////////////
-router.post('/album/like/:id',async (req, res) => {
+router.post('/album/like/unlike/:id',async (req, res) => {
     var albumId = req.params.id;
     var token = req.header('x-auth');
     if(!token)
@@ -100,47 +106,82 @@ router.post('/album/like/:id',async (req, res) => {
         return res.status(404).send("Invalid id");
     }
     album.findOne({_id:albumId}).then((album) => {
-    if(!album){
-        res.status(404).send('No album found');
-    }
-    })
-    User.findByToken(token).then((user) =>{
-        if(!user)
-        {
-            return res.status(401).send('Token Invalid');
+        if(!album){
+            res.status(404).send('No album found');
         }
-        var len =user.likedAlbums.length;
-        if(len == 0)
-        {
-            user.likedAlbums[0]=ObjectID(albumId.toString());
-            user.markModified('likedAlbums')
-            user.save();
-            album.findOne({_id:albumId}).then((album) => {
-                album.likes = album.likes +1;
-                album.markModified('likes');
-                album.save();
-                })
-            res.status(200).send();
-        }
-        else{
-        for(var i = 0;i<len;i++)
-        {
-            if(albumId==user.likedAlbums[i])
+        User.findByToken(token).then((user) =>{
+            if(!user)
             {
-                return res.status(403).send('You have already liked that album');   
+                return res.status(401).send('Token is not valid');
             }
+            var i = 0;
+                while(user.likedAlbums[i])
+                {
+                    if(album._id.toString()===user.likedAlbums[i].toString()) {
+                    user.likedAlbums.splice(i,1);
+                    user.markModified('likedAlbums')
+                    user.save();
+                    album.likes--;
+                    album.markModified('likes')
+                    album.save();
+                    return res.status(200).send('Unlike');
+                    }
+                    i++;
+                };
+                user.likedAlbums[i]=ObjectID(album._id.toString());
+                user.markModified('likedAlbums')
+                user.save();
+                album.likes++;
+                album.markModified('likes')
+                album.save();
+                res.status(200).send("Like");
+        }).catch((e) =>
+        {
+            res.status(401).send('Token is not valid');
+        })
+    }).catch((e) =>
+    {
+        res.status(500).send();
+    })
+});
+
+//// Create Album ////
+router.post('/album/newRelease', upload, async (req,res,next) =>
+{
+    var token = req.header('x-auth');
+    const files = req.files;
+    await artist.findByToken(token).then((myartist)=>{
+    
+        if(!req.body.AlbumName){
+            return res.status(400).send("Missing albumName");
         }
-        user.likedAlbums[len]=ObjectID(albumId.toString());
-        user.markModified('likedTracks')
-        user.save();
-        album.findOne({_id:albumId}).then((album) => {
-            album.likes = album.likes +1;
-            album.markModified('likes');
-            album.save();
-            })
-        res.status(200).send();
+        if(!req.body.genre){
+            return res.status(400).send("Missing genre");
         }
-    }) 
+        if(!files)
+        {
+            return res.status(400).send('Please upload a track');
+        }
+        if(req.fileError){    // the upladed file is not a track
+            return res.status(400).send('Please upload audio files');
+        }
+        service.newAlbum(myartist._id,req.body.AlbumName,files);
+
+        var notificationInstance = new notification({
+            text:myartist.artistName+" released a new Album ("+req.body.AlbumName +")",
+            sourceId:myartist._id,
+            userType:"artist"
+            
+        });
+        notificationInstance.save();
+
+        res.status(201).send(files); 
+    
+    }).catch((e) =>
+    {
+        res.status(401).send();
+    })
+
 });
 
 

@@ -136,7 +136,7 @@ UserSchema.methods.generateAuthToken = function () {
     });
 }
 
-UserSchema.statics.findByToken = function (token) {
+UserSchema.statics.findByToken = async function (token) {
     var User = this;
     var decoded;
 
