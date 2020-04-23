@@ -5,9 +5,11 @@ const path = require('path');
 //
 var newTrackPath=undefined;
 
+
+
 const multerStorage= multer.diskStorage({
     destination:(req,res,cb)=>{
-        cb(null,"./../albums")
+        cb(null,"./../tracks")
     },
     filename:(req,file,cb)=>{
         cb(null,newTrackPath);
@@ -27,7 +29,7 @@ const multerFilter =(req,file,cb)=>{
             artistId2= myartist._id; 
             if(file.mimetype.split('/')[0]=="audio"){
                 const ext=file.mimetype.split('/')[1];
-                newTrackPath=file.originalname;
+                newTrackPath=path.parse(file.originalname).name+"--"+artistId2+"."+"mp3";
                 var trackInstance=new track({
                     artistId:artistId2,
                     trackName:path.parse(file.originalname).name,

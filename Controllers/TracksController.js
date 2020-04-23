@@ -371,49 +371,38 @@ router.post('/tracks/like/:id', (req,res) =>
         return res.status(404).send("Invalid id");
     }
     track.findOne({_id:trackId}).then((track) => {
-    if(!track){
-        return res.status(404).send('No track found');
-    }
-    })
-    User.findByToken(token).then((user) =>{
-        if(!user)
-        {
-            return res.status(401).send('User does not have access or does not exist');
+        if(!track){
+            return res.status(404).send('No track found');
         }
-        console.log('user was found');
-        var len =user.likedTracks.length;
-        if(len == 0)
-        {
-            user.likedTracks[0]=ObjectID(trackId.toString());
+        User.findByToken(token).then((user) =>{
+            if(!user)
+            {
+                return res.status(401).send('User does not have access or does not exist');
+            }
+            var i = 0;
+            while(user.likedTracks[i])
+            {
+                if(track._id.toString()===user.likedTracks[i].toString()) {
+                   user.likedTracks.splice(i,1);
+                   user.markModified('likedTracks')
+                   user.save();
+                   track.likes--;
+                   track.markModified('likes')
+                   track.save();
+                return res.status(200).send('Unlike');
+                }
+                i++;
+            };
+            user.likedTracks[i]=ObjectID(track._id.toString());
             user.markModified('likedTracks')
             user.save();
-            track.findOne({_id:trackId}).then((track) => {
-                track.likes = track.likes +1;
-                track.markModified('likes');
-                track.save();
-                })
-            res.status(200).send();
-        }
-        else{
-        for(var i = 0;i<len;i++)
-        {
-            if(trackId==user.likedTracks[i])
-            {
-                return res.status(403).send('You have already liked that track');   
-            }
-        }
-        user.likedTracks[len]=ObjectID(trackId.toString());
-        user.markModified('likedTracks')
-        user.save();
-        track.findOne({_id:trackId}).then((track) => {
-            track.likes = track.likes +1;
-            track.markModified('likes');
+            track.likes++;
+            track.markModified('likes')
             track.save();
-            })
-        res.status(200).send();
-        }
-    }) 
-})
+            res.status(200).send("Like");
+        }) 
+    })
+});
 
 
 /////// Get Liked Tracks //////////

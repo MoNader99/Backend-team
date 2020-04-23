@@ -2,6 +2,8 @@
 var { mongoose } = require("./../db/mongoose.js");
 var ObjectID = require('mongodb').ObjectID;
 var { album } = require("./../models/album.js");
+var{track}=require("./../models/track.js");
+const path = require('path');
 var { GetArtistById } = require("./../Services/ArtistServices");
 var IsAlbumFound = function ( albumid) {
  
@@ -141,9 +143,38 @@ var AddArtistName = async function (albums) {
  //   return getsimplifiedalbum1(album);
 //}
 
+async function newAlbum(artistIdSent,albumname,myfiles) {
+    
+    var i = 0;var tracksArr = [];
+    while(myfiles[i])
+    {
+        var trackpath = path.parse(myfiles[i].originalname).name+"--"+artistIdSent+"."+"mp3";
+        await track.findOne({trackPath:trackpath}).then((myTrack) =>
+        {
+            tracksArr.push(new track);
+            tracksArr[i]=myTrack;
+            
+        })
+        i++;
+        
+    }
+    var albumInstance = new album({
+        artistId:artistIdSent,
+        albumName:albumname,
+        tracks:tracksArr
+    });
+    albumInstance.save().then((res)=>{
+        console.log(res._id);
+    },(err)=>{
+        console.log(err);
+    });
+
+}
+
 module.exports = {
     DeleteByArtist,
     SearchInAlbums,
     album,
-    GetSimplifiedAlbum
+    GetSimplifiedAlbum,
+    newAlbum
 }

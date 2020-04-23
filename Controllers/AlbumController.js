@@ -4,14 +4,13 @@ const{track}=require("../models/track");
 var {album} = require("../models/album.js");
 var { User } = require("../models/users.js");
 const jwt = require('jsonwebtoken');
-
+var{artist}= require("./../models/artists.js");
 var ArtistServices = require("./../Services/AlbumServices.js");
 
 const {ObjectID}=require('mongodb');
 
 const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
-
 
 
 
@@ -49,8 +48,12 @@ router.get('/album/tracks/:id', (req,res)=>{
             return res.status(302).send({album});
         }).catch((e)=>res.status(404).send());
     }).catch((e)=>res.status(401).send());
-        });    
+        });  
+        
+        
 
+
+        
 router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
     var decoded = req.token;
