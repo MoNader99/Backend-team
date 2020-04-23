@@ -675,7 +675,7 @@
  *
  * @apiError  400                  [no image file]
  * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 No access
+ *     HTTP/1.1 400 No access
  *     {
  *       "error": "Please Upload an image"
  *     }
@@ -695,9 +695,72 @@
  * 
  * @apiError  404                [Track doesnot belong to the user]
  * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 400 No access
+ *     HTTP/1.1 404 No access
  *     {
  *       "error": "Track is not found"
+ *     }
+ * @apiError  401                      [Cannot change track cover image without auth token]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ *
+ *
+ */
+
+/**
+ * EDIT ALBUM COVER IMAGE
+ * -------------------------------------
+ * @api {post} /album/coverimage   Edit cover image of the album
+ * @apiName Edit Album cover image
+ * @apiGroup Album
+ *
+ * @apiHeader {string} x-auth    (artistToken)Only an artist who has a verified account can edit his/her album cover image 
+ * @apiHeader {string} albumId    Id of the album to be edited
+ *
+ * @apiParam {file} photo      sent as file in in form-data
+ *
+ * @apiSuccess 200                     [The response of the sucess case is a message]
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200
+ *     {
+ *            "Album Image changed successfully"
+ *     }
+ *
+ * @apiError  400                  [no image file]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Please Upload an image"
+ *     }
+ *
+ * @apiError  400                 [file that is not an image]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": Please Upload an image
+ *     }
+ * @apiError  400                 [Missing Album Id]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Missing Album Id"
+ *     }
+ * 
+ * @apiError  404                [Album is not found]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "Album is not found.May be removed by the artist"
+ *     }
+ * 
+ * @apiError  404                [Invalid Album ID]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *       "error": "Invalid Album ID"
  *     }
  * @apiError  401                      [Cannot change track cover image without auth token]
  * @apiErrorExample {JSON} Error-Response:
@@ -717,7 +780,6 @@
 
 
 
-
 //GET ARTIST RELATED ARTISTS
  /**
  * Get artist related artists
@@ -726,7 +788,7 @@
  * @apiName GetArtistRelatedArtists
  * @apiGroup Users
  *
- * @apiHeader {string} x-auth    (UserToken)Only an User who has a verified account can get artist related artists
+ * @apiHeader {string} x-auth    Front end token
  * @apiHeader {string}   artistId     Id of the artist the  user wants to get his/her related artists   
  *
  * @apiSuccess 302                     [The response of the sucess case is an array of artists]
@@ -770,7 +832,7 @@
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401 No access
  *     {
- *       "error": "Unauthorized Access"
+ *       "error": "Token is not valid"
  *     }
  * @apiError  404                      [the artist id is not found in the DB]
  * @apiErrorExample {JSON} Error-Response:
@@ -2651,6 +2713,77 @@
  *     }
  *
  *
+ * 
+ * /
+ * */
+
+
+ 
+/** get a user's liked playlists
+ * ---------------------
+ * 
+ * @api {get} /playlists/liked/me           get a user's liked playlists
+ * @apiName  get a user's liked playlists
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiHeader { string }  x-auth       user's token
+ * @apiSuccess {object[]}   likedPlaylists     array of likedPlaylists object 
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * 
+ * {
+ * 
+ * "likedPlaylists": [
+ *      
+ *        {
+ *           "creator": "monica",
+ *           "playlistId": "5e9d5c3c682ddc25100e72cd",
+ *           "playlistName": "favs",
+ *           "likes": 1,
+ *           "tracks": [
+ *               "5e9d5ba78d6d7148a8860da3"
+ *           ],
+ *           "imagePath": "default.jpeg",
+ *           "privacy": false
+ *       },
+ *       {
+ *           "creator": "Spotify",
+ *           "playlistId": "5ea08233370ecb40db0e0b68",
+ *           "playlistName": "indies",
+ *           "likes": 2,
+ *           "tracks": [
+ *               "5e9d5ba78d6d7148a8860da3",
+ *               "5e9d5ba78d6d7148a8860da4",
+ *               "5e9d5ba78d6d7148a8860da5",
+ *               "5e9d5ba78d6d7148a8860da7",
+ *               "5e9d5ba78d6d7148a8860da6"
+ *           ],
+ *          "imagePath": "default.jpeg",
+ *           "privacy": false
+ *      }
+ *   ]
+ * }
+ * 
+*  @apiError  404                      [no liked playlists]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "the user has not liked any playlist yet"
+*     }
+*
+
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ 
  * 
  * /
  * */

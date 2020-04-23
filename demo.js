@@ -5,7 +5,8 @@ var{User}= require("./models/users.js");   //users model
 var{artist}= require("./models/artists.js");  //artists model
 var{followArtist}= require("./models/followArtist.js");  // follow artist model
 var{playlist}= require("./models/playlists.js"); // playlists model
-var{followPlaylist}= require("./models/followPlaylist.js"); // followplaylist model
+var { followPlaylist } = require("./models/followPlaylist.js"); // followplaylist model
+var { followUser } = require("./models/followUser.js"); // followplaylist model
 var{album}= require("./models/album.js"); // albums model
 var{track}=require("./models/track.js");//track model
 var{notification}=require("./models/notifications.js");//notifications model
@@ -24,9 +25,9 @@ var imgPath6 = "eminem.jpg";
 var imgPath7 = "When_I'm_Gone_(Eminem_song).jpg";
 var imgPath8 = "LoseYourselfPicEminem.jpg";
 var imgPath9 = "AmrDiabAlbumTalat.jpg";
-var imgPath10 = "ed.png";
-var imgPath11 = "sel.png";
-var imgPath12 = "coldplay.png";
+var imgPath11 = "kaleo.jpg";
+var imgPath10 = "KaleoAlbum1.jpg";
+var imgPath12 = "KaleoWayDownWeGo.jpg";
 
 
 //ARTISTS
@@ -117,6 +118,20 @@ artist4.save().then((res)=>{
     console.log(err);
 });
 
+
+var artist5= new artist({
+    email:"kaleo@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Kaleo",
+    about:`Kaleo (stylized as KALEO) is an Icelandic rock band that formed at Mosfellsbær in 2012, consisting of lead vocalist and guitarist JJ Julius Son, drummer David Antonsson, bassist Daniel Kristjansson, and lead guitarist Rubin Pollock. ... Lead singles "I Want More" and "Break My Baby" were released on 15 January 2020.`,
+    genres:["Alternative Rock","Garage punk","Blues"],
+    rating: 10,
+    imagePath:imgPath11,
+    gender:"M",
+    birthDate:"1990-12-12"
+});
+artist5.save();
+
 //TRACKS
 ///////////////////////////////////////////////
 var track1=new track({
@@ -127,11 +142,7 @@ var track1=new track({
     genre:"Jazz",
     trackPath:"Hello-Adele-seeds.mp3" 
     });
-track1.save().then((res)=>{
-    console.log(res._id);
-    },(err)=>{
-            console.log(err);
-});
+track1.save();
     
 var track2=new track({
     artistId:artist3._id,
@@ -142,11 +153,7 @@ var track2=new track({
     trackPath:"Lose Yourself-Eminem-seeds.mp3"  
     });    
     
-track2.save().then((res)=>{
-    console.log(res._id);
-    },(err)=>{
-            console.log(err);
-});
+track2.save();
 
 var track3=new track({
     artistId:artist4._id,
@@ -158,11 +165,7 @@ var track3=new track({
     trackPath:"Tamaly m3ak-Amr Diab-seeds.mp3"  
     });    
     
-track3.save().then((res)=>{
-    console.log(res._id);
-    },(err)=>{
-            console.log(err);
-});
+track3.save();
 
 var track5=new track({
     artistId:artist4._id,
@@ -173,13 +176,7 @@ var track5=new track({
     genre:"Arabic",
     trackPath:"Youm Talat-Amr Diab-seeds.mp3"  
     });    
-    
-track5.save().then((res)=>{
-    console.log(res._id);
-    },(err)=>{
-            console.log(err);
-});
-
+track5.save();
 
 var track4=new track({
     artistId:artist3._id,
@@ -190,11 +187,51 @@ var track4=new track({
     trackPath:"When I'm Gone-Eminem-seeds.mp3"  
     });    
     
-track4.save().then((res)=>{
-    console.log(res._id);
-    },(err)=>{
-            console.log(err);
-});
+track4.save();
+
+var track6=new track({
+    artistId:artist5._id,
+    trackName:"Way Down We Go",
+    imagePath:imgPath12,
+    likes:10,
+    genre:"Alternative Rock",
+    trackPath:"Way Down We Go.Kaleowith Lyrics ..mp3"  
+    });    
+    
+track6.save();
+
+var track7=new track({
+    artistId:artist5._id,
+    trackName:"Broken Bones",
+    imagePath:imgPath10,
+    likes:20,
+    type:"Album",
+    genre:"Blues",
+    trackPath:"KALEO Broken Bones [Official Audio].mp3"  
+    });   
+track7.save();
+
+var track8=new track({
+    artistId:artist5._id,
+    trackName:"I Can't Go On Without You",
+    imagePath:imgPath10,
+    likes:50,
+    type:"Album",
+    genre:"Blues",
+    trackPath:"KALEO I Can't Go On Without You [Official Audio].mp3"  
+    });   
+track8.save();
+
+var track9=new track({
+    artistId:artist5._id,
+    trackName:"Hot Blood",
+    imagePath:imgPath10,
+    likes:21,
+    type:"Album",
+    genre:"Alternative Rock",
+    trackPath:"KALEO Hot Blood [Official Audio].mp3"  
+    });   
+track9.save();
 ///////////Creating Albums//////////////////
 var album1 = new album({
     artistId:artist4._id,
@@ -203,11 +240,16 @@ var album1 = new album({
     tracks: [track3, track5],
 });
 
-album1.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
+album1.save();
+
+var album2 = new album({
+    artistId:artist5._id,
+    albumName:"A/B",
+    imagePath:imgPath10,
+    tracks: [track7, track8,track9],
 });
+
+album2.save();
 
 //USERS
 ////////////////////////////////////////////////
@@ -244,7 +286,21 @@ user2.save().then((res)=>{
 },(err)=>{
     console.log(err);
 });
+var user3 = new User({
+    email: "ayamahmoud99@gmail.com",
+    password: "$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    userName: "Aya",
+    gender: "F",
+    birthDate: '1999-09-09',
 
+});
+
+
+user3.save().then((res) => {
+    console.log(res._id);
+}, (err) => {
+    console.log(err);
+});
 
 var followArtist1= new followArtist({
     user_id: user1._id,
@@ -262,7 +318,20 @@ var followArtist1= new followArtist({
     }
 ]
 });
-
+var followUser1 = new followUser({
+    user_id: user1._id,
+    followedUserInfo: [{
+        userId: user2._id.toString(),
+        followDate: Date.now(),
+        //rate:2,
+    },
+    {
+        userId: user3._id.toString(),
+        followDate: Date.now(),
+        rate: 5,
+    }
+    ]
+});
 
 
 
@@ -273,7 +342,11 @@ followArtist1.save().then((res)=>{
     console.log(err);
 });
 
-
+followUser1.save().then((res) => {
+    console.log(res._id);
+}, (err) => {
+    console.log(err);
+})
 
 
 

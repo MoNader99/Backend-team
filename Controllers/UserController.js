@@ -226,7 +226,21 @@ router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, as
     })
 
 });
+router.post('/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
+    var userId = req.params.id;
+    console.log("da5al");
 
+    userservices.unFollowUser(userId, req.userId).then((str) => {
+        console.log(str);
+        if (str == "unfollowed") res.status(200).send("You have un followed the user");
+        if (str == "notfound") res.status(200).send("You are not following the user");
+
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send(err);
+    })
+
+});
 // Get User Profile Request
 router.get('/users/me',(req,res) => {
     var token = req.header('x-auth');
@@ -638,13 +652,7 @@ catch{
 
 
 //GET ARTIST RELATED ARTISTS
-router.get('/users/artists/related',(req,res)=>{
-    var token = req.header('x-auth');
-    User.findByToken(token).then((user)=>{
-        if(!user){
-            return Promise.reject();
-        }
-
+router.get('/users/artists/related' ,AuthenticationServices.AuthenticateFrontend,(req,res)=>{
     var sentId=req.header('artistId');
     if(!sentId){
         return res.status(400).send("Send the artist ID");
@@ -677,9 +685,6 @@ router.get('/users/artists/related',(req,res)=>{
 
         res.status(500).send("Internal server error");
     })
-  }).catch((e)=>{
-    res.status(401).send('Unauthorized Access');
-  })
 });
 
 

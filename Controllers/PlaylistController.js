@@ -4,7 +4,7 @@ const{track}=require("../models/track");
 var {playlist} = require("../models/playlists.js");
 var {User} = require("../models/users.js");
 
-
+const playlistservices = require("./../Services/PlaylistServices");
 const {ObjectID}=require('mongodb');
 
 const router=express.Router();
@@ -313,7 +313,7 @@ router.post('/playlists/:playlistId/like/unlike/me', (req,res)=>{
                      playlists.markModified('likes');
                      playlists.save();
              
-                     res.status(200).send();
+                     res.status(200).json({"message":"liked a playlist"});
                  }
 
                  else{
@@ -567,6 +567,161 @@ router.post('/playlists/:playlistId/edit', (req,res)=>{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** get a user's liked playlists
+ * ---------------------
+ * 
+ * @api {get} /playlists/liked/me           get a user's liked playlists
+ * @apiName  get a user's liked playlists
+ * @apiGroup Playlists
+ *   
+ *  
+ * @apiHeader { string }  x-auth       user's token
+ *
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *     
+ * }
+ * 
+ * 
+ * 
+*  @apiError  404                      [playlist not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "playlist not found"
+*     }
+*
+* @apiError  404                    [invalid playlist id]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "invalid id"
+*     }
+*
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+ *
+ * @apiError 403         [changing another user's playlist]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 403  Forbidden
+ * {
+ *           
+    "message": "you are not allowed to make this request"
+ *     }
+ *@apiError 400         [user can not have two or more playlists with the same name]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 400  Bad Request
+ * {
+ *           
+    "message": "you already have a playlist with the same name"
+ *     }
+ *
+ *
+ * 
+ * /
+ * */
+
+
+
+//Get a User liked Playlists Request
+router.get('/playlists/liked/me', async (req,res) => {
+    var token = req.header('x-auth');
+  
+    var likedPlaylistsIds;
+    var likedPlaylists=[{}];
+  await  User.findByToken(token).then(async (user) => {
+        if(!user){
+        
+         return  Promise.reject();
+        }
+          likedPlaylistsIds=user.likedPlaylists;
+         
+        //   console.log(user.likedPlaylists.toString());
+        //  console.log(user.likedPlaylists.length);
+
+        // console.log(likedPlaylistsIds.toString());
+         //console.log(likedPlaylistsIds.length);
+
+         if(likedPlaylistsIds.length===0)
+         {
+            return res.status(404).json({"message":"the user has not liked any playlist yet"});
+         }
+
+         for(var i=0;i<likedPlaylistsIds.length;i++)
+         {
+           await playlist.findById(ObjectID(likedPlaylistsIds[i])).then(async (myPlaylist)=>{
+           // console.log(myPlaylist.toString());
+             
+               if(myPlaylist.userId==null)
+               {
+                   likedPlaylists[i]={ 
+                    creator:"Spotify",
+                    playlistId:myPlaylist._id,
+                    playlistName:myPlaylist.playlistName,
+                    likes:myPlaylist.likes,
+                    tracks:myPlaylist.tracks,
+                    imagePath:myPlaylist.imagePath,
+                    privacy:myPlaylist.privacy
+                    
+}
+
+               }
+             else{
+
+            await User.findById(ObjectID( myPlaylist.userId)).then((myUser)=>{
+               
+              //  console.log(myUser.toString());
+                likedPlaylists[i]={ creator:myUser.userName,
+                                    //userId:myPlaylist.userId,
+                                    playlistId:myPlaylist._id,
+                                    playlistName:myPlaylist.playlistName,
+                                    likes:myPlaylist.likes,
+                                    tracks:myPlaylist.tracks,
+                                    imagePath:myPlaylist.imagePath,
+                                    privacy:myPlaylist.privacy
+                                    
+                }
+
+            
+             }).catch((e)=>{
+
+                console.log("error in user")
+             })
+            }
+
+         }).catch((e)=>{
+             console.log("error in playlist")})
+
+         }
+
+       res.send({likedPlaylists});
+    
+    }).catch((e) => {
+        res.status(401).json({"message":"authentication failed"});
+    })
+})    
 
 
 

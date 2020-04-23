@@ -11,9 +11,15 @@ const {ObjectID}=require('mongodb');
 
 const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
+//edit image imports
+var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
+var upload2=require("./../Services/ImageService.js").UploadUserPhoto;
+var AuthenticateArtistAlbum= require("./../Services/ImageService.js").AuthenticateArtistAlbum;
+var AssignAlbumImage=require("./../Services/ImageService.js").AssignAlbumImage;
+//
 
-
-
+//EDIT ALBUM COVER IMAGE
+router.post("/album/coverimage",AuthenticateArtistAlbum,upload2,reSizeUserImage,uploadImagefn,AssignAlbumImage);
 
 /////Get Album Tracks
 
