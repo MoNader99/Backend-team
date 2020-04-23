@@ -109,7 +109,7 @@ router.post('/album/like/unlike/:id',async (req, res) => {
         User.findByToken(token).then((user) =>{
             if(!user)
             {
-                return res.status(401).send('Token Invalid');
+                return res.status(401).send('Token is not valid');
             }
             var i = 0;
                 while(user.likedAlbums[i])
@@ -132,7 +132,13 @@ router.post('/album/like/unlike/:id',async (req, res) => {
                 album.markModified('likes')
                 album.save();
                 res.status(200).send("Like");
-        }) 
+        }).catch((e) =>
+        {
+            res.status(401).send('Token is not valid');
+        })
+    }).catch((e) =>
+    {
+        res.status(500).send();
     })
 });
 

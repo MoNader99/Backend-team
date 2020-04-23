@@ -1893,29 +1893,33 @@
 
 ////////////////// Ranime Hossam //////////////////
 /**
-* Like album
+* Like or Unlike album
  * ---------------------
  * 
- * @api {post} album/like/:id              like album
- * @apiName  Like album
+ * @api {post} album/like/unlike/:id              Like or Unlike album
+ * @apiName  Like or Unlike album
  * @apiGroup Album
  *   
  *  
- *@apiParam {string}  id
+ *@apiParam {string}  id            sent as a parameter in the url
  * 
-* @apiHeader {string}  x-auth       user token to like album
+* @apiHeader {string}  x-auth       user token to like or unlike album (in header)
 *
- *@apiHeader (Response Header) {String} x-auth [token given for the logging in user] 
  * 
- * @apiSuccessExample {JSON} Success-Response:
+ * @apiSuccessExample {string} Success-Response:
 *     HTTP/1.1 200 OK
 *      {
-* 
- *}
+*          "Like"
+*      }
+* @apiSuccessExample {string} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+*          "Unlike"
+*      }
 *
 *
  * @apiError 401   Unauthorized          [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
+ *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is not valid"
@@ -1923,24 +1927,16 @@
  *
  *
  * @apiError 401   Unauthorized          [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
+ *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401  Unauthorized
  *     {
  *        "Token is Empty"
  *     }
  *
  *
- *  @apiError  403  Forbidden                [Repeating the request more than once for the same user and the same album]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 403 Forbidden
- *     {
- *        "You have already liked that album"
- *     }
- *
- * 
  * 
  *  @apiError  404  Not found                [this album is not found]
- *  @apiErrorExample {JSON} Error-Response:
+ *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "No album found"
@@ -1948,77 +1944,82 @@
  * 
  * 
  * @apiError  404  Not found                [this is not an ID]
- *  @apiErrorExample {JSON} Error-Response:
+ *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "Invalid id"
  *     }
  * 
+ * @apiError  500  Internal Server Error               
+ *  
+ * 
+ * 
+ * 
  */
 /**
-* Like track
+* Like or Unlike track
  * ---------------------
  * 
- * @api {post} track/like/:id              like track
- * @apiName  Like track
+ * @api {post} track/like/unlike/:id              Like or Unlike track
+ * @apiName  Like or Unlike track
  * @apiGroup Tracks
  *   
  *  
- *@apiParam {string}  id
+ *@apiParam {string}  id            sent as a parameter in the url
  * 
-* @apiHeader {string}  x-auth       user token to like track
+* @apiHeader {string}  x-auth       user token to like or unlike track (in header)
 *
- *@apiHeader (Response Header) {String} x-auth [token given for the logging in user] 
  * 
- * @apiSuccessExample {JSON} Success-Response:
+ * @apiSuccessExample {string} Success-Response:
 *     HTTP/1.1 200 OK
 *      {
-* 
- *}
+*          "Like"
+*      }
+* @apiSuccessExample {string} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+*          "Unlike"
+*      }
 *
 *
- * @apiError 401   [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401
+ * @apiError 401   Unauthorized          [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
  *     {
- *        "Token is Invalid"
+ *        "Token is not valid"
  *     }
  *
  *
- * @apiError 401   [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401
+ * @apiError 401   Unauthorized          [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401  Unauthorized
  *     {
  *        "Token is Empty"
  *     }
  *
  *
- * @apiError  403  Forbidden                [Repeating the request more than once for the same user and the same album]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 403 Forbidden
- *     {
- *        "You have already liked that track"
- *     }
- *
  * 
- * 
-  * @apiError  404  Not found                [this album is not found]
- *  @apiErrorExample {JSON} Error-Response:
+ *  @apiError  404  Not found                [this track is not found]
+ *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
- *        "No album found"
+ *        "No track found"
  *     }
  * 
  * 
- *  * @apiError  404  Not found                [this is not an ID]
- *  @apiErrorExample {JSON} Error-Response:
+ * @apiError  404  Not found                [this is not an ID]
+ *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "Invalid id"
  *     }
  * 
+ * @apiError  500  Internal Server Error               
+ *  
+ * 
+ * 
+ * 
  */
-
 
  /**
  * change password
@@ -2337,62 +2338,6 @@
 
 
 
-/////////////Aya Mahmoud /////////////////////////////
-
-/** UnLike album
- * ---------------------
- * 
- * @api { post } /album/unlike/:id              unlike album
- * @apiName  unLikealbum
- * @apiGroup Album
- *   
- *  
- * @apiParam { string } id
- * 
- * @apiHeader { string } x - auth       user token to unlike album
- *
- * @apiHeader(Response Header) { String } x - auth[token given for the logging in user] 
- * 
- * @apiSuccessExample { JSON } Success - Response:
- * HTTP / 1.1 200 OK
- * {
- * 
- * }
- *
- *
- * @apiError 401   Unauthorized[authentication failed]
- * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401   Unauthorized
- * {
- *        "Token is not valid"
- *     }
- *
- *
- * @apiError 401   Unauthorized[authentication failed]
- * @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 401  Unauthorized
- * {
- *        "Token is Empty"
- *     }
- * 
- * 
- *  @apiError  404  Not found[this album is not found]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 404 Not found
- * {
- *        " Notfound in liked albums"
- *     }
- * 
- * 
- * @apiError  404  Not found[this is not an ID]
- *  @apiErrorExample { JSON } Error - Response:
- * HTTP / 1.1 404 Not found
- * {
- *        "Invalid id"
- *     }
- * 
- * 
- * */
 
 ///monica////////////////////////////
  

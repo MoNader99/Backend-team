@@ -400,7 +400,13 @@ router.post('/tracks/like/unlike/:id', (req,res) =>
             track.markModified('likes')
             track.save();
             res.status(200).send("Like");
+        }).catch((e) =>
+        {
+            res.status(401).send('Token is not valid');
         }) 
+    }).catch((e) =>
+    {
+        res.status(500).send();
     })
 });
 
