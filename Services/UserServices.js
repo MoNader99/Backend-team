@@ -35,6 +35,44 @@ var deleteUserFromSchema = function (followeduserid, userId) {
     return followUser.update({ user_id: userId }, { "$pull": { "followedUserInfo": { "userId": followeduserid } } });
 
 }
+var addFacebookUser = function (facebookId, userName, email, gender, bdate) {
+    console.log("bdate" + bdate);
+    console.log(facebookId);
+    console.log(userName);
+    var newacc = new User(
+        {
+            userName: userName,
+            email: email,
+            facebookId: facebookId,
+            gender: gender,
+            birthDate: bdate
+
+        });
+  newacc.save().then((doc) => {
+        console.log("2et7at");
+        Promise.resolve(newacc);
+    }).catch((err) => {
+        console.log(err);
+        Promise.reject();
+
+    })
+}
+var signUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
+    console.log(facebookId);
+    return User.findOne({ 'facebookId': facebookId }).then((user) => {
+        if (!user) {
+            addFacebookUser(facebookId,userName,email,gender,bdate).then((user) => {
+                Promise.resolve(user);
+            }).catch((err) => {
+                Promise.reject();
+        })
+        }
+        else {
+            console.log(user.facebookId);
+            return user;
+        }
+    })
+}
 var unFollowUser = function (followeduserid, userId) {
     return deleteUserFromSchema(followeduserid, userId).then((user) => {
        // console.log(artist);
@@ -100,5 +138,6 @@ module.exports = {
     User,
     GetUserById,
     HashPassword,
-    unFollowUser
+    unFollowUser,
+    signUpWithFacebook
 }

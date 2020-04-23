@@ -30,7 +30,11 @@ var UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        trim: true,
+        minlength: 4,
+    },
+    facebookId: {
+        type: String,
         trim: true,
         minlength: 4,
     },

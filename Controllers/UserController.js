@@ -187,28 +187,39 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
     console.log(2);
     User.findByCredentials(body.email, body.password).then((user) => {
         console.log(3);
-		if(user.isActive==true)
-		{
-			return user.generateAuthToken().then((token) => {
+        if (user.isActive == true) {
+            return user.generateAuthToken().then((token) => {
                 console.log(4);
-                res.header("Access-Control-Allow-Headers" , "x-auth");
+                res.header("Access-Control-Allow-Headers", "x-auth");
                 res.header("Access-Control-Expose-Headers", "x-auth");
                 console.log("login 2el gededa");
                 res.header('x-auth', token).send();
-		        console.log(5);
-			});
-		}
-		else
-		{
-			res.status(403).send("Please go to your inbox and click the link to activate your Email.");
-		}
+                console.log(5);
+            });
+        }
+        else {
+            res.status(403).send("Please go to your inbox and click the link to activate your Email.");
+        }
     }).catch((e) => {
         console.log(e);
         res.status(401).send("Either email or passwrod is incorrect");
     });
     //res.send(body)
-
-
+});
+router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToken, (req, res) => {
+    console.log("dada");
+    console.log(req.body.userName);
+    userservices.signUpWithFacebook(req.facebookId, req.body.userName, req.body.email, req.body.gender, req.body.bdate).then((user) => {
+        console.log(user);
+			return user.generateAuthToken().then((token) => {
+                res.header("Access-Control-Allow-Headers" , "x-auth");
+                res.header("Access-Control-Expose-Headers", "x-auth");
+                res.header('x-auth', token).send();
+			});
+    }).catch((e) => {
+        console.log(e);
+        res.status(400).send("Wrong parameters in request");
+    });
 
 });
 router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
