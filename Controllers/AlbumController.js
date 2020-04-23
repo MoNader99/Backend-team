@@ -103,47 +103,37 @@ router.post('/album/like/:id',async (req, res) => {
         return res.status(404).send("Invalid id");
     }
     album.findOne({_id:albumId}).then((album) => {
-    if(!album){
-        res.status(404).send('No album found');
-    }
-    })
-    User.findByToken(token).then((user) =>{
-        if(!user)
-        {
-            return res.status(401).send('Token Invalid');
+        if(!album){
+            res.status(404).send('No album found');
         }
-        var len =user.likedAlbums.length;
-        if(len == 0)
-        {
-            user.likedAlbums[0]=ObjectID(albumId.toString());
-            user.markModified('likedAlbums')
-            user.save();
-            album.findOne({_id:albumId}).then((album) => {
-                album.likes = album.likes +1;
-                album.markModified('likes');
-                album.save();
-                })
-            res.status(200).send();
-        }
-        else{
-        for(var i = 0;i<len;i++)
-        {
-            if(albumId==user.likedAlbums[i])
+        User.findByToken(token).then((user) =>{
+            if(!user)
             {
-                return res.status(403).send('You have already liked that album');   
+                return res.status(401).send('Token Invalid');
             }
-        }
-        user.likedAlbums[len]=ObjectID(albumId.toString());
-        user.markModified('likedTracks')
-        user.save();
-        album.findOne({_id:albumId}).then((album) => {
-            album.likes = album.likes +1;
-            album.markModified('likes');
-            album.save();
-            })
-        res.status(200).send();
-        }
-    }) 
+            var i = 0;
+                while(user.likedAlbums[i])
+                {
+                    if(album._id.toString()===user.likedAlbums[i].toString()) {
+                    user.likedAlbums.splice(i,1);
+                    user.markModified('likedAlbums')
+                    user.save();
+                    album.likes--;
+                    album.markModified('likes')
+                    album.save();
+                    return res.status(200).send('Unlike');
+                    }
+                    i++;
+                };
+                user.likedAlbums[i]=ObjectID(album._id.toString());
+                user.markModified('likedAlbums')
+                user.save();
+                album.likes++;
+                album.markModified('likes')
+                album.save();
+                res.status(200).send("Like");
+        }) 
+    })
 });
 
 
