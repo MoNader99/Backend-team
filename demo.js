@@ -17,9 +17,7 @@ const Schema = mongoose.Schema;
 
 //PATH OF IMAGES
 var imgPath1 = "default.jpeg";   //default picture of playlist
-var imgPath2 = "Billie-Eilish.jpg";
 var imgPath3 = "Adele.png";
-var imgPath4 = "defaultuser.png";
 var imgPath5 = "AmrDiab1.jpg";
 var imgPath6 = "eminem.jpg";
 var imgPath7 = "When_I'm_Gone_(Eminem_song).jpg";
@@ -40,42 +38,25 @@ var artist1= new artist({
     who has sold millions of albums worldwide and won a total of 15 Grammys as well as an Oscar.
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
-    genres:["pop","R&B"],
+    genres:["Pop","R&B"],
     rating: 4,
     imagePath:imgPath3,
     gender:"F",
     birthDate:"1988-05-05"
 });
-
-//SAVING AND RETURNING ID OF THE NEW ARTIST
-artist1.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-
-//CREATING A second ARTIST
+artist1.save();
 
 var artist2= new artist({
-    
-    email:"be12@hotmail.com",
-    password:"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS",
-    artistName:"Billie Eilish",
-    about:`Billie Eilish is an American singer-songwriter who first shot to prominence when she uploaded her breakout hit
-    "Ocean Eyes" to SoundCloud in 2015. ... She worked with her brother, Finneas O'Connell, to record "Ocean Eyes,"
-     a song O'Connell had initially written for his band`,
-    genres: ["sha3by", "R&B"],
-    imagePath:imgPath2,
+    artistName:"Shbokshy",
+    about:`Egyptian singer known professionally for nothing at all but still is pleased to be part and an artist in this application.Thank you babes `,
+    genres:["Arabic","R&B"],
+    imagePath:"defaultuser.png",
+    rating: 4,
     gender:"M",
-    birthDate:"2001-12-18"
+    birthDate:"1988-05-05"
 });
 
-artist2.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
+artist2.save();
 
 
 var artist3= new artist({
@@ -84,7 +65,7 @@ var artist3= new artist({
     about:`Marshall Bruce Mathers III (born October 17, 1972), known professionally as Eminem
      (/ˌɛmɪˈnɛm/; often stylized as EMINƎM), is an American rapper, songwriter, record producer,
      record executive and actor. He is one of the most successful musical artists of the 21st century.`,
-    genres:["Trap","Jazz","pop","Rap"],
+    genres:["Trap","Jazz","Pop","Rap"],
     imagePath:imgPath6,
     rating: 4.6,
     gender:"M",
@@ -104,7 +85,7 @@ var artist4= new artist({
     password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
     artistName:"Amr Diab",
     about:`Amr Diabis an Egyptian singer, composer and former actor. He has established himself as an acclaimed recording artist and author in most Mediterranean countries. According to a research by Michael Frishkopf, he has created his style termed as "Mediterranean Music", a blend of Western and Egyptian rhythms. By 1992, he became the first Egyptian and Middle Eastern artist to start making high-tech music videos.`,
-    genres:["pop","R&B"],
+    genres:["Arabic","Hip-Hop","R&B"],
     rating: 4,
     imagePath:imgPath5,
     gender:"M",
@@ -132,6 +113,148 @@ var artist5= new artist({
 });
 artist5.save();
 
+var artist6= new artist({
+    email:"travis@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Travis Scott",
+    about:`Jacques Berman Webster II (born April 30, 1992), known professionally as Travis Scott (formerly stylized as Travi$ Scott), is an American rapper, singer, songwriter, and record producer. In 2012, Scott signed his first major-label deal with Epic Records.`,
+    genres:["Rap","Trap"],
+    rating: "8",
+    imagePath:"Travis-Scott.jpg",
+    gender:"M",
+    birthDate:"1990-12-06"
+});
+artist6.save();
+
+var artist7= new artist({
+    email:"bernan@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Brennan Savage",
+    about:`Brennan Savage makes bleary, confessional rap which draws equally from emo and trap. Often collaborating with producers and rappers associated with GothBoiClique, he's released numerous self-issued EPs and albums, including 2019's Tragedy. Savage was born in Long Beach, New York in 1996.`,
+    genres:["Rap","Hip-Hop"],
+    rating: "9",
+    imagePath:"BernanSavage.jpg",
+    gender:"M",
+    birthDate:"1997-08-16"
+});
+artist7.save();
+
+var artist8= new artist({
+    email:"ragnboneman@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Rag'n'Bone Man",
+    about:`Rory Charles Graham (born 29 January 1985), better known as Rag'n'Bone Man, is an English singer and songwriter. He is known for his deep baritone voice`,
+    genres:["Blues","R&B"],
+    rating: "6",
+    imagePath:"ragsold.jpg",
+    gender:"M",
+    birthDate:"1980-05-05"
+});
+artist8.save();
+
+var artist9= new artist({
+    email:"hvob@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"HVOB",
+    about:`Anna Müller and Paul Wallner founded HVOB in 2012. The duo focuses on "restrained and minimalist" electronica with the use of vocals. After releasing music on SoundCloud they were discovered by Oliver Koletzki, a German dance and house music producer. ... The duo has been "voted as one of the best live acts in the world".`,
+    genres:["Jazz","Hip-Hop","Electronic","Rock"],
+    rating: "10",
+    imagePath:"hvobavatars-000240092361-u41ssb-t500x500.jpg",
+    gender:"F",
+    birthDate:"1970-11-16"
+});
+artist9.save();
+
+var artist10= new artist({
+    email:"imagineDragons@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Imagine Dragons",
+    about:`Imagine Dragons is an American pop rock band from Las Vegas, Nevada, consisting of lead singer Dan Reynolds, lead guitarist Wayne Sermon, bassist Ben McKee, and drummer Daniel Platzman.`,
+    genres:["Pop","Electronic","Rock"],
+    rating: "6",
+    imagePath:"Imagine-Dragons-press-photo-credit-Eliot-Lee-Hazel-2017-a-billboard-1548.jpg",
+    gender:"M",
+    birthDate:"1971-11-09"
+});
+artist10.save();
+
+var artist11= new artist({
+    email:"Tones&I@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Tones and I",
+    about:`Tones and I was born Toni Watson in Mornington Peninsula. In 2018, fed up with her retail job, she began busking in Melbourne and sometimes took special trips to the beachside town of Byron Bay to play songs for passing crowds. She quit her job when she became popular and even began winning busking competitions.`,
+    genres:["Pop","Electronic"],
+    rating: "10",
+    imagePath:"TonesAndImaxresdefault.jpg",
+    gender:"F",
+    birthDate:"1975-08-07"
+});
+artist11.save();
+
+var artist12= new artist({
+    email:"queen@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Queen",
+    about:`Queen composed music that drew inspiration from many different genres while still adopting a tongue-in-cheek attitude. For example, glam rock, psychedelic rock, hard rock, progressive rock, punk rock, heavy metal, pop, rhythm 'n blues, funk and disco, country, gospel and soul, and even music-hall and ragtime.`,
+    genres:["Rock"],
+    rating: "10",
+    imagePath:"f45550f043abcd91714368ead086045c.jpg",
+    gender:"F",
+    birthDate:"1975-12-12"
+});
+artist12.save();
+
+var artist13= new artist({
+    email:"hippie@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Hippie Sabotage",
+    about:`Hippie Sabotage is an indie duo from Sacramento, California, composed of brothers Kevin and Jeff Saurer. They were #1 on Billboard's Next Big Sound chart. They have performed with Ellie Goulding and Tove Lo and have worked with Cubic Z from We the Best Music Group`,
+    genres:["Pop","Electronic","Rap"],
+    rating: "6",
+    imagePath:"Hippie-Sabotage.jpg",
+    gender:"M",
+    birthDate:"1967-05-11"
+});
+artist13.save();
+
+var artist14= new artist({
+    email:"pushaT@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Pusha T",
+    about:`Terrence LeVarr Thornton (born May 13, 1977), better known by his stage name Pusha T, is an American rapper, songwriter and record executive. He initially gained major recognition as half of hip hop duo Clipse, alongside his brother and fellow rapper No Malice, with whom he founded Re-Up Records`,
+    genres:["Pop","Hip-Hop","Trap"],
+    rating: "4",
+    imagePath:"Pusha-T749863_v9_bb.jpg",
+    gender:"M",
+    birthDate:"1988-03-11"
+});
+artist14.save();
+
+var artist15= new artist({
+    email:"AlecBenjamin@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"Alec Benjamin",
+    about:`Alec Benjamin is an American singer-songwriter, best known for his songs 'Paper Crown' and 'The Water Fountain. ' Born and raised in Phoenix, Arizona, Alec grew up listening to artists such as Paul Simon and Eminem. ... He grew up at a time when 'YouTube' was a major platform for young artists to showcase their talents`,
+    genres:["Pop","Alternative Rock"],
+    rating: "8",
+    imagePath:"alecbenjaimindownload.jpg",
+    gender:"M",
+    birthDate:"1992-10-05"
+});
+artist15.save();
+
+var artist16= new artist({
+    email:"TheChainsmokers@abc.com",
+    password:"$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK",  //111
+    artistName:"The Chainsmokers",
+    about:`The Chainsmokers are an American electronic DJ and production duo consisting of Alexander "Alex" Pall and Andrew "Drew" Taggart. They started out by releasing remixes of songs by indie artists. The EDM-pop duo achieved a breakthrough with their 2014 song "#Selfie", which became a top twenty single in several countries.`,
+    genres:["Pop","Electronic"],
+    rating: "9.2",
+    imagePath:"The-Chainsmokers-press-photo-by-Danilo-Lewis-2018-billboard-1548-1024x677.jpg",
+    gender:"M",
+    birthDate:"1999-10-05"
+});
+artist16.save();
 //TRACKS
 ///////////////////////////////////////////////
 var track1=new track({
@@ -232,6 +355,269 @@ var track9=new track({
     trackPath:"KALEO Hot Blood [Official Audio].mp3"  
     });   
 track9.save();
+
+var track10=new track({
+    artistId:artist7._id,
+    trackName:"Super Life",
+    imagePath:"Superlife42011663_800_800.jpg",
+    likes:12,
+    genre:"R&B",
+    trackPath:"2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3"  
+    });   
+track10.save();
+
+var track11=new track({
+    artistId:artist15._id,
+    trackName:"Let Me Down Slowly",
+    imagePath:"alecbenjaimindownload.jpg",
+    likes:15,
+    genre:"Pop",
+    trackPath:"Alec Benjamin - Let Me Down Slowly (Lyrics).mp3"  
+    });   
+track11.save();
+
+var track12=new track({
+    artistId:artist13._id,
+    trackName:"Baby Shark",
+    imagePath:"default.jpeg",
+    likes:13,
+    genre:"Electronic",
+    trackPath:"Baby Shark (Trap Remix).mp3"  
+    });   
+track12.save();
+
+var track13=new track({
+    artistId:artist6._id,
+    trackName:"Focus",
+    imagePath:"default.jpeg",
+    likes:14,
+    genre:"Trap",
+    trackPath:"Bazzi - Focus (feat. 21 Savage) [Official Audio].mp3"  
+    });   
+track13.save();
+
+var track14=new track({
+    artistId:artist10._id,
+    trackName:"Believer",
+    imagePath:"Believer31UuFWejahL._SX331_BO1,204,203,200_.jpg",
+    likes:18,
+    genre:"Pop",
+    trackPath:"Believer by Imagine Dragons Extended 10 minute version.mp3"  
+    });   
+track14.save();
+
+var track15=new track({
+    artistId:artist7._id,
+    trackName:"In The Moment",
+    imagePath:"IntheMoment.jpg",
+    type:"Album",
+    likes:19,
+    genre:"Hip-Hop",
+    trackPath:"brennan savage - in the moment (ft. drippin so pretty) [lyrics].mp3"  
+    });   
+track15.save();
+
+var track16=new track({
+    artistId:artist7._id,
+    trackName:"Look At Me Now",
+    imagePath:"LookatmeNow.jpg",
+    type:"Album",
+    likes:90,
+    genre:"Hip-Hop",
+    trackPath:"Brennan Savage - Look At Me Now.mp3"  
+    });   
+track16.save();
+
+var track17=new track({
+    artistId:artist13._id,
+    trackName:"Devil Eyes",
+    imagePath:"default.jpeg",
+    likes:7,
+    genre:"Electronic",
+    trackPath:"HIPPIE SABOTAGE - DEVIL EYES LYRICS.mp3"  
+    });   
+track17.save();
+
+var track18=new track({
+    artistId:artist9._id,
+    trackName:"Dogs",
+    imagePath:"default.jpeg",
+    likes:21,
+    genre:"Jazz",
+    trackPath:"HVOB - Dogs [Official].mp3"  
+    });   
+track18.save();
+
+var track19=new track({
+    artistId:artist9._id,
+    trackName:"The Blame Game",
+    imagePath:"hvobalbum.jpg",
+    likes:80,
+    type:"Album",
+    genre:"Jazz",
+    trackPath:"HVOB - Dogs [Official].mp3"  
+    });   
+track19.save();
+
+var track20=new track({
+    artistId:artist9._id,
+    trackName:"Deus",
+    imagePath:"hvobalbum.jpg",
+    likes:13,
+    type:"Album",
+    genre:"Jazz",
+    trackPath:"HVOB & Winston Marshall  Deus.mp3"  
+    });   
+track20.save();
+
+var track21=new track({
+    artistId:artist6._id,
+    trackName:"Metro Boomin",
+    imagePath:"default.jpeg",
+    likes:3,
+    genre:"Rap",
+    trackPath:"Metro Boomin - Only 1 (Interlude) (with Travis Scott) [OFFICIAL AUDIO].mp3"  
+    });   
+track21.save();
+
+var track22=new track({
+    artistId:artist12._id,
+    trackName:"Bohemian Rhapsody",
+    imagePath:"BohemianRapsodydownload.jpg",
+    likes:22,
+    genre:"Pop",
+    type:"Album",
+    trackPath:"Queen - Bohemian Rhapsody (with lyrics).mp3"  
+    });   
+track22.save();
+
+var track23=new track({
+    artistId:artist12._id,
+    trackName:"Lazing On A Sunday Afternoon",
+    imagePath:"BohemianRapsodydownload.jpg",
+    likes:2,
+    type:"Album",
+    genre:"Rock",
+    trackPath:"Queen -Lazing On A Sunday Afternoon - Official Music Video (High Quality).mp3"  
+    });   
+track23.save();
+
+var track24=new track({
+    artistId:artist8._id,
+    trackName:"Human",
+    imagePath:"Human_-_Rag'n'Bone_Man_Single.png",
+    likes:26,
+    genre:"R&B",
+    type:"Album",
+    trackPath:"Rag'n'Bone Man - Human (Official Video).mp3"  
+    });   
+track24.save();
+
+var track25=new track({
+    artistId:artist8._id,
+    trackName:"Skin",
+    imagePath:"Human_-_Rag'n'Bone_Man_Single.png",
+    likes:24,
+    type:"Album",
+    genre:"Hip-Hop",
+    trackPath:"Rag'n'Bone Man - Skin (Official Audio).mp3"  
+    });   
+track25.save();
+
+var track26=new track({
+    artistId:artist11._id,
+    trackName:"Dance Monkeys",
+    imagePath:"Thekidsarecomingt458429634-b1475930049_s400.jpg",
+    likes:99,
+    type:"Album",
+    genre:"Electronic",
+    trackPath:"Tones and I - Dance Monkey (Lyrics).mp3"  
+    });   
+track26.save();
+
+var track27=new track({
+    artistId:artist11._id,
+    trackName:"The Kids Are Coming",
+    imagePath:"Thekidsarecomingt458429634-b1475930049_s400.jpg",
+    likes:33,
+    type:"Album",
+    genre:"Electronic",
+    trackPath:"TONES AND I - THE KIDS ARE COMING (LYRIC VIDEO).mp3"  
+    });   
+track27.save();
+
+var track28=new track({
+    artistId:artist6._id,
+    trackName:"Highest In The Room",
+    imagePath:"Thekidsarecomingt458429634-b1475930049_s400.jpg",
+    likes:45,
+    type:"Album",
+    genre:"Rap",
+    trackPath:"Travis Scott - HIGHEST IN THE ROOM (Audio).mp3"  
+    });   
+track28.save();
+
+var track29=new track({
+    artistId:artist6._id,
+    trackName:"Impossible",
+    imagePath:"highest6d8141339179503ce00770fd483cadff.jpg",
+    likes:40,
+    type:"Album",
+    genre:"Rap",
+    trackPath:"Travis Scott impossible with lyrics.mp3"  
+    });   
+track29.save();
+
+var track30=new track({
+    artistId:artist6._id,
+    trackName:"Unknown",
+    imagePath:"highest6d8141339179503ce00770fd483cadff.jpg",
+    likes:7,
+    type:"Album",
+    genre:"Rap",
+    trackPath:"Travis Scott Ft. Future & 2 Chainz - 3500 (For The Coat )(CDQ).mp3"  
+    });   
+track30.save();
+
+var track31=new track({
+    artistId:artist14._id,
+    trackName:"Venom",
+    imagePath:"default.jpeg",
+    likes:11,
+    genre:"Trap",
+    trackPath:"VENOM (2018) Pusha T No Problem Eddie Brock.mp3"  
+    });   
+track31.save();
+
+var track32=new track({
+    artistId:artist2._id,
+    trackName:"Ebbo Msh Baskota",
+    imagePath:"default.jpeg",
+    likes:8,
+    genre:"Arabic",
+    trackPath:"الوصيةأغنية إبو مش بسكوتة إبو ده حدوتة غناء بيومي فؤاد.mp3"  
+    });   
+track32.save();
+
+var track33=new track({
+    artistId:artist2._id,
+    trackName:"Mahrgan El Shbokshy",
+    imagePath:"default.jpeg",
+    likes:9,
+    genre:"Arabic",
+    trackPath:"مهرجان الشبوكشي فيفتي سنت FT عمرو حاحا YouTube.mp3"  
+    });   
+track33.save();
+
+var track34=new track({
+    artistId:artist16._id,
+    trackName:"Don't Let Me Down",
+    imagePath:"default.jpeg",
+    likes:27,
+    genre:"Pop",
+    trackPath:"The Chainsmokers - Don't Let Me Down ft. Daya (Official Music Video).mp3"  
+    });   
+track34.save();
 ///////////Creating Albums//////////////////
 var album1 = new album({
     artistId:artist4._id,
@@ -250,6 +636,60 @@ var album2 = new album({
 });
 
 album2.save();
+
+var album3 = new album({
+    artistId:artist7._id,
+    albumName:"Look At Me Now Album",
+    imagePath:"LookatmeNow.jpg",
+    tracks: [track15, track16],
+});
+
+album3.save();
+
+var album4 = new album({
+    artistId:artist9._id,
+    albumName:"Trailog",
+    imagePath:"hvobalbum.jpg",
+    tracks: [track19, track20],
+});
+
+album4.save();
+
+var album5 = new album({
+    artistId:artist12._id,
+    albumName:"A Night at the Opera",
+    imagePath:"BohemianRapsodydownload.jpg",
+    tracks: [track22, track23],
+});
+
+album5.save();
+
+var album6 = new album({
+    artistId:artist8._id,
+    albumName:"Human",
+    imagePath:"Human_-_Rag'n'Bone_Man_Single.png",
+    tracks: [track24, track25],
+});
+
+album6.save();
+
+var album7 = new album({
+    artistId:artist11._id,
+    albumName:"The Kids Are Coming",
+    imagePath:"Thekidsarecomingt458429634-b1475930049_s400.jpg",
+    tracks: [track26, track27],
+});
+
+album7.save();
+
+var album8 = new album({
+    artistId:artist6._id,
+    albumName:"1/2",
+    imagePath:"highest6d8141339179503ce00770fd483cadff.jpg",
+    tracks: [track28, track29,track30],
+});
+
+album8.save();
 
 //USERS
 ////////////////////////////////////////////////

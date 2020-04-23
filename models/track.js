@@ -1,6 +1,7 @@
 var mongoose= require("mongoose");
+const Schema=mongoose.Schema;
 /////
-var track=mongoose.model("Tracks",{
+var tracksSchema=new mongoose.Schema({
     artistId:{     //the artist who sang this track
       type:String,
       required:true
@@ -47,4 +48,5 @@ var track=mongoose.model("Tracks",{
   },
 });
 
-module.exports={track}; 
+var track = mongoose.model('Tracks',tracksSchema);
+module.exports={track,tracksSchema}; 

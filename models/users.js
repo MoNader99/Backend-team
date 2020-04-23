@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 var password = "abc";
 const validator = require('validator');
+var{track,tracksSchema}=require("./track.js");//track model and schema
 
 
 
@@ -77,7 +78,7 @@ var UserSchema = new mongoose.Schema({
             ref: "track"
         }
     ],
-
+    recentlyPlyaedtracks:[tracksSchema],
     likedAlbums: [
         {
             type: mongoose.Schema.Types.ObjectId,
