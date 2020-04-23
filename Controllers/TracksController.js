@@ -277,53 +277,188 @@ return res.status(200).json({"message":'tracks added successfully'});
 
 
 
-
-//GET SEVERAL TRACKS
-///////
-router.post('/tracks',async (req,res)=>{
-    var arr=req.body.id;
-  
-    var returnedTrackArray=[{}];
-
-    if(arr.length>50)
-    {
-       return res.status(403).json({"message":" Forbidden maximum 50 Ids"});
-    }
-    
-
-
-
-    for(var i=0;i<arr.length;i++)
-    {
-    if(!ObjectID.isValid(arr[i]))
-    {
-        return res.status(404).json({"message":"invalid id"});
-    }
-
-    var flag=0
-    await track.findById(req.body.id[i]).then((tracks)=>
-    {
-       if(!tracks) {flag=1;
-           return res.status(404).json({"message":"can not find track"});}
-        returnedTrackArray[i]=tracks;
-    }).catch((e)=>res.status(400).send(e));
-    if(flag)
-    {
-        break;
-    }
-
-    }
-    if (flag)
-    {
-        return 
-    }
  
-res.send({"tracks":returnedTrackArray});    //need to send an object with a name "tracks":returnedTrackArray
-    })
-
-
-
-
+ //////////////////////////////////////////////////////
+ 
+ 
+ 
+ /**
+   * GetSeveralTracks
+  * ---------------------
+  *
+  * @api {post} /tracks               Get several Tracks
+  * @apiName Get Several Tracks
+  * @apiGroup Tracks
+  *
+  *
+  * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
+  *
+  * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
+  *
+  * * @apiSuccessExample {JSON} Success-Response:
+  *     HTTP/1.1 200 OK
+ {
+     "tracks": [
+         {
+             "_id": "5e9d5ba78d6d7148a8860da7",
+             "trackName": "When I'm Gone",
+             "artistName": "Eminem",
+             "albumName": "When I'm Gone",
+             "type": "Single",
+             "genre": "Rap",
+             "numberOfTimesPlayed": 0,
+             "likes": 12,
+             "trackPath": "When I'm Gone-Eminem-seeds.mp3",
+             "imagePath": "default.jpeg"
+         },
+         {
+             "_id": "5e9d5ba78d6d7148a8860da5",
+             "trackName": "Tamaly m3ak",
+             "artistName": "Amr Diab",
+             "albumName": "El Leila",
+             "type": "Album",
+             "genre": "Arabic",
+             "numberOfTimesPlayed": 0,
+             "likes": 10,
+             "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
+             "imagePath": "default.jpeg"
+         },
+          
+         null  // if you send an id that is not in the database
+               // 
+     ]
+ }
+  *
+  *
+  * @apiError  400                      [empty array of ids]
+  *  @apiErrorExample {JSON} Error-Response:
+  *     HTTP/1.1 400 Bad Request
+  *     {
+  *       "message":"empty array of ids"
+  *     }
+  * 
+  *
+  * @apiError  404                      [invalid id]
+  *  @apiErrorExample {JSON} Error-Response:
+  *     HTTP/1.1 404 Not Found
+  *     {
+  *       "message" : "invalid id"
+  *     }
+  *
+  *  @apiError  403
+  *  @apiErrorExample {JSON} Error-Response:
+  *     HTTP/1.1 403 forbidden
+  *     {
+  *       "message" : "max 10 Ids"
+  *     }
+  *
+  *
+  *
+  */
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ //GET SEVERAL TRACKS
+ ///////
+ router.post('/tracks',async (req,res)=>{
+     var arr=req.body.id;
+   //console.log(arr);
+     var returnedTrackArray=[{}];
+      if(arr.length===0)
+      {
+          return res.status(400).json({"message":"empty array of ids"})
+      }
+     if(arr.length>10)
+     {
+        return res.status(403).json({"message":" Forbidden maximum 10 Ids"});
+     }
+     
+     for(var i=0;i<arr.length;i++)
+     {
+     if(!ObjectID.isValid(arr[i]))
+     {
+         return res.status(404).json({"message":"invalid id"});
+     }
+     await track.findById(req.body.id[i]).then( async(tracks)=>
+     {
+         if(!tracks) {
+             //flag=1;
+             //return res.status(404).json({"message":"can not find track"});
+         
+             returnedTrackArray[i]=null;
+          }
+       else{
+            await artist.findById(tracks.artistId).then(async (myArtist)=>{  
+             if(tracks.type==='Album')
+             {   
+ 
+               await album.findOne({ tracks: {$in: [arr[i]]}}).then((myAlbum)=>{
+                 //console.log("inside album")
+                 //console.log(myAlbum.toString());        
+         
+                returnedTrackArray[i]={
+         
+                 _id:tracks._id,
+                 trackName:tracks.trackName,
+                 artistName:myArtist.artistName,
+                 albumName:myAlbum.albumName,
+                 type:tracks.type,
+                 genre:tracks.genre,
+                 numberOfTimesPlayed:tracks.numberOfTimesPlayed,
+                 likes:tracks.likes,
+                 trackPath:tracks.trackPath,
+                 imagePath:tracks.imagePath
+             };
+ 
+         
+         
+         })//.catch((e)=>{console.log("error in album")})
+ 
+     }
+     else
+     {
+         returnedTrackArray[i]={
+            
+ 
+             _id:tracks._id,
+             trackName:tracks.trackName,
+             artistName:myArtist.artistName,
+             albumName:tracks.trackName,
+             type:tracks.type,
+             genre:tracks.genre,
+             numberOfTimesPlayed:tracks.numberOfTimesPlayed,
+             likes:tracks.likes,
+             trackPath:tracks.trackPath,
+             imagePath:tracks.imagePath
+ 
+          
+     }    }
+             
+ 
+ 
+ 
+ 
+        })
+ 
+     }
+  })
+   
+ }
+     res.send({"tracks":returnedTrackArray});    
+ })
+ 
+ /////////////////////////////////////////////////////////////////////////////
+ 
+ 
+ 
+ 
+ 
 
 //DELETE A TRACK
 router.delete('/tracks',(req,res)=>{

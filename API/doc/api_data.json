@@ -457,9 +457,9 @@
   },
   {
     "type": "post",
-    "url": "album/like/:id",
-    "title": "like album",
-    "name": "Like_album",
+    "url": "album/like/unlike/:id",
+    "title": "Like or Unlike album",
+    "name": "Like_or_Unlike_album",
     "group": "Album",
     "parameter": {
       "fields": {
@@ -469,7 +469,7 @@
             "type": "string",
             "optional": false,
             "field": "id",
-            "description": ""
+            "description": "<p>sent as a parameter in the url</p>"
           }
         ]
       }
@@ -482,16 +482,7 @@
             "type": "string",
             "optional": false,
             "field": "x-auth",
-            "description": "<p>user token to like album</p>"
-          }
-        ],
-        "Response Header": [
-          {
-            "group": "Response Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>[token given for the logging in user]</p>"
+            "description": "<p>user token to like or unlike album (in header)</p>"
           }
         ]
       }
@@ -500,8 +491,13 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n     {\n\n}",
-          "type": "JSON"
+          "content": "HTTP/1.1 200 OK\n {\n     \"Like\"\n }",
+          "type": "string"
+        },
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n     \"Unlike\"\n }",
+          "type": "string"
         }
       ]
     },
@@ -517,14 +513,14 @@
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "403",
-            "description": "<p>Forbidden                [Repeating the request more than once for the same user and the same album]</p>"
+            "field": "404",
+            "description": "<p>Not found                [this album is not found]</p>"
           },
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "404",
-            "description": "<p>Not found                [this album is not found]</p>"
+            "field": "500",
+            "description": "<p>Internal Server Error</p>"
           }
         ]
       },
@@ -532,121 +528,22 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is not valid\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401  Unauthorized\n{\n   \"Token is Empty\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 403 Forbidden\n{\n   \"You have already liked that album\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found\n{\n   \"No album found\"\n}",
-          "type": "JSON"
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Album"
-  },
-  {
-    "type": " post ",
-    "url": "/album/unlike/:id",
-    "title": "unlike album",
-    "name": "unLikealbum",
-    "group": "Album",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "id",
-            "description": ""
-          }
-        ]
-      }
-    },
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "x",
-            "description": "<ul> <li>auth       user token to unlike album</li> </ul>"
-          }
-        ],
-        "Response Header": [
-          {
-            "group": "Response Header",
-            "type": "String",
-            "optional": false,
-            "field": "x",
-            "description": "<ul> <li>auth[token given for the logging in user]</li> </ul>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success - Response:",
-          "content": "HTTP / 1.1 200 OK\n{\n\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "401",
-            "description": "<p>Unauthorized[authentication failed]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "404",
-            "description": "<p>Not found[this album is not found]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"Token is not valid\"\n    }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 401  Unauthorized\n{\n       \"Token is Empty\"\n    }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 404 Not found\n{\n       \" Notfound in liked albums\"\n    }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error - Response:",
-          "content": "HTTP / 1.1 404 Not found\n{\n       \"Invalid id\"\n    }",
-          "type": "JSON"
+          "type": "string"
         }
       ]
     },
@@ -2793,84 +2690,6 @@
     "groupTitle": "Tracks"
   },
   {
-    "type": "post",
-    "url": "/tracks",
-    "title": "Get several Tracks",
-    "name": "GetSeveralTracks",
-    "group": "Tracks",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string[]",
-            "optional": false,
-            "field": "id",
-            "description": "<p>An array of comma separated tracks Ids. Maximum 10 IDs.</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "object[]",
-            "optional": false,
-            "field": "tracks",
-            "description": "<p>a set objects of type tracks in JSON format with status code 200</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n    \"tracks\": [\n        {\n            \"_id\": \"5e88ce838d92547020e1a65a\",\n            \"artistId\": \"5e88ce838d92547020e1a652\",\n            \"trackName\": \"Godzilla\",\n            \"duration\": 223000,\n            \"genre\": \"rap\",\n            \"url\": \"vvv\",\n            \"__v\": 0,\n            \"imagePath\": \"./Pictures/default.png\",\n            \"likes\": 0,\n            \"rating\": 9\n        },\n        {\n            \"_id\": \"5e88ce838d92547020e1a656\",\n            \"artistId\": \"5e88ce838d92547020e1a650\",\n            \"trackName\": \"Hello\",\n            \"duration\": 360000,\n            \"genre\": \"pop\",\n            \"url\": \"uuu\",\n            \"__v\": 0,\n            \"imagePath\": \"./Pictures/default.png\",\n            \"likes\": 0,\n            \"rating\": 10\n        }\n    ]\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "404",
-            "description": "<p>[Track not found]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "403",
-            "description": ""
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n \"message\": \"can not find track\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\" : \"invalid id\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 403 forbidden\n{\n  \"message\" : \"max 50 Ids\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Tracks"
-  },
-  {
     "type": "Get",
     "url": "/tracks/byartist/:id",
     "title": "Get tracks by artist",
@@ -2934,9 +2753,93 @@
   },
   {
     "type": "post",
-    "url": "track/like/:id",
-    "title": "like track",
-    "name": "Like_track",
+    "url": "/tracks",
+    "title": "Get several Tracks",
+    "name": "Get_Several_Tracks",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string[]",
+            "optional": false,
+            "field": "id",
+            "description": "<p>An array of comma separated tracks Ids. Maximum 10 IDs.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "tracks",
+            "description": "<p>a set objects of type tracks in JSON format with status code 200</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "   HTTP/1.1 200 OK\n{\n    \"tracks\": [\n        {\n            \"_id\": \"5e9d5ba78d6d7148a8860da7\",\n            \"trackName\": \"When I'm Gone\",\n            \"artistName\": \"Eminem\",\n            \"albumName\": \"When I'm Gone\",\n            \"type\": \"Single\",\n            \"genre\": \"Rap\",\n            \"numberOfTimesPlayed\": 0,\n            \"likes\": 12,\n            \"trackPath\": \"When I'm Gone-Eminem-seeds.mp3\",\n            \"imagePath\": \"default.jpeg\"\n        },\n        {\n            \"_id\": \"5e9d5ba78d6d7148a8860da5\",\n            \"trackName\": \"Tamaly m3ak\",\n            \"artistName\": \"Amr Diab\",\n            \"albumName\": \"El Leila\",\n            \"type\": \"Album\",\n            \"genre\": \"Arabic\",\n            \"numberOfTimesPlayed\": 0,\n            \"likes\": 10,\n            \"trackPath\": \"Tamaly m3ak-Amr Diab-seeds.mp3\",\n            \"imagePath\": \"default.jpeg\"\n        },\n         \n        null  // if you send an id that is not in the database\n              // \n    ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[empty array of ids]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[invalid id]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\":\"empty array of ids\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\" : \"invalid id\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"message\" : \"max 10 Ids\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "post",
+    "url": "track/like/unlike/:id",
+    "title": "Like or Unlike track",
+    "name": "Like_or_Unlike_track",
     "group": "Tracks",
     "parameter": {
       "fields": {
@@ -2946,7 +2849,7 @@
             "type": "string",
             "optional": false,
             "field": "id",
-            "description": ""
+            "description": "<p>sent as a parameter in the url</p>"
           }
         ]
       }
@@ -2959,16 +2862,7 @@
             "type": "string",
             "optional": false,
             "field": "x-auth",
-            "description": "<p>user token to like track</p>"
-          }
-        ],
-        "Response Header": [
-          {
-            "group": "Response Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>[token given for the logging in user]</p>"
+            "description": "<p>user token to like or unlike track (in header)</p>"
           }
         ]
       }
@@ -2977,8 +2871,13 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n     {\n\n}",
-          "type": "JSON"
+          "content": "HTTP/1.1 200 OK\n {\n     \"Like\"\n }",
+          "type": "string"
+        },
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n     \"Unlike\"\n }",
+          "type": "string"
         }
       ]
     },
@@ -2989,47 +2888,42 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "401",
-            "description": "<p>[authentication failed]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "403",
-            "description": "<p>Forbidden                [Repeating the request more than once for the same user and the same album]</p>"
+            "description": "<p>Unauthorized          [authentication failed]</p>"
           },
           {
             "group": "Error 4xx",
             "optional": false,
             "field": "404",
-            "description": "<p>Not found                [this album is not found]</p>"
+            "description": "<p>Not found                [this track is not found]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401\n{\n   \"Token is Invalid\"\n}",
-          "type": "JSON"
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is not valid\"\n}",
+          "type": "string"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401\n{\n   \"Token is Empty\"\n}",
-          "type": "JSON"
+          "content": "HTTP/1.1 401  Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 403 Forbidden\n{\n   \"You have already liked that track\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found\n{\n   \"No album found\"\n}",
-          "type": "JSON"
+          "content": "HTTP/1.1 404 Not found\n{\n   \"No track found\"\n}",
+          "type": "string"
         },
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
-          "type": "JSON"
+          "type": "string"
         }
       ]
     },

@@ -1035,77 +1035,80 @@
  */
 
 
-/**
-  * GetSeveralTracks
- * ---------------------
- *
- * @api {post} /tracks               Get several Tracks
- * @apiName GetSeveralTracks
- * @apiGroup Tracks
- *
- *
- * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
- *
- * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
- *
- * * @apiSuccessExample {JSON} Success-Response:
- *     HTTP/1.1 200 OK
-{
-    "tracks": [
-        {
-            "_id": "5e88ce838d92547020e1a65a",
-            "artistId": "5e88ce838d92547020e1a652",
-            "trackName": "Godzilla",
-            "duration": 223000,
-            "genre": "rap",
-            "url": "vvv",
-            "__v": 0,
-            "imagePath": "./Pictures/default.png",
-            "likes": 0,
-            "rating": 9
-        },
-        {
-            "_id": "5e88ce838d92547020e1a656",
-            "artistId": "5e88ce838d92547020e1a650",
-            "trackName": "Hello",
-            "duration": 360000,
-            "genre": "pop",
-            "url": "uuu",
-            "__v": 0,
-            "imagePath": "./Pictures/default.png",
-            "likes": 0,
-            "rating": 10
-        }
-    ]
-}
- *
- *
- * *@apiError  404                      [Track not found]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Not Found
- *     {
- *      "message": "can not find track"
- *     }
- *
- * @apiError  404                      [invalid id]
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Not Found
- *     {
- *       "message" : "invalid id"
- *     }
- *
- *  @apiError  403
- *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 403 forbidden
- *     {
- *       "message" : "max 50 Ids"
- *     }
- *
- *
- *
- */
-
-
+ /**
+   * GetSeveralTracks
+  * ---------------------
+  *
+  * @api {post} /tracks               Get several Tracks
+  * @apiName Get Several Tracks
+  * @apiGroup Tracks
+  *
+  *
+  * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
+  *
+  * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
+  *
+  * * @apiSuccessExample {JSON} Success-Response:
+  *     HTTP/1.1 200 OK
+ {
+     "tracks": [
+         {
+             "_id": "5e9d5ba78d6d7148a8860da7",
+             "trackName": "When I'm Gone",
+             "artistName": "Eminem",
+             "albumName": "When I'm Gone",
+             "type": "Single",
+             "genre": "Rap",
+             "numberOfTimesPlayed": 0,
+             "likes": 12,
+             "trackPath": "When I'm Gone-Eminem-seeds.mp3",
+             "imagePath": "default.jpeg"
+         },
+         {
+             "_id": "5e9d5ba78d6d7148a8860da5",
+             "trackName": "Tamaly m3ak",
+             "artistName": "Amr Diab",
+             "albumName": "El Leila",
+             "type": "Album",
+             "genre": "Arabic",
+             "numberOfTimesPlayed": 0,
+             "likes": 10,
+             "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
+             "imagePath": "default.jpeg"
+         },
+          
+         null  // if you send an id that is not in the database
+               // 
+     ]
+ }
+  *
+  *
+  * @apiError  400                      [empty array of ids]
+  *  @apiErrorExample {JSON} Error-Response:
+  *     HTTP/1.1 400 Bad Request
+  *     {
+  *       "message":"empty array of ids"
+  *     }
+  * 
+  *
+  * @apiError  404                      [invalid id]
+  *  @apiErrorExample {JSON} Error-Response:
+  *     HTTP/1.1 404 Not Found
+  *     {
+  *       "message" : "invalid id"
+  *     }
+  *
+  *  @apiError  403
+  *  @apiErrorExample {JSON} Error-Response:
+  *     HTTP/1.1 403 forbidden
+  *     {
+  *       "message" : "max 10 Ids"
+  *     }
+  *
+  *
+  *
+  */
+ 
 /**
 * AddTracksToAPlaylist
  * ---------------------
