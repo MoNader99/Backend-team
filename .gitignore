@@ -8,3 +8,6 @@ package-lock.json
 */.nyc_output/
 .nyc_output/
 */tracks/
+*.mp3
+*.jpg
+*.png
