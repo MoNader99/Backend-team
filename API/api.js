@@ -2080,27 +2080,24 @@
  *
  * @apiHeader {string}  x-auth          Required
  *
- * @apiParam {string} albumId           Id of the album
+ * @apiParam {string} albumId           Id of the album in the url
  *
  * @apiSuccess 302                     [The response of the success case is an album object]
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
  * {
- *       {
- *  "album": {
- *       "_id": "5e89f2caaaa6bd3f481675f5",
- *       "artistId": "5e89f2caaaa6bd3f481675eb",
- *       "albumName": "25",
- *       "__v": 0,
- *       "likes": 1,
- *       "rating": null,
+ *   "returnedAlbum": {
+ *       "_id": "5e8cea27f80b6f47045be012",
+ *       "albumName": "This Acting",
+ *       "imagePath": "sia.png",
+ *       "artistName": "Sia",
  *       "tracks": [
- *           "5e89f2caaaa6bd3f481675f0",
- *           "5e89f2caaaa6bd3f481675f1"
+ *           "5e8cea26f80b6f47045be001",
+ *           "5e8cea26f80b6f47045be002"
  *       ],
- *       "imagePath": "default.png"
+ *       "likes": 9
  *   }
-* }
+ * }
  *
  * }
  * @apiError  404   Not found                   [the album id is not found ]

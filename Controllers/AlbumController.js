@@ -54,7 +54,19 @@ router.get('/album/tracks/:id', (req,res)=>{
             }
         album.findById(id).then((album) => {
             if(!album){return res.status(404).send("can not find album");}
-            return res.status(302).send({album});
+            artist.findById(album.artistId).then((myartist) =>
+            {    var returnedAlbum ={};
+                 returnedAlbum ={
+                     _id:album._id,
+                     albumName:album.albumName,
+                     imagePath:album.imagePath,
+                     artistName:myartist.artistName,
+                     tracks:album.tracks,
+                     likes:album.likes
+                 }
+                 return res.status(302).send({returnedAlbum});
+            }).catch((e)=>res.status(404).send());
+            
         }).catch((e)=>res.status(404).send());
     }).catch((e)=>res.status(401).send());
         });  

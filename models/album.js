@@ -29,14 +29,6 @@ var AlbumSchema = new mongoose.Schema({
             ref: "track"
         }
     ],
-    rating:{
-        type:Number,
-        default:null,
-        required:false,
-        min:1,
-        max:10,
-  
-    },
     likes:{
       type:Number,
       default:0,
