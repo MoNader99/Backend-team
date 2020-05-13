@@ -244,7 +244,7 @@
             "type": "string",
             "optional": false,
             "field": "albumId",
-            "description": "<p>Id of the album</p>"
+            "description": "<p>Id of the album in the url</p>"
           }
         ]
       }
@@ -263,7 +263,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 302\n{\n      {\n \"album\": {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 1,\n      \"rating\": null,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n  }\n}\n\n}",
+          "content": "    HTTP/1.1 302\n{\n  \"returnedAlbum\": {\n      \"_id\": \"5e8cea27f80b6f47045be012\",\n      \"albumName\": \"This Acting\",\n      \"imagePath\": \"sia.png\",\n      \"artistName\": \"Sia\",\n      \"tracks\": [\n          \"5e8cea26f80b6f47045be001\",\n          \"5e8cea26f80b6f47045be002\"\n      ],\n      \"likes\": 9\n  }\n}\n\n}",
           "type": "JSON"
         }
       ]
@@ -2933,6 +2933,83 @@
   },
   {
     "type": "get",
+    "url": "/tracks/recentlyplayed",
+    "title": "RecentlyPlayedTracks",
+    "name": "RecentlyPlayed",
+    "group": "Tracks",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>(UserToken)Only an User who has a verified account can get the last 5 tracks he/she played</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "302",
+            "description": "<p>[The response of the sucess case is an array of the last 5 played songs ]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "[ \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3\",\n          \"genre\" : \"R&B\",\n          \"trackName\" : \"Super Life\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1d\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e30\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 1,\n          \"imagePath\" : \"Superlife42011663_800_800.jpg\",\n          \"likes\" : 12\n      }, \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"Youm Talat-Amr Diab-seeds.mp3\",\n          \"genre\" : \"Arabic\",\n          \"trackName\" : \"Youm Talat\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1a\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2a\"),\n          \"type\" : \"Album\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"default.jpeg\",\n          \"likes\" : 20\n      }, \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"When I'm Gone-Eminem-seeds.mp3\",\n          \"genre\" : \"Rap\",\n          \"trackName\" : \"When I'm Gone\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e19\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2b\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"When_I'm_Gone_(Eminem_song).jpg\",\n          \"likes\" : 10\n      }, \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"Way Down We Go.Kaleowith Lyrics ..mp3\",\n          \"genre\" : \"Alternative Rock\",\n          \"trackName\" : \"Way Down We Go\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1b\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2c\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"KaleoWayDownWeGo.jpg\",\n          \"likes\" : 10\n      }\n  ],",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[The user didnot play any tracks ]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Cannot get last 5 played tracks without auth token]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n   \"You haven't played any tracks yet\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 No access\n{\n   \"Unauthorized Access\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 No access\n{\n   \"User not found\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "get",
     "url": "/tracks/stream",
     "title": "Stream a single track",
     "name": "Streaming",
@@ -2971,7 +3048,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "The connection is going to remain open to send chuncks of the track 7000 bytes after each other\nThe user is eligible to pause, fast foward or go backwards while playing a song",
+          "content": "The connection is going to remain open to send chuncks of the track 4000 bytes after each other\nThe user is eligible to pause, fast foward or go backwards while playing a song",
           "type": "JSON"
         }
       ]
@@ -3971,78 +4048,6 @@
           "title": "Error-Response:",
           "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed or invalid token \"\n }",
           "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Users"
-  },
-  {
-    "type": "get",
-    "url": "/users/recentlyplayed/EndPointIsNotFinal",
-    "title": "RecentlyPlayedTracks",
-    "name": "RecentlyPlayed",
-    "group": "Users",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>(UserToken)Only an User who has a verified account can get the last 5 tracks he/she played</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "302",
-            "description": "<p>[The response of the sucess case is the track info , the actual track will not be sent]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 302\n{\n        Array of 5 tracks including the track info\n        [{\n            trackName:\n            trackImage;\n            name of the artist of the track \n            duration of the track\n            imageName of the track\n            genre of thr track(if needed)\n            \n\n        },{\n            same as above for track2\n        },{\n            same as above to track 3\n        },{\n            same as above to track 4\n        },{\n            same as above to track 5 \n        }] \n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "404",
-            "description": "<p>[The user didnot play any tracks ]</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "401",
-            "description": "<p>[Cannot get last 5 played tracks without auth token]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"You did not play any tracks yet\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401 No access\n{\n  \"error\": \"Unauthorized Access\"\n}",
-          "type": "JSON"
         }
       ]
     },

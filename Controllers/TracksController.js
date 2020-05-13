@@ -20,7 +20,7 @@ var AssignTrackImage=require("./../Services/ImageService.js").AssignTrackImage;
 ////////////////////////
 const router=express.Router();
 ///////////////////////
-
+var AssignRecentlyPlayedTracks=require("./../Services/RecentlyPlayedTracks").AssignRecentlyPlayedTracks;
 //EDIT TRACK COVER IMAGE
 router.post("/tracks/coverimage",AuthenticateArtistTrack,upload2,reSizeUserImage,uploadImagefn,AssignTrackImage);
 
@@ -103,8 +103,8 @@ router.get('/tracks/stream',(req,res)=>{
                 const parts=range.replace(/bytes=/,"").split("-");
                 var start= parseInt(parts[0],10);
                 var end; 
-                if(start+5000<fileSize){  //5000 bytes per send
-                    end=start+5000;
+                if(start+4000<fileSize){  //4000 bytes per send
+                    end=start+4000;
                 }
                 else{
                     end=fileSize-1;
@@ -128,43 +128,9 @@ router.get('/tracks/stream',(req,res)=>{
                 };
 
                 res.writeHead(200,head);
-                var counter=0;
-                var counter2=0;
-                var exists=false;
-                var newEntry=false;
-                track.findByIdAndUpdate({_id:trackId},{$inc:{numberOfTimesPlayed:1}}).then((res)=>{});
-                User.findById({_id:userId}).then((thisUser)=>{
-                    for(counter2;counter2<5;counter2++){
-                        if(thisUser.recentlyPlyaedtracks[counter2]==undefined){continue;}  // to avoid error when accessing trackPath of undefined
-                        else if(thisUser.recentlyPlyaedtracks[counter2].trackPath==streamedTrack.trackPath){  // if this song is already in the last 5 songs palayed do nothing
-                            exists=true;
-                            break;
-                        }   
-                    }
-                    if(exists==false){
-                        for(counter;counter<5;counter++){
-                            if(thisUser.recentlyPlyaedtracks[counter]==undefined){    //first 5 songs the user ever played
-                                thisUser.recentlyPlyaedtracks[counter]=streamedTrack._doc;
-                                thisUser.save();
-                                break;
-                            }
-                        //when the user has 5 songs in the recently played tracks array and plays another song a new track should be added and the oldest track should be removed
-                        if(counter==4 &&thisUser.recentlyPlyaedtracks[counter]!=streamedTrack._doc){newEntry=true;}
-                        }
-
-
-                    }
-
-                    if(newEntry==true){
-                        var counter3=0;
-                        for(counter3;counter3<4;counter3++){
-                            thisUser.recentlyPlyaedtracks[counter3]=thisUser.recentlyPlyaedtracks[counter3+1]
-                            thisUser.save();
-
-                        }
-                        thisUser.recentlyPlyaedtracks[4]=streamedTrack._doc;
-                    }
-                });
+                track.findByIdAndUpdate({_id:trackId},{$inc:{numberOfTimesPlayed:1}}).then((res)=>{
+                    res.save();
+                    AssignRecentlyPlayedTracks(userId,streamedTrack);});
                 fs.createReadStream(path).pipe(res);
             }
 
@@ -174,8 +140,27 @@ router.get('/tracks/stream',(req,res)=>{
 
 
 
-
-
+//GET RECENTLY PLAYED TRACKS BY THE USER
+router.get('/tracks/recentlyplayed',(req,res)=>{
+    var token = req.header('x-auth');
+    User.findByToken(token).then((user)=>{
+        if(!user){return Promise.reject();}
+        var userId=user._id.toString();
+        User.findById({_id:userId}).then((thisUser)=>{
+            if(!thisUser){return res.status(404).send("User not found")}
+            var RecentlyPlayed=thisUser.recentlyPlyaedtracks;
+            var length=RecentlyPlayed.length;
+            if(length==0){
+                return res.status(404).send("You haven't played any tracks yet");
+            }
+            var Send=[length] ;
+            for(counter=0;counter<RecentlyPlayed.length;counter++){
+                Send[counter]=RecentlyPlayed[length-1-counter];
+            }
+            return res.status(302).send(Send);
+        });
+    }).catch((e)=>{return res.status(401).send('Unauthorized Access');})
+})
 
 
 

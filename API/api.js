@@ -3,42 +3,70 @@
 /**
  * Get recently played tracks
  * -------------------------------------
- * @api {get} /users/recentlyplayed/EndPointIsNotFinal   RecentlyPlayedTracks
+ * @api {get} /tracks/recentlyplayed   RecentlyPlayedTracks
  * @apiName RecentlyPlayed
- * @apiGroup Users
+ * @apiGroup Tracks
  *
  * @apiHeader {string} x-auth     (UserToken)Only an User who has a verified account can get the last 5 tracks he/she played
  *
- * @apiSuccess 302                     [The response of the sucess case is the track info , the actual track will not be sent]
+ * @apiSuccess 302                     [The response of the sucess case is an array of the last 5 played songs ]
  * @apiSuccessExample {JSON} Success-Response:
- *     HTTP/1.1 302
- *     {
-            Array of 5 tracks including the track info
-            [{
-                trackName:
-                trackImage;
-                name of the artist of the track 
-                duration of the track
-                imageName of the track
-                genre of thr track(if needed)
-                
-
-            },{
-                same as above for track2
-            },{
-                same as above to track 3
-            },{
-                same as above to track 4
-            },{
-                same as above to track 5 
-            }] 
- *     }
+ * [ 
+ *       {
+ *           "__v" : 0,
+ *           "trackPath" : "2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3",
+ *           "genre" : "R&B",
+ *           "trackName" : "Super Life",
+ *           "artistId" : "5ea225ded6322b2846bf0e1d",
+ *           "_id" : ObjectId("5ea225ded6322b2846bf0e30"),
+ *           "type" : "Single",
+ *           "numberOfTimesPlayed" : 1,
+ *           "imagePath" : "Superlife42011663_800_800.jpg",
+ *           "likes" : 12
+ *       }, 
+ *       {
+ *           "__v" : 0,
+ *           "trackPath" : "Youm Talat-Amr Diab-seeds.mp3",
+ *           "genre" : "Arabic",
+ *           "trackName" : "Youm Talat",
+ *           "artistId" : "5ea225ded6322b2846bf0e1a",
+ *           "_id" : ObjectId("5ea225ded6322b2846bf0e2a"),
+ *           "type" : "Album",
+ *           "numberOfTimesPlayed" : 0,
+ *           "imagePath" : "default.jpeg",
+ *           "likes" : 20
+ *       }, 
+ *       {
+ *           "__v" : 0,
+ *           "trackPath" : "When I'm Gone-Eminem-seeds.mp3",
+ *           "genre" : "Rap",
+ *           "trackName" : "When I'm Gone",
+ *           "artistId" : "5ea225ded6322b2846bf0e19",
+ *           "_id" : ObjectId("5ea225ded6322b2846bf0e2b"),
+ *           "type" : "Single",
+ *           "numberOfTimesPlayed" : 0,
+ *           "imagePath" : "When_I'm_Gone_(Eminem_song).jpg",
+ *           "likes" : 10
+ *       }, 
+ *       {
+ *           "__v" : 0,
+ *           "trackPath" : "Way Down We Go.Kaleowith Lyrics ..mp3",
+ *           "genre" : "Alternative Rock",
+ *           "trackName" : "Way Down We Go",
+ *           "artistId" : "5ea225ded6322b2846bf0e1b",
+ *           "_id" : ObjectId("5ea225ded6322b2846bf0e2c"),
+ *           "type" : "Single",
+ *           "numberOfTimesPlayed" : 0,
+ *           "imagePath" : "KaleoWayDownWeGo.jpg",
+ *           "likes" : 10
+ *       }
+ *   ],
  *
  * @apiError  404                    [The user didnot play any tracks ]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 No access
  *     {
- *       "error": "You did not play any tracks yet"
+ *        "You haven't played any tracks yet"
  *     }
  *
  *
@@ -46,10 +74,15 @@
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401 No access
  *     {
- *       "error": "Unauthorized Access"
+ *        "Unauthorized Access"
  *     }
  *
- *
+ * @apiError  404                      [If there is no user]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 No access
+ *     {
+ *        "User not found"
+ *     }
  *
  *
  *
@@ -223,7 +256,7 @@
  *@apiSuccess 201                      [Explanation of wht is going to happen]
  *
  * @apiSuccessExample {JSON} Success-Response:
- *     The connection is going to remain open to send chuncks of the track 7000 bytes after each other
+ *     The connection is going to remain open to send chuncks of the track 4000 bytes after each other
  *     The user is eligible to pause, fast foward or go backwards while playing a song
  *
  * 
@@ -256,6 +289,8 @@
  *     }
  *
  */
+
+
 
 
  /**
@@ -2588,7 +2623,6 @@
  * HTTP / 1.1 401  Bad Request
  * {
  *           "message":"forbidden you can not like a private playlist"
-
  *     }
  *
  *
@@ -2717,7 +2751,6 @@
 *       "message": "the user has not liked any playlist yet"
 *     }
 *
-
  * 
  *
  *
