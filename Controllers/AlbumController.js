@@ -72,7 +72,54 @@ router.get('/album/tracks/:id', (req,res)=>{
         });  
         
         
+/////// GET Several Albums /////////
+ router.post('/albums',async (req,res)=>{
+    var arr=req.body.id;
+    var returnedAlbumArray=[{}];
+     if(arr.length===0)
+     {
+         return res.status(400).json({"message":"empty array of ids"})
+     }
+    if(arr.length>10)
+    {
+       return res.status(403).json({"message":" Forbidden maximum 10 Ids"});
+    }
+    
+    for(var i=0;i<arr.length;i++)
+    {
+    if(!ObjectID.isValid(arr[i]))
+    {
+        return res.status(404).json({"message":"invalid id"});
+    }
+    await album.findById(req.body.id[i]).then( async(albums)=>
+    {
+        if(!albums) {
+            returnedAlbumArray[i]=null;
+         }
+      else{
+           await artist.findById(albums.artistId).then(async (myArtist)=>{         
+        
+               returnedAlbumArray[i]={
+        
+                _id:albums._id,
+                albumName:albums.albumName,
+                artistName:myArtist.artistName,
+                likes:albums.likes,
+                imagePath:albums.imagePath,
+                tracks:albums.tracks
+               
+            };
 
+            res.send({"albums":returnedAlbumArray}); 
+        
+        })
+
+    }
+})
+}  
+})
+
+/////////////////////////////////////////////////////////////////////////////
 
         
 router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (req, res) => {
@@ -154,6 +201,27 @@ router.post('/album/like/unlike/:id',async (req, res) => {
     }).catch((e) =>
     {
         res.status(500).send();
+    })
+});
+
+/////// Get Liked Albums //////////
+router.get('/albums/like/me', (req,res) =>
+{
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(401).send('Token is Empty');
+    }
+    User.findByToken(token).then((user) =>
+    {
+        if(!user)
+        {
+            res.status(401).send('User does not have access or does not exist');
+        }
+        res.status(302).send(user.likedTracks);
+    }).catch((e) =>
+    {
+        res.status(401).send('User does not have access or does not exist');
     })
 });
 
