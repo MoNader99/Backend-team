@@ -35,6 +35,14 @@ var deleteUserFromSchema = function (followeduserid, userId) {
     return followUser.update({ user_id: userId }, { "$pull": { "followedUserInfo": { "userId": followeduserid } } });
 
 }
+var addUserToSchema = function (followeduserid, userId) {
+    // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
+    //console.log(userId);
+    // console.log(artistId);
+    //return followArtist.update({ 'user_id': userId }, { $pullAll: { artistId: [artistId] } })
+    return followUser.update({ user_id: userId }, { "$push": { "followedUserInfo": { "userId": followeduserid } } });
+
+}
 var addFacebookUser = function (facebookId, userName, email, gender, bdate) {
     console.log("bdate" + bdate);
     console.log(facebookId);
@@ -75,9 +83,39 @@ var signUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
 }
 var unFollowUser = function (followeduserid, userId) {
     return deleteUserFromSchema(followeduserid, userId).then((user) => {
-       // console.log(artist);
-        if (user.nModified == 0) return "notfound";
         if (user.nModified == 1) return "unfollowed"
+        if (user.nModified == 0) {
+            return addUserToSchema(followeduserid, userId).then((user2) => {
+                console.log("tane art");
+                console.log(user2);
+                if (user2.nModified == 1) return "followed";
+                else {
+                    console.log(1);
+                    return GetUserById(followeduserid).then((userName) => {
+                        console.log(2);
+                        var followUser1 = new followUser({
+                            user_id: userId,
+                            followedUserInfo: [{
+                                userId: followeduserid,
+                                userName: userName,
+                                followDate: Date.now(),
+                                //rate:2,
+                            }
+                            ]
+                        });
+                        console.log(3);
+                        return followUser1.save().then((res) => {
+                            console.log(4);
+                            return "followed";
+                        }, (err) => {
+                            return err;
+                        });
+                    })
+
+
+                }
+            });
+        }
 
     }).catch((err) => {
         Promise.reject(err);

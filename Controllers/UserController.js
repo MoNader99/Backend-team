@@ -245,7 +245,7 @@ router.post('/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, asyn
         console.log("5arag");
         console.log(str);
         if (str == "unfollowed") res.status(200).send("You have unfollowed the user");
-        if (str == "followed") res.status(200).send("You have followed the user the user");
+        if (str == "followed") res.status(200).send("You have followed the user");
 
     }).catch((err) => {
         console.log(err);

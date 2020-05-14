@@ -8,7 +8,10 @@ const followInfoSchema = new Schema({
         type: String,
         required: true,
     },
-
+    userName: {
+        type: String,
+        required: true,
+    },
     followDate: {
         type: Date,
         required: true,
