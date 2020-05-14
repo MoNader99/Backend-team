@@ -10,7 +10,7 @@ const followInfoSchema = new Schema({
     },
     artistName:{
       type:String,
-      required:true,
+      required:false,
     },
 
     followDate:{

@@ -229,7 +229,7 @@ router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, as
     artistservices.unFollowArtist(artistId, req.userId).then((str) => {
         console.log(str);
         if (str == "unfollowed") res.status(200).send("You have un followed the artist");
-        if (str == "notfound") res.status(200).send("You are not following the artist");
+        if (str == "followed") res.status(200).send("You have followed the artist");
 
     }).catch((err) => {
         console.log(err);
@@ -242,9 +242,10 @@ router.post('/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, asyn
     console.log("da5al");
 
     userservices.unFollowUser(userId, req.userId).then((str) => {
+        console.log("5arag");
         console.log(str);
-        if (str == "unfollowed") res.status(200).send("You have un followed the user");
-        if (str == "notfound") res.status(200).send("You are not following the user");
+        if (str == "unfollowed") res.status(200).send("You have unfollowed the user");
+        if (str == "followed") res.status(200).send("You have followed the user the user");
 
     }).catch((err) => {
         console.log(err);

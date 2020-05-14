@@ -34,12 +34,54 @@ var deleteArtistFromSchema = function (artistId, userId) {
     return followArtist.update({ user_id: userId }, { "$pull": { "followedArtistInfo": { "artistId": artistId } } });
 
 }
+var addArtistToSchema = function (artistId, userId) {
+    // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
+
+    console.log("da5al hena");
+    console.log(userId);
+    console.log(artistId);
+    //return followArtist.update({ 'user_id': userId }, { $pullAll: { artistId: [artistId] } })
+    return followArtist.update({ user_id: userId }, { "$push": { "followedArtistInfo": { "artistId": artistId } } });
+
+}
 var unFollowArtist = function (artistId, userId) {
     return deleteArtistFromSchema(artistId, userId).then((artist) => {
+        if (artist.nModified == 1) return "unfollowed";
+        console.log("2wel art");
         console.log(artist);
-        if (artist.nModified==0) return "notfound";
-        if (artist.nModified==1) return "unfollowed"
+        if (artist.nModified == 0) {
+            return addArtistToSchema(artistId, userId).then((artist2) => {
+                console.log("tane art");
+                console.log(artist2);
+                if (artist2.nModified == 1) return "followed";
+                else {
+                    console.log(1);
+                    return GetArtistById(artistId).then((artistName) => {
+                        console.log(2);
+                        var followArtist1 = new followArtist({
+                            user_id: userId,
+                            followedArtistInfo: [{
+                                artistId: artistId,
+                                artistName: artistName,
+                                followDate: Date.now(),
+                                //rate:2,
+                            }
+                            ]
+                        });
+                        console.log(3);
+                        return followArtist1.save().then((res) => {
+                            console.log(4);
+                            return "followed";
+                        }, (err) => {
+                            return err;
+                        });
+                    })
 
+
+                }
+            });
+        }
+ 
     }).catch((err) => {
         Promise.reject(err);
     })
