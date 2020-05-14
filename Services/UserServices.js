@@ -35,12 +35,12 @@ var deleteUserFromSchema = function (followeduserid, userId) {
     return followUser.update({ user_id: userId }, { "$pull": { "followedUserInfo": { "userId": followeduserid } } });
 
 }
-var addUserToSchema = function (followeduserid, userId) {
+var addUserToSchema = function (followeduserid, userId,userName) {
     // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
     //console.log(userId);
     // console.log(artistId);
     //return followArtist.update({ 'user_id': userId }, { $pullAll: { artistId: [artistId] } })
-    return followUser.update({ user_id: userId }, { "$push": { "followedUserInfo": { "userId": followeduserid } } });
+    return followUser.update({ user_id: userId }, { "$push": { "followedUserInfo": { "userId": followeduserid, "userName": userName, "followDate": Date.now() } } });
 
 }
 var addFacebookUser = function (facebookId, userName, email, gender, bdate) {
@@ -85,13 +85,13 @@ var unFollowUser = function (followeduserid, userId) {
     return deleteUserFromSchema(followeduserid, userId).then((user) => {
         if (user.nModified == 1) return "unfollowed"
         if (user.nModified == 0) {
-            return addUserToSchema(followeduserid, userId).then((user2) => {
-                console.log("tane art");
-                console.log(user2);
-                if (user2.nModified == 1) return "followed";
-                else {
-                    console.log(1);
-                    return GetUserById(followeduserid).then((userName) => {
+            return GetUserById(followeduserid).then((userName) => {
+                return addUserToSchema(followeduserid, userId, userName).then((user2) => {
+                    console.log("tane art");
+                    console.log(user2);
+                    if (user2.nModified == 1) return "followed";
+                    else {
+                        console.log(1);
                         console.log(2);
                         var followUser1 = new followUser({
                             user_id: userId,
@@ -110,10 +110,11 @@ var unFollowUser = function (followeduserid, userId) {
                         }, (err) => {
                             return err;
                         });
-                    })
 
 
-                }
+
+                    }
+                });
             });
         }
 

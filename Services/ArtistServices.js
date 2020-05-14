@@ -34,14 +34,14 @@ var deleteArtistFromSchema = function (artistId, userId) {
     return followArtist.update({ user_id: userId }, { "$pull": { "followedArtistInfo": { "artistId": artistId } } });
 
 }
-var addArtistToSchema = function (artistId, userId) {
+var addArtistToSchema = function (artistId, userId,artistName) {
     // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
 
     console.log("da5al hena");
     console.log(userId);
     console.log(artistId);
     //return followArtist.update({ 'user_id': userId }, { $pullAll: { artistId: [artistId] } })
-    return followArtist.update({ user_id: userId }, { "$push": { "followedArtistInfo": { "artistId": artistId } } });
+    return followArtist.update({ user_id: userId }, { "$push": { "followedArtistInfo": { "artistId": artistId, "artistName": artistName, "followDate":Date.now() } } });
 
 }
 var unFollowArtist = function (artistId, userId) {
@@ -50,13 +50,13 @@ var unFollowArtist = function (artistId, userId) {
         console.log("2wel art");
         console.log(artist);
         if (artist.nModified == 0) {
-            return addArtistToSchema(artistId, userId).then((artist2) => {
-                console.log("tane art");
-                console.log(artist2);
-                if (artist2.nModified == 1) return "followed";
-                else {
-                    console.log(1);
-                    return GetArtistById(artistId).then((artistName) => {
+            return GetArtistById(artistId).then((artistName) => {
+                return addArtistToSchema(artistId, userId,artistName).then((artist2) => {
+                    console.log("tane art");
+                    console.log(artist2);
+                    if (artist2.nModified == 1) return "followed";
+                    else {
+                        console.log(1);
                         console.log(2);
                         var followArtist1 = new followArtist({
                             user_id: userId,
@@ -75,12 +75,13 @@ var unFollowArtist = function (artistId, userId) {
                         }, (err) => {
                             return err;
                         });
-                    })
 
 
-                }
+
+                    }
+                });
             });
-        }
+            }
  
     }).catch((err) => {
         Promise.reject(err);
