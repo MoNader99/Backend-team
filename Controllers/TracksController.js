@@ -8,7 +8,7 @@ const{playlist}=require("./../models/playlists");
 const fs=require('fs');
 const{album}=require('./../models/album');
 var { User } = require("./../models/users.js");
-var{artist}= require("./../models/artists.js"); 
+var{artist}= require("./../models/artists.js");
 var upload=require("./../Services/uploadTrack").uploadTrack;
 var{notification}=require("./../models/notifications.js");
 const {ObjectID}=require('mongodb');
@@ -31,7 +31,7 @@ router.post("/tracks/coverimage",AuthenticateArtistTrack,upload2,reSizeUserImage
 router.post('/tracks/single',upload,(req,res)=>{
     var token = req.header('x-auth');
     artist.findByToken(token).then((myartist)=>{
-    var atristId2= myartist._id; 
+    var atristId2= myartist._id;
     var artistName=myartist.artistName;
     if(!req.body.trackName){
         return res.status(400).send("Missing trackName");
@@ -53,7 +53,7 @@ router.post('/tracks/single',upload,(req,res)=>{
                 text:artistName+" released a new Song ("+req.body.trackName +")",
                 sourceId:atristId2,
                 userType:"artist"
-                
+
             });
             not2.save();
             var trackInstance = new track({
@@ -66,7 +66,7 @@ router.post('/tracks/single',upload,(req,res)=>{
                 res.status(500).send("Coult not add Track ("+req.body.trackName+")");
             });
             trackInstance.save().then((doc)=>{
-                res.status(201).send(doc);  
+                res.status(201).send(doc);
             }).catch((e)=>{
                 res.status(500).send("Coult not add Track ("+req.body.trackName+")");
             });
@@ -80,11 +80,11 @@ router.post('/tracks/single',upload,(req,res)=>{
 //////////////////////////////////////
 //STREAM A TRACK
 router.get('/tracks/stream',(req,res)=>{
-    var token = req.header('x-auth'); 
+    var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
         if(!user){return Promise.reject();}
         var userId=user._id.toString();
-        var trackId = req.header('trackId'); 
+        var trackId = req.header('trackId');
         if(!trackId){
             return res.status(400).send("Missing track ID");
         }
@@ -97,12 +97,12 @@ router.get('/tracks/stream',(req,res)=>{
             //
             var path = './tracks/'+streamedTrack.trackPath;
             const stat= fs.statSync(path);   //returns inofrmation about a given file asynchronouslly
-            const fileSize= stat.size;  
+            const fileSize= stat.size;
             var range = req.headers.range;  //the requested number of bytes 0-50 (from 0 to 50) -> sent intially empty 0 only
             if(range){
                 const parts=range.replace(/bytes=/,"").split("-");
                 var start= parseInt(parts[0],10);
-                var end; 
+                var end;
                 if(start+4000<fileSize){  //4000 bytes per send
                     end=start+4000;
                 }
@@ -119,7 +119,7 @@ router.get('/tracks/stream',(req,res)=>{
                 };
                 res.writeHead(206,head)
                 stream.pipe(res);
-                
+
             }
             else{
                 const head= {
@@ -188,8 +188,8 @@ if(url.length>10)
 var flag=0;
 for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
 {
-    
-   
+
+
 if(!ObjectID.isValid(url[i]))  //validate the playlist id
 {
 return res.status(404).json({"message":"the track was not found"});
@@ -198,22 +198,22 @@ return res.status(404).json({"message":"the track was not found"});
 
 
 
-   
+
    await track.find({_id: url[i]}).then((tracks)=>
   //await track.findById(ObjectID(url[i])).then((tracks)=>
 {
     //console.log("gowaaaaaaalllllllllllllll")
     //console.log("el tracks ely rag3a");
    // console.log(JSON.stringify( tracks))
-    if(!tracks[0]) 
-   { 
+    if(!tracks[0])
+   {
        flag=1;
       // console.log("gowaaaaaaa")
     //return res.status(404).json({"message":"the track was not found"});
     return Promise.reject();
    }
      tracksarr[i]=tracks;
- 
+
 
 }).catch((e)=>{return})//res.status(400).send(e)});
 
@@ -277,7 +277,7 @@ var trackId= _.map(tracksarr[i],"_id");
 
  var len =playlists.tracks.length;
  playlists.tracks[len]=ObjectID(trackId.toString())
- 
+
  playlists.markModified('tracks')
  playlists.save();
 
@@ -300,11 +300,11 @@ return res.status(200).json({"message":'tracks added successfully'});
 
 
 
- 
+
  //////////////////////////////////////////////////////
- 
- 
- 
+
+
+
  /**
    * GetSeveralTracks
   * ---------------------
@@ -346,9 +346,9 @@ return res.status(200).json({"message":'tracks added successfully'});
              "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
              "imagePath": "default.jpeg"
          },
-          
+
          null  // if you send an id that is not in the database
-               // 
+               //
      ]
  }
   *
@@ -359,7 +359,7 @@ return res.status(200).json({"message":'tracks added successfully'});
   *     {
   *       "message":"empty array of ids"
   *     }
-  * 
+  *
   *
   * @apiError  404                      [invalid id]
   *  @apiErrorExample {JSON} Error-Response:
@@ -378,15 +378,15 @@ return res.status(200).json({"message":'tracks added successfully'});
   *
   *
   */
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
  //GET SEVERAL TRACKS
  ///////
  router.post('/tracks',async (req,res)=>{
@@ -401,7 +401,7 @@ return res.status(200).json({"message":'tracks added successfully'});
      {
         return res.status(403).json({"message":" Forbidden maximum 10 Ids"});
      }
-     
+
      for(var i=0;i<arr.length;i++)
      {
      if(!ObjectID.isValid(arr[i]))
@@ -413,20 +413,20 @@ return res.status(200).json({"message":'tracks added successfully'});
          if(!tracks) {
              //flag=1;
              //return res.status(404).json({"message":"can not find track"});
-         
+
              returnedTrackArray[i]=null;
           }
        else{
-            await artist.findById(tracks.artistId).then(async (myArtist)=>{  
+            await artist.findById(tracks.artistId).then(async (myArtist)=>{
              if(tracks.type==='Album')
-             {   
- 
+             {
+
                await album.findOne({ tracks: {$in: [arr[i]]}}).then((myAlbum)=>{
                  //console.log("inside album")
-                 //console.log(myAlbum.toString());        
-         
+                 //console.log(myAlbum.toString());
+
                 returnedTrackArray[i]={
-         
+
                  _id:tracks._id,
                  trackName:tracks.trackName,
                  artistName:myArtist.artistName,
@@ -438,17 +438,17 @@ return res.status(200).json({"message":'tracks added successfully'});
                  trackPath:tracks.trackPath,
                  imagePath:tracks.imagePath
              };
- 
-         
-         
+
+
+
          })//.catch((e)=>{console.log("error in album")})
- 
+
      }
      else
      {
          returnedTrackArray[i]={
-            
- 
+
+
              _id:tracks._id,
              trackName:tracks.trackName,
              artistName:myArtist.artistName,
@@ -459,29 +459,29 @@ return res.status(200).json({"message":'tracks added successfully'});
              likes:tracks.likes,
              trackPath:tracks.trackPath,
              imagePath:tracks.imagePath
- 
-          
+
+
      }    }
-             
- 
- 
- 
- 
+
+
+
+
+
         })
- 
+
      }
   })
-   
+
  }
-     res.send({"tracks":returnedTrackArray});    
+     res.send({"tracks":returnedTrackArray});
  })
- 
+
  /////////////////////////////////////////////////////////////////////////////
- 
- 
- 
- 
- 
+
+
+
+
+
 
 //DELETE A TRACK
 router.delete('/tracks',(req,res)=>{
@@ -490,19 +490,19 @@ router.delete('/tracks',(req,res)=>{
         if(!myartist){
             return Promise.reject();
         }
-    var atristId2= myartist._id; 
+    var atristId2= myartist._id;
     if(!req.body.trackName){
         return res.status(400).send("Pass the track name to delete");
-    }  
+    }
     var trackName1=req.body.trackName ;  //track name
-    
+
 
     track.findOneAndRemove({$and:[{artistId: atristId2},{trackName:trackName1 }]}).then((delTracks)=>{
         if(!delTracks){
-            
+
             return res.status(404).send('Track not found to be deleted');
         }
-        
+
         res.status(200).send("Track "+trackName1+" was deleted succsesfully");
 
     }).catch((e)=>{
@@ -561,7 +561,7 @@ router.post('/tracks/like/unlike/:id', (req,res) =>
         }).catch((e) =>
         {
             res.status(401).send('Token is not valid');
-        }) 
+        })
     }).catch((e) =>
     {
         res.status(500).send();
@@ -589,5 +589,37 @@ router.get('/tracks/like/me', (req,res) =>
         res.status(401).send('User does not have access or does not exist');
     })
 })
+
+
+/////// Get Tracks by genre //////////
+router.get('/tracks/:genre', (req,res) =>
+{
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(401).send('Token is Empty');
+    }
+    User.findByToken(token).then((user) =>
+    {
+        if(!user)
+        {
+            res.status(401).send('User does not have access or does not exist');
+        }
+
+        track.find({'genre':req.params.genre}).then((tracksArr)=>{
+          if (!tracksArr){
+            res.status(404).send('no tracks for this genre');
+          }
+          res.status(200).send(tracksArr);
+        })
+
+
+    }).catch((e) =>
+    {
+        res.status(401).send('User does not have access or does not exist');
+    })
+})
+
+
 
 module.exports=router;
