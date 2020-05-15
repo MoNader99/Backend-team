@@ -44,13 +44,25 @@ describe('GET /tracks/:genre', () => {
 
        track.find().then((tracks)=>
        {
-         console.log(  tracks[tracks.length-1].genre);
            request(app)
            .get(`/tracks/`+ tracks[tracks.length-1].genre)
            .expect(403)
            .end(done)
        })
    });
+
+   it('should refuse invalid token ', (done) =>
+   {
+
+         track.find().then((tracks)=>
+         {
+             request(app)
+             .get(`/tracks/`+ tracks[tracks.length-1].genre)
+             .set('x-auth',"invalid token")
+             .expect(401)
+             .end(done)
+         })
+     });
 
 
 })
