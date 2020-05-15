@@ -607,7 +607,7 @@ router.get('/tracks/:genre', (req,res) =>
         }
 
         track.find({'genre':req.params.genre}).then((tracksArr)=>{
-          if (!tracksArr){
+          if (tracksArr.length==0){
             res.status(404).send('no tracks for this genre');
           }
           res.status(200).send(tracksArr);
