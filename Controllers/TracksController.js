@@ -597,7 +597,7 @@ router.get('/tracks/:genre', (req,res) =>
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(401).send('Token is Empty');
+        res.status(403).send('Token is Empty');
     }
     User.findByToken(token).then((user) =>
     {

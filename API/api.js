@@ -11,7 +11,7 @@
  *
  * @apiSuccess 302                     [The response of the sucess case is an array of the last 5 played songs ]
  * @apiSuccessExample {JSON} Success-Response:
- * [ 
+ * [
  *       {
  *           "__v" : 0,
  *           "trackPath" : "2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3",
@@ -23,7 +23,7 @@
  *           "numberOfTimesPlayed" : 1,
  *           "imagePath" : "Superlife42011663_800_800.jpg",
  *           "likes" : 12
- *       }, 
+ *       },
  *       {
  *           "__v" : 0,
  *           "trackPath" : "Youm Talat-Amr Diab-seeds.mp3",
@@ -35,7 +35,7 @@
  *           "numberOfTimesPlayed" : 0,
  *           "imagePath" : "default.jpeg",
  *           "likes" : 20
- *       }, 
+ *       },
  *       {
  *           "__v" : 0,
  *           "trackPath" : "When I'm Gone-Eminem-seeds.mp3",
@@ -47,7 +47,7 @@
  *           "numberOfTimesPlayed" : 0,
  *           "imagePath" : "When_I'm_Gone_(Eminem_song).jpg",
  *           "likes" : 10
- *       }, 
+ *       },
  *       {
  *           "__v" : 0,
  *           "trackPath" : "Way Down We Go.Kaleowith Lyrics ..mp3",
@@ -99,7 +99,7 @@
  * @apiGroup Users
  *
  * @apiHeader {string} x-auth    (UserToken)Only a User who has a verified account can get top 5 tracks of an artist
- * @apiHeader {string} artistId    ID of the artist to get his/her top 5 tracks 
+ * @apiHeader {string} artistId    ID of the artist to get his/her top 5 tracks
  * @apiSuccess 302                     [The response of the sucess case is the track info , the actual track will not be sent]
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
@@ -112,7 +112,7 @@
                 imageName of the track
                 genre of thr track(if needed)
                 wether if the track is single or in an album(to be introduced later in the database)
-                
+
 
             },{
                 same as above for track2
@@ -121,8 +121,8 @@
             },{
                 same as above to track 4
             },{
-                same as above to track 5 
-            }] 
+                same as above to track 5
+            }]
  *     }
  *
  * @apiError  404                    [The artist did not release any tracks ]
@@ -131,7 +131,7 @@
  *     {
  *       "error": "The artist did not release any tracks"
  *     }
- * 
+ *
  * @apiError  400                    [The artist id is not passed ]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 400 No access
@@ -164,17 +164,17 @@
  * @apiName AddTrack
  * @apiGroup Tracks
  *
- * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can add a track 
- * 
- * @apiParam {String}      trackName              Track name. (Obligatory) sent as multipart data 
- * @apiParam {String}      genre              each track has only 1 genre. (Obligatory) sent as multipart data 
- * @apiParam {file}        track              the audio track the artist wants to upload sent as multipart data 
+ * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can add a track
+ *
+ * @apiParam {String}      trackName              Track name. (Obligatory) sent as multipart data
+ * @apiParam {String}      genre              each track has only 1 genre. (Obligatory) sent as multipart data
+ * @apiParam {file}        track              the audio track the artist wants to upload sent as multipart data
  *
  * @apiSuccess 201                      [The response of the sucess case is the created track object]
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 201 OK
- *    
+ *
  * {
  *   "__v": 0,
  *   "artistId": "5e9cb30adf88aea050c0778a",
@@ -209,7 +209,7 @@
  *     {
  *       "error": "Please upload a track"
  *     }
- * 
+ *
  * @apiError  400                     [Cannot upload a track file longer than 10 minutes (15052800 bytes)]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 400 No access
@@ -252,14 +252,14 @@
  *
  * @apiHeader {string} x-auth    (User Token)Only an user who has a verified account can play a track
  * @apiHeader {string} trackId    Id of the track the user wants to listen to
- * 
+ *
  *@apiSuccess 201                      [Explanation of wht is going to happen]
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     The connection is going to remain open to send chuncks of the track 4000 bytes after each other
  *     The user is eligible to pause, fast foward or go backwards while playing a song
  *
- * 
+ *
  * @apiError  401                      [Cannot play a track without auth token]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401 No access
@@ -280,7 +280,7 @@
  *     {
  *       "error": "Track not found. Maybe deleted by the artist"
  *     }
- * 
+ *
  * @apiError  404                   [Cannot play a track with invalid track ID]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 No access
@@ -696,7 +696,7 @@
  * @apiName Edit Track cover image
  * @apiGroup Tracks
  *
- * @apiHeader {string} x-auth    (artistToken)Only an artist who has a verified account can edit his/her track cover image 
+ * @apiHeader {string} x-auth    (artistToken)Only an artist who has a verified account can edit his/her track cover image
  * @apiHeader {string} trackName    Name of the track the artist wants to edit it's cover image
  *
  * @apiParam {file} photo      sent as file in in form-data
@@ -727,7 +727,7 @@
  *     {
  *       "error": "Missing track Name"
  *     }
- * 
+ *
  * @apiError  404                [Track doesnot belong to the user]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 No access
@@ -752,7 +752,7 @@
  * @apiName Edit Album cover image
  * @apiGroup Album
  *
- * @apiHeader {string} x-auth    (artistToken)Only an artist who has a verified account can edit his/her album cover image 
+ * @apiHeader {string} x-auth    (artistToken)Only an artist who has a verified account can edit his/her album cover image
  * @apiHeader {string} albumId    Id of the album to be edited
  *
  * @apiParam {file} photo      sent as file in in form-data
@@ -783,14 +783,14 @@
  *     {
  *       "error": "Missing Album Id"
  *     }
- * 
+ *
  * @apiError  404                [Album is not found]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 No access
  *     {
  *       "error": "Album is not found.May be removed by the artist"
  *     }
- * 
+ *
  * @apiError  404                [Invalid Album ID]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404 No access
@@ -824,7 +824,7 @@
  * @apiGroup Users
  *
  * @apiHeader {string} x-auth    Front end token
- * @apiHeader {string}   artistId     Id of the artist the  user wants to get his/her related artists   
+ * @apiHeader {string}   artistId     Id of the artist the  user wants to get his/her related artists
  *
  * @apiSuccess 302                     [The response of the sucess case is an array of artists]
  * @apiSuccessExample {JSON} Success-Response:
@@ -1021,9 +1021,9 @@
  *     }
  *
  *
- * 
- * 
- * 
+ *
+ *
+ *
  * * @apiError 401  authentication failed
  * @apiErrorExample {json} Error-Response:
  *    HTTP/1.1 401
@@ -1111,9 +1111,9 @@
              "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
              "imagePath": "default.jpeg"
          },
-          
+
          null  // if you send an id that is not in the database
-               // 
+               //
      ]
  }
   *
@@ -1124,7 +1124,7 @@
   *     {
   *       "message":"empty array of ids"
   *     }
-  * 
+  *
   *
   * @apiError  404                      [invalid id]
   *  @apiErrorExample {JSON} Error-Response:
@@ -1143,7 +1143,7 @@
   *
   *
   */
- 
+
 /**
 * AddTracksToAPlaylist
  * ---------------------
@@ -1190,8 +1190,8 @@
  *        "message":  "playlist not found"
  *     }
  *
- * 
- * 
+ *
+ *
 *@apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 404
  *     {
@@ -1204,7 +1204,7 @@
  * @api {get} /artists/homepage/popular    Get popular Artists for homepage
  * @apiName GetPopularArtists
  * @apiGroup Artists
-            
+
  *
  * @apiSuccess {object[]}     artists     An array of Artist objects containing the full details of each  Artist.
  *
@@ -1246,13 +1246,13 @@
 
 
 
-/** 
+/**
 * @api {post} /artists Get several Artists
  * @apiName GetSeveralArtists
  * @apiGroup Artists
  *
  * @apiHeader {string}  x-auth          Authorization Required. A valid access token.
- * 
+ *
  * @apiParam {string[]}   id               ids array of each Artist's unique ID.
  *
  * @apiSuccess {object[]} artists           An array of Artist objects containing the full details of each  Artist.
@@ -1300,7 +1300,7 @@
  *        "message":"authentication failed"
  *     }
  *
- * 
+ *
  * @apiError 400  [exceeded 50 ids]
  *
  * @apiErrorExample {json}      BadRequest-Response:
@@ -1309,8 +1309,8 @@
  *       "message":"maximum 50 ids"
  *     }
  *
- * 
- * 
+ *
+ *
  *     @apiError  403  [invalid id]
  *
  * @apiErrorExample {json}       forbidden-Response:
@@ -1325,16 +1325,15 @@
  *     {
  *        "message":  "artist not found"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  *
  */
 
 
 
 
- ///////////////////////Aya Magdy/////////////////////////////
 
  ///////////////////////Aya Magdy/////////////////////////////
 
@@ -1382,7 +1381,7 @@
  /**
  * GET User Profile By ID
  * -------------------------------------
- * @api {get} /users/:id         GET User Profile By ID      
+ * @api {get} /users/:id         GET User Profile By ID
  * @apiName GetUserProfileByID
  * @apiGroup Users
  *
@@ -1394,16 +1393,16 @@
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
  * {
- *     
+ *
  *      "likedAlbums": ["5e8a701954fe752c1498f729",
  *               "5e8a701954fe752c1498f72a"]
  *      "likedTracks": ["5e8a701954fe752c1498f72c",
- *               "5e8a701954fe752c1498f72d"] 
+ *               "5e8a701954fe752c1498f72d"]
  *
  * }
  * @apiError  404   Not found                   [the user id is not found ]
  * @apiErrorExample {string} Error-Response:
- *     HTTP/1.1 404 Not found 
+ *     HTTP/1.1 404 Not found
  *     {
  *       "Id not found"
  *     }
@@ -1413,16 +1412,16 @@
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  * @apiErrorExample {string} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token Invalid"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 
@@ -1651,6 +1650,96 @@
   *
   */
 
+//get tracks by genre
+  /**
+   *
+   *
+   * @api {get} /tracks/:genre               Get Tracks by genre
+   * @apiName Get Tracks by genre
+   * @apiGroup Tracks
+   *
+   *
+   * @apiParam {string}    genre         the required genre
+   *
+   * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
+   *
+   * * @apiSuccessExample {JSON} Success-Response:
+   *     HTTP/1.1 200 OK
+   [
+     {
+         "_id": "5ebdb176b4751d4be056a2a0",
+         "artistId": "5ebdb176b4751d4be056a290",
+         "trackName": "Hello",
+         "genre": "Jazz",
+         "trackPath": "Hello-Adele-seeds.mp3",
+         "__v": 0,
+         "type": "Single",
+         "numberOfTimesPlayed": 0,
+         "imagePath": "default.jpeg",
+         "likes": 9
+     },
+     {
+         "_id": "5ebdb176b4751d4be056a2b3",
+         "artistId": "5ebdb176b4751d4be056a298",
+         "trackName": "Deus",
+         "genre": "Jazz",
+         "trackPath": "HVOB & Winston Marshall  Deus.mp3",
+         "__v": 0,
+         "type": "Album",
+         "numberOfTimesPlayed": 0,
+         "imagePath": "hvobalbum.jpg",
+         "likes": 13
+     },
+     {
+         "_id": "5ebdb176b4751d4be056a2b2",
+         "artistId": "5ebdb176b4751d4be056a298",
+         "trackName": "The Blame Game",
+         "genre": "Jazz",
+         "trackPath": "HVOB - Dogs [Official].mp3",
+         "__v": 0,
+         "type": "Album",
+         "numberOfTimesPlayed": 0,
+         "imagePath": "hvobalbum.jpg",
+         "likes": 80
+     },
+     {
+         "_id": "5ebdb176b4751d4be056a2b1",
+         "artistId": "5ebdb176b4751d4be056a298",
+         "trackName": "Dogs",
+         "genre": "Jazz",
+         "trackPath": "HVOB - Dogs [Official].mp3",
+         "__v": 0,
+         "type": "Single",
+         "numberOfTimesPlayed": 0,
+         "imagePath": "default.jpeg",
+         "likes": 21
+     }
+ ]
+   *
+   *
+   * @apiError  404   no tracks found for this genre
+   *  @apiErrorExample {string} Error-Response:
+   *     HTTP/1.1 404 Not Found
+   *    {
+   *      "no tracks for this genre"
+   *     }
+   *
+   *  @apiError  403 empty token
+   *  @apiErrorExample {string} Error-Response:
+   *     HTTP/1.1 403 forbidden
+   *     {
+   *       "token is empty"
+   *     }
+   *
+   *  @apiError  401 invalid token
+    *  @apiErrorExample {string} Error-Response:
+    *     HTTP/1.1 403 unauthorized
+    *     {
+    *       "User does not have access or does not exist"
+    *     }
+   *
+   */
+
 
 
 ////////////////////////Aya Mahmoud //////////////////////
@@ -1750,7 +1839,7 @@
 *
 * @apiSuccessExample {JSON} Success-Response:
 *     HTTP/1.1 200 OK{
-*      
+*
 *{
 *    "_id" : ObjectId("5e8902475501bd142cbeff13"),
 *    "email" : "be12@hotmail.com",
@@ -1768,7 +1857,7 @@
 *    ],
 *    "__v" : 0
 *}
-*    
+*
 *      }
 *
  * @apiError 401  authentication failed
@@ -1915,7 +2004,7 @@
  *
   * @apiError  404  Not found                [this album is not found or the id is not an object id]
  *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404 Not found 
+ *     HTTP/1.1 404 Not found
  *     {
  *        "Notfound"
  *     }
@@ -1933,17 +2022,17 @@
 /**
 * Like or Unlike album
  * ---------------------
- * 
+ *
  * @api {post} album/like/unlike/:id              Like or Unlike album
  * @apiName  Like or Unlike album
  * @apiGroup Album
- *   
- *  
+ *
+ *
  *@apiParam {string}  id            sent as a parameter in the url
- * 
+ *
 * @apiHeader {string}  x-auth       user token to like or unlike album (in header)
 *
- * 
+ *
  * @apiSuccessExample {string} Success-Response:
 *     HTTP/1.1 200 OK
 *      {
@@ -1972,42 +2061,42 @@
  *     }
  *
  *
- * 
+ *
  *  @apiError  404  Not found                [this album is not found]
  *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "No album found"
  *     }
- * 
- * 
+ *
+ *
  * @apiError  404  Not found                [this is not an ID]
  *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "Invalid id"
  *     }
- * 
- * @apiError  500  Internal Server Error               
- *  
- * 
- * 
- * 
+ *
+ * @apiError  500  Internal Server Error
+ *
+ *
+ *
+ *
  */
 /**
 * Like or Unlike track
  * ---------------------
- * 
+ *
  * @api {post} track/like/unlike/:id              Like or Unlike track
  * @apiName  Like or Unlike track
  * @apiGroup Tracks
- *   
- *  
+ *
+ *
  *@apiParam {string}  id            sent as a parameter in the url
- * 
+ *
 * @apiHeader {string}  x-auth       user token to like or unlike track (in header)
 *
- * 
+ *
  * @apiSuccessExample {string} Success-Response:
 *     HTTP/1.1 200 OK
 *      {
@@ -2036,27 +2125,27 @@
  *     }
  *
  *
- * 
+ *
  *  @apiError  404  Not found                [this track is not found]
  *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "No track found"
  *     }
- * 
- * 
+ *
+ *
  * @apiError  404  Not found                [this is not an ID]
  *  @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
  *        "Invalid id"
  *     }
- * 
- * @apiError  500  Internal Server Error               
- *  
- * 
- * 
- * 
+ *
+ * @apiError  500  Internal Server Error
+ *
+ *
+ *
+ *
  */
 
  /**
@@ -2066,50 +2155,50 @@
  * @apiName change password
  * @apiGroup User privacy
  *
- * @apiHeader {string}  x-auth    
- * 
+ * @apiHeader {string}  x-auth
+ *
  * @apiParam {string} oldPassword      In the Body of the request
  * @apiParam {string} newPassword      In the Body of the request
- * 
- * 
+ *
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *         "Password has been changed successfully"
  *     }
- *     
+ *
  * * @apiError  403  Forbidden                [Password is incorrect]
  *  @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 403  Forbidden 
+ *     HTTP/1.1 403  Forbidden
  *     {
  *        "Password is incorrect"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
- 
+
 
 
 //GET Album by ID
  /**
  * Get album by id
  * -------------------------------------
- * @api {get} /album/:id              Get Album 
+ * @api {get} /album/:id              Get Album
  * @apiName GetAlbum
  * @apiGroup Album
  *
@@ -2137,7 +2226,7 @@
  * }
  * @apiError  404   Not found                   [the album id is not found ]
  * @apiErrorExample {string} Error-Response:
- *     HTTP/1.1 404 Not found 
+ *     HTTP/1.1 404 Not found
  *     {
  *       "Id not found"
  *     }
@@ -2147,24 +2236,24 @@
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 //GET User Profile
  /**
  * Get User Profile
  * -------------------------------------
- * @api {get} /users/me                 Get User Profile 
- * @apiName GetUserProfile 
+ * @api {get} /users/me                 Get User Profile
+ * @apiName GetUserProfile
  * @apiGroup Users
  *
  * @apiHeader {string}  x-auth          Required
@@ -2192,7 +2281,7 @@
  * }
  * @apiError  404   Not found                   [the user id is not found ]
  * @apiErrorExample {string} Error-Response:
- *     HTTP/1.1 404 Not found 
+ *     HTTP/1.1 404 Not found
  *     {
  *       "Id not found"
  *     }
@@ -2202,16 +2291,16 @@
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
 /**
  * Get user's current playlists
@@ -2221,12 +2310,12 @@
  * @apiGroup Playlists
  *
  * @apiHeader {string} x-auth          Required
- *      
- * 
+ *
+ *
  * @apiSuccess 302                     [The response of the success case is playlist object(s)]
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 302
- * 
+ *
  *   {
  *  "playlist": [
  *       {
@@ -2271,28 +2360,28 @@
  *           "__v": 0
  *       }
  *   ]
- *  } 
+ *  }
  *
- * 
- * 
- * 
+ *
+ *
+ *
 *  @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  */
 
 
@@ -2305,8 +2394,8 @@
  * @apiGroup Library
  *
  * @apiHeader {string} x-auth          Required
- *      
- * 
+ *
+ *
  * @apiSuccess 302                     [The response of the success case is track ID(s)]
  * @apiSuccessExample {Array} Success-Response:
  *     HTTP/1.1 302
@@ -2314,23 +2403,23 @@
  *  "5e8b45fb97022f4d7cd9907e"
  * ]
  *
- * 
+ *
 *  @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
  *
- * 
+ *
+ *
  */
 
 
@@ -2343,8 +2432,8 @@
  * @apiGroup Library
  *
  * @apiHeader {string} x-auth          Required
- *      
- * 
+ *
+ *
  * @apiSuccess 302                     [The response of the success case is Albums ID(s)]
  * @apiSuccessExample {Array} Success-Response:
  *     HTTP/1.1 302
@@ -2352,42 +2441,42 @@
  *  "5e8b45fb97022f4d7cd9907e"
  * ]
  *
- * 
+ *
 *  @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {string} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
  *
- * 
+ *
+ *
  */
 
 
 
 
 ///monica////////////////////////////
- 
+
 /**
  * @api {get} /albums/homepage/popular    Get popular Albums for homepage
  * @apiName GetPopularAlbums
  * @apiGroup Album
- *          
+ *
  ** @apiHeader {string}  x-auth          Required token of the user
  * @apiSuccess {object[]}   albums        An array of Album objects containing the full details of each  Album
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
  * {
- *      "albums": 
+ *      "albums":
  * [
  *    {
  *       "_id": "5e89f2caaaa6bd3f481675f5",
@@ -2402,7 +2491,7 @@
  *       ],
  *       "imagePath": "default.png"
  * },
- * 
+ *
  *   {
  *       "_id": "5e89f2caaaa6bd3f481675f6",
  *       "artistId": "5e89f2caaaa6bd3f481675e8",
@@ -2417,19 +2506,19 @@
  *       "imagePath": "default.png"
  * }
  * ],
- * 
+ *
 }
  *
  *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "message":"authenticaton failed"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 
@@ -2442,7 +2531,7 @@
  * @api {get} /users/followed/artists    Get followed artists of the user
  * @apiName GetFollowedArtitsOfTheUser
  * @apiGroup Users
- *          
+ *
  ** @apiHeader {string}  x-auth          Required token of the user
  * @apiSuccess {object[]} artists              simplified array of artists objects
  *
@@ -2453,30 +2542,30 @@
  * [
  * {  "artistName":"Adele",
  *     "followDate": "2020-04-04T18:14:27.889Z",
- *   
+ *
  *   "rate":"3"
  *  },
  *   {
- * 
+ *
  *     "artistName":"Eminem",
  *     "followDate": "2020-04-04T18:14:27.889Z",
  *     "rate":"7"
  *    }
- * 
- * 
+ *
+ *
  *    ]
  * }
  *
  *
  * @apiError 401   Unauthorized               [authentication failed]
  *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "message":"authenticaton failed"
  *     }
- * 
- * 
- * 
+ *
+ *
+ *
  */
 
 
@@ -2484,40 +2573,40 @@
  * @api {post} /users/:artistId/follow     follow an artist
  * @apiName FollowAnArtist
  * @apiGroup Users
- *          
+ *
  * @apiHeader {string}  x-auth          Required token of the user
  * @apiParam {string}  artistId         id of artist you want to follow
- * 
+ *
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
  * {
  *   "message":"followed"
- * 
- * 
- *    
+ *
+ *
+ *
  * }
  *
  *
  * @apiError 401              [authentication failed]
  * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "message":"authenticaton failed"
  *     }
- * 
+ *
  * @apiError 404               [artist not found]
  * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404   Not-Found  
+ *     HTTP/1.1 404   Not-Found
  *     {
  *        "message":"artist not found"
  *     }
- * 
- * 
- * 
- *  
- * 
- * 
+ *
+ *
+ *
+ *
+ *
+ *
  */
 
 
@@ -2525,9 +2614,9 @@
  * @api {get} /notification/artistupadtes    get notification of artist updates
  * @apiName GetArtistUpdatesNotifications
  * @apiGroup Notifications
- *          
+ *
  * @apiHeader {string}  x-auth          Required token of the user
- * 
+ *
  *
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
@@ -2545,38 +2634,38 @@
  *       "sent": true
  *   }
  *]
- * 
- * 
- *    
+ *
+ *
+ *
  * }
  *
  *
  * @apiError 401              [authentication failed]
  * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401   Unauthorized 
+ *     HTTP/1.1 401   Unauthorized
  *     {
  *        "message":"Token is not valid"
  *     }
- * 
- * 
- * 
- * 
- *  
- * 
- * 
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 
  //monica////
  /** Like and Unlike a playlist
  * ---------------------
- * 
+ *
  * @api { post } /playlists/:playlistId/like/unlike/me             Like and Unlike a playlist
  * @apiName  Like and unlike playlist
  * @apiGroup Playlists
- *   
- *  
+ *
+ *
  * @apiParam { string } playlistId    should be passed in params
- * 
+ *
  * @apiHeader { string }  x-auth       user's token
  *
  * @apiSuccessExample { JSON } Success - Response:
@@ -2584,15 +2673,15 @@
  * {
  *    "message":"liked a playlist"
  * }
- * 
+ *
  * @apiSuccessExample { JSON } Success - Response:
  * HTTP / 1.1 200 OK
  * {
  *    "message":"unliked a playlist"
  * }
- * 
- * 
- * 
+ *
+ *
+ *
 *  @apiError  404                      [playlist not found]
 *  @apiErrorExample {JSON} Error-Response:
 *     HTTP/1.1 404 Not Found
@@ -2607,7 +2696,7 @@
 *       "message": "invalid id"
 *     }
 *
- * 
+ *
  *
  *
  * @apiError 401      [authentication failed]
@@ -2626,19 +2715,19 @@
  *     }
  *
  *
- * 
+ *
  * /
  * */
 
- 
+
 /** edit a playlist 's name
  * ---------------------
- * 
+ *
  * @api { post } /playlists/:playlistId/edit            edit a playlist 's name
  * @apiName  edit a playlist 's name
  * @apiGroup Playlists
- *   
- *  
+ *
+ *
  * @apiParam { string } playlistId    should be passed in params
  * @apiParam {string} playlistName    should be passed in body
  * @apiHeader { string }  x-auth       user's token
@@ -2648,9 +2737,9 @@
  * {
  *     "message": "playlist name changed successfully"
  * }
- * 
- * 
- * 
+ *
+ *
+ *
 *  @apiError  404                      [playlist not found]
 *  @apiErrorExample {JSON} Error-Response:
 *     HTTP/1.1 404 Not Found
@@ -2665,7 +2754,7 @@
 *       "message": "invalid id"
 *     }
 *
- * 
+ *
  *
  *
  * @apiError 401      [authentication failed]
@@ -2680,41 +2769,41 @@
  * @apiErrorExample { JSON } Error - Response:
  * HTTP / 1.1 403  Forbidden
  * {
- *           
+ *
     "message": "you are not allowed to make this request"
  *     }
  *@apiError 400         [user can not have two or more playlists with the same name]
  * @apiErrorExample { JSON } Error - Response:
  * HTTP / 1.1 400  Bad Request
  * {
- *           
+ *
     "message": "you already have a playlist with the same name"
  *     }
  *
  *
- * 
+ *
  * /
  * */
 
 
- 
+
 /** get a user's liked playlists
  * ---------------------
- * 
+ *
  * @api {get} /playlists/liked/me           get a user's liked playlists
  * @apiName  get a user's liked playlists
  * @apiGroup Playlists
- *   
- *  
+ *
+ *
  * @apiHeader { string }  x-auth       user's token
- * @apiSuccess {object[]}   likedPlaylists     array of likedPlaylists object 
+ * @apiSuccess {object[]}   likedPlaylists     array of likedPlaylists object
  * @apiSuccessExample { JSON } Success - Response:
  * HTTP / 1.1 200 OK
- * 
+ *
  * {
- * 
+ *
  * "likedPlaylists": [
- *      
+ *
  *        {
  *           "creator": "monica",
  *           "playlistId": "5e9d5c3c682ddc25100e72cd",
@@ -2743,7 +2832,7 @@
  *      }
  *   ]
  * }
- * 
+ *
 *  @apiError  404                      [no liked playlists]
 *  @apiErrorExample {JSON} Error-Response:
 *     HTTP/1.1 404 Not Found
@@ -2751,7 +2840,7 @@
 *       "message": "the user has not liked any playlist yet"
 *     }
 *
- * 
+ *
  *
  *
  * @apiError 401      [authentication failed]
@@ -2761,7 +2850,7 @@
  *        "message":"authentication failed"
  *     }
  *
- 
- * 
+
+ *
  * /
  * */
