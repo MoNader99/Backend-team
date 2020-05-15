@@ -28,7 +28,6 @@ describe('GET /tracks/:genre', () => {
       {
         track.find().then((tracks)=>
         {
-          console.log(  tracks[tracks.length-1].genre);
             request(app)
             .get(`/tracks/`+ tracks[tracks.length-1].genre)
             .set('x-auth',token)
@@ -64,5 +63,20 @@ describe('GET /tracks/:genre', () => {
          })
      });
 
+     it('should return not found if the genre has no tracks ', (done) =>
+     {
+
+       User.find().then((users)=>
+       {
+         users[users.length-1].generateAuthToken().then((token)=>
+         {
+               request(app)
+               .get(`/tracks/invalid`)
+               .set('x-auth',token)
+               .expect(404)
+               .end(done)
+       })
+      })
+    });
 
 })
