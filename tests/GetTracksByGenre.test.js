@@ -38,4 +38,19 @@ describe('GET /tracks/:genre', () => {
     })
    })
  });
+
+ it('should refuse empty token ', (done) =>
+ {
+
+       track.find().then((tracks)=>
+       {
+         console.log(  tracks[tracks.length-1].genre);
+           request(app)
+           .get(`/tracks/`+ tracks[tracks.length-1].genre)
+           .expect(403)
+           .end(done)
+       })
+   });
+
+
 })
