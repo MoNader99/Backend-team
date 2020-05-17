@@ -723,11 +723,36 @@ router.get('/playlists/liked/me', async (req,res) => {
     })
 })    
 
-
-
-
-
-
+router.get('/playlists/:playlistId/Shuffle', async (req,res) => {
+    var playlistId=req.params.playlistId;
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        return res.status(401).send("Token is empty");
+    }
+    User.findByToken(token).then((user)=>{
+        if(!user)
+        { 
+            return res.status(401).send("Unauthorized");
+        }
+        if(!ObjectID.isValid(playlistId))
+        {
+            return res.status(400).send("Inavalid ID");
+        }
+        playlist.findById(playlistId).then(async (playlist)=> {
+            if(!playlist)
+            {
+                return  res.status(404).send("Playlist not found");
+            }
+            var shuffled = await playlistservices.Shuffle(playlist.tracks);
+            return res.status(200).send({shuffled});
+        }).catch((e) => {
+            return res.status(404).send(e);
+        })
+        }).catch((e) => {
+            return res.status(401).send(e);
+        }) 
+})
 
 
 

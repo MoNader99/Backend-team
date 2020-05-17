@@ -24,7 +24,7 @@ var playlist=mongoose.model("Playlists",{
     default:"default.jpeg",
     },
 
-    tracks: [
+  tracks: [
       {
           type: mongoose.Schema.Types.ObjectId,
           ref: "track"
