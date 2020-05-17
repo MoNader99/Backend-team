@@ -821,13 +821,12 @@ playlist2.save().then((res)=>{
     console.log(err);
 });
 
+
 ///playlist3
 var playlist3 = new playlist({
-    userId:user1._id,
-    playlistName:"X",
-    privacy:false,
-    tracks: [track1, track2, track3, track4, track5],
-    //This playlist will have the deafult image of the playlist
+    userId:user2._id,
+    playlistName:"90's",
+
 });
 
 playlist3.save().then((res)=>{
@@ -839,24 +838,11 @@ playlist3.save().then((res)=>{
 ///playlist4
 var playlist4 = new playlist({
     userId:user2._id,
-    playlistName:"90's",
-
-});
-
-playlist4.save().then((res)=>{
-    console.log(res._id);
-},(err)=>{
-    console.log(err);
-});
-
-///playlist5
-var playlist5 = new playlist({
-    userId:user2._id,
     playlistName:"RecyleBin",
     tracks: [track4,track1,track5],
 });
 
-playlist5.save().then((res)=>{
+playlist4.save().then((res)=>{
     console.log(res._id);
 },(err)=>{
     console.log(err);
