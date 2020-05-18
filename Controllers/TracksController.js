@@ -650,11 +650,20 @@ router.post('/tracks/rate/:id/:value', (req,res) =>
           }
           if(ratedTrack.noOfRatings==0)
           {
+            console.log("no");
             ratedTrack.rating=req.params.value;
             ratedTrack.noOfRatings=1;
           }
           else {
-            ratedTrack.rating=(req.params.value+(ratedTrack.rating*ratedTrack.noOfRatings))/(ratedTrack.noOfRatings+1);
+            var value=parseInt(req.params.value);
+            var rating=parseInt(ratedTrack.rating);
+            var n=parseInt(ratedTrack.noOfRatings);
+            console.log(rating*n);
+            console.log(value);
+            console.log((value+(rating*n)));
+            console.log(n+1);
+console.log((value+(rating*n))/(n+1));
+            ratedTrack.rating=(value+(rating*n))/(n+1);
             ratedTrack.noOfRatings=ratedTrack.noOfRatings+1;
           }
           ratedTrack.save().then(()=>{
