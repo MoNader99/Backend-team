@@ -621,5 +621,66 @@ router.get('/tracks/:genre', (req,res) =>
 })
 
 
+router.get('/tracks/:trackId/download', (req,res) =>
+{
+    var token = req.header('x-auth');
+    var trackId=req.params.trackId;
+    var reqPath=undefined;
+    var name=undefined;
+
+    var path= "./../tracks"
+    track.findById(trackId).then((reqTrack)=>{
+
+      if(!reqTrack)
+      {
+          return Promise.reject()
+      }
+      reqPath=reqTrack.trackPath;
+       name=reqTrack.trackName;
+
+
+    }).catch((e)=>{
+
+
+        res.status(404).json({"message":"track not found"});
+    })
+    User.findByToken(token).then((user) =>
+    {
+        
+        if(!user)
+        {
+            return Promise.reject();
+            console.log(user)
+        
+        }
+        if(user.isPremium===false)
+        {
+            return res.status(400).json({"message":"you are not premium"});
+        }
+         
+
+        var filePath = `./../Backend-team/tracks/${reqPath}`; // Or format the path using the `id` rest param
+        var fileName =name+'.mp3'; // The default name the browser will use
+        console.log(fileName);
+        
+        res.download(filePath, fileName); 
+     
+    }).catch((e) =>
+    {
+        
+        res.status(401).json({"message":"authentication failed"});
+    })
+
+
+
+})
+
+
+
+
+
+
+
+
 
 module.exports=router;
