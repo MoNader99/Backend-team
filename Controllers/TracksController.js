@@ -627,7 +627,7 @@ router.post('/tracks/rate/:id/:value', (req,res) =>
     var token = req.header('x-auth');
     if(!token)
     {
-        return res.status(401).send('Token is Empty');
+        return res.status(403).send('Token is Empty');
     }
     if(!ObjectID.isValid(req.params.id))
     {
@@ -658,16 +658,11 @@ router.post('/tracks/rate/:id/:value', (req,res) =>
             var value=parseInt(req.params.value);
             var rating=parseInt(ratedTrack.rating);
             var n=parseInt(ratedTrack.noOfRatings);
-            console.log(rating*n);
-            console.log(value);
-            console.log((value+(rating*n)));
-            console.log(n+1);
-console.log((value+(rating*n))/(n+1));
             ratedTrack.rating=(value+(rating*n))/(n+1);
             ratedTrack.noOfRatings=ratedTrack.noOfRatings+1;
           }
           ratedTrack.save().then(()=>{
-              return res.status(200).send();
+              return res.status(200).send("rating added successfully");
           });
 
         })

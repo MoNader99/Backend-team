@@ -1741,6 +1741,53 @@
    */
 
 
+   //rate a track
+     /**
+      *
+      *
+      * @api {post} /tracks/rate/:id/:value              rate track
+      * @apiName Rate a track
+      * @apiGroup Tracks
+      *
+      *
+      * @apiParam {string}    genre         the required genre
+      *
+      *
+      * * @apiSuccessExample {string} Success-Response:
+      *     HTTP/1.1 200 OK
+      *   {
+      *    "rating added successfully"
+      *    }
+      * @apiError  404  Track not found
+      *  @apiErrorExample {string} Error-Response:
+      *     HTTP/1.1 404 Not Found
+      *    {
+      *      "Track not found"
+      *     }
+      *
+      *  @apiError  403 empty token
+      *  @apiErrorExample {string} Error-Response:
+      *     HTTP/1.1 403 forbidden
+      *     {
+      *       "token is empty"
+      *     }
+      *
+      *  @apiError  401 invalid token
+       *  @apiErrorExample {string} Error-Response:
+       *     HTTP/1.1 403 unauthorized
+       *     {
+       *       "User does not have access or does not exist"
+       *     }
+      *
+      *  @apiError  400 invalid parameters were sent
+       *  @apiErrorExample {string} Error-Response:
+       *     HTTP/1.1 400 Bad Request
+       *     {
+       *       "invalid ID"
+       *     }
+      *
+      */
+
 
 ////////////////////////Aya Mahmoud //////////////////////
 
