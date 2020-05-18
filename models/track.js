@@ -6,7 +6,7 @@ var tracksSchema=new mongoose.Schema({
       type:String,
       required:true
     },
-    trackName:{        
+    trackName:{
     type:String,
     required:true,
     trim:true,
@@ -27,8 +27,8 @@ var tracksSchema=new mongoose.Schema({
   numberOfTimesPlayed:{
     type:Number,
     default:0
-    },   
-    
+    },
+
   type:{    //wether the track is single or in an album
     type:String,
     trim:true,
@@ -46,7 +46,14 @@ var tracksSchema=new mongoose.Schema({
     required:true,
     trim:true
   },
+  rating:
+  {
+    type:Number,
+    required:false,
+    min:0,
+    max:5
+  }
 });
 
 var track = mongoose.model('Tracks',tracksSchema);
-module.exports={track,tracksSchema}; 
+module.exports={track,tracksSchema};
