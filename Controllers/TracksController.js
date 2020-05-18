@@ -621,6 +621,55 @@ router.get('/tracks/:genre', (req,res) =>
 })
 
 
+///////// Rate a track ///////////
+router.post('/tracks/rate/:id/:value', (req,res) =>
+{
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        return res.status(401).send('Token is Empty');
+    }
+    if(!ObjectID.isValid(req.params.id))
+    {
+        return res.status(400).send("Invalid id");
+    }
+    User.findByToken(token).then((user) =>
+    {
+        if(!user)
+        {
+            res.status(401).send('User does not have access or does not exist');
+        }
+
+        track.findOne({_id:ObjectID(req.params.id)}).then((ratedTrack)=>{
+          if (!ratedTrack){
+            res.status(404).send('Track not found');
+          }
+          if(req.params.value!=0 &&req.params.value!=1 &&req.params.value!=2 &&req.params.value!=3 &&req.params.value!=4 &&req.params.value!=5)
+          {
+            return res.status(400).send("Invalid rating value");
+          }
+          if(ratedTrack.noOfRatings==0)
+          {
+            ratedTrack.rating=req.params.value;
+            ratedTrack.noOfRatings=1;
+          }
+          else {
+            ratedTrack.rating=(req.params.value+(ratedTrack.rating*ratedTrack.noOfRatings))/(ratedTrack.noOfRatings+1);
+            ratedTrack.noOfRatings=ratedTrack.noOfRatings+1;
+          }
+          ratedTrack.save().then(()=>{
+              return res.status(200).send();
+          });
+
+        })
+    }).catch((e) =>
+    {
+        res.status(500).send();
+    })
+});
+
+
+
 router.get('/tracks/:trackId/download', (req,res) =>
 {
     var token = req.header('x-auth');
@@ -646,28 +695,28 @@ router.get('/tracks/:trackId/download', (req,res) =>
     })
     User.findByToken(token).then((user) =>
     {
-        
+
         if(!user)
         {
             return Promise.reject();
             console.log(user)
-        
+
         }
         if(user.isPremium===false)
         {
             return res.status(400).json({"message":"you are not premium"});
         }
-         
+
 
         var filePath = `./../Backend-team/tracks/${reqPath}`; // Or format the path using the `id` rest param
         var fileName =name+'.mp3'; // The default name the browser will use
         console.log(fileName);
-        
-        res.download(filePath, fileName); 
-     
+
+        res.download(filePath, fileName);
+
     }).catch((e) =>
     {
-        
+
         res.status(401).json({"message":"authentication failed"});
     })
 

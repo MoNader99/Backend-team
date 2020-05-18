@@ -52,6 +52,13 @@ var tracksSchema=new mongoose.Schema({
     required:false,
     min:0,
     max:5
+  },
+  noOfRatings:
+  {
+    type:Number,
+    required:false,
+    min:0,
+    default:0
   }
 });
 
