@@ -32,12 +32,12 @@ router.get('/album/tracks/:id', (req,res)=>{
     {
         return res.status(404).send("invalid id");
     }
-    
+
     album.findById(id , 'tracks').then((album) => {
         if(!album){return res.status(404).send("can not find album");}
         return res.send({album});
     }).catch((e)=>res.status(400).send());
-    
+
     });
 
 ///// Get Album
@@ -66,12 +66,12 @@ router.get('/album/tracks/:id', (req,res)=>{
                  }
                  return res.status(302).send({returnedAlbum});
             }).catch((e)=>res.status(404).send());
-            
+
         }).catch((e)=>res.status(404).send());
     }).catch((e)=>res.status(401).send());
-        });  
-        
-        
+        });
+
+
 /////// GET Several Albums /////////
  router.post('/albums',async (req,res)=>{
     var arr=req.body.id;
@@ -84,7 +84,7 @@ router.get('/album/tracks/:id', (req,res)=>{
     {
        return res.status(403).json({"message":" Forbidden maximum 10 Ids"});
     }
-    
+
     for(var i=0;i<arr.length;i++)
     {
     if(!ObjectID.isValid(arr[i]))
@@ -97,31 +97,31 @@ router.get('/album/tracks/:id', (req,res)=>{
             returnedAlbumArray[i]=null;
          }
       else{
-           await artist.findById(albums.artistId).then(async (myArtist)=>{         
-        
+           await artist.findById(albums.artistId).then(async (myArtist)=>{
+
                returnedAlbumArray[i]={
-        
+
                 _id:albums._id,
                 albumName:albums.albumName,
                 artistName:myArtist.artistName,
                 likes:albums.likes,
                 imagePath:albums.imagePath,
                 tracks:albums.tracks
-               
+
             };
 
-            res.send({"albums":returnedAlbumArray}); 
-        
+            res.send({"albums":returnedAlbumArray});
+
         })
 
     }
 })
-}  
+}
 })
 
 /////////////////////////////////////////////////////////////////////////////
 
-        
+
 router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (req, res) => {
     var id = req.params.id;
     var decoded = req.token;
@@ -231,7 +231,7 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
     var token = req.header('x-auth');
     const files = req.files;
     await artist.findByToken(token).then((myartist)=>{
-    
+
         if(!req.body.AlbumName){
             return res.status(400).send("Missing albumName");
         }
@@ -251,18 +251,69 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
             text:myartist.artistName+" released a new Album ("+req.body.AlbumName +")",
             sourceId:myartist._id,
             userType:"artist"
-            
+
         });
         notificationInstance.save();
 
-        res.status(201).send(files); 
-    
+        res.status(201).send(files);
+
     }).catch((e) =>
     {
         res.status(401).send();
     })
 
 });
+
+///////// Rate an album ///////////
+router.post('/albums/rate/:id/:value', (req,res) =>
+{
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        return res.status(403).send('Token is Empty');
+    }
+    if(!ObjectID.isValid(req.params.id))
+    {
+        return res.status(404).send("Invalid id");
+    }
+    User.findByToken(token).then((user) =>
+    {
+        if(!user)
+        {
+            res.status(401).send('User does not have access or does not exist');
+        }
+
+        album.findOne({_id:ObjectID(req.params.id)}).then((ratedAlbum)=>{
+          if (!ratedAlbum){
+            res.status(404).send('Album not found');
+          }
+          if(req.params.value!=0 &&req.params.value!=1 &&req.params.value!=2 &&req.params.value!=3 &&req.params.value!=4 &&req.params.value!=5)
+          {
+            return res.status(400).send("Invalid rating value");
+          }
+          if(ratedAlbum.noOfRatings==0)
+          {
+            ratedAlbum.rating=req.params.value;
+            ratedAlbum.noOfRatings=1;
+          }
+          else {
+            var value=parseInt(req.params.value);
+            var rating=parseInt(ratedTrack.rating);
+            var n=parseInt(ratedTrack.noOfRatings);
+            ratedAlbum.rating=(value+(rating*n))/(n+1);
+            ratedAlbum.noOfRatings=ratedAlbum.noOfRatings+1;
+          }
+          ratedAlbum.save().then(()=>{
+              return res.status(200).send("rating added successfully");
+          });
+
+        })
+    }).catch((e) =>
+    {
+        res.status(401).send('User does not have access or does not exist');
+    })
+});
+
 
 
 // if(module.parent){
