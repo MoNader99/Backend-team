@@ -298,8 +298,8 @@ router.post('/album/rate/:id/:value', (req,res) =>
           }
           else {
             var value=parseInt(req.params.value);
-            var rating=parseInt(ratedTrack.rating);
-            var n=parseInt(ratedTrack.noOfRatings);
+            var rating=parseInt(ratedAlbum.rating);
+            var n=parseInt(ratedAlbum.noOfRatings);
             ratedAlbum.rating=(value+(rating*n))/(n+1);
             ratedAlbum.noOfRatings=ratedAlbum.noOfRatings+1;
           }
