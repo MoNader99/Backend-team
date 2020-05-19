@@ -668,7 +668,7 @@ router.post('/tracks/rate/:id/:value', (req,res) =>
         })
     }).catch((e) =>
     {
-        res.status(500).send();
+        res.status(401).send('User does not have access or does not exist');
     })
 });
 

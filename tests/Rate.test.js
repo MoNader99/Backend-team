@@ -27,11 +27,8 @@ describe('POST /tracks/rate/:id/:value', () => {
     {
       users[users.length-1].generateAuthToken().then((token)=>
       {
-        track.findOne({trackName: "testTrack",}).then((found)=>
+        track.findOne({trackName: "testTrack",}).then((testTrack)=>
         {
-          found.rating=1;
-          found.noOfRatings=1;
-          found.save().then((testTrack)=>{
             request(app)
             .post(`/tracks/rate/`+ testTrack._id+'/5')
             .set('x-auth',token)
@@ -41,14 +38,13 @@ describe('POST /tracks/rate/:id/:value', () => {
                   return  done(err);
                 }
                 track.findOne({_id:testTrack._id}).then((updated)=>{
-                    expect(updated.rating).toBe(3);
-                    expect(updated.noOfRatings).toBe(2);
+                    expect(updated.rating).toBe(5);
+                    expect(updated.noOfRatings).toBe(1);
                     track.findOneAndRemove({_id:testTrack._id}).then(()=>{
                       done();
                     })
                   }).catch((e)=>done(e))
                 });
-          })
             });
         })
     })
@@ -89,31 +85,30 @@ describe('POST /tracks/rate/:id/:value', () => {
    })
 
 });
-// //  it('should refuse empty token ', (done) =>
-// //  {
-//
-//        track.find().then((tracks)=>
-//        {
-//            request(app)
-//            .get(`/tracks/`+ tracks[tracks.length-1].genre)
-//            .expect(403)
-//            .end(done)
-//        })
-//    });
-//
-//    it('should refuse invalid token ', (done) =>
-//    {
-//
-//          track.find().then((tracks)=>
-//          {
-//              request(app)
-//              .get(`/tracks/`+ tracks[tracks.length-1].genre)
-//              .set('x-auth',"invalid token")
-//              .expect(401)
-//              .end(done)
-//          })
-//      });
-//
+ it('should refuse empty token ', (done) =>
+ {
+         track.findOne({trackName: "testTrack",}).then((testTrack)=>
+         {
+             request(app)
+             .post(`/tracks/rate/`+ testTrack._id+'/5')
+             .expect(403)
+           .end(done)
+       })
+   });
+
+   it('should refuse invalid token ', (done) =>
+   {
+
+     track.findOne({trackName: "testTrack",}).then((testTrack)=>
+     {
+             request(app)
+             .post(`/tracks/rate/`+ testTrack._id+'/5')
+             .set('x-auth',"invalid token")
+             .expect(401)
+             .end(done)
+         })
+     });
+
 //      it('should return not found if the genre has no tracks ', (done) =>
 //      {
 //
