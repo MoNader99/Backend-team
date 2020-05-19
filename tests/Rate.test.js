@@ -43,7 +43,9 @@ describe('POST /tracks/rate/:id/:value', () => {
                 track.findOne({_id:testTrack._id}).then((updated)=>{
                     expect(updated.rating).toBe(3);
                     expect(updated.noOfRatings).toBe(2);
-                    done();
+                    track.findOneAndRemove({_id:testTrack._id}).then(()=>{
+                      done();
+                    })
                   }).catch((e)=>done(e))
                 });
           })
