@@ -265,7 +265,7 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
 });
 
 ///////// Rate an album ///////////
-router.post('/albums/rate/:id/:value', (req,res) =>
+router.post('/album/rate/:id/:value', (req,res) =>
 {
     var token = req.header('x-auth');
     if(!token)
