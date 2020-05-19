@@ -5,18 +5,6 @@ const app=require('./../Index');
 var{track}= require("../models/track.js");
 var{User}= require("../models/users.js");
 
-// beforeEach((done)=>{
-//   var testTrack=new Track(
-//         {
-//             "artistId": "5ebdb176b4751d4be056a290",
-//             "trackName": "testTrack",
-//             "genre": "testGenre",
-//             "trackPath": "Hello-Adele-seeds.mp3",
-//             "type": "Single"
-//         });
-//
-//   Track.save().then(()=> done());
-// })
 
 describe('GET /tracks/:genre', () => {
 
