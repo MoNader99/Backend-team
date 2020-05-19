@@ -631,7 +631,7 @@ router.post('/tracks/rate/:id/:value', (req,res) =>
     }
     if(!ObjectID.isValid(req.params.id))
     {
-        return res.status(400).send("Invalid id");
+        return res.status(404).send("Invalid id");
     }
     User.findByToken(token).then((user) =>
     {
@@ -650,7 +650,6 @@ router.post('/tracks/rate/:id/:value', (req,res) =>
           }
           if(ratedTrack.noOfRatings==0)
           {
-            console.log("no");
             ratedTrack.rating=req.params.value;
             ratedTrack.noOfRatings=1;
           }

@@ -1783,7 +1783,7 @@
        *  @apiErrorExample {string} Error-Response:
        *     HTTP/1.1 400 Bad Request
        *     {
-       *       "invalid ID"
+       *       "invalid rating value"
        *     }
       *
       */

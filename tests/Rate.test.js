@@ -109,20 +109,39 @@ describe('POST /tracks/rate/:id/:value', () => {
          })
      });
 
-//      it('should return not found if the genre has no tracks ', (done) =>
-//      {
-//
-//        User.find().then((users)=>
-//        {
-//          users[users.length-1].generateAuthToken().then((token)=>
-//          {
-//                request(app)
-//                .get(`/tracks/invalid`)
-//                .set('x-auth',token)
-//                .expect(404)
-//                .end(done)
-//        })
-//       })
-//     });
-//
+     it("should return not found if the track doesn't exist ", (done) =>
+     {
+
+       User.find().then((users)=>
+       {
+         users[users.length-1].generateAuthToken().then((token)=>
+         {
+               request(app)
+               .post('/tracks/rate/invalid/5')
+               .set('x-auth',token)
+               .expect(404)
+               .end(done)
+       })
+      })
+    });
+
+  it("should reject invalid rating value ", (done) =>
+    {
+
+      User.find().then((users)=>
+      {
+        users[users.length-1].generateAuthToken().then((token)=>
+        {
+          track.findOne({trackName: "testTrack",}).then((testTrack)=>
+          {
+              request(app)
+              .post(`/tracks/rate/`+testTrack._id+'/20')
+              .set('x-auth',token)
+              .expect(400)
+              .end(done)
+          })
+      })
+     })
+   });
+
  })
