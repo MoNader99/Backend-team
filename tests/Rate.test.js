@@ -27,20 +27,61 @@ describe('POST /tracks/rate/:id/:value', () => {
     {
       users[users.length-1].generateAuthToken().then((token)=>
       {
-        track.findOne({trackName: "testTrack",}).then((testTrack)=>
+        track.findOne({trackName: "testTrack",}).then((found)=>
         {
+          found.rating=1;
+          found.noOfRatings=1;
+          found.save().then((testTrack)=>{
             request(app)
             .post(`/tracks/rate/`+ testTrack._id+'/5')
             .set('x-auth',token)
             .expect(200)
-            .end(done)
+            .end((err, res) => {
+                if (err) {
+                  return  done(err);
+                }
+                track.findOne({_id:testTrack._id}).then((updated)=>{
+                    expect(updated.rating).toBe(3);
+                    expect(updated.noOfRatings).toBe(2);
+                    done();
+                  }).catch((e)=>done(e))
+                });
+          })
+            });
         })
     })
-   })
+
  });
 
-//  it('should refuse empty token ', (done) =>
+//  it('should get average of ratings', (done) =>
 //  {
+//    User.find().then((users)=>
+//    {
+//      users[users.length-1].generateAuthToken().then((token)=>
+//      {
+//        track.findOne({trackName: "testTrack",}).then((testTrack)=>
+//        {
+//            request(app)
+//            .post(`/tracks/rate/`+ testTrack._id+'/1')
+//            .set('x-auth',token)
+//            .expect(200)
+//            .end((err, res) => {
+//                if (err) {
+//                  return  done(err);
+//                }
+//                track.findOne({_id:testTrack._id}).then((updated)=>{
+//                    expect(updated.rating).toBe(5);
+//                    expect(updated.noOfRatings).toBe(1);
+//                    done();
+//                  }).catch((e)=>done(e))
+//                });
+//            });
+//        })
+//    })
+//
+// });
+// //  it('should refuse empty token ', (done) =>
+// //  {
 //
 //        track.find().then((tracks)=>
 //        {
