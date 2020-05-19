@@ -26,6 +26,11 @@ var getFollowedArtists = async function (userId) {
         console.log(fol.followedArtistInfo);
     })*/
 }
+var getUsersFollowingArtists = async function (artistId) {
+    var FollowedArtists = await followArtist.find({ 'followedArtistInfo.artistId':artistId });//.followedArtistInfo;
+    return FollowedArtists.map(function (value) { return value.user_id.toString(); });
+
+}
 var deleteArtistFromSchema = function (artistId, userId) {
    // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
     console.log(userId);
@@ -198,7 +203,8 @@ module.exports = {
     GetArtistById,
     GetArtistObjectArray,
     getFollowedArtists,
-    unFollowArtist
+    unFollowArtist,
+    getUsersFollowingArtists
 
 }
 

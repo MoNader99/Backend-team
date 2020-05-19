@@ -183,9 +183,10 @@ router.get('/users/confirm/:code',(req,res) => {
 
 router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (req, res) => {
     console.log(1);
-    var body = _.pick(req.body, ['email', 'password']);
+    var body = _.pick(req.body, ['email', 'password','endPoint']);
     console.log(2);
-    User.findByCredentials(body.email, body.password).then((user) => {
+    User.findByCredentials(body.email, body.password, body.endPoint).then((user) => {
+        console.log(body.endPoint);
         console.log(3);
         if (user.isActive == true) {
             return user.generateAuthToken().then((token) => {

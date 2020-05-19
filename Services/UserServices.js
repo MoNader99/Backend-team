@@ -27,6 +27,12 @@ var GetUserObjectArray = async function (wordtosearch) {
     // var tracks = await track.find({ 'artistId':  });
 
 }
+var getUsersEndPoint = function (users) {
+    return User.find({ _id: { $in: users } }).then((Users) => {
+        return Users.map(function (value) { return value.endPoint; });
+
+    })
+}
 var deleteUserFromSchema = function (followeduserid, userId) {
     // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
     //console.log(userId);
@@ -178,5 +184,6 @@ module.exports = {
     GetUserById,
     HashPassword,
     unFollowUser,
-    signUpWithFacebook
+    signUpWithFacebook,
+    getUsersEndPoint
 }

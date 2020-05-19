@@ -24,10 +24,10 @@ var UserSchema = new mongoose.Schema({
         trim: true,
         minlength: 1,
         unique: true,
-		validate:{
-			validator: validator.isEmail,
-			message: '{value} is not a valid email'
-		}
+        validate: {
+            validator: validator.isEmail,
+            message: '{value} is not a valid email'
+        }
     },
     password: {
         type: String,
@@ -62,14 +62,14 @@ var UserSchema = new mongoose.Schema({
         max: '2005-12-31'
     },
     resetToken:
-     {
-         type: String,
-         default:undefined
+    {
+        type: String,
+        default: undefined
     },
     imagePath: {
         type: String,
         required: true,
-        default:"defaultuser.png"
+        default: "defaultuser.png"
     },
 
     likedTracks: [
@@ -78,7 +78,7 @@ var UserSchema = new mongoose.Schema({
             ref: "track"
         }
     ],
-    recentlyPlyaedtracks:[tracksSchema],
+    recentlyPlyaedtracks: [tracksSchema],
     likedAlbums: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -93,12 +93,32 @@ var UserSchema = new mongoose.Schema({
             ref: "playlist"
         }
     ],
-    
-
+    endPoint: {
+        endpoint: {
+            type: String,
+            required: false
+        }
+        , expirationTime: {
+            type: Date,
+            required: false
+        },
+        keys: 
+            {
+                p256dh:
+                {
+                    type: String,
+                    required:false
+                }
+                , auth: {
+                    type: String,
+                    required: false
+                }
+            }
+       }
 });
 
 
-UserSchema.statics.findByCredentials = function (email, password) {
+UserSchema.statics.findByCredentials = function (email, password,endpoint) {
     console.log("2elgedeed");
     var User = this;
     console.log("2elgedeed2");
@@ -113,7 +133,10 @@ UserSchema.statics.findByCredentials = function (email, password) {
             bcrypt.compare(password, user.password, (err, res) => {
                 if (res) {
                     console.log("feh3ade");
-                    resolve(user);
+                    id = user._id;
+                    User.findOneAndUpdate({ '_id': id }, {'endPoint':endpoint},function(err,res) {
+                        resolve(user);
+                    })
                 } else {
                     console.log("Passwordincorrect");
                     reject();
