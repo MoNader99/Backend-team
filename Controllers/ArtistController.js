@@ -57,11 +57,11 @@ router.get('/artists/:id', AuthenticationServices.AuthenticateFrontend, (req, re
 router.post('/artists/login', AuthenticationServices.AuthenticateFrontend, (req, res) => {
     console.log("email");
     console.log(req.body.email);
-    var body = _.pick(req.body, ['email', 'password']);
+    var body = _.pick(req.body, ['email', 'password','endPoint']);
     console.log(2);
 
 
-		artist.findByCredentials(body.email, body.password).then((artist) => {
+		artist.findByCredentials(body.email, body.password,body.endPoint).then((artist) => {
         console.log(3);
 		if(artist.isActive==true)
 	{

@@ -1,10 +1,13 @@
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js"); 
 var { artist } = require("./../models/artists.js");  //artists model
-
+var userServices = require("./../Services/UserServices");
 var { album } = require("./../models/album.js");
 var { track } = require("./../models/track.js");//track model
 var { followArtist } = require("./../models/followArtist.js");//track model
+var { notification } = require("./../models/notifications.js");//notifications model
+var notificationServices = require("./../Services/NotificationServices");
+
 
 var GetTracksOfArtists = function (id) {
     return track.find({ artistId: id });
@@ -50,40 +53,55 @@ var addArtistToSchema = function (artistId, userId,artistName) {
 
 }
 var unFollowArtist = function (artistId, userId) {
-    return deleteArtistFromSchema(artistId, userId).then((artist) => {
-        if (artist.nModified == 1) return "unfollowed";
+    return deleteArtistFromSchema(artistId, userId).then((Artist) => {
+        if (Artist.nModified == 1) return "unfollowed";
         console.log("2wel art");
         console.log(artist);
-        if (artist.nModified == 0) {
-            return GetArtistById(artistId).then((artistName) => {
-                return addArtistToSchema(artistId, userId,artistName).then((artist2) => {
-                    console.log("tane art");
-                    console.log(artist2);
-                    if (artist2.nModified == 1) return "followed";
-                    else {
-                        console.log(1);
-                        console.log(2);
-                        var followArtist1 = new followArtist({
-                            user_id: userId,
-                            followedArtistInfo: [{
-                                artistId: artistId,
-                                artistName: artistName,
-                                followDate: Date.now(),
-                                //rate:2,
+        if (Artist.nModified == 0) {
+            return userServices.GetUserById(userId).then((userName) => {
+                return artist.findById(artistId).then((art) => {
+                    var notificationInstance = new notification({
+                        text: userName + " has followed " + "you",
+                        sourceId: userId,
+                        userType: "user"
+
+                    });
+                    notificationInstance.save();
+                    var arr = [];
+                    arr[0] = art.endPoint;
+                    notificationServices.pushNotification(notificationInstance.text, arr);
+
+                    return GetArtistById(artistId).then((artistName) => {
+                        return addArtistToSchema(artistId, userId, artistName).then((artist2) => {
+                            console.log("tane art");
+                            console.log(artist2);
+                            if (artist2.nModified == 1) return "followed";
+                            else {
+                                console.log(1);
+                                console.log(2);
+                                var followArtist1 = new followArtist({
+                                    user_id: userId,
+                                    followedArtistInfo: [{
+                                        artistId: artistId,
+                                        artistName: artistName,
+                                        followDate: Date.now(),
+                                        //rate:2,
+                                    }
+                                    ]
+                                });
+                                console.log(3);
+                                return followArtist1.save().then((res) => {
+                                    console.log(4);
+                                    return "followed";
+                                }, (err) => {
+                                    return err;
+                                });
+
+
+
                             }
-                            ]
                         });
-                        console.log(3);
-                        return followArtist1.save().then((res) => {
-                            console.log(4);
-                            return "followed";
-                        }, (err) => {
-                            return err;
-                        });
-
-
-
-                    }
+                    });
                 });
             });
             }

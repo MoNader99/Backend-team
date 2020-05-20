@@ -67,15 +67,38 @@ var ArtistSchema = new mongoose.Schema({
         required: true,
         min: '1920-12-31',
         max: '2005-12-31'
+    },
+    endPoint: {
+        endpoint: {
+            type: String,
+            required: false
+        }
+        , expirationTime: {
+            type: Date,
+            required: false
+        },
+        keys:
+        {
+            p256dh:
+            {
+                type: String,
+                required: false
+            }
+            , auth: {
+                type: String,
+                required: false
+            }
+        }
     }
 });
 
-ArtistSchema.statics.findByCredentials = function (email, password) {
+ArtistSchema.statics.findByCredentials = function (email, password, endpoint) {
+    console.log(endpoint);
     console.log("2elgedeed");
-    var artist = this;
+    var Artist = this;
     console.log("2elgedeed2");
     console.log(email);
-    return artist.findOne({ email }).then((artist) => {
+    return Artist.findOne({ email }).then((artist) => {
         console.log("2elgedeed3");
         if (!artist) {
             console.log("not user");
@@ -83,9 +106,15 @@ ArtistSchema.statics.findByCredentials = function (email, password) {
 
         }
         return new Promise((resolve, reject) => {
+            console.log(endpoint);
+
             bcrypt.compare(password, artist.password, (err, res) => {
                 if (res) {
                     console.log("feh3ade");
+                    id = artist._id;
+                    Artist.findOneAndUpdate({ '_id': id }, { 'endPoint': endpoint }, function (err, res) {
+                        resolve(artist);
+                    })
                     resolve(artist);
                 } else {
                     console.log(artist.password);
