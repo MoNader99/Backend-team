@@ -609,7 +609,7 @@ router.get('/tracks/like/me', (req,res) =>
 
 
 /////// Get Tracks by genre //////////
-router.get('/tracks/:genre', (req,res) =>
+router.get('/tracks', (req,res) =>
 {
     var token = req.header('x-auth');
     if(!token)
@@ -623,9 +623,38 @@ router.get('/tracks/:genre', (req,res) =>
             res.status(401).send('User does not have access or does not exist');
         }
 
-        track.find({'genre':req.params.genre}).then((tracksArr)=>{
+        track.find({'genre':req.query.genre}).then((tracksArr)=>{
           if (tracksArr.length==0){
             res.status(404).send('no tracks for this genre');
+          }
+          res.status(200).send(tracksArr);
+        })
+
+
+    }).catch((e) =>
+    {
+        res.status(401).send('User does not have access or does not exist');
+    })
+})
+
+//get all available genres
+router.get('/tracks/allgenres', (req,res) =>
+{
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        res.status(403).send('Token is Empty');
+    }
+    User.findByToken(token).then((user) =>
+    {
+        if(!user)
+        {
+            res.status(401).send('User does not have access or does not exist');
+        }
+
+        track.distinct('genre').then((tracksArr)=>{
+          if (tracksArr.length==0){
+            res.status(404).send('no genres found');
           }
           res.status(200).send(tracksArr);
         })
