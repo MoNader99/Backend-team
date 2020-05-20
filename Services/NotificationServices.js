@@ -23,6 +23,7 @@ var addUserToSentToArray = function (notifications, userId) {
     )
 }
 var pushNotification = function (textNotification, receivers) {
+    if (!receivers) return;
     let vapidKeys = {
         publicKey: 'BJ7BOrLdsc4Lq7jU6wlxFGBChneAR_Lg8587Z5KjEBXJ0Rfd5ZtdGh5bqRYPqbfZpdfvfAHIZ9X9Vw848oTnlXY',
         privateKey: 'cta1wIIeqmLjESmnolE8rWFOiyfImoFZCSOvr5z51MI'
