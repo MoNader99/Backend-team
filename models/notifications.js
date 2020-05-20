@@ -28,7 +28,11 @@ var notification = mongoose.model("notifications",{
             type: String,
             required: false,
         }
-    ]
+    ],
+    date: {
+        type: Date,
+        required: true
+    }
 })
 
 module.exports={notification};

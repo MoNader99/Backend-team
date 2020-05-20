@@ -9,11 +9,17 @@ const fs=require('fs');
 const{album}=require('./../models/album');
 var { User } = require("./../models/users.js");
 var{artist}= require("./../models/artists.js");
-var upload=require("./../Services/uploadTrack").uploadTrack;
-var{notification}=require("./../models/notifications.js");
+var upload = require("./../Services/uploadTrack").uploadTrack;
+var notificationServices = require("./../Services/NotificationServices");
+
+var { notification } = require("./../models/notifications.js");
+var artistService = require("./../Services/ArtistServices.js");
+
 const {ObjectID}=require('mongodb');
 //edit image imports
-var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
+var uploadImagefn = require("./../Services/ImageService.js").upLoadPhoto;
+var artistServices = require("./../Services/ArtistServices.js");
+var userService = require("./../Services/userServices.js");
 var upload2=require("./../Services/ImageService.js").UploadUserPhoto;
 var AuthenticateArtistTrack= require("./../Services/ImageService.js").AuthenticateArtistTrack;
 var AssignTrackImage=require("./../Services/ImageService.js").AssignTrackImage;
@@ -52,10 +58,19 @@ router.post('/tracks/single',upload,(req,res)=>{
             var not2 = new notification({
                 text:artistName+" released a new Song ("+req.body.trackName +")",
                 sourceId:atristId2,
-                userType:"artist"
+                userType: "artist",
+                date: Date.now()
 
             });
-            not2.save();
+        not2.save();
+        artistService.getUsersFollowingArtists(atristId2).then((users) => {
+            userService.getUsersEndPoint(users).then((endPoints) => {
+                //console.log(endPoints);
+                notificationServices.pushNotification(not2.text, endPoints);
+                res.status(201).send(files);
+
+            })
+        }).catch((err) => console.log(err))
             var trackInstance = new track({
                 artistId: atristId2,
                 trackName: req.body.trackName,

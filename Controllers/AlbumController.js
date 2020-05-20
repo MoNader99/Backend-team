@@ -263,15 +263,10 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
                 notificationServices.pushNotification(notificationInstance.text, endPoints);
                 res.status(201).send(files); 
 
-<<<<<<< HEAD
+
             })
         })
-        //res.status(201).send(files); 
-    
-=======
-        res.status(201).send(files);
 
->>>>>>> 64c5ade0a09c482841180978d1722db408a21077
     }).catch((e) =>
     {
         res.status(401).send();
