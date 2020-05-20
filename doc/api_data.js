@@ -96,7 +96,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -214,7 +214,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -304,7 +304,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -366,7 +366,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -452,7 +452,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -548,7 +548,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -639,7 +639,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Album"
   },
   {
@@ -728,7 +728,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -825,7 +825,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -855,7 +855,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -963,7 +963,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -1047,7 +1047,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -1116,7 +1116,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -1227,7 +1227,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Artists"
   },
   {
@@ -1293,7 +1293,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Library"
   },
   {
@@ -1359,7 +1359,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Library"
   },
   {
@@ -1410,7 +1410,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Notifications"
   },
   {
@@ -1518,7 +1518,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -1633,7 +1633,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -1747,7 +1747,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -1883,7 +1883,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -1984,7 +1984,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -2050,7 +2050,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -2146,7 +2146,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -2255,7 +2255,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -2328,7 +2328,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Playlists"
   },
   {
@@ -2414,7 +2414,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Search"
   },
   {
@@ -2550,7 +2550,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -2664,7 +2664,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -2777,7 +2777,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -2839,7 +2839,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -2923,7 +2923,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -3007,7 +3007,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -3103,7 +3103,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -3194,7 +3194,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -3271,7 +3271,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -3366,7 +3366,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Tracks"
   },
   {
@@ -3435,7 +3435,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "User_privacy"
   },
   {
@@ -3483,7 +3483,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "User_privacy"
   },
   {
@@ -3570,7 +3570,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "User_privacy"
   },
   {
@@ -3632,7 +3632,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -3750,7 +3750,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -3847,7 +3847,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -3922,7 +3922,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4017,7 +4017,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4079,7 +4079,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4156,7 +4156,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4246,7 +4246,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4318,7 +4318,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4387,7 +4387,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4510,7 +4510,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4600,7 +4600,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4689,7 +4689,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   },
   {
@@ -4745,7 +4745,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./api.js",
+    "filename": "./API/api.js",
     "groupTitle": "Users"
   }
 ] });
