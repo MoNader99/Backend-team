@@ -70,3 +70,46 @@ describe('GET /tracks get tracks by genre', () => {
     });
 
 })
+
+
+describe('GET /tracks/allgenres', () => {
+
+  it('should get all available genres ', (done) =>
+  {
+    User.find().then((users)=>
+    {
+      users[users.length-1].generateAuthToken().then((token)=>
+      {
+            request(app)
+            .get('/tracks/allgenres')
+            .set('x-auth',token)
+            .expect(200)
+            .end(done)
+    })
+   })
+ });
+
+ it('should refuse empty token ', (done) =>
+ {
+
+       track.find().then((tracks)=>
+       {
+           request(app)
+           .get('/tracks/allgenres')
+           .expect(403)
+           .end(done)
+       })
+   });
+
+   it('should refuse invalid token ', (done) =>
+   {
+
+             request(app)
+             .get('/tracks/allgenres')
+             .set('x-auth',"invalid token")
+             .expect(401)
+             .end(done)
+     });
+
+
+})

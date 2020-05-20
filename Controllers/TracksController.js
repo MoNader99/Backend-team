@@ -637,32 +637,32 @@ router.get('/tracks', (req,res) =>
     })
 })
 
-//get all available genres
+////get all available genres
 router.get('/tracks/allgenres', (req,res) =>
 {
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(403).send('Token is Empty');
+        return res.status(403).send('Token is Empty');
     }
     User.findByToken(token).then((user) =>
     {
         if(!user)
         {
-            res.status(401).send('User does not have access or does not exist');
+            return res.status(401).send('User does not have access or does not exist');
         }
 
         track.distinct('genre').then((tracksArr)=>{
           if (tracksArr.length==0){
-            res.status(404).send('no genres found');
+            return res.status(404).send('no genres found');
           }
-          res.status(200).send(tracksArr);
+          return res.status(200).send(tracksArr);
         })
 
 
     }).catch((e) =>
     {
-        res.status(401).send('User does not have access or does not exist');
+        return res.status(401).send('User does not have access or does not exist');
     })
 })
 
