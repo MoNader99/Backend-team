@@ -6,7 +6,7 @@ var{track}= require("../models/track.js");
 var{User}= require("../models/users.js");
 
 
-describe('GET /tracks/:genre', () => {
+describe('GET /tracks get tracks by genre', () => {
 
   it('should get tracks with the passed genre ', (done) =>
   {
@@ -16,8 +16,10 @@ describe('GET /tracks/:genre', () => {
       {
         track.find().then((tracks)=>
         {
+          console.log(tracks[tracks.length-1].genre);
+
             request(app)
-            .get(`/tracks/`+ tracks[tracks.length-1].genre)
+            .get(`/tracks/?genre=`+ tracks[tracks.length-1].genre)
             .set('x-auth',token)
             .expect(200)
             .end(done)
@@ -32,7 +34,7 @@ describe('GET /tracks/:genre', () => {
        track.find().then((tracks)=>
        {
            request(app)
-           .get(`/tracks/`+ tracks[tracks.length-1].genre)
+           .get(`/tracks/?genre=`+ tracks[tracks.length-1].genre)
            .expect(403)
            .end(done)
        })
@@ -44,7 +46,7 @@ describe('GET /tracks/:genre', () => {
          track.find().then((tracks)=>
          {
              request(app)
-             .get(`/tracks/`+ tracks[tracks.length-1].genre)
+             .get(`/tracks/?genre=`+ tracks[tracks.length-1].genre)
              .set('x-auth',"invalid token")
              .expect(401)
              .end(done)
@@ -59,7 +61,7 @@ describe('GET /tracks/:genre', () => {
          users[users.length-1].generateAuthToken().then((token)=>
          {
                request(app)
-               .get(`/tracks/invalid`)
+               .get(`/tracks/?genre=invalid`)
                .set('x-auth',token)
                .expect(404)
                .end(done)

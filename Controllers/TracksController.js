@@ -614,26 +614,26 @@ router.get('/tracks', (req,res) =>
     var token = req.header('x-auth');
     if(!token)
     {
-        res.status(403).send('Token is Empty');
+        return res.status(403).send('Token is Empty');
     }
     User.findByToken(token).then((user) =>
     {
         if(!user)
         {
-            res.status(401).send('User does not have access or does not exist');
+          return res.status(401).send('User does not have access or does not exist');
         }
 
         track.find({'genre':req.query.genre}).then((tracksArr)=>{
           if (tracksArr.length==0){
-            res.status(404).send('no tracks for this genre');
+            return res.status(404).send('no tracks for this genre');
           }
-          res.status(200).send(tracksArr);
+          return res.status(200).send(tracksArr);
         })
 
 
     }).catch((e) =>
     {
-        res.status(401).send('User does not have access or does not exist');
+        return res.status(401).send('User does not have access or does not exist');
     })
 })
 
