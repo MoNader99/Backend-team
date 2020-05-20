@@ -85,7 +85,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found \n{\n   \"Notfound\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n   \"Notfound\"\n}",
           "type": "JSON"
         },
         {
@@ -288,7 +288,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"Id not found\"\n}",
           "type": "string"
         },
         {
@@ -298,7 +298,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
           "type": "string"
         }
       ]
@@ -341,7 +341,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n     \"albums\": \n[\n   {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 88,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n},\n\n  {\n      \"_id\": \"5e89f2caaaa6bd3f481675f6\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675e8\",\n      \"albumName\": \"bla bla\",\n      \"__v\": 0,\n      \"likes\": 100,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n}\n],\n\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n     \"albums\":\n[\n   {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 88,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n},\n\n  {\n      \"_id\": \"5e89f2caaaa6bd3f481675f6\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675e8\",\n      \"albumName\": \"bla bla\",\n      \"__v\": 0,\n      \"likes\": 100,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n}\n],\n\n}",
           "type": "JSON"
         }
       ]
@@ -360,7 +360,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"authenticaton failed\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"authenticaton failed\"\n}",
           "type": "JSON"
         }
       ]
@@ -543,6 +543,97 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 Not found\n{\n   \"Invalid id\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "post",
+    "url": "/album/rate/:id/:value",
+    "title": "rate album",
+    "name": "Rate_an_album",
+    "group": "Album",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the album to be rated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>the rating value: integer 0,1,2,3,4 or 5</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  HTTP/1.1 200 OK\n{\n \"rating added successfully\"\n }",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Album not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>empty token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>invalid token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>invalid parameters were sent</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": " HTTP/1.1 404 Not Found\n{\n  \"Album not found\"\n }",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"token is empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 unauthorized\n{\n  \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"invalid rating value\"\n}",
           "type": "string"
         }
       ]
@@ -909,7 +1000,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK{\n     \n{\n   \"_id\" : ObjectId(\"5e8902475501bd142cbeff13\"),\n   \"email\" : \"be12@hotmail.com\",\n   \"password\" : \"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS\",\n   \"artistName\" : \"Billie Eilish\",\n   \"about\" : \"Billie Eilish is an American singer-songwriter who first shot to prominence when she uploaded her breakout hit \\n    \\\"Ocean Eyes\\\" to SoundCloud in 2015. ... She worked with her brother, Finneas O'Connell, to record \\\"Ocean Eyes,\\\"\\n     a song O'Connell had initially written for his band\",\n   \"gender\" : \"M\",\n   \"birthDate\" : ISODate(\"2001-12-18T00:00:00.000Z\"),\n   \"imagePath\" : \"./Pictures/Billie-Eilish.png\",\n   \"isActive\" : false,\n   \"rating\" : -1,\n   \"genres\" : [\n       \"sha3by\",\n       \"R&B\"\n   ],\n   \"__v\" : 0\n}\n   \n     }",
+          "content": "    HTTP/1.1 200 OK{\n\n{\n   \"_id\" : ObjectId(\"5e8902475501bd142cbeff13\"),\n   \"email\" : \"be12@hotmail.com\",\n   \"password\" : \"$2b$10$sqP.uu/YJzYg0vErxw24TeMe8eeUzPtWCrSST8gGn9wMxYNQxqGNS\",\n   \"artistName\" : \"Billie Eilish\",\n   \"about\" : \"Billie Eilish is an American singer-songwriter who first shot to prominence when she uploaded her breakout hit \\n    \\\"Ocean Eyes\\\" to SoundCloud in 2015. ... She worked with her brother, Finneas O'Connell, to record \\\"Ocean Eyes,\\\"\\n     a song O'Connell had initially written for his band\",\n   \"gender\" : \"M\",\n   \"birthDate\" : ISODate(\"2001-12-18T00:00:00.000Z\"),\n   \"imagePath\" : \"./Pictures/Billie-Eilish.png\",\n   \"isActive\" : false,\n   \"rating\" : -1,\n   \"genres\" : [\n       \"sha3by\",\n       \"R&B\"\n   ],\n   \"__v\" : 0\n}\n\n     }",
           "type": "JSON"
         }
       ]
@@ -1196,7 +1287,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
           "type": "string"
         }
       ]
@@ -1262,7 +1353,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
           "type": "string"
         }
       ]
@@ -1294,7 +1385,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n  [\n  {\n      \"_id\": \"5e9e5c54d8f9952f3060cfb5\",\n      \"text\": \"Eminem released a new Song (Lose Ypurself)\",\n      \"sourceId\": \"5e9e3b99f2196e181a41e089\",\n      \"userType\": \"artist\",\n      \"__v\": 0,\n      \"sentTo\": [\n          \"5e9e6287e1bd0b278ce05fb4\"\n      ],\n      \"sent\": true\n  }\n]\n\n\n   \n}",
+          "content": "    HTTP/1.1 200 OK\n{\n  [\n  {\n      \"_id\": \"5e9e5c54d8f9952f3060cfb5\",\n      \"text\": \"Eminem released a new Song (Lose Ypurself)\",\n      \"sourceId\": \"5e9e3b99f2196e181a41e089\",\n      \"userType\": \"artist\",\n      \"__v\": 0,\n      \"sentTo\": [\n          \"5e9e6287e1bd0b278ce05fb4\"\n      ],\n      \"sent\": true\n  }\n]\n\n\n\n}",
           "type": "JSON"
         }
       ]
@@ -1313,7 +1404,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"Token is not valid\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"Token is not valid\"\n}",
           "type": "JSON"
         }
       ]
@@ -1953,7 +2044,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
           "type": "string"
         }
       ]
@@ -2153,12 +2244,12 @@
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 403  Forbidden\n{\n          \n    \"message\": \"you are not allowed to make this request\"\n    }",
+          "content": "HTTP / 1.1 403  Forbidden\n{\n\n    \"message\": \"you are not allowed to make this request\"\n    }",
           "type": "JSON"
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 400  Bad Request\n{\n          \n    \"message\": \"you already have a playlist with the same name\"\n    }\n\n\n\n/",
+          "content": "HTTP / 1.1 400  Bad Request\n{\n\n    \"message\": \"you already have a playlist with the same name\"\n    }\n\n\n\n/",
           "type": "JSON"
         }
       ]
@@ -2201,7 +2292,7 @@
       "examples": [
         {
           "title": "Success - Response:",
-          "content": "HTTP / 1.1 200 OK\n\n{\n\n\"likedPlaylists\": [\n     \n       {\n          \"creator\": \"monica\",\n          \"playlistId\": \"5e9d5c3c682ddc25100e72cd\",\n          \"playlistName\": \"favs\",\n          \"likes\": 1,\n          \"tracks\": [\n              \"5e9d5ba78d6d7148a8860da3\"\n          ],\n          \"imagePath\": \"default.jpeg\",\n          \"privacy\": false\n      },\n      {\n          \"creator\": \"Spotify\",\n          \"playlistId\": \"5ea08233370ecb40db0e0b68\",\n          \"playlistName\": \"indies\",\n          \"likes\": 2,\n          \"tracks\": [\n              \"5e9d5ba78d6d7148a8860da3\",\n              \"5e9d5ba78d6d7148a8860da4\",\n              \"5e9d5ba78d6d7148a8860da5\",\n              \"5e9d5ba78d6d7148a8860da7\",\n              \"5e9d5ba78d6d7148a8860da6\"\n          ],\n         \"imagePath\": \"default.jpeg\",\n          \"privacy\": false\n     }\n  ]\n}",
+          "content": "HTTP / 1.1 200 OK\n\n{\n\n\"likedPlaylists\": [\n\n       {\n          \"creator\": \"monica\",\n          \"playlistId\": \"5e9d5c3c682ddc25100e72cd\",\n          \"playlistName\": \"favs\",\n          \"likes\": 1,\n          \"tracks\": [\n              \"5e9d5ba78d6d7148a8860da3\"\n          ],\n          \"imagePath\": \"default.jpeg\",\n          \"privacy\": false\n      },\n      {\n          \"creator\": \"Spotify\",\n          \"playlistId\": \"5ea08233370ecb40db0e0b68\",\n          \"playlistName\": \"indies\",\n          \"likes\": 2,\n          \"tracks\": [\n              \"5e9d5ba78d6d7148a8860da3\",\n              \"5e9d5ba78d6d7148a8860da4\",\n              \"5e9d5ba78d6d7148a8860da5\",\n              \"5e9d5ba78d6d7148a8860da7\",\n              \"5e9d5ba78d6d7148a8860da6\"\n          ],\n         \"imagePath\": \"default.jpeg\",\n          \"privacy\": false\n     }\n  ]\n}",
           "type": "JSON"
         }
       ]
@@ -2386,7 +2477,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 201 OK\n   \n{\n  \"__v\": 0,\n  \"artistId\": \"5e9cb30adf88aea050c0778a\",\n  \"trackName\": \"Amaro\",\n  \"genre\": \"Arabic\",\n  \"trackPath\": \"Amaro--5e9cb30adf88aea050c0778a.mp3\",\n  \"_id\": \"5e9cbdb92728b58c0f310d13\",\n \"type\": \"Single\",\n  \"imagePath\": \"default.jpeg\",\n  \"likes\": 0\n }",
+          "content": "    HTTP/1.1 201 OK\n\n{\n  \"__v\": 0,\n  \"artistId\": \"5e9cb30adf88aea050c0778a\",\n  \"trackName\": \"Amaro\",\n  \"genre\": \"Arabic\",\n  \"trackPath\": \"Amaro--5e9cb30adf88aea050c0778a.mp3\",\n  \"_id\": \"5e9cbdb92728b58c0f310d13\",\n \"type\": \"Single\",\n  \"imagePath\": \"default.jpeg\",\n  \"likes\": 0\n }",
           "type": "JSON"
         }
       ]
@@ -2785,7 +2876,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "   HTTP/1.1 200 OK\n{\n    \"tracks\": [\n        {\n            \"_id\": \"5e9d5ba78d6d7148a8860da7\",\n            \"trackName\": \"When I'm Gone\",\n            \"artistName\": \"Eminem\",\n            \"albumName\": \"When I'm Gone\",\n            \"type\": \"Single\",\n            \"genre\": \"Rap\",\n            \"numberOfTimesPlayed\": 0,\n            \"likes\": 12,\n            \"trackPath\": \"When I'm Gone-Eminem-seeds.mp3\",\n            \"imagePath\": \"default.jpeg\"\n        },\n        {\n            \"_id\": \"5e9d5ba78d6d7148a8860da5\",\n            \"trackName\": \"Tamaly m3ak\",\n            \"artistName\": \"Amr Diab\",\n            \"albumName\": \"El Leila\",\n            \"type\": \"Album\",\n            \"genre\": \"Arabic\",\n            \"numberOfTimesPlayed\": 0,\n            \"likes\": 10,\n            \"trackPath\": \"Tamaly m3ak-Amr Diab-seeds.mp3\",\n            \"imagePath\": \"default.jpeg\"\n        },\n         \n        null  // if you send an id that is not in the database\n              // \n    ]\n}",
+          "content": "   HTTP/1.1 200 OK\n{\n    \"tracks\": [\n        {\n            \"_id\": \"5e9d5ba78d6d7148a8860da7\",\n            \"trackName\": \"When I'm Gone\",\n            \"artistName\": \"Eminem\",\n            \"albumName\": \"When I'm Gone\",\n            \"type\": \"Single\",\n            \"genre\": \"Rap\",\n            \"numberOfTimesPlayed\": 0,\n            \"likes\": 12,\n            \"trackPath\": \"When I'm Gone-Eminem-seeds.mp3\",\n            \"imagePath\": \"default.jpeg\"\n        },\n        {\n            \"_id\": \"5e9d5ba78d6d7148a8860da5\",\n            \"trackName\": \"Tamaly m3ak\",\n            \"artistName\": \"Amr Diab\",\n            \"albumName\": \"El Leila\",\n            \"type\": \"Album\",\n            \"genre\": \"Arabic\",\n            \"numberOfTimesPlayed\": 0,\n            \"likes\": 10,\n            \"trackPath\": \"Tamaly m3ak-Amr Diab-seeds.mp3\",\n            \"imagePath\": \"default.jpeg\"\n        },\n\n        null  // if you send an id that is not in the database\n              //\n    ]\n}",
           "type": "JSON"
         }
       ]
@@ -2828,6 +2919,90 @@
           "title": "Error-Response:",
           "content": "HTTP/1.1 403 forbidden\n{\n  \"message\" : \"max 10 Ids\"\n}",
           "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "get",
+    "url": "/tracks/:genre",
+    "title": "Get Tracks by genre",
+    "name": "Get_Tracks_by_genre",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "genre",
+            "description": "<p>the required genre</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "object[]",
+            "optional": false,
+            "field": "tracks",
+            "description": "<p>a set objects of type tracks in JSON format with status code 200</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "   HTTP/1.1 200 OK\n  [\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2a0\",\n        \"artistId\": \"5ebdb176b4751d4be056a290\",\n        \"trackName\": \"Hello\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"Hello-Adele-seeds.mp3\",\n        \"__v\": 0,\n        \"type\": \"Single\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"default.jpeg\",\n        \"likes\": 9\n    },\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2b3\",\n        \"artistId\": \"5ebdb176b4751d4be056a298\",\n        \"trackName\": \"Deus\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"HVOB & Winston Marshall  Deus.mp3\",\n        \"__v\": 0,\n        \"type\": \"Album\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"hvobalbum.jpg\",\n        \"likes\": 13\n    },\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2b2\",\n        \"artistId\": \"5ebdb176b4751d4be056a298\",\n        \"trackName\": \"The Blame Game\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"HVOB - Dogs [Official].mp3\",\n        \"__v\": 0,\n        \"type\": \"Album\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"hvobalbum.jpg\",\n        \"likes\": 80\n    },\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2b1\",\n        \"artistId\": \"5ebdb176b4751d4be056a298\",\n        \"trackName\": \"Dogs\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"HVOB - Dogs [Official].mp3\",\n        \"__v\": 0,\n        \"type\": \"Single\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"default.jpeg\",\n        \"likes\": 21\n    }\n]",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>no tracks found for this genre</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>empty token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>invalid token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": " HTTP/1.1 404 Not Found\n{\n  \"no tracks for this genre\"\n }",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"token is empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 unauthorized\n{\n  \"User does not have access or does not exist\"\n}",
+          "type": "string"
         }
       ]
     },
@@ -2932,6 +3107,97 @@
     "groupTitle": "Tracks"
   },
   {
+    "type": "post",
+    "url": "/tracks/rate/:id/:value",
+    "title": "rate track",
+    "name": "Rate_a_track",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the track to be rated</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>the rating value: integer 0,1,2,3,4 or 5</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  HTTP/1.1 200 OK\n{\n \"rating added successfully\"\n }",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Track not found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>empty token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>invalid token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>invalid parameters were sent</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": " HTTP/1.1 404 Not Found\n{\n  \"Track not found\"\n }",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"token is empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 unauthorized\n{\n  \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"invalid rating value\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
     "type": "get",
     "url": "/tracks/recentlyplayed",
     "title": "RecentlyPlayedTracks",
@@ -2964,7 +3230,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "[ \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3\",\n          \"genre\" : \"R&B\",\n          \"trackName\" : \"Super Life\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1d\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e30\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 1,\n          \"imagePath\" : \"Superlife42011663_800_800.jpg\",\n          \"likes\" : 12\n      }, \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"Youm Talat-Amr Diab-seeds.mp3\",\n          \"genre\" : \"Arabic\",\n          \"trackName\" : \"Youm Talat\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1a\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2a\"),\n          \"type\" : \"Album\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"default.jpeg\",\n          \"likes\" : 20\n      }, \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"When I'm Gone-Eminem-seeds.mp3\",\n          \"genre\" : \"Rap\",\n          \"trackName\" : \"When I'm Gone\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e19\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2b\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"When_I'm_Gone_(Eminem_song).jpg\",\n          \"likes\" : 10\n      }, \n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"Way Down We Go.Kaleowith Lyrics ..mp3\",\n          \"genre\" : \"Alternative Rock\",\n          \"trackName\" : \"Way Down We Go\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1b\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2c\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"KaleoWayDownWeGo.jpg\",\n          \"likes\" : 10\n      }\n  ],",
+          "content": "[\n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3\",\n          \"genre\" : \"R&B\",\n          \"trackName\" : \"Super Life\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1d\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e30\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 1,\n          \"imagePath\" : \"Superlife42011663_800_800.jpg\",\n          \"likes\" : 12\n      },\n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"Youm Talat-Amr Diab-seeds.mp3\",\n          \"genre\" : \"Arabic\",\n          \"trackName\" : \"Youm Talat\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1a\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2a\"),\n          \"type\" : \"Album\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"default.jpeg\",\n          \"likes\" : 20\n      },\n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"When I'm Gone-Eminem-seeds.mp3\",\n          \"genre\" : \"Rap\",\n          \"trackName\" : \"When I'm Gone\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e19\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2b\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"When_I'm_Gone_(Eminem_song).jpg\",\n          \"likes\" : 10\n      },\n      {\n          \"__v\" : 0,\n          \"trackPath\" : \"Way Down We Go.Kaleowith Lyrics ..mp3\",\n          \"genre\" : \"Alternative Rock\",\n          \"trackName\" : \"Way Down We Go\",\n          \"artistId\" : \"5ea225ded6322b2846bf0e1b\",\n          \"_id\" : ObjectId(\"5ea225ded6322b2846bf0e2c\"),\n          \"type\" : \"Single\",\n          \"numberOfTimesPlayed\" : 0,\n          \"imagePath\" : \"KaleoWayDownWeGo.jpg\",\n          \"likes\" : 10\n      }\n  ],",
           "type": "JSON"
         }
       ]
@@ -3095,6 +3361,92 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 404 No access\n{\n  \"error\": \"Invalid track ID\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": " get ",
+    "url": "/tracks/:trackId/download",
+    "title": "download a track (a premium feature)",
+    "name": "download_a_track",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "trackId",
+            "description": "<p>should be passed in params</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user's token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success - Response:",
+          "content": "HTTP / 1.1 200 OK\n{\n   \n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>[track not found]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[must be a premium user]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"message\": \"track not found\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 401   Unauthorized\n{\n       \"message\":\"authentication failed\"\n    }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error - Response:",
+          "content": "HTTP / 1.1 400  Bad Request\n{\n          \n    \"message\": \"you are not premium\"\n    }\n\n\n\n/",
           "type": "JSON"
         }
       ]
@@ -3288,7 +3640,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 403  Forbidden \n{\n   \"Password is incorrect\"\n}",
+          "content": "HTTP/1.1 403  Forbidden\n{\n   \"Password is incorrect\"\n}",
           "type": "JSON"
         },
         {
@@ -3298,7 +3650,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
           "type": "JSON"
         }
       ]
@@ -3620,7 +3972,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n  \"message\":\"followed\"\n\n\n   \n}",
+          "content": "    HTTP/1.1 200 OK\n{\n  \"message\":\"followed\"\n\n\n\n}",
           "type": "JSON"
         }
       ]
@@ -3645,12 +3997,12 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"authenticaton failed\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"authenticaton failed\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404   Not-Found  \n{\n   \"message\":\"artist not found\"\n}",
+          "content": "HTTP/1.1 404   Not-Found\n{\n   \"message\":\"artist not found\"\n}",
           "type": "JSON"
         }
       ]
@@ -3788,7 +4140,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n   \"artists\":\n[\n{  \"artistName\":\"Adele\",\n    \"followDate\": \"2020-04-04T18:14:27.889Z\",\n  \n  \"rate\":\"3\"\n },\n  {\n\n    \"artistName\":\"Eminem\",\n    \"followDate\": \"2020-04-04T18:14:27.889Z\",\n    \"rate\":\"7\"\n   }\n\n\n   ]\n}",
+          "content": "    HTTP/1.1 200 OK\n{\n   \"artists\":\n[\n{  \"artistName\":\"Adele\",\n    \"followDate\": \"2020-04-04T18:14:27.889Z\",\n\n  \"rate\":\"3\"\n },\n  {\n\n    \"artistName\":\"Eminem\",\n    \"followDate\": \"2020-04-04T18:14:27.889Z\",\n    \"rate\":\"7\"\n   }\n\n\n   ]\n}",
           "type": "JSON"
         }
       ]
@@ -3807,7 +4159,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"message\":\"authenticaton failed\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"authenticaton failed\"\n}",
           "type": "JSON"
         }
       ]
@@ -3874,7 +4226,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"Id not found\"\n}",
           "type": "string"
         },
         {
@@ -3884,7 +4236,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"User does not have access or does not exist\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
           "type": "string"
         }
       ]
@@ -3939,7 +4291,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 302\n{\n    \n     \"likedAlbums\": [\"5e8a701954fe752c1498f729\",\n              \"5e8a701954fe752c1498f72a\"]\n     \"likedTracks\": [\"5e8a701954fe752c1498f72c\",\n              \"5e8a701954fe752c1498f72d\"] \n\n}",
+          "content": "    HTTP/1.1 302\n{\n\n     \"likedAlbums\": [\"5e8a701954fe752c1498f729\",\n              \"5e8a701954fe752c1498f72a\"]\n     \"likedTracks\": [\"5e8a701954fe752c1498f72c\",\n              \"5e8a701954fe752c1498f72d\"]\n\n}",
           "type": "JSON"
         }
       ]
@@ -3964,7 +4316,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not found \n{\n  \"Id not found\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"Id not found\"\n}",
           "type": "string"
         },
         {
@@ -3974,7 +4326,7 @@
         },
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized \n{\n   \"Token Invalid\"\n}",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token Invalid\"\n}",
           "type": "string"
         }
       ]
@@ -4287,7 +4639,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 302\n{\n        Array of 5 tracks including the track info\n        [{\n            trackName:\n            trackImage;\n            duration of the track\n            imageName of the track\n            genre of thr track(if needed)\n            wether if the track is single or in an album(to be introduced later in the database)\n            \n\n        },{\n            same as above for track2\n        },{\n            same as above to track 3\n        },{\n            same as above to track 4\n        },{\n            same as above to track 5 \n        }] \n}",
+          "content": "HTTP/1.1 302\n{\n        Array of 5 tracks including the track info\n        [{\n            trackName:\n            trackImage;\n            duration of the track\n            imageName of the track\n            genre of thr track(if needed)\n            wether if the track is single or in an album(to be introduced later in the database)\n\n\n        },{\n            same as above for track2\n        },{\n            same as above to track 3\n        },{\n            same as above to track 4\n        },{\n            same as above to track 5\n        }]\n}",
           "type": "JSON"
         }
       ]

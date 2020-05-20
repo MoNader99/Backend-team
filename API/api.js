@@ -2950,3 +2950,54 @@
  *
  * /
  * */
+
+/** download a track
+ * ---------------------
+ * 
+ * @api { get }/tracks/:trackId/download            download a track (a premium feature)
+ * @apiName  download a track
+ * @apiGroup Tracks
+ *   
+ *  
+ * @apiParam { string } trackId    should be passed in params
+ * @apiHeader { string }  x-auth       user's token
+ *
+ * @apiSuccessExample { JSON } Success - Response:
+ * HTTP / 1.1 200 OK
+ * {
+ *    
+ * }
+ * 
+ * 
+ * 
+*  @apiError  404                      [track not found]
+*  @apiErrorExample {JSON} Error-Response:
+*     HTTP/1.1 404 Not Found
+*     {
+*       "message": "track not found"
+*     }
+*
+ * 
+ *
+ *
+ * @apiError 401      [authentication failed]
+ * @apiErrorExample {JSON} Error - Response:
+ * HTTP / 1.1 401   Unauthorized
+ * {
+ *        "message":"authentication failed"
+ *     }
+ *
+
+ *@apiError 400         [must be a premium user]
+ * @apiErrorExample { JSON } Error - Response:
+ * HTTP / 1.1 400  Bad Request
+ * {
+ *           
+    "message": "you are not premium"
+ *     }
+ *
+ *
+ * 
+ * /
+ * */
+
