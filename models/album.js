@@ -35,6 +35,20 @@ var AlbumSchema = new mongoose.Schema({
       required:true,
       min:0,
     },
+    rating:
+    {
+      type:Number,
+      required:false,
+      min:0,
+      max:5
+    },
+    noOfRatings:
+    {
+      type:Number,
+      required:false,
+      min:0,
+      default:0
+    }
 })
 var deletealbumtracks = function (album) {
    return track.deleteMany({ '_id': { $in: album.tracks.map(function (value) { return value.toString() }) } });
@@ -42,7 +56,7 @@ var deletealbumtracks = function (album) {
 AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
     album = this;
    // artistid = new ObjectID(artistid);
-    
+
     return album.findOne({ _id: albumid }).then((Album) => {
 
         if (!Album) {
@@ -65,7 +79,7 @@ AlbumSchema.statics.deletebyartist = function (artistid, albumid) {
                 })
 
                 console.log("kfho");
-                
+
             }).catch((e) => {
                 console.log("kfojf");
                 return Promise.reject(e);

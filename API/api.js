@@ -1750,7 +1750,8 @@
       * @apiGroup Tracks
       *
       *
-      * @apiParam {string}    genre         the required genre
+      * @apiParam {string}    id         the track to be rated
+      * @apiParam {Number}    value      the rating value: integer 0,1,2,3,4 or 5
       *
       *
       * * @apiSuccessExample {string} Success-Response:
@@ -1787,6 +1788,54 @@
        *     }
       *
       */
+
+      //rate album
+        /**
+         *
+         *
+         * @api {post} /album/rate/:id/:value              rate album
+         * @apiName Rate an album
+         * @apiGroup Album
+         *
+         *
+         * @apiParam {string}    id         the album to be rated
+         * @apiParam {Number}    value      the rating value: integer 0,1,2,3,4 or 5
+         *
+         *
+         * * @apiSuccessExample {string} Success-Response:
+         *     HTTP/1.1 200 OK
+         *   {
+         *    "rating added successfully"
+         *    }
+         * @apiError  404  Album not found
+         *  @apiErrorExample {string} Error-Response:
+         *     HTTP/1.1 404 Not Found
+         *    {
+         *      "Album not found"
+         *     }
+         *
+         *  @apiError  403 empty token
+         *  @apiErrorExample {string} Error-Response:
+         *     HTTP/1.1 403 forbidden
+         *     {
+         *       "token is empty"
+         *     }
+         *
+         *  @apiError  401 invalid token
+          *  @apiErrorExample {string} Error-Response:
+          *     HTTP/1.1 403 unauthorized
+          *     {
+          *       "User does not have access or does not exist"
+          *     }
+         *
+         *  @apiError  400 invalid parameters were sent
+          *  @apiErrorExample {string} Error-Response:
+          *     HTTP/1.1 400 Bad Request
+          *     {
+          *       "invalid rating value"
+          *     }
+         *
+         */
 
 
 ////////////////////////Aya Mahmoud //////////////////////
