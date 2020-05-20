@@ -873,6 +873,7 @@ var not1 = new notification({
     text:"Eminem released a new Song (Lose Ypurself)",
     sent:true,
     sourceId:artist3._id,
+    date:Date.now(),
     userType:"artist"
     
 });
@@ -882,6 +883,7 @@ var not2 = new notification({
     text:"Amr Diab released a new album",
     sent:true,
     sourceId:artist4._id,
+    date:Date.now(),
     userType:"artist"
     
 });

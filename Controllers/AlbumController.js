@@ -7,6 +7,7 @@ var { User } = require("../models/users.js");
 const jwt = require('jsonwebtoken');
 var{artist}= require("./../models/artists.js");
 var service = require("./../Services/AlbumServices.js");
+var artistService = require("./../Services/ArtistServices.js");
 var upload=require("./../Services/uploadAlbum.js").uploadAlbum;
 var{notification}=require("./../models/notifications.js");//notifications model
 const {ObjectID}=require('mongodb');
@@ -14,8 +15,10 @@ mongoose.Promise = global.Promise;
 
 const router = express.Router();
 var AuthenticationServices = require("./../Services/AuthenticationService");
+var userService = require("./../Services/UserServices");
 //edit image imports
-var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
+var uploadImagefn = require("./../Services/ImageService.js").upLoadPhoto;
+var notificationServices = require("./../Services/NotificationServices");
 var upload2=require("./../Services/ImageService.js").UploadUserPhoto;
 var AuthenticateArtistAlbum= require("./../Services/ImageService.js").AuthenticateArtistAlbum;
 var AssignAlbumImage=require("./../Services/ImageService.js").AssignAlbumImage;
@@ -247,15 +250,23 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
         }
         service.newAlbum(myartist._id,req.body.AlbumName,files);
 
-        var notificationInstance = new notification({
-            text:myartist.artistName+" released a new Album ("+req.body.AlbumName +")",
-            sourceId:myartist._id,
-            userType:"artist"
+        artistService.getUsersFollowingArtists(myartist._id).then((users) => {
+            userService.getUsersEndPoint(users).then((endPoints) => {
+                var notificationInstance = new notification({
+                    text: myartist.artistName + " released a new Album (" + req.body.AlbumName + ")",
+                    sourceId: myartist._id,
+                    userType: "artist",
+                    shouldBeSentTo: users,
+                    date: Date.now()
 
-        });
-        notificationInstance.save();
+                });
+                notificationInstance.save();
+                notificationServices.pushNotification(notificationInstance.text, endPoints);
+                res.status(201).send(files); 
 
-        res.status(201).send(files);
+
+            })
+        })
 
     }).catch((e) =>
     {

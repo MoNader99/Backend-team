@@ -1,5 +1,6 @@
 // JavaScript source code
 var { notification } = require("./../models/notifications.js");
+var push = require('web-push');
 var getArtistsNewNotificationObjects =function (Artists, userId) {
     return notification.find({ $and: [{ 'sourceId': { $in: Artists } }, { 'sentTo': { $ne: userId } }] });
 
@@ -21,7 +22,19 @@ var addUserToSentToArray = function (notifications, userId) {
         // done
     )
 }
+var pushNotification = function (textNotification, receivers) {
+    if (!receivers) return;
+    let vapidKeys = {
+        publicKey: 'BJ7BOrLdsc4Lq7jU6wlxFGBChneAR_Lg8587Z5KjEBXJ0Rfd5ZtdGh5bqRYPqbfZpdfvfAHIZ9X9Vw848oTnlXY',
+        privateKey: 'cta1wIIeqmLjESmnolE8rWFOiyfImoFZCSOvr5z51MI'
+    }   
+    console.log(receivers);
+    push.setVapidDetails('mailto::test@code.co.uk', vapidKeys.publicKey, vapidKeys.privateKey);
+    receivers.forEach(receiver => push.sendNotification(receiver, textNotification));
+
+}
 module.exports = {
-    getArtistsNewNotifications
+    getArtistsNewNotifications,
+    pushNotification
     
 }

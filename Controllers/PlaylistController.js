@@ -3,10 +3,11 @@ var { mongoose } = require("../db/mongoose.js");
 const{track}=require("../models/track");
 var {playlist} = require("../models/playlists.js");
 var {User} = require("../models/users.js");
+var notificationServices = require("./../Services/NotificationServices");
 
 const playlistservices = require("./../Services/PlaylistServices");
 const {ObjectID}=require('mongodb');
-
+var { notification } = require("./../models/notifications.js");//notifications model
 const router=express.Router();
 
 
@@ -312,7 +313,20 @@ router.post('/playlists/:playlistId/like/unlike/me', (req,res)=>{
                      playlists.likes = playlists.likes +1;
                      playlists.markModified('likes');
                      playlists.save();
-             
+                 var arr = [];
+                 arr[0] = playlists.userId;
+                 var not2 = new notification({
+                     text: user.userName + " liked your playlist "+playlists.playlistName,
+                     sourceId: user._id,
+                     userType: "user",
+                     date: Date.now(),
+                     shouldBeSentTo: arr
+
+                 });
+                 not2.save();
+                 var array = [];
+                 array[0] = user.endPoint;
+                 notificationServices.pushNotification(not2.text, array);
                      res.status(200).json({"message":"liked a playlist"});
                  }
 
@@ -362,7 +376,7 @@ else
 }
 
        }).catch((e)=>{
-
+           console.log(e);
         return res.status(404).json({"message":"playlist not found"});
        })
 
