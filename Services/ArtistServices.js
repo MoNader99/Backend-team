@@ -60,10 +60,13 @@ var unFollowArtist = function (artistId, userId) {
         if (Artist.nModified == 0) {
             return userServices.GetUserById(userId).then((userName) => {
                 return artist.findById(artistId).then((art) => {
+                    var array = [];
+                    array[0] = artistId;
                     var notificationInstance = new notification({
                         text: userName + " has followed " + "you",
                         sourceId: userId,
-                        userType: "user"
+                        userType: "user",
+                        shouldBeSentTo:array
 
                     });
                     notificationInstance.save();

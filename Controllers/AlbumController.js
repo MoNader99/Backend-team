@@ -250,16 +250,17 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
         }
         service.newAlbum(myartist._id,req.body.AlbumName,files);
 
-        var notificationInstance = new notification({
-            text:myartist.artistName+" released a new Album ("+req.body.AlbumName +")",
-            sourceId:myartist._id,
-            userType:"artist"
-
-        });
-        notificationInstance.save();
         artistService.getUsersFollowingArtists(myartist._id).then((users) => {
             userService.getUsersEndPoint(users).then((endPoints) => {
-                //console.log(endPoints);
+                var notificationInstance = new notification({
+                    text: myartist.artistName + " released a new Album (" + req.body.AlbumName + ")",
+                    sourceId: myartist._id,
+                    userType: "artist",
+                    shouldBeSentTo: users,
+                    date: Date.now()
+
+                });
+                notificationInstance.save();
                 notificationServices.pushNotification(notificationInstance.text, endPoints);
                 res.status(201).send(files); 
 

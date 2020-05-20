@@ -55,16 +55,18 @@ router.post('/tracks/single',upload,(req,res)=>{
             if(trackduplicate.length!=0){  //409 is code for conflict
                 return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
             };
-            var not2 = new notification({
-                text:artistName+" released a new Song ("+req.body.trackName +")",
-                sourceId:atristId2,
-                userType: "artist",
-                date: Date.now()
 
-            });
-        not2.save();
         artistService.getUsersFollowingArtists(atristId2).then((users) => {
             userService.getUsersEndPoint(users).then((endPoints) => {
+                var not2 = new notification({
+                    text: artistName + " released a new Song (" + req.body.trackName + ")",
+                    sourceId: atristId2,
+                    userType: "artist",
+                    date: Date.now(),
+                    shouldBeSentTo:users
+
+                });
+                not2.save();
                 //console.log(endPoints);
                 notificationServices.pushNotification(not2.text, endPoints);
                 res.status(201).send(files);
