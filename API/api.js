@@ -1665,57 +1665,49 @@
    *
    * * @apiSuccessExample {JSON} Success-Response:
    *     HTTP/1.1 200 OK
-   [
-     {
-         "_id": "5ebdb176b4751d4be056a2a0",
-         "artistId": "5ebdb176b4751d4be056a290",
-         "trackName": "Hello",
-         "genre": "Jazz",
-         "trackPath": "Hello-Adele-seeds.mp3",
-         "__v": 0,
-         "type": "Single",
-         "numberOfTimesPlayed": 0,
-         "imagePath": "default.jpeg",
-         "likes": 9
-     },
-     {
-         "_id": "5ebdb176b4751d4be056a2b3",
-         "artistId": "5ebdb176b4751d4be056a298",
-         "trackName": "Deus",
-         "genre": "Jazz",
-         "trackPath": "HVOB & Winston Marshall  Deus.mp3",
-         "__v": 0,
-         "type": "Album",
-         "numberOfTimesPlayed": 0,
-         "imagePath": "hvobalbum.jpg",
-         "likes": 13
-     },
-     {
-         "_id": "5ebdb176b4751d4be056a2b2",
-         "artistId": "5ebdb176b4751d4be056a298",
-         "trackName": "The Blame Game",
-         "genre": "Jazz",
-         "trackPath": "HVOB - Dogs [Official].mp3",
-         "__v": 0,
-         "type": "Album",
-         "numberOfTimesPlayed": 0,
-         "imagePath": "hvobalbum.jpg",
-         "likes": 80
-     },
-     {
-         "_id": "5ebdb176b4751d4be056a2b1",
-         "artistId": "5ebdb176b4751d4be056a298",
-         "trackName": "Dogs",
-         "genre": "Jazz",
-         "trackPath": "HVOB - Dogs [Official].mp3",
-         "__v": 0,
-         "type": "Single",
-         "numberOfTimesPlayed": 0,
-         "imagePath": "default.jpeg",
-         "likes": 21
-     }
- ]
-   *
+   {
+       "tracks": [
+           {
+               "_id": "5ec1c6309760c939c8b33a42",
+               "artistId": "5ec1c6309760c939c8b33a27",
+               "trackName": "Deus",
+               "genre": "Jazz",
+               "trackPath": "HVOB & Winston Marshall  Deus.mp3",
+               "__v": 0,
+               "noOfRatings": 0,
+               "type": "Album",
+               "numberOfTimesPlayed": 0,
+               "imagePath": "hvobalbum.jpg",
+               "likes": 13
+           },
+           {
+               "_id": "5ec1c6309760c939c8b33a40",
+               "artistId": "5ec1c6309760c939c8b33a27",
+               "trackName": "Dogs",
+               "genre": "Jazz",
+               "trackPath": "HVOB - Dogs [Official].mp3",
+               "__v": 0,
+               "noOfRatings": 0,
+               "type": "Single",
+               "numberOfTimesPlayed": 0,
+               "imagePath": "default.jpeg",
+               "likes": 21
+           },
+           {
+               "_id": "5ec1c6309760c939c8b33a41",
+               "artistId": "5ec1c6309760c939c8b33a27",
+               "trackName": "The Blame Game",
+               "genre": "Jazz",
+               "trackPath": "HVOB - Dogs [Official].mp3",
+               "__v": 0,
+               "noOfRatings": 0,
+               "type": "Album",
+               "numberOfTimesPlayed": 0,
+               "imagePath": "hvobalbum.jpg",
+               "likes": 80
+           }
+       ]
+   }
    *
    * @apiError  404   no tracks found for this genre
    *  @apiErrorExample {string} Error-Response:
@@ -1739,6 +1731,55 @@
     *     }
    *
    */
+
+   ////get all available genres
+     /**
+      * @api {get} /tracks/:genre              get all available genres
+      * @apiName get all available genres
+      * @apiGroup Tracks
+      *
+      * @apiSuccess {string[]}     array of strings including all the genres in the database
+      *
+      * * @apiSuccessExample {JSON} Success-Response:
+      *     HTTP/1.1 200 OK
+      {
+          "genres": [
+              "Alternative Rock",
+              "Arabic",
+              "Blues",
+              "Electronic",
+              "Hip-Hop",
+              "Jazz",
+              "Pop",
+              "R&B",
+              "Rap",
+              "Rock",
+              "Trap"
+          ]
+      }
+      *
+      * @apiError  404   no genres found
+      *  @apiErrorExample {string} Error-Response:
+      *     HTTP/1.1 404 Not Found
+      *    {
+      *      "no genres found"
+      *     }
+      *
+      *  @apiError  403 empty token
+      *  @apiErrorExample {string} Error-Response:
+      *     HTTP/1.1 403 forbidden
+      *     {
+      *       "token is empty"
+      *     }
+      *
+      *  @apiError  401 invalid token
+       *  @apiErrorExample {string} Error-Response:
+       *     HTTP/1.1 403 unauthorized
+       *     {
+       *       "User does not have access or does not exist"
+       *     }
+      *
+      */
 
 
    //rate a track
@@ -2953,23 +2994,23 @@
 
 /** download a track
  * ---------------------
- * 
+ *
  * @api { get }/tracks/:trackId/download            download a track (a premium feature)
  * @apiName  download a track
  * @apiGroup Tracks
- *   
- *  
+ *
+ *
  * @apiParam { string } trackId    should be passed in params
  * @apiHeader { string }  x-auth       user's token
  *
  * @apiSuccessExample { JSON } Success - Response:
  * HTTP / 1.1 200 OK
  * {
- *    
+ *
  * }
- * 
- * 
- * 
+ *
+ *
+ *
 *  @apiError  404                      [track not found]
 *  @apiErrorExample {JSON} Error-Response:
 *     HTTP/1.1 404 Not Found
@@ -2977,7 +3018,7 @@
 *       "message": "track not found"
 *     }
 *
- * 
+ *
  *
  *
  * @apiError 401      [authentication failed]
@@ -2992,12 +3033,11 @@
  * @apiErrorExample { JSON } Error - Response:
  * HTTP / 1.1 400  Bad Request
  * {
- *           
+ *
     "message": "you are not premium"
  *     }
  *
  *
- * 
+ *
  * /
  * */
-

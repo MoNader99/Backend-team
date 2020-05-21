@@ -627,7 +627,7 @@ router.get('/tracks', (req,res) =>
           if (tracksArr.length==0){
             return res.status(404).send('no tracks for this genre');
           }
-          return res.status(200).send(tracksArr);
+          return res.status(200).send({"tracks":tracksArr});
         })
 
 
@@ -656,7 +656,7 @@ router.get('/tracks/allgenres', (req,res) =>
           if (tracksArr.length==0){
             return res.status(404).send('no genres found');
           }
-          return res.status(200).send(tracksArr);
+          return res.status(200).send({"genres":tracksArr});
         })
 
 

@@ -2960,7 +2960,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "   HTTP/1.1 200 OK\n  [\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2a0\",\n        \"artistId\": \"5ebdb176b4751d4be056a290\",\n        \"trackName\": \"Hello\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"Hello-Adele-seeds.mp3\",\n        \"__v\": 0,\n        \"type\": \"Single\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"default.jpeg\",\n        \"likes\": 9\n    },\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2b3\",\n        \"artistId\": \"5ebdb176b4751d4be056a298\",\n        \"trackName\": \"Deus\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"HVOB & Winston Marshall  Deus.mp3\",\n        \"__v\": 0,\n        \"type\": \"Album\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"hvobalbum.jpg\",\n        \"likes\": 13\n    },\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2b2\",\n        \"artistId\": \"5ebdb176b4751d4be056a298\",\n        \"trackName\": \"The Blame Game\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"HVOB - Dogs [Official].mp3\",\n        \"__v\": 0,\n        \"type\": \"Album\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"hvobalbum.jpg\",\n        \"likes\": 80\n    },\n    {\n        \"_id\": \"5ebdb176b4751d4be056a2b1\",\n        \"artistId\": \"5ebdb176b4751d4be056a298\",\n        \"trackName\": \"Dogs\",\n        \"genre\": \"Jazz\",\n        \"trackPath\": \"HVOB - Dogs [Official].mp3\",\n        \"__v\": 0,\n        \"type\": \"Single\",\n        \"numberOfTimesPlayed\": 0,\n        \"imagePath\": \"default.jpeg\",\n        \"likes\": 21\n    }\n]",
+          "content": " HTTP/1.1 200 OK\n{\n    \"tracks\": [\n        {\n            \"_id\": \"5ec1c6309760c939c8b33a42\",\n            \"artistId\": \"5ec1c6309760c939c8b33a27\",\n            \"trackName\": \"Deus\",\n            \"genre\": \"Jazz\",\n            \"trackPath\": \"HVOB & Winston Marshall  Deus.mp3\",\n            \"__v\": 0,\n            \"noOfRatings\": 0,\n            \"type\": \"Album\",\n            \"numberOfTimesPlayed\": 0,\n            \"imagePath\": \"hvobalbum.jpg\",\n            \"likes\": 13\n        },\n        {\n            \"_id\": \"5ec1c6309760c939c8b33a40\",\n            \"artistId\": \"5ec1c6309760c939c8b33a27\",\n            \"trackName\": \"Dogs\",\n            \"genre\": \"Jazz\",\n            \"trackPath\": \"HVOB - Dogs [Official].mp3\",\n            \"__v\": 0,\n            \"noOfRatings\": 0,\n            \"type\": \"Single\",\n            \"numberOfTimesPlayed\": 0,\n            \"imagePath\": \"default.jpeg\",\n            \"likes\": 21\n        },\n        {\n            \"_id\": \"5ec1c6309760c939c8b33a41\",\n            \"artistId\": \"5ec1c6309760c939c8b33a27\",\n            \"trackName\": \"The Blame Game\",\n            \"genre\": \"Jazz\",\n            \"trackPath\": \"HVOB - Dogs [Official].mp3\",\n            \"__v\": 0,\n            \"noOfRatings\": 0,\n            \"type\": \"Album\",\n            \"numberOfTimesPlayed\": 0,\n            \"imagePath\": \"hvobalbum.jpg\",\n            \"likes\": 80\n        }\n    ]\n}",
           "type": "JSON"
         }
       ]
@@ -3405,7 +3405,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success - Response:",
-          "content": "HTTP / 1.1 200 OK\n{\n   \n}",
+          "content": "HTTP / 1.1 200 OK\n{\n\n}",
           "type": "JSON"
         }
       ]
@@ -3446,8 +3446,79 @@ define({ "api": [
         },
         {
           "title": "Error - Response:",
-          "content": "HTTP / 1.1 400  Bad Request\n{\n          \n    \"message\": \"you are not premium\"\n    }\n\n\n\n/",
+          "content": "HTTP / 1.1 400  Bad Request\n{\n\n    \"message\": \"you are not premium\"\n    }\n\n\n\n/",
           "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
+    "type": "get",
+    "url": "/tracks/:genre",
+    "title": "get all available genres",
+    "name": "get_all_available_genres",
+    "group": "Tracks",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string[]",
+            "optional": false,
+            "field": "array",
+            "description": "<p>of strings including all the genres in the database</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n      \"genres\": [\n          \"Alternative Rock\",\n          \"Arabic\",\n          \"Blues\",\n          \"Electronic\",\n          \"Hip-Hop\",\n          \"Jazz\",\n          \"Pop\",\n          \"R&B\",\n          \"Rap\",\n          \"Rock\",\n          \"Trap\"\n      ]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>no genres found</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>empty token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>invalid token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": " HTTP/1.1 404 Not Found\n{\n  \"no genres found\"\n }",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"token is empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 unauthorized\n{\n  \"User does not have access or does not exist\"\n}",
+          "type": "string"
         }
       ]
     },
