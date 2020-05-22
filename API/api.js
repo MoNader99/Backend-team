@@ -1689,7 +1689,7 @@
                "imagePath": "hvobalbum.jpg"
            }
        ]
-   }   
+   }
    * @apiError  404   no tracks found for this genre
    *  @apiErrorExample {string} Error-Response:
    *     HTTP/1.1 404 Not Found
