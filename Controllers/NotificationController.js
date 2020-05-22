@@ -27,4 +27,13 @@ router.get('/notification/artistupadtes',authenticationServices.AuthenticateUser
 
     })
 });
+router.get('/notification/history', authenticationServices.AuthenticateUsers, (req, res) => {
+    notificationServices.getLastNotifications(req.userId).then((notifications) => {
+        res.status(200).send(notifications);
+    }).catch((err) => {
+        res.status(400).send(err);
+        console.log(err);
+
+    })
+});
 module.exports = router;
