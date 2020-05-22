@@ -1668,47 +1668,28 @@
    {
        "tracks": [
            {
-               "_id": "5ec1c6309760c939c8b33a42",
                "artistId": "5ec1c6309760c939c8b33a27",
-               "trackName": "Deus",
-               "genre": "Jazz",
-               "trackPath": "HVOB & Winston Marshall  Deus.mp3",
-               "__v": 0,
-               "noOfRatings": 0,
-               "type": "Album",
-               "numberOfTimesPlayed": 0,
-               "imagePath": "hvobalbum.jpg",
-               "likes": 13
-           },
-           {
-               "_id": "5ec1c6309760c939c8b33a40",
-               "artistId": "5ec1c6309760c939c8b33a27",
+               "artistName": "HVOB",
                "trackName": "Dogs",
-               "genre": "Jazz",
-               "trackPath": "HVOB - Dogs [Official].mp3",
-               "__v": 0,
-               "noOfRatings": 0,
-               "type": "Single",
-               "numberOfTimesPlayed": 0,
-               "imagePath": "default.jpeg",
-               "likes": 21
+               "_id": "5ec1c6309760c939c8b33a40",
+               "imagePath": "default.jpeg"
            },
            {
-               "_id": "5ec1c6309760c939c8b33a41",
                "artistId": "5ec1c6309760c939c8b33a27",
+               "artistName": "HVOB",
+               "trackName": "Deus",
+               "_id": "5ec1c6309760c939c8b33a42",
+               "imagePath": "hvobalbum.jpg"
+           },
+           {
+               "artistId": "5ec1c6309760c939c8b33a27",
+               "artistName": "HVOB",
                "trackName": "The Blame Game",
-               "genre": "Jazz",
-               "trackPath": "HVOB - Dogs [Official].mp3",
-               "__v": 0,
-               "noOfRatings": 0,
-               "type": "Album",
-               "numberOfTimesPlayed": 0,
-               "imagePath": "hvobalbum.jpg",
-               "likes": 80
+               "_id": "5ec1c6309760c939c8b33a41",
+               "imagePath": "hvobalbum.jpg"
            }
        ]
-   }
-   *
+   }   
    * @apiError  404   no tracks found for this genre
    *  @apiErrorExample {string} Error-Response:
    *     HTTP/1.1 404 Not Found
@@ -1773,11 +1754,11 @@
       *     }
       *
       *  @apiError  401 invalid token
-       *  @apiErrorExample {string} Error-Response:
-       *     HTTP/1.1 403 unauthorized
-       *     {
-       *       "User does not have access or does not exist"
-       *     }
+      *  @apiErrorExample {string} Error-Response:
+      *     HTTP/1.1 403 unauthorized
+      *     {
+      *       "User does not have access or does not exist"
+      *     }
       *
       */
 
