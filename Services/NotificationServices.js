@@ -5,6 +5,13 @@ var getArtistsNewNotificationObjects =function (Artists, userId) {
     return notification.find({ $and: [{ 'sourceId': { $in: Artists } }, { 'sentTo': { $ne: userId } }] });
 
 }
+var getLastNotifications = function (userId) {
+    return notification.find({ 'shouldBeSentTo': userId }).sort('-date').limit(10).exec(function (err, posts) {
+        console.log("Emitting Update...");
+        //socket.emit("Update", posts.length);
+        // console.log("Update Emmited");
+    });
+}
 var getArtistsNewNotifications= function (Artists, userId) {
     return getArtistsNewNotificationObjects(Artists, userId).then((notifications) => {
         return addUserToSentToArray(notifications,userId).then(() => {
@@ -39,6 +46,8 @@ var filtered = receivers.filter(function (el) {
 }
 module.exports = {
     getArtistsNewNotifications,
-    pushNotification
+    pushNotification,
+    getLastNotifications
+
     
 }
