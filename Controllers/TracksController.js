@@ -11,7 +11,7 @@ var { User } = require("./../models/users.js");
 var{artist}= require("./../models/artists.js");
 var upload = require("./../Services/uploadTrack").uploadTrack;
 var notificationServices = require("./../Services/NotificationServices");
-
+var TrackServices=require("./../Services/TrackServices");
 var { notification } = require("./../models/notifications.js");
 var artistService = require("./../Services/ArtistServices.js");
 
@@ -609,7 +609,7 @@ router.get('/tracks/like/me', (req,res) =>
 
 
 /////// Get Tracks by genre //////////
-router.get('/tracks', (req,res) =>
+router.get('/tracks',async (req,res) =>
 {
     var token = req.header('x-auth');
     if(!token)
@@ -623,11 +623,34 @@ router.get('/tracks', (req,res) =>
           return res.status(401).send('User does not have access or does not exist');
         }
 
-        track.find({'genre':req.query.genre}).then((tracksArr)=>{
+        track.find({'genre':req.query.genre}).then(async(tracksArr)=>{
           if (tracksArr.length==0){
             return res.status(404).send('no tracks for this genre');
           }
-          return res.status(200).send({"tracks":tracksArr});
+          var resArr=[];
+          var newObj;
+          var counter=0;
+          for (let i=0;i<tracksArr.length;i++)
+            {
+              artist.findById(tracksArr[i].artistId).then((found)=>{
+                  newObj={
+                    "artistId":tracksArr[i].artistId,
+                    "artistName":found.artistName,
+                    "trackName":tracksArr[i].trackName,
+                    "_id":tracksArr[i]._id,
+                    "imagePath":tracksArr[i].imagePath
+                }
+                counter++;
+                console.log(newObj);
+                resArr.push(newObj);
+                console.log(resArr);
+                if(counter==tracksArr.length){
+                  return res.status(200).send({"tracks":resArr});
+
+                }
+
+              })
+            }
         })
 
 

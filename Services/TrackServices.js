@@ -3,6 +3,7 @@ var { mongoose } = require("./../db/mongoose.js");
 var ObjectID = require('mongodb').ObjectID;
 var _ = require('lodash');
 var { track } = require("./../models/track.js");//track model
+var{artist}= require("./../models/artists.js");
 
 var { GetArtistById } = require("./../Services/ArtistServices");
 var GetTrackObjectArray =async function (wordtosearch,Artists) {
@@ -10,7 +11,7 @@ var GetTrackObjectArray =async function (wordtosearch,Artists) {
    // return track.find({ 'trackName': { '$regex': wordtosearch, $options: 'i' } , 'artistId': { $in: Artists.map(function (value) { return value._id }) } } );
    // try {
    // console.log(Artists.map(function (value) { return value._id.toString() }));
-   
+
    return track.find({ $or: [{ 'trackName': { '$regex': wordtosearch, $options: 'i' } }, { 'artistId': { $in: Artists.map(function (value) { return value._id.toString() }) } }] });
     //var tracks = await track.find({ $or: [{ 'trackName': { '$regex': wordtosearch, $options: 'i' } }, { 'artistId': { $in: Artists.map(function (value) { return value._id.toString() }) } }] });
     //var tracks =
@@ -77,7 +78,6 @@ var GetSimplifiedTrack = function (track) {
     return ((({ _id, trackName, imagePath, artistName, artistId }) => ({ _id, trackName, imagePath, artistName, artistId }))(track));
 
 }
-
 
 module.exports = {
     SearchInTracks,
