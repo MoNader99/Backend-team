@@ -30,6 +30,8 @@ var addUserToSentToArray = function (notifications, userId) {
     )
 }
 var pushNotification = function (textNotification, receivers) {
+    console.log("rec");
+    console.log(receivers);
     if (!receivers) return;
     let vapidKeys = {
         publicKey: 'BJ7BOrLdsc4Lq7jU6wlxFGBChneAR_Lg8587Z5KjEBXJ0Rfd5ZtdGh5bqRYPqbfZpdfvfAHIZ9X9Vw848oTnlXY',
@@ -38,10 +40,15 @@ var pushNotification = function (textNotification, receivers) {
 var filtered = receivers.filter(function (el) {
   return el != null;
     });
+    if (!filtered) return;
     if (filtered.length == 0) return;
+    console.log("filtered");
     console.log(filtered);
     push.setVapidDetails('mailto::test@code.co.uk', vapidKeys.publicKey, vapidKeys.privateKey);
-    filtered.forEach(receiver => push.sendNotification(receiver, textNotification));
+    var filtered2 = filtered.filter(function (el) {
+        if (el.endPoint != null) return e;
+    });
+    filtered2.forEach(receiver => push.sendNotification(receiver, textNotification));
 
 }
 module.exports = {

@@ -56,7 +56,7 @@ var unFollowArtist = function (artistId, userId) {
     return deleteArtistFromSchema(artistId, userId).then((Artist) => {
         if (Artist.nModified == 1) return "unfollowed";
         console.log("2wel art");
-        console.log(artist);
+        //console.log(artist);
         if (Artist.nModified == 0) {
             return userServices.GetUserById(userId).then((userName) => {
                 return artist.findById(artistId).then((art) => {
@@ -66,7 +66,8 @@ var unFollowArtist = function (artistId, userId) {
                         text: userName + " has followed " + "you",
                         sourceId: userId,
                         userType: "user",
-                        shouldBeSentTo:array
+                        shouldBeSentTo: array,
+                        date: Date.now()
 
                     });
                     notificationInstance.save();
@@ -77,7 +78,7 @@ var unFollowArtist = function (artistId, userId) {
                     return GetArtistById(artistId).then((artistName) => {
                         return addArtistToSchema(artistId, userId, artistName).then((artist2) => {
                             console.log("tane art");
-                            console.log(artist2);
+                            //console.log(artist2);
                             if (artist2.nModified == 1) return "followed";
                             else {
                                 console.log(1);
