@@ -155,7 +155,7 @@ router.delete('/album/:id/delete', AuthenticationServices.AuthenticateArtists, (
 });
 
 
-///////// Like album /////////////
+///////// Like or Unlike album /////////////
 router.post('/album/like/unlike/:id',async (req, res) => {
     var albumId = req.params.id;
     var token = req.header('x-auth');
@@ -169,7 +169,7 @@ router.post('/album/like/unlike/:id',async (req, res) => {
     }
     album.findOne({_id:albumId}).then((album) => {
         if(!album){
-            res.status(404).send('No album found');
+            return res.status(404).send('No album found');
         }
         User.findByToken(token).then((user) =>{
             if(!user)
