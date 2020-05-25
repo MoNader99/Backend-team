@@ -27,7 +27,7 @@ router.get('/notification/artistupadtes',authenticationServices.AuthenticateUser
 
     })
 });
-router.get('/notification/history', authenticationServices.AuthenticateUsers, (req, res) => {
+router.get('/notification/history', authenticationServices.AuthenticateAllUsers, (req, res) => {
     notificationServices.getLastNotifications(req.userId).then((notifications) => {
         res.status(200).send(notifications);
     }).catch((err) => {

@@ -70,7 +70,7 @@ var AuthenticateAllUsers = (req, res, next) => {
     console.log(req.param.id);
     try {
         decodedtoken = jwt.verify(token, 'secretkeyforuser');
-        req.token = decodedtoken;
+        req.userId = decodedtoken._id;
         req.usertype = "normal user"
         next();
     }
@@ -79,7 +79,7 @@ var AuthenticateAllUsers = (req, res, next) => {
         try {
             console.log("da5a5aalapd");
             decodedtoken = jwt.verify(token, 'secretkeyforartist')
-            req.token = decodedtoken;
+            req.userId = decodedtoken._id;
             req.usertype = "artist"
             next();
         }

@@ -223,10 +223,14 @@ router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToke
     });
 
 });
-router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
+router.post('/follow/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var artistId = req.params.id;
     console.log("da5al");
-
+    artist.find({ '_id': artistId }).then((Artist) => {
+        if (Artist.length == 0) res.status(400).send("Artist not found");
+        console.log("rt");
+      //  console.log(Artist[0].toString());
+    
     artistservices.unFollowArtist(artistId, req.userId).then((str) => {
         console.log(str);
         if (str == "unfollowed") res.status(200).send("You have unfollowed the artist");
@@ -236,9 +240,12 @@ router.post('/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, as
         console.log(err);
         res.status(400).send(err);
     })
-
+    }).catch((err) => {
+    console.log(err);
+    res.status(400).send(err);
+    })
 });
-router.post('/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
+router.post('/follow/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var userId = req.params.id;
     console.log("da5al");
 
