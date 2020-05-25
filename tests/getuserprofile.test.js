@@ -5,7 +5,7 @@ const app=require('./../Index');
 var{User}= require("../models/users.js");
 const jwt = require('jsonwebtoken');
 var testToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZyb250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s';
-
+/*
 beforeEach((done)=>{
   User.remove({ "email":"sw.project.verify@gmail.com"}).then(()=> done());
 })
@@ -662,7 +662,196 @@ describe('GET /users/confirm/:code', () => {
         })
 
     });
+*/
+var testInputToken = "1103945386642812|q3IjOqkmzeCMBy9ettlIZr0XTo8";
+var testAccessToken = "EAAPsCFCfTXwBAMQrOPKuHfB3IYCEsxH2gADswZCIbq00H0xfvYDpZBZBGEkVzz2wJrWiVwuUhELhYgZA7frgwn3vDCwklpUrfnu3vmW61itbGxsExaLSEzZB6psddN2zX50s7PHmsBVZAxSMvE0FhOWbWLnjw0ZCiODjBSXFaYYX4qkJWbnhN9xsLxM3rpD7EBDmfdkKiJsaT0ezwgkUUeAwUuBgXpQW8NOH8NwZCxeStgZDZD";
+var findbyEmail = function () {
+    return User.findOne({ 'email': "testuser@gmail.com" }).lean().exec(function (err, user) {
+        //console.log(res.end(JSON.stringify(user)));
+    });
+}
+var func = function () {
+  return  User.find({ 'email': 'testuser@gmail.com' });
 
+}
+describe('POST /users/loginwithfacebook', () => {
+
+    it('It should rloginfacebook user', (done) => {
+
+
+       /// testuser.save().then((res) => {
+            request(app)
+                .post('/users/loginwithfacebook')
+                .set('access_token', testAccessToken)
+                .set('input_token', testInputToken)
+                .send({"userName": "fb","email": "testuser@gmail.com", "gender": "F","bdate": "07-07-2002" })
+                .expect(200)
+                .expect((res) => {
+                    var nono = func();
+                    console.log("nono");
+
+                    console.log(nono[0]);
+                    //console.log(arr);
+                    expect(jwt.verify(res.header['x-auth'], 'secretkeyforuser')._id).toBe(arr[0]._id);
+                    // console.log(res);
+                    //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
+                })
+                .end((err, res) => {
+                    if (err) {
+                        done(err)
+                    }
+                   /* User.findOneAndRemove({ email: "testuser@gmail.com" }, function (err) {
+                        if (!err) {
+
+                            done();
+
+                        }
+                        else {
+                            done(err);
+                        }
+                    });*/
+                });
+      /*  }, (err) => {
+            console.log(err);
+        });*/
+
+
+
+    })
+
+
+   /* it('It should add user', (done) => {
+
+        var testuser = new User({
+            email: "nadamahmoudabdelfatah@gmail.com",
+            password: "$2b$10$omJZRaDaSrwjJyNnbOj6qe.BiOuWkqus4T4f7cNnfqZ22WV3.sS3y",
+            userName: "Nada",
+            gender: "F",
+            birthDate: '1990-06-19',
+            isActive: true
+        });
+
+
+        testuser.save().then((res) => {
+            request(app)
+                .post('/users/login')
+                .set('x-auth', testToken)
+                .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
+                .expect(200)
+                .expect((res) => {
+                    //console.log(res.header.(x-auth));
+                    //console.log(res.header['x-auth']);
+                    expect(jwt.verify(res.header['x-auth'], 'secretkeyforuser')._id).toBe(testuser._id.toString());
+                    // console.log(res);
+                    //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
+                })
+                .end((err, res) => {
+                    if (err) {
+                        done(err)
+                    }
+                    User.findOneAndRemove({ _id: testuser._id }, function (err) {
+                        if (!err) {
+
+                            done();
+
+                        }
+                        else {
+                            done(err);
+                        }
+                    });
+                });
+        }, (err) => {
+            done(err);
+        });
+
+
+
+    })
+    it('It  refuses user with wrong info', (done) => {
+
+        request(app)
+            .post('/users/login')
+            .set('x-auth', testToken)
+            .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
+            .expect(401)
+            .expect((res) => {
+                //console.log(res.header.(x-auth));
+                //console.log(res.header['x-auth']);
+                expect(res.error.text).toBe("Either email or passwrod is incorrect")
+                // console.log(res);
+                //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
+            })
+            .end(done);
+
+    });
+    it('It  refuses wrong token', (done) => {
+        var wrongToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZy250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s'
+        request(app)
+            .post('/users/login')
+            .set('x-auth', wrongToken)
+            .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abc" })
+            .expect(401)
+            .expect((res) => {
+                //console.log(res.header.(x-auth));
+                //console.log(res.header['x-auth']);
+                expect(res.error.text).toBe("Token is not valid")
+                // console.log(res);
+                //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
+            })
+            .end(done);
+
+    });
+    it('It should refuse user with wrong password', (done) => {
+
+        var testuser = new User({
+            email: "nadamahmoudabdelfatah@gmail.com",
+            password: "$2b$10$omJZRaDaSrwjJyNnbOj6qe.BiOuWkqus4T4f7cNnfqZ22WV3.sS3y",
+            userName: "Nada",
+            gender: "F",
+            birthDate: '1990-06-19',
+            isActive: true
+        });
+
+
+        testuser.save().then((res) => {
+            request(app)
+                .post('/users/login')
+                .set('x-auth', testToken)
+                .send({ "email": "nadamahmoudabdelfatah@gmail.com", "password": "abck" })
+                .expect(401)
+                .expect((res) => {
+                    //console.log(res.header.(x-auth));
+                    //console.log(res.header['x-auth']);
+                    expect(res.error.text).toBe("Either email or passwrod is incorrect")
+                    // console.log(res);
+                    //image cannot be compared as it is another object ro it will have an id attribute which will make conflict
+                })
+                .end((err, res) => {
+                    if (err) {
+                        done(err)
+                    }
+                    User.findOneAndRemove({ _id: testuser._id }, function (err) {
+                        if (!err) {
+
+                            done();
+
+                        }
+                        else {
+                            done(err);
+                        }
+                    });
+                });
+
+        }, (err) => {
+
+            done(err);
+        });
+
+
+    })
+*/
+
+})
 
 
     

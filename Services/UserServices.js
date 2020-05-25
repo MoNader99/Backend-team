@@ -62,6 +62,7 @@ var addFacebookUser = function (facebookId, userName, email, gender, bdate) {
             birthDate: bdate
 
         });
+    console.log(newacc);
   newacc.save().then((doc) => {
         console.log("2et7at");
         Promise.resolve(newacc);
