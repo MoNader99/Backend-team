@@ -6,7 +6,7 @@ const app=require('./../Index');
 var{User}= require("../models/users.js");
 const jwt = require('jsonwebtoken');
 var testToken = 'eyJhbGciOiJIUzI1NiJ9.QXV0aG9yaXphdGlvbmZvcmZyb250ZW5k.xEs1jjiOlwnDr4BbIvnqdphOmQTpkuUlTgJbAtQM68s';
-/*
+
 beforeEach((done)=>{
   User.remove({ "email":"sw.project.verify@gmail.com"}).then(()=> done());
 })
@@ -663,7 +663,7 @@ describe('GET /users/confirm/:code', () => {
         })
 
     });
-*/
+
 var testAccessToken = '1103945386642812|q3IjOqkmzeCMBy9ettlIZr0XTo8';
 var testInputToken = 'EAAPsCFCfTXwBAHMrTZAYQZANOwnFm1ZCVXKMLLMdfmFURUNEbJ5SV5OobZBSdx9Lb6xrOMNgtuCf048r9aaH9KgHOkAZCRQIToxOjmIOBfj8DUV69BZAeNkHaDwtaYZBaJeM1ZCUBhGfBjO5MaKzF2IKibgJAzsnvqSNdpeAWezJqore5B3qKvvxPuSF0uzeLdym3FOHldNZAfIgpZCZCO9hxmK4qHS95V5sSt3HG2PX7tRrgZDZD';
 /*var findbyEmail = function () {
