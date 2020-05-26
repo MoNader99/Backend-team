@@ -1,7 +1,55 @@
 // JavaScript source code
 const express = require('express');
+const multer = require('multer');
+var bodyParser = require('body-parser');
+
 const jwt = require('jsonwebtoken');
 const fetch = require("node-fetch");
+const multiparty = require('multiparty');
+const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
+
+const multerFilter = (req, file, cb) => {
+    console.log("oorg");
+    req.userName = req.body.userName;
+    req.bdate = req.body.bdate;
+    req.gender = req.body.gender;
+    req.email = req.body.email;
+    //req.file = files;
+    if (file) {
+        if (file.mimetype.startsWith('image')) {
+            cb(null, true);
+        }
+        else {
+            req.fileError = 400;
+            cb(null, false);
+        }
+    }
+};
+
+
+///CONFIGURES THE DEST OF THE UPLOAD 
+const upload = multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+});
+//
+UploadUserPhoto = upload.single('photo');
+var parseRequest = (req, res, next) => {
+
+
+
+        let form = new multiparty.Form();
+
+    form.parse(req, function (err, fields, files) {
+        //console.log();
+        req.userName = fields['userName'];
+        req.bdate = fields['bdate'];
+        req.gender = fields['gender'];
+        req.email = fields['email'];
+        req.file = files;
+            next();
+        });
+}
 var CheckFacebookToken = (req, res, next) => {
     var access_token = req.header('access_token');
     var input_token = req.header('input_token');
@@ -20,9 +68,8 @@ var CheckFacebookToken = (req, res, next) => {
             .then((response) => {
                 //console.log(response);
                 if (response.status==400) {
-                    res.status(400).send("invalid access token or user token");
-                }
-                console.log(response.data)
+                    res.status(401).send("Facebook token is not valid");                }
+                //console.log(response.data.data)
                 return response.json();
             })
             .then((data) => {
@@ -32,7 +79,9 @@ var CheckFacebookToken = (req, res, next) => {
                 //console.log(app_id);
            // console.log(data.app_id);
                 if (data.data.is_valid == true) {
-                    console.log(req.userName);
+                   // console.log(req.userName);
+                   // console.log("iddddddddddddddd");
+                    //cosnole.log(data.data.user_id);
                     req.facebookId = data.data.user_id;
                     next();
             }
@@ -136,5 +185,7 @@ module.exports = {
     AuthenticateArtists,
     AuthenticateFrontend,
     AuthenticateUsers,
-    CheckFacebookToken
+    CheckFacebookToken,
+    parseRequest,
+    UploadUserPhoto
 }

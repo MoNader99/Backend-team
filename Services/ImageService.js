@@ -21,7 +21,8 @@ var albumId=undefined;
 ///////
 const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
 
-const multerFilter=(req,file,cb)=>{   
+const multerFilter = (req, file, cb) => {   
+    console.log("oorg");
     if(file){
         if(file.mimetype.startsWith('image')){
             cb(null,true);
@@ -40,9 +41,12 @@ const upload = multer({
     fileFilter: multerFilter
 });
 //
-exports.UploadUserPhoto=upload.single('photo');
+exports.UploadUserPhoto = upload.single('photo');
+exports.uploadFacebookPicture = function(){
+}
 
-exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
+exports.reSizeUserImage = reSizeUserImage = async (req, res, uploadImagefn) => {
+    console.log(2);
     if(req.file){
         imageName=userId+Date.now()+".png"
         req.file.filename=imageName;
@@ -58,8 +62,40 @@ exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
         return res.status(400).send("Please Upload an image");
     }
 };
+exports.reSizeFacebookUserImage = reSizeFacebookUserImage = async (req, res, uploadImagefn) => {
+    console.log("faceboooook");
+    console.log(req.type);
+    if (req.type == "notFirst") uploadImagefn();
+    console.log("3adaha");
+    if (req.file) {
+        imageName = userId + Date.now() + ".png"
+        req.file.filename = imageName;
+        newImagePath = "./Pictures/" + imageName;
+        sharp(req.file.buffer)
+            .resize(600, 600)               //default is centre allignment
+            .toFormat("png")
+            .png({ quality: 90 })
+            .toFile(newImagePath)
+        uploadImagefn();
+    }
+    else {
+        return res.status(400).send("Please Upload an image");
+    }
+};
 //
-exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
+exports.convertTypeUser = convertTypeUser = (req, res, next) => {
+    try {
+        userId = req.user._id.toString();
+        type = "user";
+        next();
+    } catch{
+        return res.status(400).send("wrong paramters");
+
+    }
+    //uploadImagefn();
+}
+exports.upLoadPhoto = uploadImagefn = async (req, res) => {
+    console.log(type);
     if(req.fileError){return res.status(400).send("Not an image , please upload an image");}
     if(type=="user"){AssignUserImage(req,res);}
     if(type=="artist"){AssignArtistImage(req,res);}
@@ -68,14 +104,25 @@ exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
 };
 //
 
-exports.AssignUserImage =AssignUserImage= async(req, res)=>{
+exports.AssignUserImage = AssignUserImage = async (req, res) => {
+    console.log("da5alha bardo");
     User.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
     });
     
 
 }
+exports.AssignFacebookUserImage = AssignFacebookUserImage =async (req, res,next) => {
+    console.log(8);
+    console.log(req.type);
+    if (req.type == "notFirst") next();
+    console.log("3adaha");
+    User.findByIdAndUpdate({ _id: userId }, { $set: { imagePath: imageName } }).then((n) => {
+        console.log("da5alha");
+        next();
+    });
 
+}
 exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
     artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");

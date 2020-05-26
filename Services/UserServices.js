@@ -1,6 +1,6 @@
 // JavaScript source code
 const bcrypt = require('bcrypt');
-
+const multiparty = require('multiparty');
 var { mongoose } = require("./../db/mongoose.js");
 var { User } = require("./../models/users.js");  //artists model
 var { followUser } = require("./../models/followUser.js");//track model
@@ -49,43 +49,97 @@ var addUserToSchema = function (followeduserid, userId,userName) {
     return followUser.update({ user_id: userId }, { "$push": { "followedUserInfo": { "userId": followeduserid, "userName": userName, "followDate": Date.now() } } });
 
 }
-var addFacebookUser = function (facebookId, userName, email, gender, bdate) {
+var signUpWithFacebook = (req, res, next) => {
+    console.log("id");
+    console.log(req.facebookId);
+    User.findOne({ 'facebookId': req.facebookId }).then((user) => {
+        //  console.log("dodadadada");
+        //  console.log(user);
+        if (!user) {
+            console.log("da5al henAAAAAAAAAAAA");
+            //return new Promise((resolve, reject) => {
+           addFacebookUser(req.facebookId, req.userName, req.email, req.gender, req.bdate).then((user1) => {
+                console.log("USER1");
+                //console.log(user1);
+                //Promise.resolve(user1);
+               req.user = user1;
+               req.type="first"
+               console.log(user1);
+               next();
+                // return user1;
+            }).catch((err) => {
+                //Promise.reject();
+               return res.status(400).send("wrong paramters");
+            })
+            //});
+        }
+        else {
+            console.log(user.facebookId);
+            req.user = user;
+            req.type = "notFirst"
+            next();
+        }
+    }).catch((err) => {
+        return res.status(400).send("wrong paramters");
+    })
+} 
+var addFacebookUser =  function (facebookId, userName, email, gender, bdate) {
     console.log("bdate" + bdate);
     console.log(facebookId);
     console.log(userName);
-    var newacc = new User(
-        {
-            userName: userName,
-            email: email,
-            facebookId: facebookId,
-            gender: gender,
-            birthDate: bdate
+    try {
+        var newacc = new User(
+            {
+                userName: userName,
+                email: email,
+                facebookId: facebookId,
+                gender: gender,
+                birthDate: bdate
 
-        });
-    console.log(newacc);
-  newacc.save().then((doc) => {
-        console.log("2et7at");
-        Promise.resolve(newacc);
-    }).catch((err) => {
-        console.log(err);
+            });
+    }catch  {
         Promise.reject();
 
+    }
+    console.log("new acc");
+    //console.log(newacc);
+    return newacc.save().then((doc) => {
+      console.log("2et7at");
+        //Promise.resolve(newacc);
+        return newacc;
+    }).catch((err) => {
+        console.log(err);
+        Promise.reject(err);
+        //return err;
     })
 }
-var signUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
+var SignUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
+    console.log("id");
     console.log(facebookId);
     return User.findOne({ 'facebookId': facebookId }).then((user) => {
+      //  console.log("dodadadada");
+      //  console.log(user);
         if (!user) {
-            addFacebookUser(facebookId,userName,email,gender,bdate).then((user) => {
-                Promise.resolve(user);
-            }).catch((err) => {
-                Promise.reject();
-        })
+            console.log("da5al henAAAAAAAAAAAA");
+            //return new Promise((resolve, reject) => {
+               return addFacebookUser(facebookId, userName, email, gender, bdate).then((user1) => {
+                    console.log("USER1");
+                    //console.log(user1);
+                    //Promise.resolve(user1);
+                   return user1;
+                    // return user1;
+                }).catch((err) => {
+                    //Promise.reject();
+                    return err;
+                })
+            //});
         }
         else {
             console.log(user.facebookId);
             return user;
         }
+    }).catch((err) => {
+        console.log(err);
     })
 }
 var unFollowUser = function (followeduserid, userId) {

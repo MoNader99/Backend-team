@@ -69,9 +69,10 @@ router.post('/tracks/single',upload,(req,res)=>{
                 not2.save();
                 //console.log(endPoints);
                 notificationServices.pushNotification(not2.text, endPoints);
-                res.status(201).send(files);
+                res.status(201).send();
 
             })
+        });
         }).catch((err) => console.log(err))
             var trackInstance = new track({
                 artistId: atristId2,
@@ -82,12 +83,27 @@ router.post('/tracks/single',upload,(req,res)=>{
             },(e)=>{
                 res.status(500).send("Coult not add Track ("+req.body.trackName+")");
             });
-            trackInstance.save().then((doc)=>{
-                res.status(201).send(doc);
+            trackInstance.save().then((doc) => {
+            artistService.getUsersFollowingArtists(atristId2).then((users) => {
+                userService.getUsersEndPoint(users).then((endPoints) => {
+                    var not2 = new notification({
+                        text: artistName + " released a new Song (" + req.body.trackName + ")",
+                        sourceId: atristId2,
+                        userType: "artist",
+                        date: Date.now(),
+                        shouldBeSentTo: users
+
+                    });
+                    not2.save();
+                    //console.log(endPoints);
+                    notificationServices.pushNotification(not2.text, endPoints);
+                    res.status(201).send(doc);
+
+                })
+            });
             }).catch((e)=>{
                 res.status(500).send("Coult not add Track ("+req.body.trackName+")");
             });
-        });
 
 }).catch((e)=>{
     res.status(401).send('Unauthorized Access');

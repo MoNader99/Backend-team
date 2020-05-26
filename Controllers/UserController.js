@@ -1,4 +1,5 @@
 require("./../Config/Config.js");
+const multiparty = require('multiparty');
 
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js");
@@ -20,13 +21,16 @@ var _ = require('lodash');
 const jwt = require('jsonwebtoken');
 var userservices = require("./../Services/UserServices.js");
 var artistservices = require("./../Services/ArtistServices.js");
-
-
+var convertTypeUser = require("./../Services/ImageService.js").convertTypeUser;
+//var 
 //edit user pp imports
 var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
-var upload=require("./../Services/ImageService.js").UploadUserPhoto;
+var upload = require("./../Services/ImageService.js").UploadUserPhoto;
+var upload3 = require("./../Services/AuthenticationService.js").UploadUserPhoto;
+
 var AuthenticateUser= require("./../Services/ImageService.js").AuthenticateUser;
-var AssignUserImage=require("./../Services/ImageService.js").AssignUserImage;
+var AssignUserImage = require("./../Services/ImageService.js").AssignUserImage;
+var AssignFacebookUserImag = require("./../Services/ImageService.js").AssignFacebookUserImage;
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
@@ -183,7 +187,7 @@ router.get('/users/confirm/:code',(req,res) => {
 
 router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (req, res) => {
     console.log(1);
-    var body = _.pick(req.body, ['email', 'password','endPoint']);n
+    var body = _.pick(req.body, ['email', 'password','endPoint']);
     console.log(2);
     User.findByCredentials(body.email, body.password, body.endPoint).then((user) => {
         console.log(body.endPoint);
@@ -207,21 +211,61 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
     });
     //res.send(body)
 });
-router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToken, (req, res) => {
+/*router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToken, AuthenticationServices.parseRequest, upload, async (req, res) => {
+
     console.log("dada");
-    console.log(req.body.userName);
-    userservices.signUpWithFacebook(req.facebookId, req.body.userName, req.body.email, req.body.gender, req.body.bdate).then((user) => {
-        console.log(user);
-			return user.generateAuthToken().then((token) => {
-                res.header("Access-Control-Allow-Headers" , "x-auth");
-                res.header("Access-Control-Expose-Headers", "x-auth");
+    console.log(req.facebookId);
+   // console.log(Fields);
+    userservices.signUpWithFacebook(req.facebookId, req.userName, req.email, req.gender, req.bdate).then((user1) => {
+        console.log("bara");
+        //console.log(user);
+        user1.generateAuthToken().then((token) => {
+          //  req.header('x-auth') = token;
+           // AuthenticateUser();
+            console.log("hena");
+            //convertTypeUser(user1._id);
+            console.log("2el2ola");
+            /*console.log("2eltanya")
+            reSizeUserImage();
+            console.log("2eltalta")
+            uploadImagefn();
+            console.log("2elrab3a")
+            AssignUserImage();
+            console.log(7);
+                //res.header("Access-Control-Allow-Headers" , "x-auth");
+                //res.header("Access-Control-Expose-Headers", "x-auth");
                 res.header('x-auth', token).send();
-			});
+            }).catch((err) => { console.log(err); });
     }).catch((e) => {
         console.log(e);
         res.status(400).send("Wrong parameters in request");
     });
+});*/
+router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToken, upload3, userservices.signUpWithFacebook, convertTypeUser, reSizeFacebookUserImage,AssignFacebookUserImage, async (req, res) => {
 
+    console.log("zaza");
+    console.log(req.facebookId);
+   // console.log(Fields);
+   // userservices.signUpWithFacebook(req.facebookId, req.userName, req.email, req.gender, req.bdate).then((user1) => {
+      //  console.log("bara");
+        //console.log(user);
+    console.log(req.user);
+    try {
+        req.user.generateAuthToken().then((token) => {
+            res.header("Access-Control-Allow-Headers", "x-auth");
+            res.header("Access-Control-Expose-Headers", "x-auth");
+            res.header('x-auth', token).send();
+        }).catch((err) => {
+            return res.status(400).send(err.toString());
+        });
+    } catch{
+        return res.status(400).send("wrong parameters");
+
+    }
+  /*  }).catch((e) => {
+        console.log(e);
+        res.status(400).send("Wrong parameters in request");
+    });*/
 });
 router.post('/follow/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var artistId = req.params.id;
