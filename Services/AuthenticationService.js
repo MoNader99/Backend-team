@@ -50,6 +50,7 @@ var parseRequest = (req, res, next) => {
             next();
         });
 }
+
 var CheckFacebookToken = (req, res, next) => {
     var access_token = req.header('access_token');
     var input_token = req.header('input_token');
@@ -70,6 +71,7 @@ var CheckFacebookToken = (req, res, next) => {
                 if (response.status==400) {
                     res.status(401).send("Facebook token is not valid");                }
                 //console.log(response.data.data)
+
                 return response.json();
             })
             .then((data) => {
@@ -82,6 +84,7 @@ var CheckFacebookToken = (req, res, next) => {
                    // console.log(req.userName);
                    // console.log("iddddddddddddddd");
                     //cosnole.log(data.data.user_id);
+
                     req.facebookId = data.data.user_id;
                     next();
             }
@@ -188,4 +191,5 @@ module.exports = {
     CheckFacebookToken,
     parseRequest,
     UploadUserPhoto
+
 }

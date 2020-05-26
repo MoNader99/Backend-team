@@ -21,8 +21,8 @@ var albumId=undefined;
 ///////
 const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
 
-const multerFilter = (req, file, cb) => {   
-    console.log("oorg");
+
+const multerFilter=(req,file,cb)=>{   
     if(file){
         if(file.mimetype.startsWith('image')){
             cb(null,true);
@@ -41,12 +41,10 @@ const upload = multer({
     fileFilter: multerFilter
 });
 //
-exports.UploadUserPhoto = upload.single('photo');
-exports.uploadFacebookPicture = function(){
-}
 
-exports.reSizeUserImage = reSizeUserImage = async (req, res, uploadImagefn) => {
-    console.log(2);
+exports.UploadUserPhoto=upload.single('photo');
+
+exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
     if(req.file){
         imageName=userId+Date.now()+".png"
         req.file.filename=imageName;
@@ -104,8 +102,8 @@ exports.upLoadPhoto = uploadImagefn = async (req, res) => {
 };
 //
 
-exports.AssignUserImage = AssignUserImage = async (req, res) => {
-    console.log("da5alha bardo");
+
+exports.AssignUserImage =AssignUserImage= async(req, res)=>{
     User.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
     });
@@ -123,6 +121,7 @@ exports.AssignFacebookUserImage = AssignFacebookUserImage =async (req, res,next)
     });
 
 }
+
 exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
     artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");

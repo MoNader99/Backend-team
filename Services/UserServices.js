@@ -1,5 +1,6 @@
 // JavaScript source code
 const bcrypt = require('bcrypt');
+
 const multiparty = require('multiparty');
 var { mongoose } = require("./../db/mongoose.js");
 var { User } = require("./../models/users.js");  //artists model
@@ -49,6 +50,7 @@ var addUserToSchema = function (followeduserid, userId,userName) {
     return followUser.update({ user_id: userId }, { "$push": { "followedUserInfo": { "userId": followeduserid, "userName": userName, "followDate": Date.now() } } });
 
 }
+
 var signUpWithFacebook = (req, res, next) => {
     console.log("id");
     console.log(req.facebookId);
@@ -117,31 +119,25 @@ var SignUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
     console.log("id");
     console.log(facebookId);
     return User.findOne({ 'facebookId': facebookId }).then((user) => {
-      //  console.log("dodadadada");
-      //  console.log(user);
+        //  console.log("dodadadada");
+        //  console.log(user);
         if (!user) {
             console.log("da5al henAAAAAAAAAAAA");
             //return new Promise((resolve, reject) => {
-               return addFacebookUser(facebookId, userName, email, gender, bdate).then((user1) => {
-                    console.log("USER1");
-                    //console.log(user1);
-                    //Promise.resolve(user1);
-                   return user1;
-                    // return user1;
-                }).catch((err) => {
-                    //Promise.reject();
-                    return err;
-                })
+            return addFacebookUser(facebookId, userName, email, gender, bdate).then((user1) => {
+                console.log("USER1");
+                //console.log(user1);
+                //Promise.resolve(user1);
+                return user1;
+                // return user1;
+            }).catch((err) => {
+                //Promise.reject();
+                return err;
+            })
             //});
         }
-        else {
-            console.log(user.facebookId);
-            return user;
+    });
         }
-    }).catch((err) => {
-        console.log(err);
-    })
-}
 var unFollowUser = function (followeduserid, userId) {
     return deleteUserFromSchema(followeduserid, userId).then((user) => {
         if (user.nModified == 1) return "unfollowed"
