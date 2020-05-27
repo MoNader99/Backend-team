@@ -3759,6 +3759,57 @@ define({ "api": [
     "groupTitle": "User_privacy"
   },
   {
+    "type": "post",
+    "url": "/notification/history",
+    "title": "show notification history",
+    "name": "/notification/history_return_the_10_last_notifications",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>Required token of the user</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n[\n   {\n       \"_id\": \"5ecda2936fcedc1f08a66a7f\",\n       \"text\": \"yoyo released a new Album (test22855412)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:13:23.207Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda20cddeac61eb8c7b6e1\",\n       \"text\": \"yoyo released a new Song (tes98wenwezz)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:11:08.463Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda191bc92790c68f6bceb\",\n       \"text\": \"yoyo released a new Song (tes98wenwez)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:09:05.312Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda191bc92790c68f6bcea\",\n       \"text\": \"yoyo released a new Song (tes98wenwez)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:09:05.294Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda169bc92790c68f6bce8\",\n       \"text\": \"yoyo released a new Song (tes98wenwe)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:08:25.878Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda169bc92790c68f6bce7\",\n       \"text\": \"yoyo released a new Song (tes98wenwe)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:08:25.827Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda0f480642a22642d5ddf\",\n       \"text\": \"yoyo released a new Song (tes98wewe)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:06:28.096Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n      ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda0886141521beceef028\",\n       \"text\": \"yoyo released a new Song (tes98wewe)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:04:40.662Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda064ace9002248cb1e02\",\n       \"text\": \"yoyo released a new Song (tes98wewe)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:04:04.708Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   },\n   {\n       \"_id\": \"5ecda0463716e301f4dcd9d0\",\n       \"text\": \"yoyo released a new Song (tes98wewe)\",\n       \"sourceId\": \"5ecc9464fb0b1f26585f22ab\",\n       \"userType\": \"artist\",\n       \"date\": \"2020-05-26T23:03:34.963Z\",\n       \"__v\": 0,\n       \"shouldBeSentTo\": [\n           \"5ec4617f2318231c5cb05f7c\",\n           \"5ecc5992bc41472bd442f54b\"\n       ],\n       \"sentTo\": [],\n       \"sent\": false\n   }\n]\n\n\n\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[authentication failed]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"Token is not valid\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
     "type": "patch",
     "url": "/users/confirmPremium",
     "title": "confirmation of premium account [ User is confirmed to be a premium user]",
