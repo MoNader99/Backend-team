@@ -35,14 +35,20 @@ var { mongoose } = require("./../db/mongoose.js");
 var bodyParser= require('body-parser');
 var{User}= require("./../models/users.js"); // users model
 var{artist}= require("./../models/artists.js");  //artists model
+var{track}= require("./../models/track.js");  //tracks model
+var{album}= require("./../models/album.js");  //albums model
+const {ObjectID}=require('mongodb');
 
 ////////vars
 var userId=undefined
 var imageName=undefined;
-var type=undefined;   //wether an artist or a user to know which fns to call
+var type=undefined;   //wether an artist or a user or a request to change track image
+var trackName2=undefined;
 var newImagePath=undefined;
+var albumId=undefined;
 ///////
 const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
+
 
 const multerFilter=(req,file,cb)=>{   
     if(file){
@@ -63,17 +69,8 @@ const upload = multer({
     fileFilter: multerFilter
 });
 //
-exports.UploadUserPhoto=upload.single('photo');
 
-/**
- * Resizing the Image passed in the body of the request
- * @method ResizeUserImage
- * @author Ahmed
- * @param {object} req  -The request that contains the passed image in the request body
- * @param {object} res  -The response to return
- * @param {function} uploadImagefn -Callback function to choose the type of user(regular user or artist) to assign the image to
- * @returns {string} -Returns an error message if the uploaded file was not an image
- */
+exports.UploadUserPhoto=upload.single('photo');
 
 exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
     if(req.file){
@@ -91,38 +88,60 @@ exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
         return res.status(400).send("Please Upload an image");
     }
 };
-//
 /**
- * Determine which type of user to assign picture to 
- * @method ChooseAssiging
- * @author Ahmed
- * @param {object} req  -The request that contains the passed image in the request body
- * @param {object} res  -The response to return
- * @returns {object} -Returns ans error message if the passed file is not an image
+ * used in login with facebook
+ * @author aya
+ * @method reSizeFacebookUserImage
+ * 
+ *@param {Object} req
+ *@param {Object} res
+ *@param {Function} uploadImagefn
+ *@returns {undefined}  -used as middle ware in login with facebook request to resize the uploaded image
+ * 
  */
-exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
-    if(req.fileError)
-    {
-        return res.status(400).send("Not an image , please upload an image");
+exports.reSizeFacebookUserImage = reSizeFacebookUserImage = async (req, res, uploadImagefn) => {
+    console.log("faceboooook");
+    console.log(req.type);
+    if (req.type == "notFirst") uploadImagefn();
+    console.log("3adaha");
+    if (req.file) {
+        imageName = userId + Date.now() + ".png"
+        req.file.filename = imageName;
+        newImagePath = "./Pictures/" + imageName;
+        sharp(req.file.buffer)
+            .resize(600, 600)               //default is centre allignment
+            .toFormat("png")
+            .png({ quality: 90 })
+            .toFile(newImagePath)
+        uploadImagefn();
     }
-    if(type=="user"){
-        AssignUserImage(req,res);
+    else {
+        return res.status(400).send("Please Upload an image");
     }
-    if(type=="artist"){
-        AssignArtistImage(req,res);
-    }
-
-
 };
 //
-/**
- * Assiging the image as the new profile picture of the user
- * @method AssignPictureToUser
- * @author Ahmed
- * @param {object} req  -The request that contains the passed image in the request body
- * @param {object} res  -The response to return
- * @returns {string} -Returns a success message if the image of the user has been changed succesffully
- */
+exports.convertTypeUser = convertTypeUser = (req, res, next) => {
+    try {
+        userId = req.user._id.toString();
+        type = "user";
+        next();
+    } catch{
+        return res.status(400).send("wrong paramters");
+
+    }
+    //uploadImagefn();
+}
+exports.upLoadPhoto = uploadImagefn = async (req, res) => {
+    console.log(type);
+    if(req.fileError){return res.status(400).send("Not an image , please upload an image");}
+    if(type=="user"){AssignUserImage(req,res);}
+    if(type=="artist"){AssignArtistImage(req,res);}
+    if(type=="track"){AssignTrackImage(req,res);}
+    if(type=="album"){AssignAlbumImage(req,res);}
+};
+//
+
+
 exports.AssignUserImage =AssignUserImage= async(req, res)=>{
     User.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
@@ -130,15 +149,29 @@ exports.AssignUserImage =AssignUserImage= async(req, res)=>{
     
 
 }
-
 /**
- * Assiging the image as the new profile picture of the artist
- * @method AssignPictureToArtist
- * @author Ahmed
- * @param {object} req  -The request that contains the passed image in the request body
- * @param {object} res  -The response to return
- * @returns {string} -Returns a success message if the image of the artist has been changed succesffully
+ * used in login with facebook
+ * @author aya
+ * @method AssignFacebookUserImage
+ * 
+ *@param {Object} req
+ *@param {Object} res
+ *@param {Function} next
+ *@returns {undefined}  -used as middle ware in login with facebook request to assign the uploaded photo to the facebook user
+ * 
  */
+exports.AssignFacebookUserImage = AssignFacebookUserImage =async (req, res,next) => {
+    console.log(8);
+    console.log(req.type);
+    if (req.type == "notFirst") next();
+    console.log("3adaha");
+    User.findByIdAndUpdate({ _id: userId }, { $set: { imagePath: imageName } }).then((n) => {
+        console.log("da5alha");
+        next();
+    });
+
+}
+
 exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
     artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
             res.status(200).send("Image changed successfully");
@@ -146,6 +179,23 @@ exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
     
 
 }
+
+exports.AssignTrackImage =AssignTrackImage= async(req, res)=>{
+    track.findOneAndUpdate({$and:[{artistId:userId},{trackName:trackName2}]},{$set:{imagePath:imageName}}).then((n)=>{
+            if(n){return res.status(200).send("Track Image changed successfully");}
+    }).catch((e)=>{
+        return res.status(500).send("Could not change track profile picture");
+    });
+}
+
+exports.AssignAlbumImage =AssignAlbumImage= async(req, res)=>{
+    album.findByIdAndUpdate({_id:albumId},{$set:{imagePath:imageName}}).then((n)=>{
+            if(n){return res.status(200).send("Album Image changed successfully");}
+    }).catch((e)=>{
+        return res.status(500).send("Could not change Album Cover Image");
+    });
+}
+
 exports.AuthenticateUser =AuthenticateUser=async(req,res,uploadImagefn)=>{
     var token = req.header('x-auth');
     User.findByToken(token).then((user)=>{
@@ -181,6 +231,60 @@ exports.AuthenticateArtist =AuthenticateArtist=async(req,res,uploadImagefn)=>{
     });
 };
 
+exports.AuthenticateArtistTrack =AuthenticateArtistTrack=async(req,res,uploadImagefn)=>{
+    var token = req.header('x-auth');
+    var trackName = req.header('trackName');
+    if(!trackName){
+        return res.status(400).send("Missing track Name");
+    }
+    artist.findByToken(token).then((myArtist)=>{
+        if(myArtist){
+            userId=myArtist._id.toString();
+            type="track";
+            trackName2= trackName;
+            track.findOne({$and:[{artistId:userId},{trackName:trackName2}]}).then((present)=>{
+                if(!present){
+                    return res.status(404).send("Track is not found");
+                }
+            });
+            uploadImagefn();
+
+        }
+        if(!myArtist){
+            return res.status(401).send('Unauthorized Access');
+        }
+    }).catch((e)=>{
+        return res.status(401).send('Unauthorized Access');
+    });
+};
+
+exports.AuthenticateArtistAlbum =AuthenticateArtistAlbum=async(req,res,uploadImagefn)=>{
+    var token = req.header('x-auth');
+    albumId= req.header('albumId');
+    if(!albumId){
+        return res.status(400).send("Missing Album Id");
+    }
+    if(!ObjectID.isValid(albumId)){return res.status(404).send("Invalid Album ID");}
+    artist.findByToken(token).then((myArtist)=>{
+        if(myArtist){
+            type="album";
+            userId=myArtist._id.toString();
+            album.findById({_id:albumId}).then((present)=>{
+                if(!present){
+                    return res.status(404).send('Album is not found.May be removed by the artist');
+                }
+            });
+            uploadImagefn();
+
+        }
+        if(!myArtist){
+            return res.status(401).send('Unauthorized Access');
+        }
+    }).catch((e)=>{
+        return res.status(401).send('Unauthorized Access');
+    });
+};
+
 
 ////
 const app = express();
@@ -196,13 +300,13 @@ app.use(bodyParser.json());
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#AddUserName">AddUserName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetAlbumsOfArtists">GetAlbumsOfArtists</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetPlaylistObjectArray">GetPlaylistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#GetSimplifiedPlaylist">GetSimplifiedPlaylist</a></li><li><a href="global.html#GetSimplifiedTrack">GetSimplifiedTrack</a></li><li><a href="global.html#GetSimplifiedUser">GetSimplifiedUser</a></li><li><a href="global.html#GetTrackObjectArray">GetTrackObjectArray</a></li><li><a href="global.html#GetTracksOfArtists">GetTracksOfArtists</a></li><li><a href="global.html#GetUserById">GetUserById</a></li><li><a href="global.html#GetUsersObjectArray">GetUsersObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li><li><a href="global.html#SearchInPlaylists">SearchInPlaylists</a></li><li><a href="global.html#SearchInTracks">SearchInTracks</a></li><li><a href="global.html#SearchInUsers">SearchInUsers</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addArtistToSchema">addArtistToSchema</a></li><li><a href="global.html#addFacebookUser">addFacebookUser</a></li><li><a href="global.html#addUserToSchema">addUserToSchema</a></li><li><a href="global.html#addUserToSentToArray">addUserToSentToArray</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignFacebookUserImage">AssignFacebookUserImage</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#CheckFacebookToken">CheckFacebookToken</a></li><li><a href="global.html#deleteArtistFromSchema">deleteArtistFromSchema</a></li><li><a href="global.html#deleteUserFromSchema">deleteUserFromSchema</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#getArtistsNewNotificationObjects">getArtistsNewNotificationObjects</a></li><li><a href="global.html#getArtistsNewNotifications">getArtistsNewNotifications</a></li><li><a href="global.html#getFollowedArtists">getFollowedArtists</a></li><li><a href="global.html#getLastNotifications">getLastNotifications</a></li><li><a href="global.html#GetUserById">GetUserById</a></li><li><a href="global.html#getUsersEndPoint">getUsersEndPoint</a></li><li><a href="global.html#getUsersFollowingArtists">getUsersFollowingArtists</a></li><li><a href="global.html#multerFilter">multerFilter</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#pushNotification">pushNotification</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#reSizeFacebookUserImage">reSizeFacebookUserImage</a></li><li><a href="global.html#signUpWithFacebook">signUpWithFacebook</a></li><li><a href="global.html#unFollowUser">unFollowUser</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:25:03 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Wed May 27 2020 06:40:47 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

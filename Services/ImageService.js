@@ -60,6 +60,17 @@ exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
         return res.status(400).send("Please Upload an image");
     }
 };
+/**
+ * used in login with facebook
+ * @author aya
+ * @method reSizeFacebookUserImage
+ * 
+ *@param {Object} req
+ *@param {Object} res
+ *@param {Function} uploadImagefn
+ *@returns {undefined}  -used as middle ware in login with facebook request to resize the uploaded image
+ * 
+ */
 exports.reSizeFacebookUserImage = reSizeFacebookUserImage = async (req, res, uploadImagefn) => {
     console.log("faceboooook");
     console.log(req.type);
@@ -110,6 +121,17 @@ exports.AssignUserImage =AssignUserImage= async(req, res)=>{
     
 
 }
+/**
+ * used in login with facebook
+ * @author aya
+ * @method AssignFacebookUserImage
+ * 
+ *@param {Object} req
+ *@param {Object} res
+ *@param {Function} next
+ *@returns {undefined}  -used as middle ware in login with facebook request to assign the uploaded photo to the facebook user
+ * 
+ */
 exports.AssignFacebookUserImage = AssignFacebookUserImage =async (req, res,next) => {
     console.log(8);
     console.log(req.type);
