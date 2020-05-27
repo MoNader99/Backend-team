@@ -248,45 +248,45 @@ router.post('/follow/unfollow/artist/:id', AuthenticationServices.AuthenticateUs
     var artistId = req.params.id;
     console.log("da5al");
     artist.find({ '_id': artistId }).then((Artist) => {
-        if (Artist.length == 0) res.status(400).send("Artist not found");
+        if (Artist.length == 0) return res.status(400).send("Artist not found");
         console.log("rt");
       //  console.log(Artist[0].toString());
     
     artistservices.unFollowArtist(artistId, req.userId).then((str) => {
         console.log(str);
-        if (str == "unfollowed") res.status(200).send("You have unfollowed the artist");
-        if (str == "followed") res.status(200).send("You have followed the artist");
+        if (str == "unfollowed") return res.status(200).send("You have unfollowed the artist");
+        if (str == "followed") return res.status(200).send("You have followed the artist");
 
 
     }).catch((err) => {
         console.log(err);
-        res.status(400).send(err);
+        return res.status(400).send(err);
     })
     }).catch((err) => {
     console.log(err);
-        res.status(400).send("artistId is not valid");
+        return res.status(400).send("artistId is not valid");
     })
 });
 router.post('/follow/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var userId = req.params.id;
     console.log("da5al");
     User.find({ '_id': userId }).then((Artist) => {
-        if (Artist.length == 0) res.status(400).send("User not found");
+        if (Artist.length == 0) return res.status(400).send("User not found");
         console.log("rt");
       //  console.log(Artist[0].toString());
     userservices.unFollowUser(userId, req.userId).then((str) => {
         console.log("5arag");
         console.log(str);
-        if (str == "unfollowed") res.status(200).send("You have unfollowed the user");
-        if (str == "followed") res.status(200).send("You have followed the user");
+        if (str == "unfollowed") return res.status(200).send("You have unfollowed the user");
+        if (str == "followed") return res.status(200).send("You have followed the user");
 
     }).catch((err) => {
         console.log(err);
-        res.status(400).send(err);
+        return res.status(400).send(err);
             })
     }).catch((err) => {
         console.log(err);
-        res.status(400).send("userId is not valid");
+        return res.status(400).send("userId is not valid");
     })
 
 });
