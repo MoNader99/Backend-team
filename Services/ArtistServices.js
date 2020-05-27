@@ -19,6 +19,15 @@ var getFollowArtistObject = function () {
     return followArtist.find({ 'userId': { $in: Artists.map(function (value) { return value.user_id.toString() }) } });
 
 }
+/**
+ * this function return artists that a user follows
+ * @author aya
+ * @method getFollowedArtists
+ * 
+ *@param {string} userId
+ *@returns {array}  -returns array of ids of the artists a user follows
+ * 
+ */
 var getFollowedArtists = async function (userId) {
     var FollowedArtists = await followArtist.findOne({ 'user_id': userId });//.followedArtistInfo;
     return FollowedArtists.followedArtistInfo.map(function (value) { return value.artistId.toString(); });
@@ -29,11 +38,30 @@ var getFollowedArtists = async function (userId) {
         console.log(fol.followedArtistInfo);
     })*/
 }
+/**
+ * this function return user that follows a certain artist
+ * @author aya
+ * @method getUsersFollowingArtists
+ * 
+ *@param {string} artistId
+ *@returns {array}  -returns array of ids of the users that follows an artist
+ * 
+ */
 var getUsersFollowingArtists = async function (artistId) {
     var FollowedArtists = await followArtist.find({ 'followedArtistInfo.artistId':artistId });//.followedArtistInfo;
     return FollowedArtists.map(function (value) { return value.user_id.toString(); });
 
 }
+/**
+ * remove the followed artist from the array of the artist that a user follow
+ * @author aya
+ * @method deleteArtistFromSchema
+ * 
+ *@param {string} artistId
+ *@param {string} userId
+ *@returns {document}  -return the document of the follow artist after update
+ * 
+ */
 var deleteArtistFromSchema = function (artistId, userId) {
    // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
     console.log(userId);
@@ -42,6 +70,18 @@ var deleteArtistFromSchema = function (artistId, userId) {
     return followArtist.update({ user_id: userId }, { "$pull": { "followedArtistInfo": { "artistId": artistId } } });
 
 }
+
+/**
+ * add the followed artist in the array of the artists that a user follow
+ * @author aya
+ * @method addArtistToSchema
+ * 
+ *@param {string} artistId
+ *@param {string} userId
+ *@param {string} artistName
+ *@returns {document}  -return the document of the follow artist after update
+ * 
+ */
 var addArtistToSchema = function (artistId, userId,artistName) {
     // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
 
@@ -52,10 +92,21 @@ var addArtistToSchema = function (artistId, userId,artistName) {
     return followArtist.update({ user_id: userId }, { "$push": { "followedArtistInfo": { "artistId": artistId, "artistName": artistName, "followDate":Date.now() } } });
 
 }
+/**
+ * the function that handles follow and unfollow artist request
+ * @author aya
+ * @method unFollowUser
+ * 
+ *@param {string} artistId
+ *@param {string} userId
+ *@returns {string}  -returns "unfollowed" if the artist is unfollowed "followed" if the artist is followed
+ * 
+ */
 var unFollowArtist = function (artistId, userId) {
     return deleteArtistFromSchema(artistId, userId).then((Artist) => {
         if (Artist.nModified == 1) return "unfollowed";
         console.log("2wel art");
+        console.log();
         //console.log(artist);
         if (Artist.nModified == 0) {
             return userServices.GetUserById(userId).then((userName) => {
@@ -150,6 +201,15 @@ var SearchInArtists = function (wordtosearch) {
         return Promise.reject(err);
     })
 }
+/**
+ * the function that returns a certain artist by his id
+ * @author aya
+ * @method GetArtistById
+ * 
+ *@param {string} id
+ *@returns {object}  -returns object of auser with a certain id
+ * 
+ */
 var GetArtistById = function (id) {
     console.log(id);
     console.log(artist.findById(id).artistName);

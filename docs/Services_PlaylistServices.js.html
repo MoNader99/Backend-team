@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Services/PlaylistServices.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Services/PlaylistServices.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// JavaScript source code
+var { mongoose } = require("./../db/mongoose.js");
+var { playlist } = require("./../models/playlists.js");//track model
+var { GetUserById } = require("./../Services/UserServices");
+/**
+ * Get result playlists of the search
+ * @method GetPlaylistObjectArray
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of playlists that is the result of the search
+ * 
+ */
+var GetPlaylistObjectArray = async function (wordtosearch) {
+    console.log("getplaylistObjectArray");
+   // const playlists = await playlist.find({ 'playlistName': { '$regex': wordtosearch, $options: 'i' } })
+   // console.log(playlists);
+    return playlist.find({ 'playlistName': { '$regex': wordtosearch, $options: 'i' } });
+
+}
+/**
+ * function that handles search in playlists in search requests
+ * @method SearchInPlaylists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of playlists that is the result of the search
+ * 
+ */
+var SearchInPlaylists = function (wordtosearch) {
+    console.log("searchinplaylist");
+
+    return GetPlaylistObjectArray(wordtosearch).then(async (playlists) => {
+        if (playlists.length === 0) return Promise.resolve([]);
+
+        const Playlists = await AddUserName(playlists);
+        return Promise.resolve(Playlists.map(playlist => GetSimplifiedPlaylist(playlist)));
+
+    })
+        .catch((err) => {
+            console.log(err);
+            return Promise.reject(err);
+        })
+
+}
+/**
+ * function that adds user name
+ * @method AddUserName
+ * @author aya
+ * @param   {array} playlists -the array of playlists to add artist name
+ * @returns {array} -return array of playlists after adding user name
+ * 
+ */
+var AddUserName = async function (playlists) {
+
+    const promises = playlists.map(async playlist => {
+
+        const userName = await GetUserById(playlist.userId);
+
+        return Object.assign(playlist, { userName: userName})
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
+/**
+ * function that simplifies playlist object
+ * @method GetSimplifiedPlaylist
+ * @author aya
+ * @param   {object} playlist -the playlist to be simplified
+ * @returns {object} -playlist after simplifying
+ * 
+ */
+var GetSimplifiedPlaylist = function (playlist) {
+    console.log("getsimplifiedplaylist");
+    return ((({ _id, playlistName, imagePath, userName, userId }) => ({ _id, playlistName, imagePath, userName, userId}))(playlist));
+
+}
+//SearchInPlaylists("deja");
+module.exports = {
+    SearchInPlaylists,
+    playlist
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#AddUserName">AddUserName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetAlbumsOfArtists">GetAlbumsOfArtists</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetPlaylistObjectArray">GetPlaylistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#GetSimplifiedPlaylist">GetSimplifiedPlaylist</a></li><li><a href="global.html#GetSimplifiedTrack">GetSimplifiedTrack</a></li><li><a href="global.html#GetSimplifiedUser">GetSimplifiedUser</a></li><li><a href="global.html#GetTrackObjectArray">GetTrackObjectArray</a></li><li><a href="global.html#GetTracksOfArtists">GetTracksOfArtists</a></li><li><a href="global.html#GetUserById">GetUserById</a></li><li><a href="global.html#GetUsersObjectArray">GetUsersObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li><li><a href="global.html#SearchInPlaylists">SearchInPlaylists</a></li><li><a href="global.html#SearchInTracks">SearchInTracks</a></li><li><a href="global.html#SearchInUsers">SearchInUsers</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:25:03 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 require("./../Config/Config.js");
+const multiparty = require('multiparty');
 
 // JavaScript source code
 var { mongoose } = require("./../db/mongoose.js");
@@ -21,12 +22,17 @@ const jwt = require('jsonwebtoken');
 var userservices = require("./../Services/UserServices.js");
 var artistservices = require("./../Services/ArtistServices.js");
 
-
+var convertTypeUser = require("./../Services/ImageService.js").convertTypeUser;
+//var 
 //edit user pp imports
 var uploadImagefn=require("./../Services/ImageService.js").upLoadPhoto;
-var upload=require("./../Services/ImageService.js").UploadUserPhoto;
+var upload = require("./../Services/ImageService.js").UploadUserPhoto;
+var upload3 = require("./../Services/AuthenticationService.js").UploadUserPhoto;
+
 var AuthenticateUser= require("./../Services/ImageService.js").AuthenticateUser;
-var AssignUserImage=require("./../Services/ImageService.js").AssignUserImage;
+var AssignUserImage = require("./../Services/ImageService.js").AssignUserImage;
+var AssignFacebookUserImag = require("./../Services/ImageService.js").AssignFacebookUserImage;
+
 var AuthenticationServices = require("./../Services/AuthenticationService");
 
 
@@ -187,10 +193,13 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
     console.log(2);
     User.findByCredentials(body.email, body.password, body.endPoint).then((user) => {
         console.log(body.endPoint);
+        console.log(user._id);
         console.log(3);
         if (user.isActive == true) {
             return user.generateAuthToken().then((token) => {
-                console.log(4);
+                var decodedtoken = jwt.verify(token, 'secretkeyforuser')
+
+                console.log(decodedtoken._id);
                 res.header("Access-Control-Allow-Headers", "x-auth");
                 res.header("Access-Control-Expose-Headers", "x-auth");
                 console.log("login 2el gededa");
@@ -207,57 +216,77 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
     });
     //res.send(body)
 });
-router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToken, (req, res) => {
-    console.log("dada");
-    console.log(req.body.userName);
-    userservices.signUpWithFacebook(req.facebookId, req.body.userName, req.body.email, req.body.gender, req.body.bdate).then((user) => {
-        console.log(user);
-			return user.generateAuthToken().then((token) => {
-                res.header("Access-Control-Allow-Headers" , "x-auth");
-                res.header("Access-Control-Expose-Headers", "x-auth");
-                res.header('x-auth', token).send();
-			});
-    }).catch((e) => {
+
+router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToken, upload3, userservices.signUpWithFacebook, convertTypeUser, reSizeFacebookUserImage,AssignFacebookUserImage, async (req, res) => {
+
+    console.log("zaza");
+    console.log(req.facebookId);
+   // console.log(Fields);
+   // userservices.signUpWithFacebook(req.facebookId, req.userName, req.email, req.gender, req.bdate).then((user1) => {
+      //  console.log("bara");
+        //console.log(user);
+    try {
+       // console.log()
+        console.log(req.user);
+        req.user.generateAuthToken().then((token) => {
+            res.header("Access-Control-Allow-Headers", "x-auth");
+            res.header("Access-Control-Expose-Headers", "x-auth");
+            res.header('x-auth', token).send();
+        }).catch((err) => {
+            return res.status(400).send(err.toString());
+        });
+    } catch{
+        return res.status(400).send("wrong parameters");
+
+    }
+  /*  }).catch((e) => {
         console.log(e);
         res.status(400).send("Wrong parameters in request");
-    });
-
+    });*/
 });
 router.post('/follow/unfollow/artist/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var artistId = req.params.id;
     console.log("da5al");
     artist.find({ '_id': artistId }).then((Artist) => {
-        if (Artist.length == 0) res.status(400).send("Artist not found");
+        if (Artist.length == 0) return res.status(400).send("Artist not found");
         console.log("rt");
       //  console.log(Artist[0].toString());
     
     artistservices.unFollowArtist(artistId, req.userId).then((str) => {
         console.log(str);
-        if (str == "unfollowed") res.status(200).send("You have unfollowed the artist");
-        if (str == "followed") res.status(200).send("You have followed the artist");
+        if (str == "unfollowed") return res.status(200).send("You have unfollowed the artist");
+        if (str == "followed") return res.status(200).send("You have followed the artist");
+
 
     }).catch((err) => {
         console.log(err);
-        res.status(400).send(err);
+        return res.status(400).send(err);
     })
     }).catch((err) => {
     console.log(err);
-    res.status(400).send(err);
+        return res.status(400).send("artistId is not valid");
     })
 });
 router.post('/follow/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var userId = req.params.id;
     console.log("da5al");
-
+    User.find({ '_id': userId }).then((Artist) => {
+        if (Artist.length == 0) return res.status(400).send("User not found");
+        console.log("rt");
+      //  console.log(Artist[0].toString());
     userservices.unFollowUser(userId, req.userId).then((str) => {
         console.log("5arag");
         console.log(str);
-        if (str == "unfollowed") res.status(200).send("You have unfollowed the user");
-        if (str == "followed") res.status(200).send("You have followed the user");
+        if (str == "unfollowed") return res.status(200).send("You have unfollowed the user");
+        if (str == "followed") return res.status(200).send("You have followed the user");
 
     }).catch((err) => {
         console.log(err);
-        res.status(400).send(err);
+        return res.status(400).send(err);
+            })
+    }).catch((err) => {
+        console.log(err);
+        return res.status(400).send("userId is not valid");
     })
 
 });

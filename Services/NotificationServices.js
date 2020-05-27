@@ -1,10 +1,29 @@
 // JavaScript source code
 var { notification } = require("./../models/notifications.js");
 var push = require('web-push');
+/**
+ * the function that returns the artist new releases that should be sent as notifications
+ * @author aya
+ * @method getArtistsNewNotificationObjects
+ * 
+ *@param {string} userId
+ *@param {array} Artists
+ *@returns {array}  -returns array of documents of the notifications of a certain artist
+ * 
+ */
 var getArtistsNewNotificationObjects =function (Artists, userId) {
     return notification.find({ $and: [{ 'sourceId': { $in: Artists } }, { 'sentTo': { $ne: userId } }] });
 
 }
+/**
+ * the function that returns the 10 last notifications that should be sent to a user or an artist
+ * @author aya
+ * @method getLastNotifications
+ * 
+ *@param {string} userId
+ *@returns {array}  -returns array of last notifications of a certain user or artist
+ * 
+ */
 var getLastNotifications = function (userId) {
     return notification.find({ 'shouldBeSentTo': userId }).sort('-date').limit(10).exec(function (err, posts) {
         console.log("Emitting Update...");
@@ -12,6 +31,16 @@ var getLastNotifications = function (userId) {
         // console.log("Update Emmited");
     });
 }
+/**
+ * the function that returns the 10 last notifications that should be sent to a user or an artist
+ * @author aya
+ * @method getArtistsNewNotifications
+ * 
+ *@param {string} userId
+  *@param {array} Artists
+ *@returns {array}  -returns array of notifications  that haven't beeen sent to  acertain user yet and mark them as sents
+ * 
+ */
 var getArtistsNewNotifications= function (Artists, userId) {
     return getArtistsNewNotificationObjects(Artists, userId).then((notifications) => {
         return addUserToSentToArray(notifications,userId).then(() => {
@@ -20,6 +49,16 @@ var getArtistsNewNotifications= function (Artists, userId) {
         })
 })
 }
+/**
+ * the function that adds the user or artist in sent to array inside a notification object after it is sent
+ * @author aya
+ * @method addUserToSentToArray
+ * 
+ *@param {string} userId
+  *@param {array} notifications
+ *@returns {array}  -returns array of notifications
+ * 
+ */
 var addUserToSentToArray = function (notifications, userId) {
     var Notifications = notifications.map(function (value) { return value._id.toString() });
 
@@ -29,6 +68,16 @@ var addUserToSentToArray = function (notifications, userId) {
         // done
     )
 }
+/**
+ * the function that sends a notification with a certain text to receivers
+ * @author aya
+ * @method pushNotification
+ * 
+ *@param {string} textNotification
+  *@param {array} receivers  -array of end points
+ *@returns {array}  -returns the array of responses after the notification is sent
+ * 
+ */
 var pushNotification = async function (textNotification, receivers) {
     console.log("rec");
     console.log(receivers);

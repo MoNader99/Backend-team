@@ -1,400 +1,436 @@
-const express=require('express');
-const _=require ('lodash');
+const express = require('express');
+const _ = require('lodash');
 const { mongoose } = require("./../db/mongoose.js");
-const{track}=require("./../models/track");
-var bodyParser= require('body-parser');
+const { track } = require("./../models/track");
+var bodyParser = require('body-parser');
 const multer = require("multer");
-const{playlist}=require("./../models/playlists");
-const fs=require('fs');
-const{album}=require('./../models/album');
+const { playlist } = require("./../models/playlists");
+const fs = require('fs');
+const { album } = require('./../models/album');
 var { User } = require("./../models/users.js");
-var{artist}= require("./../models/artists.js");
+var { artist } = require("./../models/artists.js");
+var { lyrics } = require("./../models/Lyrics");
 var upload = require("./../Services/uploadTrack").uploadTrack;
 var notificationServices = require("./../Services/NotificationServices");
-var TrackServices=require("./../Services/TrackServices");
+var TrackServices = require("./../Services/TrackServices");
 var { notification } = require("./../models/notifications.js");
 var artistService = require("./../Services/ArtistServices.js");
 
-const {ObjectID}=require('mongodb');
+const { ObjectID } = require('mongodb');
 //edit image imports
 var uploadImagefn = require("./../Services/ImageService.js").upLoadPhoto;
 var artistServices = require("./../Services/ArtistServices.js");
 var userService = require("./../Services/userServices.js");
-var upload2=require("./../Services/ImageService.js").UploadUserPhoto;
-var AuthenticateArtistTrack= require("./../Services/ImageService.js").AuthenticateArtistTrack;
-var AssignTrackImage=require("./../Services/ImageService.js").AssignTrackImage;
+var upload2 = require("./../Services/ImageService.js").UploadUserPhoto;
+var AuthenticateArtistTrack = require("./../Services/ImageService.js").AuthenticateArtistTrack;
+var AssignTrackImage = require("./../Services/ImageService.js").AssignTrackImage;
 ////////////////////////
-const router=express.Router();
+const router = express.Router();
 ///////////////////////
-var AssignRecentlyPlayedTracks=require("./../Services/RecentlyPlayedTracks").AssignRecentlyPlayedTracks;
+var AssignRecentlyPlayedTracks = require("./../Services/RecentlyPlayedTracks").AssignRecentlyPlayedTracks;
 //EDIT TRACK COVER IMAGE
-router.post("/tracks/coverimage",AuthenticateArtistTrack,upload2,reSizeUserImage,uploadImagefn,AssignTrackImage);
+router.post("/tracks/coverimage", AuthenticateArtistTrack, upload2, reSizeUserImage, uploadImagefn, AssignTrackImage);
 
 
 
 
 //ADD A SINGLE TRACK
-router.post('/tracks/single',upload,(req,res)=>{
+router.post('/tracks/single', upload, (req, res) => {
     var token = req.header('x-auth');
-    artist.findByToken(token).then((myartist)=>{
-    var atristId2= myartist._id;
-    var artistName=myartist.artistName;
-    if(!req.body.trackName){
-        return res.status(400).send("Missing trackName");
-    }
-    if(!req.body.genre){
-        return res.status(400).send("Missing genre");
-    }
-    if(!req.file){  // no file is sent
-        return res.status(400).send('Please upload a track');
-    }
-    if(req.fileError){    // the upladed file is not a track
-        return res.status(400).send('Please upload a track');
-    }
-    track.find({$and:[{artistId:atristId2},{trackName:req.body.trackName }]}).then((trackduplicate)=>{
-            if(trackduplicate.length!=0){  //409 is code for conflict
-                return res.status(409).send("Cannot create 2 Tracks with the same name ("+req.body.trackName+") for the same artist");
+    artist.findByToken(token).then((myartist) => {
+        var atristId2 = myartist._id;
+        var artistName = myartist.artistName;
+        if (!req.body.trackName) {
+            return res.status(400).send("Missing trackName");
+        }
+        if (!req.body.genre) {
+            return res.status(400).send("Missing genre");
+        }
+        if (!req.file) {  // no file is sent
+            return res.status(400).send('Please upload a track');
+        }
+        if (req.fileError) {    // the upladed file is not a track
+            return res.status(400).send('Please upload a track');
+        }
+        track.find({ $and: [{ artistId: atristId2 }, { trackName: req.body.trackName }] }).then((trackduplicate) => {
+            if (trackduplicate.length !== 0) {  //409 is code for conflict
+                return res.status(409).send("Cannot create 2 Tracks with the same name (" + req.body.trackName + ") for the same artist");
             };
 
-        artistService.getUsersFollowingArtists(atristId2).then((users) => {
-            userService.getUsersEndPoint(users).then((endPoints) => {
-                var not2 = new notification({
-                    text: artistName + " released a new Song (" + req.body.trackName + ")",
-                    sourceId: atristId2,
-                    userType: "artist",
-                    date: Date.now(),
-                    shouldBeSentTo:users
-
-                });
-                not2.save();
-                //console.log(endPoints);
-                notificationServices.pushNotification(not2.text, endPoints);
-                res.status(201).send(files);
-
-            })
-        }).catch((err) => console.log(err))
             var trackInstance = new track({
                 artistId: atristId2,
                 trackName: req.body.trackName,
-                genre:req.body.genre,
-                trackPath:req.body.trackName+"--"+atristId2+"."+"mp3"
+                genre: req.body.genre,
+                trackPath: req.body.trackName + "--" + atristId2 + "." + "mp3"
 
-            },(e)=>{
-                res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+            }, (e) => {
+                res.status(500).send("Coult not add Track (" + req.body.trackName + ")");
             });
-            trackInstance.save().then((doc)=>{
-                res.status(201).send(doc);
-            }).catch((e)=>{
-                res.status(500).send("Coult not add Track ("+req.body.trackName+")");
+            trackInstance.save().then((doc) => {
+                artistService.getUsersFollowingArtists(atristId2).then((users) => {
+                    userService.getUsersEndPoint(users).then((endPoints) => {
+                        var not2 = new notification({
+                            text: artistName + " released a new Song (" + req.body.trackName + ")",
+                            sourceId: atristId2,
+                            userType: "artist",
+                            date: Date.now(),
+                            shouldBeSentTo: users
+
+                        });
+                        not2.save();
+                        //console.log(endPoints);
+                        notificationServices.pushNotification(not2.text, endPoints);
+                        res.status(201).send(doc);
+
+                    })
+                })
+            }).catch((e) => {
+                res.status(500).send("Coult not add Track (" + req.body.trackName + ")");
             });
         });
-
-}).catch((e)=>{
-    res.status(401).send('Unauthorized Access');
-})
+    }).catch((e) => {
+        res.status(401).send('Unauthorized Access');
+    })
 });
 
 //////////////////////////////////////
 //STREAM A TRACK
-router.get('/tracks/stream',(req,res)=>{
+router.get('/tracks/stream', (req, res) => {
     var token = req.header('x-auth');
-    User.findByToken(token).then((user)=>{
-        if(!user){return Promise.reject();}
-        var userId=user._id.toString();
+    User.findByToken(token).then((user) => {
+        if (!user) { return Promise.reject(); }
+        var userId = user._id.toString();
         var trackId = req.header('trackId');
-        if(!trackId){
+        if (!trackId) {
             return res.status(400).send("Missing track ID");
         }
-        if(!ObjectID.isValid(trackId)){return res.status(404).send("Invalid track ID");}
+        if (!ObjectID.isValid(trackId)) { return res.status(404).send("Invalid track ID"); }
         var streamedTrack;
-        track.findByIdAndUpdate({_id:trackId}).then((streamedTrack)=>{
-            if(!streamedTrack){return res.status(404).send("Track not found. Maybe deleted by the artist");}
+        track.findByIdAndUpdate({ _id: trackId }).then((streamedTrack) => {
+            if (!streamedTrack) { return res.status(404).send("Track not found. Maybe deleted by the artist"); }
             // if there is a track document but no track file
-            if(!streamedTrack.trackPath){return res.status(404).send("Cannot play track")}
+            if (!streamedTrack.trackPath) { return res.status(404).send("Cannot play track") }
             //
-            var path = './tracks/'+streamedTrack.trackPath;
-            const stat= fs.statSync(path);   //returns inofrmation about a given file asynchronouslly
-            const fileSize= stat.size;
+            var path = './tracks/' + streamedTrack.trackPath;
+            const stat = fs.statSync(path);   //returns inofrmation about a given file asynchronouslly
+            const fileSize = stat.size;
             var range = req.headers.range;  //the requested number of bytes 0-50 (from 0 to 50) -> sent intially empty 0 only
-            if(range){
-                const parts=range.replace(/bytes=/,"").split("-");
-                var start= parseInt(parts[0],10);
+            if (range) {
+                const parts = range.replace(/bytes=/, "").split("-");
+                var start = parseInt(parts[0], 10);
                 var end;
-                if(start+4000<fileSize){  //4000 bytes per send
-                    end=start+4000;
+                if (start + 4000 < fileSize) {  //4000 bytes per send
+                    end = start + 4000;
                 }
-                else{
-                    end=fileSize-1;
+                else {
+                    end = fileSize - 1;
                 }
-                const chunckSize= (end-start)+1;
-                const stream = fs.createReadStream(path,{start,end});
-                const head={
-                    "Content-Range":`bytes ${start}-${end}/${fileSize}` ,
+                const chunckSize = (end - start) + 1;
+                const stream = fs.createReadStream(path, { start, end });
+                const head = {
+                    "Content-Range": `bytes ${start}-${end}/${fileSize}`,
                     "Accept-Ranges": "bytes",
-                    "Content-Length":chunckSize,
-                    "Content-Type":"audio/mp3"
+                    "Content-Length": chunckSize,
+                    "Content-Type": "audio/mp3"
                 };
-                res.writeHead(206,head)
+                res.writeHead(206, head)
                 stream.pipe(res);
 
             }
-            else{
-                const head= {
-                    "Content-Length" : fileSize,
+            else {
+                const head = {
+                    "Content-Length": fileSize,
                     "Content-Type": "audio/mp3",
                 };
 
-                res.writeHead(200,head);
-                track.findByIdAndUpdate({_id:trackId},{$inc:{numberOfTimesPlayed:1}}).then((res)=>{
+                res.writeHead(200, head);
+                track.findByIdAndUpdate({ _id: trackId }, { $inc: { numberOfTimesPlayed: 1 } }).then((res) => {
                     res.save();
-                    AssignRecentlyPlayedTracks(userId,streamedTrack);});
+                    AssignRecentlyPlayedTracks(userId, streamedTrack);
+                });
                 fs.createReadStream(path).pipe(res);
             }
 
         });
-    }).catch((e)=>{res.status(401).send('Unauthorized Access');})
+    }).catch((e) => { res.status(401).send('Unauthorized Access'); })
 });
 
 
 
 //GET RECENTLY PLAYED TRACKS BY THE USER
-router.get('/tracks/recentlyplayed',(req,res)=>{
+router.get('/tracks/recentlyplayed', (req, res) => {
     var token = req.header('x-auth');
-    User.findByToken(token).then((user)=>{
-        if(!user){return Promise.reject();}
-        var userId=user._id.toString();
-        User.findById({_id:userId}).then((thisUser)=>{
-            if(!thisUser){return res.status(404).send("User not found")}
-            var RecentlyPlayed=thisUser.recentlyPlyaedtracks;
-            var length=RecentlyPlayed.length;
-            if(length==0){
+    User.findByToken(token).then((user) => {
+        if (!user) { return Promise.reject(); }
+        var userId = user._id.toString();
+        User.findById({ _id: userId }).then((thisUser) => {
+            if (!thisUser) { return res.status(404).send("User not found") }
+            var RecentlyPlayed = thisUser.recentlyPlyaedtracks;
+            var length = RecentlyPlayed.length;
+            if (length == 0) {
                 return res.status(404).send("You haven't played any tracks yet");
             }
-            var Send=[length] ;
-            for(counter=0;counter<RecentlyPlayed.length;counter++){
-                Send[counter]=RecentlyPlayed[length-1-counter];
+            var Send = [length];
+            for (counter = 0; counter < RecentlyPlayed.length; counter++) {
+                Send[counter] = RecentlyPlayed[length - 1 - counter];
             }
             return res.status(302).send(Send);
         });
-    }).catch((e)=>{return res.status(401).send('Unauthorized Access');})
+    }).catch((e) => { return res.status(401).send('Unauthorized Access'); })
 })
 
 
+//LYRICS FEATURE FOR PERMIUM
+router.get("/tracks/lyrics", (req, res) => {
+    var token = req.header("x-auth");
+    var trackId = req.header("trackId");
+    if (!trackId || !ObjectID.isValid(trackId)) {
+        return res.status(400).send("Send a valid track Id");
+    }
+    track.findById({ _id: trackId }).then((myTrack) => {
+        if (!myTrack) {
+            return res.status(404).send("Invalid Track ID");
+        }
+        User.findByToken(token)
+            .then((user) => {
+                if (!user) {
+                    return Promise.reject();
+                }
+                var userId = user._id.toString();
+                User.findById({ _id: userId }).then((thisUser) => {
+                    if (thisUser.isPremium == false) {
+                        return res
+                            .status(400)
+                            .send(
+                                "Please upgrade to a premium account to enjoy this feature"
+                            );
+                    }
+
+                    lyrics.findOne({ trackId: trackId }).then((presentt) => {
+                        if (!presentt) {
+                            return res.status(404).send("This song has no lyrics");
+                        }
+                        res.status(200).send(presentt.Lyrics);
+                    });
+                });
+            })
+            .catch((e) => {
+                return res.status(401).send("Unauthorized Access");
+            });
+    });
+});
 
 
 
 
 //ADD TRACKS TO PLAYLIST
 ////
-router.post('/tracks/:playlistId/playlists',async (req,res)=>
-{
-    var flagg=0
+router.post('/tracks/:playlistId/playlists', async (req, res) => {
+    var flagg = 0
     var userId;
-     var token = req.header('x-auth');
+    var token = req.header('x-auth');
 
-var url= req.body.trackId;  //will change it tracks id but will leave variable name as it is
-//var url=req.body.url
-//console.log(url);
-
-
-var tracksarr=[{}];
-if(url.length>10)
-{
-    res.status(403).json({"message":" Forbidden because you crossed the limit of tracks in a playlist which is 10"});
-}
-var flag=0;
-for(var i=0;i<url.length;i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
-{
+    var url = req.body.trackId;  //will change it tracks id but will leave variable name as it is
+    //var url=req.body.url
+    //console.log(url);
 
 
-if(!ObjectID.isValid(url[i]))  //validate the playlist id
-{
-return res.status(404).json({"message":"the track was not found"});
-}
+    var tracksarr = [{}];
+    if (url.length > 10) {
+        res.status(403).json({ "message": " Forbidden because you crossed the limit of tracks in a playlist which is 10" });
+    }
+    var flag = 0;
+    for (var i = 0; i < url.length; i++)   //there is a problem when invalid urls are given   ( Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters)
+    {
 
+
+        if (!ObjectID.isValid(url[i]))  //validate the playlist id
+        {
+            return res.status(404).json({ "message": "the track was not found" });
+        }
 
 
 
 
-   await track.find({_id: url[i]}).then((tracks)=>
-  //await track.findById(ObjectID(url[i])).then((tracks)=>
-{
-    //console.log("gowaaaaaaalllllllllllllll")
-    //console.log("el tracks ely rag3a");
-   // console.log(JSON.stringify( tracks))
-    if(!tracks[0])
-   {
-       flag=1;
-      // console.log("gowaaaaaaa")
-    //return res.status(404).json({"message":"the track was not found"});
-    return Promise.reject();
-   }
-     tracksarr[i]=tracks;
+
+        await track.find({ _id: url[i] }).then((tracks) =>
+        //await track.findById(ObjectID(url[i])).then((tracks)=>
+        {
+            //console.log("gowaaaaaaalllllllllllllll")
+            //console.log("el tracks ely rag3a");
+            // console.log(JSON.stringify( tracks))
+            if (!tracks[0]) {
+                flag = 1;
+                // console.log("gowaaaaaaa")
+                //return res.status(404).json({"message":"the track was not found"});
+                return Promise.reject();
+            }
+            tracksarr[i] = tracks;
 
 
-}).catch((e)=>{return})//res.status(400).send(e)});
+        }).catch((e) => { return })//res.status(400).send(e)});
 
-if(flag) {
-    //console.log(flag);
-    break}
-}
-
-
-
-if (flag) {return res.status(404).json({"message":"the track was not found"});}
-
-//console.log("heloo");
-
-
-var id=req.params.playlistId;
-//console.log(id);
-
-if(!ObjectID.isValid(id))  //validate the playlist id
-{
-return res.status(404).json({"message":"invalid id"});
-}
-
-playlist.findById(id).then(async (playlists)=>{
-
-if(!playlists) {return res.status(404).send({"message":"playlist not found"})};
-//console.log(userId);
-//console.log(playlist);
-
-//console.log('wohooooooo')
-
-
-await User.findByToken(token).then((user) => {
-    if(!user){
-        return Promise.reject();
+        if (flag) {
+            //console.log(flag);
+            break
+        }
     }
 
-  userId=user._id;
 
 
-}).catch((e)=>{
-   flagg=1
+    if (flag) { return res.status(404).json({ "message": "the track was not found" }); }
 
-   return res.status(401).json({"message":"authentication failed"})})
-
-if(flagg)
-{
-   return;
-}
+    //console.log("heloo");
 
 
+    var id = req.params.playlistId;
+    //console.log(id);
 
-if(! (playlists.userId.toString()=== userId.toString()))  {return res.status(401).json({"message":"auth failed"});}
+    if (!ObjectID.isValid(id))  //validate the playlist id
+    {
+        return res.status(404).json({ "message": "invalid id" });
+    }
 
-// console.log(playlist)
-for(var i=0;i<tracksarr.length;i++)
-{
-var trackId= _.map(tracksarr[i],"_id");
+    playlist.findById(id).then(async (playlists) => {
 
+        if (!playlists) { return res.status(404).send({ "message": "playlist not found" }) };
+        //console.log(userId);
+        //console.log(playlist);
 
-
- var len =playlists.tracks.length;
- playlists.tracks[len]=ObjectID(trackId.toString())
-
- playlists.markModified('tracks')
- playlists.save();
+        //console.log('wohooooooo')
 
 
-}
-//console.log(JSON.stringify(playlists));
-//playlists.markModified('tracks')
-//playlists.save();
-console.log("end")
+        await User.findByToken(token).then((user) => {
+            if (!user) {
+                return Promise.reject();
+            }
 
-return res.status(200).json({"message":'tracks added successfully'});
+            userId = user._id;
+
+
+        }).catch((e) => {
+            flagg = 1
+
+            return res.status(401).json({ "message": "authentication failed" })
+        })
+
+        if (flagg) {
+            return;
+        }
+
+
+
+        if (!(playlists.userId.toString() === userId.toString())) { return res.status(401).json({ "message": "auth failed" }); }
+
+        // console.log(playlist)
+        for (var i = 0; i < tracksarr.length; i++) {
+            var trackId = _.map(tracksarr[i], "_id");
+
+
+
+            var len = playlists.tracks.length;
+            playlists.tracks[len] = ObjectID(trackId.toString())
+
+            playlists.markModified('tracks')
+            playlists.save();
+
+
+        }
+        //console.log(JSON.stringify(playlists));
+        //playlists.markModified('tracks')
+        //playlists.save();
+        console.log("end")
+
+        return res.status(200).json({ "message": 'tracks added successfully' });
+    })
+
+
+
+
+
+
 })
 
 
 
 
-
-
- })
-
+//////////////////////////////////////////////////////
 
 
 
- //////////////////////////////////////////////////////
+/**
+  * GetSeveralTracks
+ * ---------------------
+ *
+ * @api {post} /tracks               Get several Tracks
+ * @apiName Get Several Tracks
+ * @apiGroup Tracks
+ *
+ *
+ * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
+ *
+ * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
+ *
+ * * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+{
+    "tracks": [
+        {
+            "_id": "5e9d5ba78d6d7148a8860da7",
+            "trackName": "When I'm Gone",
+            "artistName": "Eminem",
+            "albumName": "When I'm Gone",
+            "type": "Single",
+            "genre": "Rap",
+            "numberOfTimesPlayed": 0,
+            "likes": 12,
+            "trackPath": "When I'm Gone-Eminem-seeds.mp3",
+            "imagePath": "default.jpeg"
+        },
+        {
+            "_id": "5e9d5ba78d6d7148a8860da5",
+            "trackName": "Tamaly m3ak",
+            "artistName": "Amr Diab",
+            "albumName": "El Leila",
+            "type": "Album",
+            "genre": "Arabic",
+            "numberOfTimesPlayed": 0,
+            "likes": 10,
+            "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
+            "imagePath": "default.jpeg"
+        },
 
-
-
- /**
-   * GetSeveralTracks
-  * ---------------------
-  *
-  * @api {post} /tracks               Get several Tracks
-  * @apiName Get Several Tracks
-  * @apiGroup Tracks
-  *
-  *
-  * @apiParam {string[]}    id          An array of comma separated tracks Ids. Maximum 10 IDs.
-  *
-  * @apiSuccess {object[]}     tracks          a set objects of type tracks in JSON format with status code 200
-  *
-  * * @apiSuccessExample {JSON} Success-Response:
-  *     HTTP/1.1 200 OK
- {
-     "tracks": [
-         {
-             "_id": "5e9d5ba78d6d7148a8860da7",
-             "trackName": "When I'm Gone",
-             "artistName": "Eminem",
-             "albumName": "When I'm Gone",
-             "type": "Single",
-             "genre": "Rap",
-             "numberOfTimesPlayed": 0,
-             "likes": 12,
-             "trackPath": "When I'm Gone-Eminem-seeds.mp3",
-             "imagePath": "default.jpeg"
-         },
-         {
-             "_id": "5e9d5ba78d6d7148a8860da5",
-             "trackName": "Tamaly m3ak",
-             "artistName": "Amr Diab",
-             "albumName": "El Leila",
-             "type": "Album",
-             "genre": "Arabic",
-             "numberOfTimesPlayed": 0,
-             "likes": 10,
-             "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
-             "imagePath": "default.jpeg"
-         },
-
-         null  // if you send an id that is not in the database
-               //
-     ]
- }
-  *
-  *
-  * @apiError  400                      [empty array of ids]
-  *  @apiErrorExample {JSON} Error-Response:
-  *     HTTP/1.1 400 Bad Request
-  *     {
-  *       "message":"empty array of ids"
-  *     }
-  *
-  *
-  * @apiError  404                      [invalid id]
-  *  @apiErrorExample {JSON} Error-Response:
-  *     HTTP/1.1 404 Not Found
-  *     {
-  *       "message" : "invalid id"
-  *     }
-  *
-  *  @apiError  403
-  *  @apiErrorExample {JSON} Error-Response:
-  *     HTTP/1.1 403 forbidden
-  *     {
-  *       "message" : "max 10 Ids"
-  *     }
-  *
-  *
-  *
-  */
+        null  // if you send an id that is not in the database
+              //
+    ]
+}
+ *
+ *
+ * @apiError  400                      [empty array of ids]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message":"empty array of ids"
+ *     }
+ *
+ *
+ * @apiError  404                      [invalid id]
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message" : "invalid id"
+ *     }
+ *
+ *  @apiError  403
+ *  @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 403 forbidden
+ *     {
+ *       "message" : "max 10 Ids"
+ *     }
+ *
+ *
+ *
+ */
 
 
 
@@ -404,96 +440,90 @@ return res.status(200).json({"message":'tracks added successfully'});
 
 
 
- //GET SEVERAL TRACKS
- ///////
- router.post('/tracks',async (req,res)=>{
-     var arr=req.body.id;
-   //console.log(arr);
-     var returnedTrackArray=[{}];
-      if(arr.length===0)
-      {
-          return res.status(400).json({"message":"empty array of ids"})
-      }
-     if(arr.length>10)
-     {
-        return res.status(403).json({"message":" Forbidden maximum 10 Ids"});
-     }
+//GET SEVERAL TRACKS
+///////
+router.post('/tracks', async (req, res) => {
+    var arr = req.body.id;
+    //console.log(arr);
+    var returnedTrackArray = [{}];
+    if (arr.length === 0) {
+        return res.status(400).json({ "message": "empty array of ids" })
+    }
+    if (arr.length > 10) {
+        return res.status(403).json({ "message": " Forbidden maximum 10 Ids" });
+    }
 
-     for(var i=0;i<arr.length;i++)
-     {
-     if(!ObjectID.isValid(arr[i]))
-     {
-         return res.status(404).json({"message":"invalid id"});
-     }
-     await track.findById(req.body.id[i]).then( async(tracks)=>
-     {
-         if(!tracks) {
-             //flag=1;
-             //return res.status(404).json({"message":"can not find track"});
+    for (var i = 0; i < arr.length; i++) {
+        if (!ObjectID.isValid(arr[i])) {
+            return res.status(404).json({ "message": "invalid id" });
+        }
+        await track.findById(req.body.id[i]).then(async (tracks) => {
+            if (!tracks) {
+                //flag=1;
+                //return res.status(404).json({"message":"can not find track"});
 
-             returnedTrackArray[i]=null;
-          }
-       else{
-            await artist.findById(tracks.artistId).then(async (myArtist)=>{
-             if(tracks.type==='Album')
-             {
+                returnedTrackArray[i] = null;
+            }
+            else {
+                await artist.findById(tracks.artistId).then(async (myArtist) => {
+                    if (tracks.type === 'Album') {
 
-               await album.findOne({ tracks: {$in: [arr[i]]}}).then((myAlbum)=>{
-                 //console.log("inside album")
-                 //console.log(myAlbum.toString());
+                        await album.findOne({ tracks: { $in: [arr[i]] } }).then((myAlbum) => {
+                            //console.log("inside album")
+                            //console.log(myAlbum.toString());
 
-                returnedTrackArray[i]={
+                            returnedTrackArray[i] = {
 
-                 _id:tracks._id,
-                 trackName:tracks.trackName,
-                 artistName:myArtist.artistName,
-                 albumName:myAlbum.albumName,
-                 type:tracks.type,
-                 genre:tracks.genre,
-                 numberOfTimesPlayed:tracks.numberOfTimesPlayed,
-                 likes:tracks.likes,
-                 trackPath:tracks.trackPath,
-                 imagePath:tracks.imagePath
-             };
+                                _id: tracks._id,
+                                trackName: tracks.trackName,
+                                artistName: myArtist.artistName,
+                                albumName: myAlbum.albumName,
+                                type: tracks.type,
+                                genre: tracks.genre,
+                                numberOfTimesPlayed: tracks.numberOfTimesPlayed,
+                                likes: tracks.likes,
+                                trackPath: tracks.trackPath,
+                                imagePath: tracks.imagePath
+                            };
 
 
 
-         })//.catch((e)=>{console.log("error in album")})
+                        })//.catch((e)=>{console.log("error in album")})
 
-     }
-     else
-     {
-         returnedTrackArray[i]={
-
-
-             _id:tracks._id,
-             trackName:tracks.trackName,
-             artistName:myArtist.artistName,
-             albumName:tracks.trackName,
-             type:tracks.type,
-             genre:tracks.genre,
-             numberOfTimesPlayed:tracks.numberOfTimesPlayed,
-             likes:tracks.likes,
-             trackPath:tracks.trackPath,
-             imagePath:tracks.imagePath
+                    }
+                    else {
+                        returnedTrackArray[i] = {
 
 
-     }    }
+                            _id: tracks._id,
+                            trackName: tracks.trackName,
+                            artistName: myArtist.artistName,
+                            albumName: tracks.trackName,
+                            type: tracks.type,
+                            genre: tracks.genre,
+                            numberOfTimesPlayed: tracks.numberOfTimesPlayed,
+                            likes: tracks.likes,
+                            trackPath: tracks.trackPath,
+                            imagePath: tracks.imagePath
+
+
+                        }
+                    }
 
 
 
 
 
+                })
+
+            }
         })
 
-     }
-  })
+    }
+    res.send({ "tracks": returnedTrackArray });
+})
 
- }
-     res.send({"tracks":returnedTrackArray});
- })
-
- /////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -501,31 +531,31 @@ return res.status(200).json({"message":'tracks added successfully'});
 
 
 //DELETE A TRACK
-router.delete('/tracks',(req,res)=>{
+router.delete('/tracks', (req, res) => {
     var token = req.header('x-auth');
-    artist.findByToken(token).then((myartist)=>{
-        if(!myartist){
+    artist.findByToken(token).then((myartist) => {
+        if (!myartist) {
             return Promise.reject();
         }
-    var atristId2= myartist._id;
-    if(!req.body.trackName){
-        return res.status(400).send("Pass the track name to delete");
-    }
-    var trackName1=req.body.trackName ;  //track name
-
-
-    track.findOneAndRemove({$and:[{artistId: atristId2},{trackName:trackName1 }]}).then((delTracks)=>{
-        if(!delTracks){
-
-            return res.status(404).send('Track not found to be deleted');
+        var atristId2 = myartist._id;
+        if (!req.body.trackName) {
+            return res.status(400).send("Pass the track name to delete");
         }
+        var trackName1 = req.body.trackName;  //track name
 
-        res.status(200).send("Track "+trackName1+" was deleted succsesfully");
 
-    }).catch((e)=>{
-        res.status(500).send("Could not delete track");
-    })
-    }).catch((e)=>{
+        track.findOneAndRemove({ $and: [{ artistId: atristId2 }, { trackName: trackName1 }] }).then((delTracks) => {
+            if (!delTracks) {
+
+                return res.status(404).send('Track not found to be deleted');
+            }
+
+            res.status(200).send("Track " + trackName1 + " was deleted succsesfully");
+
+        }).catch((e) => {
+            res.status(500).send("Could not delete track");
+        })
+    }).catch((e) => {
         res.status(401).send('Unauthorized Access');
     })
 });
@@ -533,263 +563,226 @@ router.delete('/tracks',(req,res)=>{
 
 
 ///////// Like a track ///////////
-router.post('/tracks/like/unlike/:id', (req,res) =>
-{
+router.post('/tracks/like/unlike/:id', (req, res) => {
     var trackId = req.params.id;
     var token = req.header('x-auth');
-    if(!token)
-    {
+    if (!token) {
         return res.status(401).send('Token is Empty');
     }
-    if(!ObjectID.isValid(trackId))
-    {
+    if (!ObjectID.isValid(trackId)) {
         return res.status(404).send("Invalid id");
     }
-    track.findOne({_id:trackId}).then((track) => {
-        if(!track){
+    track.findOne({ _id: trackId }).then((track) => {
+        if (!track) {
             return res.status(404).send('No track found');
         }
-        User.findByToken(token).then((user) =>{
-            if(!user)
-            {
+        User.findByToken(token).then((user) => {
+            if (!user) {
                 return res.status(401).send('User does not have access or does not exist');
             }
             var i = 0;
-            while(user.likedTracks[i])
-            {
-                if(track._id.toString()===user.likedTracks[i].toString()) {
-                   user.likedTracks.splice(i,1);
-                   user.markModified('likedTracks')
-                   user.save();
-                   track.likes--;
-                   track.markModified('likes')
-                   track.save();
-                return res.status(200).send('Unlike');
+            while (user.likedTracks[i]) {
+                if (track._id.toString() === user.likedTracks[i].toString()) {
+                    user.likedTracks.splice(i, 1);
+                    user.markModified('likedTracks')
+                    user.save();
+                    track.likes--;
+                    track.markModified('likes')
+                    track.save();
+                    return res.status(200).send('Unlike');
                 }
                 i++;
             };
-            user.likedTracks[i]=ObjectID(track._id.toString());
+            user.likedTracks[i] = ObjectID(track._id.toString());
             user.markModified('likedTracks')
             user.save();
             track.likes++;
             track.markModified('likes')
             track.save();
             res.status(200).send("Like");
-        }).catch((e) =>
-        {
+        }).catch((e) => {
             res.status(401).send('Token is not valid');
         })
-    }).catch((e) =>
-    {
+    }).catch((e) => {
         res.status(500).send();
     })
 });
 
 
 /////// Get Liked Tracks //////////
-router.get('/tracks/like/me', (req,res) =>
-{
+router.get('/tracks/like/me', (req, res) => {
     var token = req.header('x-auth');
-    if(!token)
-    {
+    if (!token) {
         res.status(401).send('Token is Empty');
     }
-    User.findByToken(token).then((user) =>
-    {
-        if(!user)
-        {
+    User.findByToken(token).then((user) => {
+        if (!user) {
             res.status(401).send('User does not have access or does not exist');
         }
         res.status(302).send(user.likedTracks);
-    }).catch((e) =>
-    {
+    }).catch((e) => {
         res.status(401).send('User does not have access or does not exist');
     })
 })
 
 
 /////// Get Tracks by genre //////////
-router.get('/tracks',async (req,res) =>
-{
+router.get('/tracks', async (req, res) => {
     var token = req.header('x-auth');
-    if(!token)
-    {
+    if (!token) {
         return res.status(403).send('Token is Empty');
     }
-    User.findByToken(token).then((user) =>
-    {
-        if(!user)
-        {
-          return res.status(401).send('User does not have access or does not exist');
+    User.findByToken(token).then((user) => {
+        if (!user) {
+            return res.status(401).send('User does not have access or does not exist');
         }
 
-        track.find({'genre':req.query.genre}).then(async(tracksArr)=>{
-          if (tracksArr.length==0){
-            return res.status(404).send('no tracks for this genre');
-          }
-          var resArr=[];
-          var newObj;
-          var counter=0;
-          for (let i=0;i<tracksArr.length;i++)
-            {
-              artist.findById(tracksArr[i].artistId).then((found)=>{
-                  newObj={
-                    "artistId":tracksArr[i].artistId,
-                    "artistName":found.artistName,
-                    "trackName":tracksArr[i].trackName,
-                    "_id":tracksArr[i]._id,
-                    "imagePath":tracksArr[i].imagePath
-                }
-                counter++;
-                console.log(newObj);
-                resArr.push(newObj);
-                console.log(resArr);
-                if(counter==tracksArr.length){
-                  return res.status(200).send({"tracks":resArr});
+        track.find({ 'genre': req.query.genre }).then(async (tracksArr) => {
+            if (tracksArr.length == 0) {
+                return res.status(404).send('no tracks for this genre');
+            }
+            var resArr = [];
+            var newObj;
+            var counter = 0;
+            for (let i = 0; i < tracksArr.length; i++) {
+                artist.findById(tracksArr[i].artistId).then((found) => {
+                    newObj = {
+                        "artistId": tracksArr[i].artistId,
+                        "artistName": found.artistName,
+                        "trackName": tracksArr[i].trackName,
+                        "_id": tracksArr[i]._id,
+                        "imagePath": tracksArr[i].imagePath
+                    }
+                    counter++;
+                    console.log(newObj);
+                    resArr.push(newObj);
+                    console.log(resArr);
+                    if (counter == tracksArr.length) {
+                        return res.status(200).send({ "tracks": resArr });
 
-                }
+                    }
 
-              })
+                })
             }
         })
 
 
-    }).catch((e) =>
-    {
+    }).catch((e) => {
         return res.status(401).send('User does not have access or does not exist');
     })
 })
 
 ////get all available genres
-router.get('/tracks/allgenres', (req,res) =>
-{
+router.get('/tracks/allgenres', (req, res) => {
     var token = req.header('x-auth');
-    if(!token)
-    {
+    if (!token) {
         return res.status(403).send('Token is Empty');
     }
-    User.findByToken(token).then((user) =>
-    {
-        if(!user)
-        {
+    User.findByToken(token).then((user) => {
+        if (!user) {
             return res.status(401).send('User does not have access or does not exist');
         }
 
-        track.distinct('genre').then((tracksArr)=>{
-          if (tracksArr.length==0){
-            return res.status(404).send('no genres found');
-          }
-          return res.status(200).send({"genres":tracksArr});
+        track.distinct('genre').then((tracksArr) => {
+            if (tracksArr.length == 0) {
+                return res.status(404).send('no genres found');
+            }
+            return res.status(200).send({ "genres": tracksArr });
         })
 
 
-    }).catch((e) =>
-    {
+    }).catch((e) => {
         return res.status(401).send('User does not have access or does not exist');
     })
 })
 
 
 ///////// Rate a track ///////////
-router.post('/tracks/rate/:id/:value', (req,res) =>
-{
+router.post('/tracks/rate/:id/:value', (req, res) => {
     var token = req.header('x-auth');
-    if(!token)
-    {
+    if (!token) {
         return res.status(403).send('Token is Empty');
     }
-    if(!ObjectID.isValid(req.params.id))
-    {
+    if (!ObjectID.isValid(req.params.id)) {
         return res.status(404).send("Invalid id");
     }
-    User.findByToken(token).then((user) =>
-    {
-        if(!user)
-        {
+    User.findByToken(token).then((user) => {
+        if (!user) {
             res.status(401).send('User does not have access or does not exist');
         }
 
-        track.findOne({_id:ObjectID(req.params.id)}).then((ratedTrack)=>{
-          if (!ratedTrack){
-            res.status(404).send('Track not found');
-          }
-          if(req.params.value!=0 &&req.params.value!=1 &&req.params.value!=2 &&req.params.value!=3 &&req.params.value!=4 &&req.params.value!=5)
-          {
-            return res.status(400).send("Invalid rating value");
-          }
-          if(ratedTrack.noOfRatings==0)
-          {
-            ratedTrack.rating=req.params.value;
-            ratedTrack.noOfRatings=1;
-          }
-          else {
-            var value=parseInt(req.params.value);
-            var rating=parseInt(ratedTrack.rating);
-            var n=parseInt(ratedTrack.noOfRatings);
-            ratedTrack.rating=(value+(rating*n))/(n+1);
-            ratedTrack.noOfRatings=ratedTrack.noOfRatings+1;
-          }
-          ratedTrack.save().then(()=>{
-              return res.status(200).send("rating added successfully");
-          });
+        track.findOne({ _id: ObjectID(req.params.id) }).then((ratedTrack) => {
+            if (!ratedTrack) {
+                res.status(404).send('Track not found');
+            }
+            if (req.params.value != 0 && req.params.value != 1 && req.params.value != 2 && req.params.value != 3 && req.params.value != 4 && req.params.value != 5) {
+                return res.status(400).send("Invalid rating value");
+            }
+            if (ratedTrack.noOfRatings == 0) {
+                ratedTrack.rating = req.params.value;
+                ratedTrack.noOfRatings = 1;
+            }
+            else {
+                var value = parseInt(req.params.value);
+                var rating = parseInt(ratedTrack.rating);
+                var n = parseInt(ratedTrack.noOfRatings);
+                ratedTrack.rating = (value + (rating * n)) / (n + 1);
+                ratedTrack.noOfRatings = ratedTrack.noOfRatings + 1;
+            }
+            ratedTrack.save().then(() => {
+                return res.status(200).send("rating added successfully");
+            });
 
         })
-    }).catch((e) =>
-    {
+    }).catch((e) => {
         res.status(401).send('User does not have access or does not exist');
     })
 });
 
 
 
-router.get('/tracks/:trackId/download', (req,res) =>
-{
+router.get('/tracks/:trackId/download', (req, res) => {
     var token = req.header('x-auth');
-    var trackId=req.params.trackId;
-    var reqPath=undefined;
-    var name=undefined;
+    var trackId = req.params.trackId;
+    var reqPath = undefined;
+    var name = undefined;
 
-    var path= "./../tracks"
-    track.findById(trackId).then((reqTrack)=>{
+    var path = "./../tracks"
+    track.findById(trackId).then((reqTrack) => {
 
-      if(!reqTrack)
-      {
-          return Promise.reject()
-      }
-      reqPath=reqTrack.trackPath;
-       name=reqTrack.trackName;
+        if (!reqTrack) {
+            return Promise.reject()
+        }
+        reqPath = reqTrack.trackPath;
+        name = reqTrack.trackName;
 
 
-    }).catch((e)=>{
+    }).catch((e) => {
 
         console.log(e);
-        res.status(404).json({"message":"track not found"});
+        res.status(404).json({ "message": "track not found" });
     })
-    User.findByToken(token).then((user) =>
-    {
+    User.findByToken(token).then((user) => {
 
-        if(!user)
-        {
+        if (!user) {
             return Promise.reject();
             console.log(user)
 
         }
-        if(user.isPremium===false)
-        {
-            return res.status(400).json({"message":"you are not premium"});
+        if (user.isPremium === false) {
+            return res.status(400).json({ "message": "you are not premium" });
         }
 
 
         var filePath = `./../Backend-team/tracks/${reqPath}`; // Or format the path using the `id` rest param
-        var fileName =name+'.mp3'; // The default name the browser will use
+        var fileName = name + '.mp3'; // The default name the browser will use
         console.log(fileName);
 
         res.download(filePath, fileName);
 
-    }).catch((e) =>
-    {
+    }).catch((e) => {
 
-        res.status(401).json({"message":"authentication failed"});
+        res.status(401).json({ "message": "authentication failed" });
     })
 
 
@@ -840,4 +833,4 @@ router.get('/tracks/top', (req,res)=>{
 
 
 
-module.exports=router;
+module.exports = router;

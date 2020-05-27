@@ -2688,7 +2688,7 @@
 
 
 /**
- * @api {post} /users/:artistId/follow     follow an artist
+ * @api {post} /follow/unfollow/artist/:artistId   follow an artist
  * @apiName FollowAnArtist
  * @apiGroup Users
  *
@@ -2699,28 +2699,256 @@
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
  * {
- *   "message":"followed"
+ *   "message":"You have followed the artist"
+ *
+ *
+ *
+ * }
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"You have unfollowed the artist"
  *
  *
  *
  * }
  *
- *
+ * @apiError  400   Not found                   [the artist id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *       "Artist not found"
+ *     }
+ * @apiError  400  not correct                  [the artist id is invalid ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *      "artistId is not valid"
+ *     }
  * @apiError 401              [authentication failed]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
- *        "message":"authenticaton failed"
+ *        "message":"Token is not valid"
  *     }
  *
- * @apiError 404               [artist not found]
- * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404   Not-Found
+ *
+ *
+ *
+ */
+/**
+ * @api {post} /follow/unfollow/user/:userId   follow a user
+ * @apiName Follow a user
+ * @apiGroup Users
+ *
+ * @apiHeader {string}  x-auth          Required token of the user
+ * @apiParam {string}  userId         id of user you want to follow
+ *
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"You have followed the user"
+ *
+ *
+ *
+ * }
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"You have unfollowed the user"
+ *
+ *
+ *
+ * }
+ *
+ * @apiError  400   Not found                   [the user id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
  *     {
- *        "message":"artist not found"
+ *       "User not found"
+ *     }
+ * @apiError  400  not correct                  [the user id is invalid ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *      "userId is not valid"
+ *     }
+ * @apiError 401              [authentication failed]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "message":"Token is not valid"
  *     }
  *
  *
+ *
+ *
+ */
+
+/**
+ * @api {post} /notification/history  show notification history
+ * @apiName /notification/history return the 10 last notifications
+ * @apiGroup Users
+ *
+ * @apiHeader {string}  x-auth          Required token of the user
+ *
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+*[
+*    {
+*        "_id": "5ecda2936fcedc1f08a66a7f",
+*        "text": "yoyo released a new Album (test22855412)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:13:23.207Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda20cddeac61eb8c7b6e1",
+*        "text": "yoyo released a new Song (tes98wenwezz)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:11:08.463Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda191bc92790c68f6bceb",
+*        "text": "yoyo released a new Song (tes98wenwez)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:09:05.312Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda191bc92790c68f6bcea",
+*        "text": "yoyo released a new Song (tes98wenwez)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:09:05.294Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda169bc92790c68f6bce8",
+*        "text": "yoyo released a new Song (tes98wenwe)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:08:25.878Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda169bc92790c68f6bce7",
+*        "text": "yoyo released a new Song (tes98wenwe)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:08:25.827Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda0f480642a22642d5ddf",
+*        "text": "yoyo released a new Song (tes98wewe)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:06:28.096Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*       ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda0886141521beceef028",
+*        "text": "yoyo released a new Song (tes98wewe)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:04:40.662Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda064ace9002248cb1e02",
+*        "text": "yoyo released a new Song (tes98wewe)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:04:04.708Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    },
+*    {
+*        "_id": "5ecda0463716e301f4dcd9d0",
+*        "text": "yoyo released a new Song (tes98wewe)",
+*        "sourceId": "5ecc9464fb0b1f26585f22ab",
+*        "userType": "artist",
+*        "date": "2020-05-26T23:03:34.963Z",
+*        "__v": 0,
+*        "shouldBeSentTo": [
+*            "5ec4617f2318231c5cb05f7c",
+*            "5ecc5992bc41472bd442f54b"
+*        ],
+*        "sentTo": [],
+*        "sent": false
+*    }
+*]
+ *
+ *
+ *
+ * }
+ * @apiError 401              [authentication failed]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "message":"Token is not valid"
+ *     }
  *
  *
  *
@@ -2971,6 +3199,51 @@
 
  *
  * /
+ * */
+/**
+ * login with facebook
+ * ---------------------
+ *
+ * @api {post} /users/loginwithfacebook         loginwithfacebook     
+ * @apiName loginw ith facebook
+ * @apiGroup Users
+ *
+ * @apiHeader {string} access_token token of tha app
+ * @apiHeader {string} input_token token of tha user
+ *
+ * @apiParam {String}      userName          user facebook name
+ * @apiParam {String}      email             email of facebook account
+ * @apiParam {String}      gender            gender of facebook account
+ * @apiParam {String}      bdate             bdate of facebook account
+ * @apiParam {file}        photo             photo of the user facebook profile
+ *
+ * @apiSuccess 200                      [The response of the sucess case]
+ * @apiHeader (Response Header) {String} x-auth [token given for the logging in user]
+ *
+ *
+ *
+ *
+ * @apiError  401                      [one of the two token is invalid]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ * @apiError  400                     [Cannot upload the track without track name]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Facebook token is not valid"
+ *     }
+ *
+ * @apiError  400                     [something wrong in the parameters]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "wrong paramters"
+ *     }
+  * /
  * */
 
 /** download a track
