@@ -28,12 +28,31 @@ var GetUserObjectArray = async function (wordtosearch) {
     // var tracks = await track.find({ 'artistId':  });
 
 }
+/**
+ * get the endpoints of the users to send a notification to them
+ * @author aya
+ * @method getUsersEndPoint
+ * 
+ *@param {array} users
+ *@returns {array}  -return array of endpoints of the user
+ * 
+ */
 var getUsersEndPoint = function (users) {
     return User.find({ _id: { $in: users } }).then((Users) => {
         return Users.map(function (value) { return value.endPoint; });
 
     })
 }
+/**
+ * remove the followed user from the array of the users that a user follow
+ * @author aya
+ * @method deleteUserFromSchema
+ * 
+ *@param {string} followeduserid
+ *@param {string} userId
+ *@returns {document}  -return the document of the follow user after update
+ * 
+ */
 var deleteUserFromSchema = function (followeduserid, userId) {
     // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
     //console.log(userId);
@@ -42,6 +61,17 @@ var deleteUserFromSchema = function (followeduserid, userId) {
     return followUser.update({ user_id: userId }, { "$pull": { "followedUserInfo": { "userId": followeduserid } } });
 
 }
+/**
+ * add the followed user in the array of the users that a user follow
+ * @author aya
+ * @method addUserToSchema
+ * 
+ *@param {string} followeduserid
+ *@param {string} userId
+ *@param {string} userName
+ *@returns {document}  -return the document of the follow user after update
+ * 
+ */
 var addUserToSchema = function (followeduserid, userId,userName) {
     // followArtist.findOne({ 'userId': userId }).then((userfollow) => {
     //console.log(userId);
@@ -51,14 +81,14 @@ var addUserToSchema = function (followeduserid, userId,userName) {
 
 }
 /**
- * gets an array of user objects
+ * used in login with facebook
  * @author aya
  * @method signUpWithFacebook
  * 
  *@param {Object} req
  *@param {Object} res
  *@param {Function} next
- *@returns {undefined}  -array of users matching the search
+ *@returns {undefined}  -used as middle ware in login with facebook request to add the user if not added and return it or return the user if found
  * 
  */
 var signUpWithFacebook = (req, res, next) => {
@@ -95,6 +125,19 @@ var signUpWithFacebook = (req, res, next) => {
         return res.status(400).send("wrong paramters");
     })
 } 
+/**
+ * gets an array of user objects
+ * @author aya
+ * @method addFacebookUser
+ * 
+ *@param {string} facebookId
+ *@param {string} userName
+ *@param {string} email
+ *@param {string} gender
+ *@param {string} bdate
+ *@returns {Object}  -return the user that is added
+ * 
+ */
 var addFacebookUser =  function (facebookId, userName, email, gender, bdate) {
     console.log("bdate" + bdate);
     console.log(facebookId);
@@ -125,6 +168,19 @@ var addFacebookUser =  function (facebookId, userName, email, gender, bdate) {
         //return err;
     })
 }
+/**
+ * gets an array of user objects
+ * @author aya
+ * @method signUpWithFacebook
+ * 
+ *@param {string} facebookId
+ *@param {string} userName
+ *@param {string} email
+ *@param {string} gender
+ *@param {string} bdate
+ *@returns {Object}  -return user
+ * 
+ */
 var SignUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
     console.log("id");
     console.log(facebookId);
@@ -147,7 +203,17 @@ var SignUpWithFacebook = function (facebookId, userName, email, gender, bdate) {
             //});
         }
     });
-        }
+}
+/**
+ * the function that handles follow and unfollow user
+ * @author aya
+ * @method unFollowUser
+ * 
+ *@param {string} followeduserid
+ *@param {string} userId
+ *@returns {string}  -returns "unfollowed" if the user is unfollowed "followed" if the user is followed
+ * 
+ */
 var unFollowUser = function (followeduserid, userId) {
     return deleteUserFromSchema(followeduserid, userId).then((user) => {
         if (user.nModified == 1) return "unfollowed"
@@ -212,6 +278,15 @@ var GetSimplifiedUser = function (user) {
     return ((({ _id, userName, imagePath }) => ({ _id, userName, imagePath}))(user));
 
 }
+/**
+ * the function that returns a certain user by his id
+ * @author aya
+ * @method GetUserById
+ * 
+ *@param {string} id
+ *@returns {object}  -returns object of auser with a certain id
+ * 
+ */
 var GetUserById = function (id) {
     console.log("userid");
     console.log(id);
