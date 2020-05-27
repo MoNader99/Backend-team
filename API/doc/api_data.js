@@ -1231,6 +1231,34 @@ define({ "api": [
     "groupTitle": "Artists"
   },
   {
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "varname1",
+            "description": "<p>No type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "varname2",
+            "description": "<p>With type.</p>"
+          }
+        ]
+      }
+    },
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "./doc/main.js",
+    "group": "C:\\Users\\WWW\\Desktop\\swv19\\API\\doc\\main.js",
+    "groupTitle": "C:\\Users\\WWW\\Desktop\\swv19\\API\\doc\\main.js",
+    "name": ""
+  },
+  {
     "type": "get",
     "url": "/album/like/me",
     "title": "Get user's current Liked Albums",
@@ -4898,6 +4926,133 @@ define({ "api": [
           "title": "Error-Response:",
           "content": "HTTP/1.1 401\n {\n   \"message\":\"authentication Failed\" \"\n }",
           "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Users"
+  },
+  {
+    "type": "post",
+    "url": "/users/loginwithfacebook",
+    "title": "loginwithfacebook",
+    "name": "loginw_ith_facebook",
+    "group": "Users",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "access_token",
+            "description": "<p>token of tha app</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "input_token",
+            "description": "<p>token of tha user</p>"
+          }
+        ],
+        "Response Header": [
+          {
+            "group": "Response Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>[token given for the logging in user]</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userName",
+            "description": "<p>user facebook name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>email of facebook account</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>gender of facebook account</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "bdate",
+            "description": "<p>bdate of facebook account</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "photo",
+            "description": "<p>photo of the user facebook profile</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "200",
+            "description": "<p>[The response of the sucess case]</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[one of the two token is invalid]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[Cannot upload the track without track name]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 No access\n{\n  \"error\": \"Unauthorized Access\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 No access\n{\n  \"error\": \"Facebook token is not valid\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 400 No access\n    {\n      \"error\": \"wrong paramters\"\n    }\n/",
+          "type": "JSON"
         }
       ]
     },

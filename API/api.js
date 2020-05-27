@@ -2972,6 +2972,51 @@
  *
  * /
  * */
+/**
+ * login with facebook
+ * ---------------------
+ *
+ * @api {post} /users/loginwithfacebook         loginwithfacebook     
+ * @apiName loginw ith facebook
+ * @apiGroup Users
+ *
+ * @apiHeader {string} access_token token of tha app
+ * @apiHeader {string} input_token token of tha user
+ *
+ * @apiParam {String}      userName          user facebook name
+ * @apiParam {String}      email             email of facebook account
+ * @apiParam {String}      gender            gender of facebook account
+ * @apiParam {String}      bdate             bdate of facebook account
+ * @apiParam {file}        photo             photo of the user facebook profile
+ *
+ * @apiSuccess 200                      [The response of the sucess case]
+ * @apiHeader (Response Header) {String} x-auth [token given for the logging in user]
+ *
+ *
+ *
+ *
+ * @apiError  401                      [one of the two token is invalid]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 No access
+ *     {
+ *       "error": "Unauthorized Access"
+ *     }
+ *
+ * @apiError  400                     [Cannot upload the track without track name]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "Facebook token is not valid"
+ *     }
+ *
+ * @apiError  400                     [something wrong in the parameters]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 400 No access
+ *     {
+ *       "error": "wrong paramters"
+ *     }
+  * /
+ * */
 
 /** download a track
  * ---------------------

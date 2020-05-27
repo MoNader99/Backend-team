@@ -193,10 +193,13 @@ router.post('/users/login', AuthenticationServices.AuthenticateFrontend, async (
     console.log(2);
     User.findByCredentials(body.email, body.password, body.endPoint).then((user) => {
         console.log(body.endPoint);
+        console.log(user._id);
         console.log(3);
         if (user.isActive == true) {
             return user.generateAuthToken().then((token) => {
-                console.log(4);
+                var decodedtoken = jwt.verify(token, 'secretkeyforuser')
+
+                console.log(decodedtoken._id);
                 res.header("Access-Control-Allow-Headers", "x-auth");
                 res.header("Access-Control-Expose-Headers", "x-auth");
                 console.log("login 2el gededa");

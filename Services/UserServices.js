@@ -203,6 +203,7 @@ var GetSimplifiedUser = function (user) {
 
 }
 var GetUserById = function (id) {
+    console.log("userid");
     console.log(id);
   //  console.log(artist.findById(id).artistName);
     return User.findById(id).then((user) => {

@@ -53,28 +53,10 @@ router.post('/tracks/single', upload, (req, res) => {
             return res.status(400).send('Please upload a track');
         }
         track.find({ $and: [{ artistId: atristId2 }, { trackName: req.body.trackName }] }).then((trackduplicate) => {
-            if (trackduplicate.length != 0) {  //409 is code for conflict
+            if (trackduplicate.length !== 0) {  //409 is code for conflict
                 return res.status(409).send("Cannot create 2 Tracks with the same name (" + req.body.trackName + ") for the same artist");
             };
 
-            artistService.getUsersFollowingArtists(atristId2).then((users) => {
-                userService.getUsersEndPoint(users).then((endPoints) => {
-                    var not2 = new notification({
-                        text: artistName + " released a new Song (" + req.body.trackName + ")",
-                        sourceId: atristId2,
-                        userType: "artist",
-                        date: Date.now(),
-                        shouldBeSentTo: users
-
-                    });
-                    not2.save();
-                    //console.log(endPoints);
-                    notificationServices.pushNotification(not2.text, endPoints);
-                    res.status(201).send();
-
-                })
-             })
-            }).catch((err) => console.log(err))
             var trackInstance = new track({
                 artistId: atristId2,
                 trackName: req.body.trackName,
@@ -85,27 +67,27 @@ router.post('/tracks/single', upload, (req, res) => {
                 res.status(500).send("Coult not add Track (" + req.body.trackName + ")");
             });
             trackInstance.save().then((doc) => {
-            artistService.getUsersFollowingArtists(atristId2).then((users) => {
-                userService.getUsersEndPoint(users).then((endPoints) => {
-                    var not2 = new notification({
-                        text: artistName + " released a new Song (" + req.body.trackName + ")",
-                        sourceId: atristId2,
-                        userType: "artist",
-                        date: Date.now(),
-                        shouldBeSentTo: users
+                artistService.getUsersFollowingArtists(atristId2).then((users) => {
+                    userService.getUsersEndPoint(users).then((endPoints) => {
+                        var not2 = new notification({
+                            text: artistName + " released a new Song (" + req.body.trackName + ")",
+                            sourceId: atristId2,
+                            userType: "artist",
+                            date: Date.now(),
+                            shouldBeSentTo: users
 
-                    });
-                    not2.save();
-                    //console.log(endPoints);
-                    notificationServices.pushNotification(not2.text, endPoints);
-                    res.status(201).send(doc);
+                        });
+                        not2.save();
+                        //console.log(endPoints);
+                        notificationServices.pushNotification(not2.text, endPoints);
+                        res.status(201).send(doc);
 
+                    })
                 })
-            })
             }).catch((e) => {
                 res.status(500).send("Coult not add Track (" + req.body.trackName + ")");
             });
-
+        });
     }).catch((e) => {
         res.status(401).send('Unauthorized Access');
     })
