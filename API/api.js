@@ -2688,7 +2688,7 @@
 
 
 /**
- * @api {post} /users/:artistId/follow     follow an artist
+ * @api {post} /follow/unfollow/artist/:artistId   follow an artist
  * @apiName FollowAnArtist
  * @apiGroup Users
  *
@@ -2699,28 +2699,38 @@
  * @apiSuccessExample {JSON} Success-Response:
  *     HTTP/1.1 200 OK
  * {
- *   "message":"followed"
+ *   "message":"You have followed the artist"
+ *
+ *
+ *
+ * }
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"You have unfollowed the artist"
  *
  *
  *
  * }
  *
- *
+ * @apiError  400   Not found                   [the artist id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *       "Artist not found"
+ *     }
+ * @apiError  400  not correct                  [the artist id is not correct ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *      "artistId is not valid"
+ *     }
  * @apiError 401              [authentication failed]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
- *        "message":"authenticaton failed"
+ *        "message":"Token is not valid"
  *     }
- *
- * @apiError 404               [artist not found]
- * @apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 404   Not-Found
- *     {
- *        "message":"artist not found"
- *     }
- *
- *
  *
  *
  *

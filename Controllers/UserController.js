@@ -257,13 +257,14 @@ router.post('/follow/unfollow/artist/:id', AuthenticationServices.AuthenticateUs
         if (str == "unfollowed") res.status(200).send("You have unfollowed the artist");
         if (str == "followed") res.status(200).send("You have followed the artist");
 
+
     }).catch((err) => {
         console.log(err);
         res.status(400).send(err);
     })
     }).catch((err) => {
     console.log(err);
-    res.status(400).send(err);
+        res.status(400).send("artistId is not valid");
     })
 });
 router.post('/follow/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {

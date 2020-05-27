@@ -56,6 +56,7 @@ var unFollowArtist = function (artistId, userId) {
     return deleteArtistFromSchema(artistId, userId).then((Artist) => {
         if (Artist.nModified == 1) return "unfollowed";
         console.log("2wel art");
+        console.log();
         //console.log(artist);
         if (Artist.nModified == 0) {
             return userServices.GetUserById(userId).then((userName) => {
