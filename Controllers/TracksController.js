@@ -796,7 +796,43 @@ router.get('/tracks/:trackId/download', (req,res) =>
 
 })
 
+router.get('/tracks/top', (req,res)=>{
+    
+    var token = req.header('x-auth');
+    if(!token)
+    {
+        return res.status(403).send('Token is Empty');
+    }
+    User.findByToken(token).then(async (user) =>
+    {
+        if(!user)
+        {
+            return res.status(401).send('User does not have access or does not exist');
+        }
 
+        var returnedTracksArray=[{}];
+        await track.find({rating:{$gte:4}}).then(async(tracks)=>{
+
+        for (var i=0;i<tracks.length;i++)
+        {
+            if(!tracks[i])
+            {
+                continue;
+            }
+
+            returnedTracksArray[i]= _.pick(tracks[i], ['_id','trackName', 'trackPath','rating','likes','imagePath']);
+        }
+
+        return res.status(200).send({"tracks":returnedTracksArray});
+    }).catch((e)=>{
+        return res.status(500).send();
+    });
+    }).catch((e)=>{
+        return res.status(401).send('Invalid Token');
+    });
+
+
+    })
 
 
 
