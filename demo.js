@@ -264,7 +264,9 @@ var track1 = new track({
     imagePath: imgPath1,
     likes: 9,
     genre: "Jazz",
-    trackPath: "Hello-Adele-seeds.mp3"
+    trackPath: "Hello-Adele-seeds.mp3",
+    rating: 5,
+    noOfRatings: 1
 });
 track1.save();
 
@@ -274,7 +276,9 @@ var track2 = new track({
     imagePath: imgPath8,
     likes: 7,
     genre: "Rap",
-    trackPath: "Lose Yourself-Eminem-seeds.mp3"
+    trackPath: "Lose Yourself-Eminem-seeds.mp3",
+    rating: 5,
+    noOfRatings: 1
 });
 
 track2.save();
@@ -286,7 +290,9 @@ var track3 = new track({
     type: "Album",
     likes: 10,
     genre: "Arabic",
-    trackPath: "Tamaly m3ak-Amr Diab-seeds.mp3"
+    trackPath: "Tamaly m3ak-Amr Diab-seeds.mp3",
+    rating: 5,
+    noOfRatings: 1
 });
 
 track3.save();
@@ -298,7 +304,9 @@ var track5 = new track({
     type: "Album",
     likes: 20,
     genre: "Arabic",
-    trackPath: "Youm Talat-Amr Diab-seeds.mp3"
+    trackPath: "Youm Talat-Amr Diab-seeds.mp3",
+    rating: 5,
+    noOfRatings: 1
 });
 track5.save();
 
@@ -308,7 +316,9 @@ var track4 = new track({
     imagePath: imgPath7,
     likes: 10,
     genre: "Rap",
-    trackPath: "When I'm Gone-Eminem-seeds.mp3"
+    trackPath: "When I'm Gone-Eminem-seeds.mp3",
+    rating: 5,
+    noOfRatings: 1
 });
 
 track4.save();
@@ -319,7 +329,9 @@ var track6 = new track({
     imagePath: imgPath12,
     likes: 10,
     genre: "Alternative Rock",
-    trackPath: "Way Down We Go.Kaleowith Lyrics ..mp3"
+    trackPath: "Way Down We Go.Kaleowith Lyrics ..mp3",
+    rating: 4,
+    noOfRatings: 1
 });
 
 track6.save();
@@ -331,7 +343,10 @@ var track7 = new track({
     likes: 20,
     type: "Album",
     genre: "Blues",
-    trackPath: "KALEO Broken Bones [Official Audio].mp3"
+    trackPath: "KALEO Broken Bones [Official Audio].mp3",
+    rating: 4,
+    noOfRatings: 1
+
 });
 track7.save();
 
@@ -342,7 +357,9 @@ var track8 = new track({
     likes: 50,
     type: "Album",
     genre: "Blues",
-    trackPath: "KALEO I Can't Go On Without You [Official Audio].mp3"
+    trackPath: "KALEO I Can't Go On Without You [Official Audio].mp3",
+    rating: 4,
+    noOfRatings: 1
 });
 track8.save();
 
@@ -353,7 +370,9 @@ var track9 = new track({
     likes: 21,
     type: "Album",
     genre: "Alternative Rock",
-    trackPath: "KALEO Hot Blood [Official Audio].mp3"
+    trackPath: "KALEO Hot Blood [Official Audio].mp3",
+    rating: 3,
+    noOfRatings: 1
 });
 track9.save();
 
@@ -363,7 +382,9 @@ var track10 = new track({
     imagePath: "Superlife42011663_800_800.jpg",
     likes: 12,
     genre: "R&B",
-    trackPath: "2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3"
+    trackPath: "2Scratch - SUPERLIFE (feat. Lox Chatterbox).mp3",
+    rating: 3,
+    noOfRatings: 1
 });
 track10.save();
 
@@ -373,7 +394,9 @@ var track11 = new track({
     imagePath: "alecbenjaimindownload.jpg",
     likes: 15,
     genre: "Pop",
-    trackPath: "Alec Benjamin - Let Me Down Slowly (Lyrics).mp3"
+    trackPath: "Alec Benjamin - Let Me Down Slowly (Lyrics).mp3",
+    rating: 3,
+    noOfRatings: 1
 });
 track11.save();
 
@@ -383,7 +406,9 @@ var track12 = new track({
     imagePath: "default.jpeg",
     likes: 13,
     genre: "Electronic",
-    trackPath: "Baby Shark (Trap Remix).mp3"
+    trackPath: "Baby Shark (Trap Remix).mp3",
+    rating: 3,
+    noOfRatings: 1
 });
 track12.save();
 
@@ -393,7 +418,9 @@ var track13 = new track({
     imagePath: "default.jpeg",
     likes: 14,
     genre: "Trap",
-    trackPath: "Bazzi - Focus (feat. 21 Savage) [Official Audio].mp3"
+    trackPath: "Bazzi - Focus (feat. 21 Savage) [Official Audio].mp3",
+    rating: 2,
+    noOfRatings: 1
 });
 track13.save();
 
@@ -403,7 +430,9 @@ var track14 = new track({
     imagePath: "Believer31UuFWejahL._SX331_BO1,204,203,200_.jpg",
     likes: 18,
     genre: "Pop",
-    trackPath: "Believer by Imagine Dragons Extended 10 minute version.mp3"
+    trackPath: "Believer by Imagine Dragons Extended 10 minute version.mp3",
+    rating: 2,
+    noOfRatings: 1
 });
 track14.save();
 
@@ -414,7 +443,9 @@ var track15 = new track({
     type: "Album",
     likes: 19,
     genre: "Hip-Hop",
-    trackPath: "brennan savage - in the moment (ft. drippin so pretty) [lyrics].mp3"
+    trackPath: "brennan savage - in the moment (ft. drippin so pretty) [lyrics].mp3",
+    rating: 2,
+    noOfRatings: 1
 });
 track15.save();
 
@@ -425,7 +456,9 @@ var track16 = new track({
     type: "Album",
     likes: 90,
     genre: "Hip-Hop",
-    trackPath: "Brennan Savage - Look At Me Now.mp3"
+    trackPath: "Brennan Savage - Look At Me Now.mp3",
+    rating: 2,
+    noOfRatings: 1
 });
 track16.save();
 
