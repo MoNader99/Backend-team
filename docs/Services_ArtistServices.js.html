@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Services/ArtistServices.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Services/ArtistServices.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// JavaScript source code
+var { mongoose } = require("./../db/mongoose.js"); 
+var { artist } = require("./../models/artists.js");  //artists model
+
+var { album } = require("./../models/album.js");
+var { track } = require("./../models/track.js");//track model
+/**
+ * function that get tracks of an artist
+ * @method GetTracksOfArtists
+ * @author aya
+ * @param   {string} id -id of the artist
+ * @returns {array} -array of tracks of the artist
+ * 
+ */
+var GetTracksOfArtists = function (id) {
+    return track.find({ artistId: id });
+}
+/**
+ * function that get albums of an artist
+ * @method GetAlbumsOfArtists
+ * @author aya
+ * @param   {string} id -id of the artist
+ * @returns {array} -array of albums of the artist
+ * 
+ */
+var GetAlbumsOfArtists = function (id) {
+    return album.find({ artistId: id });
+}
+
+
+var addartist = (Email, Password, Artistname, About, Genres) => {
+    var artist1 = new artist({
+        email: Email,
+        password: Password,
+        artistName: Artistname,
+        about: About,
+        genres: Genres
+    });
+    console.log('da5al');
+    //SAVING AND RETURNING ID OF THE NEW ARTIST
+    artist1.save().then((res) => {
+        console.log(res._id);
+    }, (err) => {
+        console.log(err);
+    });
+}
+
+/**
+ * gets an array of artist objects
+ * @author aya
+ * @method GetArtistObjectArray
+ * 
+ *@param {string} wordtosearch
+ *@returns {array}  -array of artists matching the search
+ * 
+ */
+
+var GetArtistObjectArray = function (wordtosearch) {
+    //return artist.find({ artistName: wordtosearch });
+    return artist.find({ 'artistName': { '$regex': wordtosearch, $options: 'i' } });
+
+    
+}
+/**
+ * function that handles search in artists in search requests
+ * @method SearchInArtists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of artists that is the result of the search
+ * 
+ */
+/*var SearchInArtists = function (wordtosearch) {
+    console.log("D5al");
+    return GetArtistObjectArray(wordtosearch).then((artists) => {
+        console.log("ijgifjgf" + artists.map(function (value) { return value._id }));
+        return Promise.resolve(artists.map(function (value) { return value._id }));
+    }
+    ).catch((err) => {
+        return Promise.reject(err);
+    })
+}*/
+/**
+ * function that return artist by id
+ * @method GetArtistById
+ * @author aya
+ * @param   {string} id -the id of artist to search for
+ * @returns {string} -return artistname of the artist
+ * 
+ */
+var GetArtistById = function (id) {
+    console.log(id);
+    console.log(artist.findById(id).artistName);
+    return artist.findById(id).then((Art) => {
+        if (!Art) return "undefined";
+        console.log(Art.artistName);
+        return Art.artistName;
+
+    })
+}
+/**
+ * function that handles search in artists in search requests
+ * @method SearchInArtists
+ * @author aya
+ * @param   {string} wordtosearch -the word I want to search about
+ * @returns {array} -return array of artists that is the result of the search
+ * 
+ */
+var SearchInArtists = function (wordtosearch) {
+    console.log("adadadadadadadadadadadadadadada");
+    return GetArtistObjectArray(wordtosearch).then(async (artists) => {
+        console.log(1);
+        if (artists.length === 0) return Promise.resolve([]);
+        console.log(2);
+
+        //const ArtistsWithTracks = await AddTracks(artists);
+
+        //const Artists = await AddAlbums(ArtistsWithTracks);
+
+
+        return Promise.resolve(artists.map(artist => GetSimplifiedArtist(artist)));
+
+
+
+
+    })
+        // return Promise.resolve(albums);
+        .catch((err) => {
+            return Promise.reject(err);
+        })
+
+}
+/**
+ * function that adds tracks to the array of artists objects
+ * @method AddTracks
+ * @author aya
+ * @param   {array} artists -the array of artists we want to add tracks to
+ * @returns {array} -return array of artists after adding tracks
+ * 
+ */
+var AddTracks = async function (artists) {
+
+    const promises = artists.map(async artist => {
+
+        const Tracks = await GetTracksOfArtists(artist._id);
+        const tracks = await Tracks.map(track => ((({ _id, trackName, imagePath }) => ({ _id, trackName, imagePath}))(track)));
+
+        return Object.assign(artist, { Tracks:tracks })
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
+/**
+ * function that adds albums to the array of artists objects
+ * @method AddAlbums
+ * @author aya
+ * @param   {array} artists -the array of artists we want to add albums to
+ * @returns {array} -return array of artists after adding albums
+ * 
+ */
+var AddAlbums = async function (artists) {
+
+    const promises = artists.map(async artist => {
+
+        const Albums = await GetAlbumsOfArtists(artist._id);
+        const albums = await Albums.map(album => ((({ _id, albumName, imagePath }) => ({ _id, albumName, imagePath}))(album)));
+        return Object.assign(artist, { Albums: albums })
+
+
+    });
+    return Promise.resolve(await Promise.all(promises));
+
+}
+
+/**
+ * function that gets simplified albums
+ * @method GetSimplifiedArtist
+ * @author aya
+ * @param   {object} artist -the artist we want to simplify
+ * @returns {object} -artist after simplification
+ * 
+ */
+var GetSimplifiedArtist = function (artist) {
+    console.log("beysimplifyartist");
+    console.log(artist.image);
+    return ((({ _id, artistName, imagePath, Albums, Tracks }) => ({ _id, artistName, imagePath,Albums,Tracks}))(artist));
+
+}
+module.exports = {
+    addartist,
+    SearchInArtists,
+    artist,
+    GetArtistById,
+    GetArtistObjectArray
+
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#AddUserName">AddUserName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetAlbumsOfArtists">GetAlbumsOfArtists</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetPlaylistObjectArray">GetPlaylistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#GetSimplifiedPlaylist">GetSimplifiedPlaylist</a></li><li><a href="global.html#GetSimplifiedTrack">GetSimplifiedTrack</a></li><li><a href="global.html#GetSimplifiedUser">GetSimplifiedUser</a></li><li><a href="global.html#GetTrackObjectArray">GetTrackObjectArray</a></li><li><a href="global.html#GetTracksOfArtists">GetTracksOfArtists</a></li><li><a href="global.html#GetUserById">GetUserById</a></li><li><a href="global.html#GetUsersObjectArray">GetUsersObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li><li><a href="global.html#SearchInPlaylists">SearchInPlaylists</a></li><li><a href="global.html#SearchInTracks">SearchInTracks</a></li><li><a href="global.html#SearchInUsers">SearchInUsers</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:25:03 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

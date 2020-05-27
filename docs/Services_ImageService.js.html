@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Services/ImageService.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Services/ImageService.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//global
+const multer = require('multer');
+const express= require("express");
+const sharp=require("sharp");
+var { mongoose } = require("./../db/mongoose.js"); 
+//////local
+var bodyParser= require('body-parser');
+var{User}= require("./../models/users.js"); // users model
+var{artist}= require("./../models/artists.js");  //artists model
+
+////////vars
+var userId=undefined
+var imageName=undefined;
+var type=undefined;   //wether an artist or a user to know which fns to call
+var newImagePath=undefined;
+///////
+const multerStorage = multer.memoryStorage();  // for image to be stored as a buffer in memory to be able to resize it before saving it in the file
+
+const multerFilter=(req,file,cb)=>{   
+    if(file){
+        if(file.mimetype.startsWith('image')){
+            cb(null,true);
+        }
+        else{
+            req.fileError=400;
+            cb(null,false);
+        }
+    }
+};
+
+
+///CONFIGURES THE DEST OF THE UPLOAD 
+const upload = multer({
+    storage:multerStorage,
+    fileFilter: multerFilter
+});
+//
+exports.UploadUserPhoto=upload.single('photo');
+
+/**
+ * Resizing the Image passed in the body of the request
+ * @method ResizeUserImage
+ * @author Ahmed
+ * @param {object} req  -The request that contains the passed image in the request body
+ * @param {object} res  -The response to return
+ * @param {function} uploadImagefn -Callback function to choose the type of user(regular user or artist) to assign the image to
+ * @returns {string} -Returns an error message if the uploaded file was not an image
+ */
+
+exports.reSizeUserImage= reSizeUserImage = async (req,res,uploadImagefn)=>{
+    if(req.file){
+        imageName=userId+Date.now()+".png"
+        req.file.filename=imageName;
+        newImagePath="./Pictures/"+imageName;
+        sharp(req.file.buffer)
+        .resize(600,600)               //default is centre allignment
+        .toFormat("png")
+        .png({quality:90})
+        .toFile(newImagePath)
+        uploadImagefn();    
+    }
+    else{
+        return res.status(400).send("Please Upload an image");
+    }
+};
+//
+/**
+ * Determine which type of user to assign picture to 
+ * @method ChooseAssiging
+ * @author Ahmed
+ * @param {object} req  -The request that contains the passed image in the request body
+ * @param {object} res  -The response to return
+ * @returns {object} -Returns ans error message if the passed file is not an image
+ */
+exports.upLoadPhoto = uploadImagefn= async (req,res)=>{
+    if(req.fileError)
+    {
+        return res.status(400).send("Not an image , please upload an image");
+    }
+    if(type=="user"){
+        AssignUserImage(req,res);
+    }
+    if(type=="artist"){
+        AssignArtistImage(req,res);
+    }
+
+
+};
+//
+/**
+ * Assiging the image as the new profile picture of the user
+ * @method AssignPictureToUser
+ * @author Ahmed
+ * @param {object} req  -The request that contains the passed image in the request body
+ * @param {object} res  -The response to return
+ * @returns {string} -Returns a success message if the image of the user has been changed succesffully
+ */
+exports.AssignUserImage =AssignUserImage= async(req, res)=>{
+    User.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
+            res.status(200).send("Image changed successfully");
+    });
+    
+
+}
+
+/**
+ * Assiging the image as the new profile picture of the artist
+ * @method AssignPictureToArtist
+ * @author Ahmed
+ * @param {object} req  -The request that contains the passed image in the request body
+ * @param {object} res  -The response to return
+ * @returns {string} -Returns a success message if the image of the artist has been changed succesffully
+ */
+exports.AssignArtistImage =AssignArtistImage= async(req, res)=>{
+    artist.findByIdAndUpdate({_id:userId},{$set:{imagePath:imageName}}).then((n)=>{
+            res.status(200).send("Image changed successfully");
+    });
+    
+
+}
+exports.AuthenticateUser =AuthenticateUser=async(req,res,uploadImagefn)=>{
+    var token = req.header('x-auth');
+    User.findByToken(token).then((user)=>{
+        if(user){
+            userId=user._id.toString();
+            type="user";
+            uploadImagefn();
+
+        }
+        if(!user){
+            return res.status(401).send('Unauthorized Access');
+        }
+    }).catch((e)=>{
+        return res.status(401).send('Unauthorized Access');
+    });
+};
+
+
+exports.AuthenticateArtist =AuthenticateArtist=async(req,res,uploadImagefn)=>{
+    var token = req.header('x-auth');
+    artist.findByToken(token).then((myArtist)=>{
+        if(myArtist){
+            userId=myArtist._id.toString();
+            type="artist";
+            uploadImagefn();
+
+        }
+        if(!myArtist){
+            return res.status(401).send('Unauthorized Access');
+        }
+    }).catch((e)=>{
+        return res.status(401).send('Unauthorized Access');
+    });
+};
+
+
+////
+const app = express();
+app.use(bodyParser.json());
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ActivateByToken">ActivateByToken</a></li><li><a href="global.html#AddAlbums">AddAlbums</a></li><li><a href="global.html#AddArtistName">AddArtistName</a></li><li><a href="global.html#AddTracks">AddTracks</a></li><li><a href="global.html#AddUserName">AddUserName</a></li><li><a href="global.html#arrayToRegexp">arrayToRegexp</a></li><li><a href="global.html#AssignPictureToArtist">AssignPictureToArtist</a></li><li><a href="global.html#AssignPictureToUser">AssignPictureToUser</a></li><li><a href="global.html#attachKeys">attachKeys</a></li><li><a href="global.html#checkTokenAndFind">checkTokenAndFind</a></li><li><a href="global.html#ChooseAssiging">ChooseAssiging</a></li><li><a href="global.html#deletealbumtracks">deletealbumtracks</a></li><li><a href="global.html#deletebyartist">deletebyartist</a></li><li><a href="global.html#DeleteByArtist">DeleteByArtist</a></li><li><a href="global.html#DeleteIfAuthorized">DeleteIfAuthorized</a></li><li><a href="global.html#escapeGroup">escapeGroup</a></li><li><a href="global.html#findByCredentials">findByCredentials</a></li><li><a href="global.html#findByEmail">findByEmail</a></li><li><a href="global.html#findByToken">findByToken</a></li><li><a href="global.html#flags">flags</a></li><li><a href="global.html#generateAuthToken">generateAuthToken</a></li><li><a href="global.html#generateResetToken">generateResetToken</a></li><li><a href="global.html#GetAlbumObjectArray">GetAlbumObjectArray</a></li><li><a href="global.html#GetAlbumsOfArtists">GetAlbumsOfArtists</a></li><li><a href="global.html#GetArtistById">GetArtistById</a></li><li><a href="global.html#GetArtistObjectArray">GetArtistObjectArray</a></li><li><a href="global.html#GetPlaylistObjectArray">GetPlaylistObjectArray</a></li><li><a href="global.html#GetSimplifiedAlbum">GetSimplifiedAlbum</a></li><li><a href="global.html#GetSimplifiedArtist">GetSimplifiedArtist</a></li><li><a href="global.html#GetSimplifiedPlaylist">GetSimplifiedPlaylist</a></li><li><a href="global.html#GetSimplifiedTrack">GetSimplifiedTrack</a></li><li><a href="global.html#GetSimplifiedUser">GetSimplifiedUser</a></li><li><a href="global.html#GetTrackObjectArray">GetTrackObjectArray</a></li><li><a href="global.html#GetTracksOfArtists">GetTracksOfArtists</a></li><li><a href="global.html#GetUserById">GetUserById</a></li><li><a href="global.html#GetUsersObjectArray">GetUsersObjectArray</a></li><li><a href="global.html#HashPassword">HashPassword</a></li><li><a href="global.html#IsAlbumFound">IsAlbumFound</a></li><li><a href="global.html#PATH_REGEXP">PATH_REGEXP</a></li><li><a href="global.html#pathToRegexp">pathToRegexp</a></li><li><a href="global.html#regexpToRegexp">regexpToRegexp</a></li><li><a href="global.html#replacePath">replacePath</a></li><li><a href="global.html#ResizeUserImage">ResizeUserImage</a></li><li><a href="global.html#SearchInAlbums">SearchInAlbums</a></li><li><a href="global.html#SearchInArtists">SearchInArtists</a></li><li><a href="global.html#SearchInPlaylists">SearchInPlaylists</a></li><li><a href="global.html#SearchInTracks">SearchInTracks</a></li><li><a href="global.html#SearchInUsers">SearchInUsers</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 11 2020 21:25:03 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
