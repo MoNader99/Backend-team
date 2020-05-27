@@ -2201,6 +2201,61 @@
  *
  *
  */
+
+ /**
+ * Shuffle  
+ * ---------
+ *
+ * @api {get} /playlists/:playlistId/Shuffle              Shuffle
+ * @apiName  Shuffle Tracks in Playlist
+ * @apiGroup Playlist
+ *
+ *
+ *@apiParam {string}  id            sent as a parameter in the url
+ *
+* @apiHeader {string}  x-auth       user token to shuffle (in header)
+*
+ *
+ * @apiSuccessExample {string} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+*    "shuffled": [
+*        "5ece710a0e8b480730caf1f2",
+*        "5ece710a0e8b480730caf1f4",
+*        "5ece710a0e8b480730caf1f0",
+*        "5ece710a0e8b480730caf1f1"
+*    ]
+*}
+ * @apiError 401   Unauthorized          [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Unauthorized"
+ *     }
+ *
+ * @apiError 400   Bad Request          [Invalid Playlist ID]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 400   Bad Request
+ *     {
+ *        "Inavalid ID"
+ *     }
+ *
+ * @apiError 404   Not Found          [Playlist not found]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404   Not Found 
+ *     {
+ *        "Playlist not found"
+ *     }
+ *
+ * @apiError 403   Forbidden          [Empty Token]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 403  Forbidden
+ *     {
+ *        "Token is Empty"
+ *     }
+ *
+ *
+ */
 /**
 * Like or Unlike track
  * ---------------------

@@ -742,7 +742,7 @@ router.get('/playlists/:playlistId/Shuffle', async (req,res) => {
     var token = req.header('x-auth');
     if(!token)
     {
-        return res.status(401).send("Token is empty");
+        return res.status(403).send("Token is empty");
     }
     User.findByToken(token).then((user)=>{
         if(!user)
