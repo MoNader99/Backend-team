@@ -270,7 +270,10 @@ router.post('/follow/unfollow/artist/:id', AuthenticationServices.AuthenticateUs
 router.post('/follow/unfollow/user/:id', AuthenticationServices.AuthenticateUsers, async (req, res) => {
     var userId = req.params.id;
     console.log("da5al");
-
+    User.find({ '_id': userId }).then((Artist) => {
+        if (Artist.length == 0) res.status(400).send("User not found");
+        console.log("rt");
+      //  console.log(Artist[0].toString());
     userservices.unFollowUser(userId, req.userId).then((str) => {
         console.log("5arag");
         console.log(str);
@@ -280,6 +283,10 @@ router.post('/follow/unfollow/user/:id', AuthenticationServices.AuthenticateUser
     }).catch((err) => {
         console.log(err);
         res.status(400).send(err);
+            })
+    }).catch((err) => {
+        console.log(err);
+        res.status(400).send("userId is not valid");
     })
 
 });

@@ -2719,7 +2719,7 @@
  *     {
  *       "Artist not found"
  *     }
- * @apiError  400  not correct                  [the artist id is not correct ]
+ * @apiError  400  not correct                  [the artist id is invalid ]
  * @apiErrorExample {string} Error-Response:
  *     HTTP/1.1 404 Not found
  *     {
@@ -2736,7 +2736,55 @@
  *
  *
  */
-
+/**
+ * @api {post} /follow/unfollow/user/:userId   follow a user
+ * @apiName Follow a user
+ * @apiGroup Users
+ *
+ * @apiHeader {string}  x-auth          Required token of the user
+ * @apiParam {string}  userId         id of user you want to follow
+ *
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"You have followed the user"
+ *
+ *
+ *
+ * }
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 200 OK
+ * {
+ *   "message":"You have unfollowed the user"
+ *
+ *
+ *
+ * }
+ *
+ * @apiError  400   Not found                   [the user id is not found ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *       "User not found"
+ *     }
+ * @apiError  400  not correct                  [the user id is invalid ]
+ * @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not found
+ *     {
+ *      "userId is not valid"
+ *     }
+ * @apiError 401              [authentication failed]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "message":"Token is not valid"
+ *     }
+ *
+ *
+ *
+ *
+ */
 
 /**
  * @api {get} /notification/artistupadtes    get notification of artist updates
