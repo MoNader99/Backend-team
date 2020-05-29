@@ -2257,6 +2257,114 @@
  *
  */
 /**
+ * Top Tracks  
+ * ---------
+ *
+ * @api {get} /tracks/top                      Top Tracks
+ * @apiName  Top Tracks
+ * @apiGroup Tracks
+ *
+ *
+* @apiHeader {string}  x-auth       user token to shuffle (in header)
+*
+ *
+ * @apiSuccessExample {string} Success-Response:
+*     HTTP/1.1 200 OK
+*      {
+*    "tracks": [
+*        {
+*            "_id": "5ece7c0fc937db1128500cb6",
+*            "trackName": "Hello",
+*            "trackPath": "Hello-Adele-seeds.mp3",
+*            "rating": 5,
+*            "likes": 9,
+*            "imagePath": "default.jpeg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cb9",
+*            "trackName": "Youm Talat",
+*            "trackPath": "Youm Talat-Amr Diab-seeds.mp3",
+*            "rating": 5,
+*            "likes": 20,
+*            "imagePath": "default.jpeg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cb7",
+*            "trackName": "Lose Yourself",
+*            "trackPath": "Lose Yourself-Eminem-seeds.mp3",
+*            "rating": 5,
+*            "likes": 7,
+*            "imagePath": "LoseYourselfPicEminem.jpg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cb8",
+*            "trackName": "Tamaly m3ak",
+*            "trackPath": "Tamaly m3ak-Amr Diab-seeds.mp3",
+*            "rating": 5,
+*            "likes": 10,
+*            "imagePath": "default.jpeg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cbc",
+*            "trackName": "Broken Bones",
+*            "trackPath": "KALEO Broken Bones [Official Audio].mp3",
+*            "rating": 4,
+*            "likes": 20,
+*            "imagePath": "KaleoAlbum1.jpg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cba",
+*            "trackName": "When I'm Gone",
+*            "trackPath": "When I'm Gone-Eminem-seeds.mp3",
+*            "rating": 5,
+*            "likes": 10,
+*            "imagePath": "When_I'm_Gone_(Eminem_song).jpg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cbb",
+*            "trackName": "Way Down We Go",
+*            "trackPath": "Way Down We Go.Kaleowith Lyrics ..mp3",
+*            "rating": 4,
+*            "likes": 10,
+*            "imagePath": "KaleoWayDownWeGo.jpg"
+*        },
+*        {
+*            "_id": "5ece7c0fc937db1128500cbd",
+*            "trackName": "I Can't Go On Without You",
+*            "trackPath": "KALEO I Can't Go On Without You [Official Audio].mp3",
+*            "rating": 4,
+*            "likes": 50,
+*            "imagePath": "KaleoAlbum1.jpg"
+*        }
+*    ]
+*    }
+*
+ * @apiError 401   Unauthorized          [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "User does not have access or does not exist"
+ *     }
+ * 
+ * @apiError 401   Unauthorized          [authentication failed]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 401   Unauthorized
+ *     {
+ *        "Invalid Token"
+ *     }
+ * 
+ * @apiError 403   Forbidden          [Empty Token]
+ *@apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 403  Forbidden
+ *     {
+ *        "Token is Empty"
+ *     }
+ * 
+ * @apiError  500  Internal Server Error
+ *
+ *
+ *////////////////////////////////////////////////////////////////////
+/**
 * Like or Unlike track
  * ---------------------
  *

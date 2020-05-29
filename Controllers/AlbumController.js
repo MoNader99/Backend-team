@@ -241,13 +241,14 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
         if(!req.body.genre){
             return res.status(400).send("Missing genre");
         }
-        if(!files)
-        {
-            return res.status(400).send('Please upload a track');
-        }
         if(req.fileError){    // the upladed file is not a track
             return res.status(400).send('Please upload audio files');
         }
+        if(req.files=="")
+        {
+            return res.status(400).send('Please upload at least one track');
+        }
+        
         service.newAlbum(myartist._id,req.body.AlbumName,files);
 
         artistService.getUsersFollowingArtists(myartist._id).then((users) => {
