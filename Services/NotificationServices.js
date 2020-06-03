@@ -95,7 +95,7 @@ var filtered = receivers.filter(function (el) {
     console.log(filtered);
     push.setVapidDetails('mailto::test@code.co.uk', vapidKeys.publicKey, vapidKeys.privateKey);
     var filtered2 = filtered.filter(function (el) {
-        if (el.endPoint !== null) return el;
+        if (el.endpoint !== null && el.endpoint !== undefined) return el;
     });
 
     console.log("filtered2");
@@ -105,9 +105,10 @@ var filtered = receivers.filter(function (el) {
     var arrayOfCodes=[];
     var i = 0;
     filtered2.forEach(receiver => {
-        var x=push.sendNotification(receiver, textNotification);
+        var x = push.sendNotification(receiver, textNotification);
         arrayOfCodes[i++] = x;
     });
+    console.log(await Promise.all(arrayOfCodes));
     return Promise.resolve(await Promise.all(arrayOfCodes));
 }
 module.exports = {

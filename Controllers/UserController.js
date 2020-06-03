@@ -231,7 +231,8 @@ router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToke
         req.user.generateAuthToken().then((token) => {
             res.header("Access-Control-Allow-Headers", "x-auth");
             res.header("Access-Control-Expose-Headers", "x-auth");
-            res.header('x-auth', token).send();
+console.log("55alas");
+           return res.header('x-auth', token).send();
         }).catch((err) => {
             return res.status(400).send(err.toString());
         });
