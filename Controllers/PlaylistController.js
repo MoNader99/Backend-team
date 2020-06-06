@@ -557,7 +557,7 @@ router.post('/playlists/:playlistId/edit', (req,res)=>{
 
 
         }).catch((e)=>{
-            return res.status(500).json({"message":"you already have a playlist with the same name"});
+            return res.status(400).json({"message":"you already have a playlist with the same name"});
         })
 
         if(flag2)
