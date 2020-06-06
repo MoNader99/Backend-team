@@ -355,12 +355,10 @@ router.get('/albums/top', (req, res) => {
         if (counter == allAlbums.length) {
           avgRating=sumOfRatings/total;
           album.find({rating:{$gte:avgRating}}).then((top)=>{
-      
             return res.status(200).send({"albums":top});
           })
 
         }
-
       }
     })
 
