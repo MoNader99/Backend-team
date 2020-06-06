@@ -586,7 +586,7 @@ router.get('/users/premium', async (req, res) =>
                 console.log(code);
 
                 var host=req.get('host');
-                var link="http://"+req.get('host')+"/users/confirmPremium/?token= "+code;
+                var link="http://"+req.get('host')+"/users/confirmPremium/front/?token= "+code;
                 console.log(link);
                 var mailOptions={
                     to : email,

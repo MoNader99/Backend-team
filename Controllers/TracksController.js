@@ -759,7 +759,7 @@ router.get('/tracks/:trackId/download', (req, res) => {
 
     }).catch((e) => {
 
-        console.log(e);
+        //console.log(e);
         res.status(404).json({ "message": "track not found" });
     })
     User.findByToken(token).then((user) => {
