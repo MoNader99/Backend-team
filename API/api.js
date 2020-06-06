@@ -1713,151 +1713,206 @@
    *
    */
 
-   ////get all available genres
-     /**
-      * @api {get} /tracks/:genre              get all available genres
-      * @apiName get all available genres
-      * @apiGroup Tracks
-      *
-      * @apiSuccess {string[]}     array of strings including all the genres in the database
-      *
-      * * @apiSuccessExample {JSON} Success-Response:
-      *     HTTP/1.1 200 OK
-      {
-          "genres": [
-              "Alternative Rock",
-              "Arabic",
-              "Blues",
-              "Electronic",
-              "Hip-Hop",
-              "Jazz",
-              "Pop",
-              "R&B",
-              "Rap",
-              "Rock",
-              "Trap"
-          ]
-      }
-      *
-      * @apiError  404   no genres found
-      *  @apiErrorExample {string} Error-Response:
-      *     HTTP/1.1 404 Not Found
-      *    {
-      *      "no genres found"
-      *     }
-      *
-      *  @apiError  403 empty token
-      *  @apiErrorExample {string} Error-Response:
-      *     HTTP/1.1 403 forbidden
-      *     {
-      *       "token is empty"
-      *     }
-      *
-      *  @apiError  401 invalid token
-      *  @apiErrorExample {string} Error-Response:
-      *     HTTP/1.1 403 unauthorized
-      *     {
-      *       "User does not have access or does not exist"
-      *     }
-      *
-      */
+////get all available genres
+/**
+* @api {get} /tracks/:genre              get all available genres
+* @apiName get all available genres
+* @apiGroup Tracks
+*
+* @apiSuccess {string[]}     array of strings including all the genres in the database
+*
+* * @apiSuccessExample {JSON} Success-Response:
+*     HTTP/1.1 200 OK
+{
+  "genres": [
+      "Alternative Rock",
+      "Arabic",
+      "Blues",
+      "Electronic",
+      "Hip-Hop",
+      "Jazz",
+      "Pop",
+      "R&B",
+      "Rap",
+      "Rock",
+      "Trap"
+  ]
+}
+*
+* @apiError  404   no genres found
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 404 Not Found
+*    {
+*      "no genres found"
+*     }
+*
+*  @apiError  403 empty token
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 403 forbidden
+*     {
+*       "token is empty"
+*     }
+*
+*  @apiError  401 invalid token
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 403 unauthorized
+*     {
+*       "User does not have access or does not exist"
+*     }
+*
+*/
 
 
-   //rate a track
-     /**
-      *
-      *
-      * @api {post} /tracks/rate/:id/:value              rate track
-      * @apiName Rate a track
-      * @apiGroup Tracks
-      *
-      *
-      * @apiParam {string}    id         the track to be rated
-      * @apiParam {Number}    value      the rating value: integer 0,1,2,3,4 or 5
-      *
-      *
-      * * @apiSuccessExample {string} Success-Response:
-      *     HTTP/1.1 200 OK
-      *   {
-      *    "rating added successfully"
-      *    }
-      * @apiError  404  Track not found
-      *  @apiErrorExample {string} Error-Response:
-      *     HTTP/1.1 404 Not Found
-      *    {
-      *      "Track not found"
-      *     }
-      *
-      *  @apiError  403 empty token
-      *  @apiErrorExample {string} Error-Response:
-      *     HTTP/1.1 403 forbidden
-      *     {
-      *       "token is empty"
-      *     }
-      *
-      *  @apiError  401 invalid token
-       *  @apiErrorExample {string} Error-Response:
-       *     HTTP/1.1 403 unauthorized
-       *     {
-       *       "User does not have access or does not exist"
-       *     }
-      *
-      *  @apiError  400 invalid parameters were sent
-       *  @apiErrorExample {string} Error-Response:
-       *     HTTP/1.1 400 Bad Request
-       *     {
-       *       "invalid rating value"
-       *     }
-      *
-      */
+//rate a track
+/**
+*
+*
+* @api {post} /tracks/rate/:id/:value              rate track
+* @apiName Rate a track
+* @apiGroup Tracks
+*
+*
+* @apiParam {string}    id         the track to be rated
+* @apiParam {Number}    value      the rating value: integer 0,1,2,3,4 or 5
+*
+*
+* * @apiSuccessExample {string} Success-Response:
+*     HTTP/1.1 200 OK
+*   {
+*    "rating added successfully"
+*    }
+* @apiError  404  Track not found
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 404 Not Found
+*    {
+*      "Track not found"
+*     }
+*
+*  @apiError  403 empty token
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 403 forbidden
+*     {
+*       "token is empty"
+*     }
+*
+*  @apiError  401 invalid token
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 403 unauthorized
+*     {
+*       "User does not have access or does not exist"
+*     }
+*
+*  @apiError  400 invalid parameters were sent
+*  @apiErrorExample {string} Error-Response:
+*     HTTP/1.1 400 Bad Request
+*     {
+*       "invalid rating value"
+*     }
+*
+*/
 
-      //rate album
-        /**
-         *
-         *
-         * @api {post} /album/rate/:id/:value              rate album
-         * @apiName Rate an album
-         * @apiGroup Album
-         *
-         *
-         * @apiParam {string}    id         the album to be rated
-         * @apiParam {Number}    value      the rating value: integer 0,1,2,3,4 or 5
-         *
-         *
-         * * @apiSuccessExample {string} Success-Response:
-         *     HTTP/1.1 200 OK
-         *   {
-         *    "rating added successfully"
-         *    }
-         * @apiError  404  Album not found
-         *  @apiErrorExample {string} Error-Response:
-         *     HTTP/1.1 404 Not Found
-         *    {
-         *      "Album not found"
-         *     }
-         *
-         *  @apiError  403 empty token
-         *  @apiErrorExample {string} Error-Response:
-         *     HTTP/1.1 403 forbidden
-         *     {
-         *       "token is empty"
-         *     }
-         *
-         *  @apiError  401 invalid token
-          *  @apiErrorExample {string} Error-Response:
-          *     HTTP/1.1 403 unauthorized
-          *     {
-          *       "User does not have access or does not exist"
-          *     }
-         *
-         *  @apiError  400 invalid parameters were sent
-          *  @apiErrorExample {string} Error-Response:
-          *     HTTP/1.1 400 Bad Request
-          *     {
-          *       "invalid rating value"
-          *     }
-         *
-         */
+//rate album
+/**
+ *
+ *
+ * @api {post} /album/rate/:id/:value              rate album
+ * @apiName Rate an album
+ * @apiGroup Album
+ *
+ *
+ * @apiParam {string}    id         the album to be rated
+ * @apiParam {Number}    value      the rating value: integer 0,1,2,3,4 or 5
+ *
+ *
+ * * @apiSuccessExample {string} Success-Response:
+ *     HTTP/1.1 200 OK
+ *   {
+ *    "rating added successfully"
+ *    }
+ * @apiError  404  Album not found
+ *  @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *    {
+ *      "Album not found"
+ *     }
+ *
+ *  @apiError  403 empty token
+ *  @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 403 forbidden
+ *     {
+ *       "token is empty"
+ *     }
+ *
+ *  @apiError  401 invalid token
+  *  @apiErrorExample {string} Error-Response:
+  *     HTTP/1.1 403 unauthorized
+  *     {
+  *       "User does not have access or does not exist"
+  *     }
+ *
+ *  @apiError  400 invalid parameters were sent
+  *  @apiErrorExample {string} Error-Response:
+  *     HTTP/1.1 400 Bad Request
+  *     {
+  *       "invalid rating value"
+  *     }
+ *
+ */
+
+
+ //get top albums
+ /**
+  *
+  *
+  * @api {get} /albums/top   get albums with rating above average
+  * @apiName get top albums
+  * @apiGroup Album
+  *
+  * @apiHeader {string}  x-auth       current user token
+  * @apiSuccess {json[]}     array of albums with rating above average
+  * @apiSuccessExample {string} Success-Response:
+  *     HTTP/1.1 200 OK
+  {
+      "albums": [
+          {
+              "_id": "5ec1c6309760c939c8b33a52",
+              "artistId": "5ec1c6309760c939c8b33a23",
+              "albumName": "A/B",
+              "__v": 0,
+              "rating": 1,
+              "noOfRatings": 1,
+              "likes": 0,
+              "tracks": [
+                  "5ec1c6309760c939c8b33a35",
+                  "5ec1c6309760c939c8b33a36",
+                  "5ec1c6309760c939c8b33a37"
+              ],
+              "imagePath": "KaleoAlbum1.jpg"
+          }
+      ]
+  }
+  * @apiError  404  There are no albums yet
+  *  @apiErrorExample {string} Error-Response:
+  *     HTTP/1.1 404 Not Found
+  *    {
+  *     'there are no albums yet'
+  *     }
+  *
+  *  @apiError  403 empty token
+  *  @apiErrorExample {string} Error-Response:
+  *     HTTP/1.1 403 forbidden
+  *     {
+  *       "token is empty"
+  *     }
+  *
+  *  @apiError  401 invalid token
+ *  @apiErrorExample {string} Error-Response:
+ *     HTTP/1.1 403 unauthorized
+ *     {
+ *       "User does not have access or does not exist"
+ *     }
+*
+*/
 
 
 ////////////////////////Aya Mahmoud //////////////////////
@@ -2203,7 +2258,7 @@
  */
 
  /**
- * Shuffle  
+ * Shuffle
  * ---------
  *
  * @api {get} /playlists/:playlistId/Shuffle              Shuffle
@@ -2242,7 +2297,7 @@
  *
  * @apiError 404   Not Found          [Playlist not found]
  *@apiErrorExample {string} Error-Response:
- *     HTTP/1.1 404   Not Found 
+ *     HTTP/1.1 404   Not Found
  *     {
  *        "Playlist not found"
  *     }
@@ -2257,7 +2312,7 @@
  *
  */
 /**
- * Top Tracks  
+ * Top Tracks
  * ---------
  *
  * @api {get} /tracks/top                      Top Tracks
@@ -2345,21 +2400,21 @@
  *     {
  *        "User does not have access or does not exist"
  *     }
- * 
+ *
  * @apiError 401   Unauthorized          [authentication failed]
  *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 401   Unauthorized
  *     {
  *        "Invalid Token"
  *     }
- * 
+ *
  * @apiError 403   Forbidden          [Empty Token]
  *@apiErrorExample {string} Error-Response:
  *     HTTP/1.1 403  Forbidden
  *     {
  *        "Token is Empty"
  *     }
- * 
+ *
  * @apiError  500  Internal Server Error
  *
  *
@@ -2746,49 +2801,6 @@
 
 ///monica////////////////////////////
 
-/**
- * @api {get} /albums/homepage/popular    Get popular Albums for homepage
- * @apiName GetPopularAlbums
- * @apiGroup Album
- *
- ** @apiHeader {string}  x-auth          Required token of the user
- * @apiSuccess {object[]}   albums        An array of Album objects containing the full details of each  Album
- *
- * @apiSuccessExample {JSON} Success-Response:
- *     HTTP/1.1 200 OK
- * {
- *      "albums":
- * [
- *    {
- *       "_id": "5e89f2caaaa6bd3f481675f5",
- *       "artistId": "5e89f2caaaa6bd3f481675eb",
- *       "albumName": "25",
- *       "__v": 0,
- *       "likes": 88,
- *       "rating": 5,
- *       "tracks": [
- *           "5e89f2caaaa6bd3f481675f0",
- *           "5e89f2caaaa6bd3f481675f1"
- *       ],
- *       "imagePath": "default.png"
- * },
- *
- *   {
- *       "_id": "5e89f2caaaa6bd3f481675f6",
- *       "artistId": "5e89f2caaaa6bd3f481675e8",
- *       "albumName": "bla bla",
- *       "__v": 0,
- *       "likes": 100,
- *       "rating": 5,
- *       "tracks": [
- *           "5e89f2caaaa6bd3f481675f0",
- *           "5e89f2caaaa6bd3f481675f1"
- *       ],
- *       "imagePath": "default.png"
- * }
- * ],
- *
-}
  *
  *
  * @apiError 401   Unauthorized               [authentication failed]
@@ -3367,7 +3379,7 @@
  * login with facebook
  * ---------------------
  *
- * @api {post} /users/loginwithfacebook         loginwithfacebook     
+ * @api {post} /users/loginwithfacebook         loginwithfacebook
  * @apiName loginw ith facebook
  * @apiGroup Users
  *
