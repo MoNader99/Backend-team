@@ -40,7 +40,7 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "sw.project.verify@gmail.com",
-        pass: "abcd-1234"
+        pass: "12235abbcD"
     }
 });
 
@@ -593,7 +593,7 @@ router.get('/users/premium', async (req, res) =>
                     subject : "Please confirm your Premium account",
                     html : "Hello,<br> Please Click on the link to confirm your premium account.<br><a href="+link+">Click here to verify</a>"
                     }
-                //console.log(mailOptions);
+                console.log(mailOptions);
                 smtpTransport.sendMail(mailOptions, function(error, response){
                  if(error)
                  {
