@@ -309,68 +309,6 @@
   },
   {
     "type": "get",
-    "url": "/albums/homepage/popular",
-    "title": "Get popular Albums for homepage",
-    "name": "GetPopularAlbums",
-    "group": "Album",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>Required token of the user</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "object[]",
-            "optional": false,
-            "field": "albums",
-            "description": "<p>An array of Album objects containing the full details of each  Album</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n     \"albums\":\n[\n   {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 88,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n},\n\n  {\n      \"_id\": \"5e89f2caaaa6bd3f481675f6\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675e8\",\n      \"albumName\": \"bla bla\",\n      \"__v\": 0,\n      \"likes\": 100,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n}\n],\n\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "401",
-            "description": "<p>Unauthorized               [authentication failed]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"authenticaton failed\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Album"
-  },
-  {
-    "type": "get",
     "url": "/albums/byartist/:artistId",
     "title": "Get Albums by an artist",
     "name": "Get_Albums_by_an_artist",
