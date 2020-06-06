@@ -1036,7 +1036,7 @@
 
 //CONFIRMATION OF A PREMIUM ACCOUNT
 /**
- * @api {patch} /users/confirmPremium    confirmation of premium account [ User is confirmed to be a premium user]
+ * @api {get} /users/confirmPremium    confirmation of premium account [ User is confirmed to be a premium user]
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
  * @apiParam {String} token              should be passed in query of url the token that was sent in the link sent to the user's email
@@ -2799,20 +2799,7 @@
 
 
 
-///monica////////////////////////////
 
- *
- *
- * @apiError 401   Unauthorized               [authentication failed]
- *@apiErrorExample {JSON} Error-Response:
- *     HTTP/1.1 401   Unauthorized
- *     {
- *        "message":"authenticaton failed"
- *     }
- *
- *
- *
- */
 
 
 

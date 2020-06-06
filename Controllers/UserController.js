@@ -586,7 +586,7 @@ router.get('/users/premium', async (req, res) =>
                 console.log(code);
 
                 var host=req.get('host');
-                var link="http://"+req.get('host')+"/users/confirmPremium/front/?token= "+code;
+                var link="http://"+req.get('host')+"/users/confirmPremium/?token="+code;
                 console.log(link);
                 var mailOptions={
                     to : email,
@@ -631,7 +631,7 @@ router.get('/users/premium', async (req, res) =>
 
 //CONFIRMATION OF A PREMIUM ACCOUNT
 /**
- * @api {patch} /users/confirmPremium     User is confirmed to be a premium user
+ * @api {get} /users/confirmPremium     User is confirmed to be a premium user
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
  * @apiParam {String} token               the token that was sent in the link snet to the user's email
@@ -662,7 +662,7 @@ router.get('/users/premium', async (req, res) =>
 
 
 
-router.patch('/users/confirmPremium/',async (req,res)=>{
+router.get('/users/confirmPremium/',async (req,res)=>{
      var token=req.query.token;
 try{
     decoded = jwt.verify(token , 'secretkeyforuser');
