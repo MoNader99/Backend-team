@@ -361,7 +361,7 @@ router.get('/albums/top', (req, res) => {
       }
     })
   }).catch((e) => {
-    return res.status(500).send(e);
+    return res.status(401).send('User does not have access or does not exist');
   })
 })
 

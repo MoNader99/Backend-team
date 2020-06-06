@@ -26,42 +26,19 @@ describe('GET /albums/top', () => {
  it('should refuse empty token ', (done) =>
  {
 
-       track.find().then((tracks)=>
-       {
            request(app)
            .get('/albums/top')
            .expect(403)
            .end(done)
-       })
    });
 
    it('should refuse invalid token ', (done) =>
    {
-
-         track.find().then((tracks)=>
-         {
              request(app)
              .get('/albums/top')
              .set('x-auth',"invalid token")
              .expect(401)
              .end(done)
-         })
      });
-
-    //  it('should return not found if the genre has no tracks ', (done) =>
-    //  {
-    //
-    //    User.find().then((users)=>
-    //    {
-    //      users[users.length-1].generateAuthToken().then((token)=>
-    //      {
-    //            request(app)
-    //            .get(`/tracks/?genre=invalid`)
-    //            .set('x-auth',token)
-    //            .expect(404)
-    //            .end(done)
-    //    })
-    //   })
-    // });
 
 })
