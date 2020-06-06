@@ -348,7 +348,6 @@ router.get('/albums/top', (req, res) => {
       for (let i = 0; i < allAlbums.length; i++) {
         if(allAlbums[i].rating){
           sumOfRatings+=parseInt(allAlbums[i].rating);
-          // console.log(parseInt(allAlbums[i]).rating);
           total ++;
         }
         counter++;
@@ -361,11 +360,7 @@ router.get('/albums/top', (req, res) => {
         }
       }
     })
-
-
   }).catch((e) => {
-    console.log("here");
-    console.log(e);
     return res.status(500).send(e);
   })
 })
