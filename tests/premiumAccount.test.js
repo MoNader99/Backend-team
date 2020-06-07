@@ -120,7 +120,7 @@ it('should return 200 if he is already premium',(done)=>{   //this test succeeds
 })
 
 
-describe('Patch /users/confirmPremium/',()=>{
+describe('get/users/confirmPremium/',()=>{
 
 it('should confirm changing to a premium user',(done)=>{
 
@@ -132,7 +132,7 @@ it('should confirm changing to a premium user',(done)=>{
         users[users.length-1].isPremium=false
          users[users.length-1].save()
 request(app)
-.patch(`/users/confirmPremium/?token=${code}`)
+.get(`/users/confirmPremium/?token=${code}`)
 .expect(200)
 .expect((res)=>{
     expect(res.body.message).toBe('Email confirmed successfully,Welcome To Premium Life!')
@@ -150,7 +150,7 @@ it('should give 404 if user not found',(done)=>{
         var type= 'premium';		
         var code = jwt.sign({ _id:id, type }, 'secretkeyforuser',{expiresIn:'1d'});
 request(app)
-.patch(`/users/confirmPremium/?token=${code}`)
+.get(`/users/confirmPremium/?token=${code}`)
 .expect(404)
 .expect((res)=>{
     expect(res.body.message).toBe('not found')
@@ -169,7 +169,7 @@ it('should give 401 if invalid token',(done)=>{
         var type= 'premium';		
         var code = jwt.sign({ _id:id, type }, 'secretkeyforuserr',{expiresIn:'1d'});
 request(app)
-.patch(`/users/confirmPremium/?token=${code}`)
+.get(`/users/confirmPremium/?token=${code}`)
 .expect(401)
 .expect((res)=>{
     expect(res.body.message).toBe('authentication failed or invalid token')

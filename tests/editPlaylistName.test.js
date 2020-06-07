@@ -257,7 +257,7 @@ it('should give 404 if playlist not found',(done)=>{
 })
 
 })
-it('should give 500 if dublicate names',(done)=>{
+it('should give 400 if dublicate names',(done)=>{
 
     User.find().then((users)=>{
        var id= users[users.length-1]._id.toHexString();
@@ -291,7 +291,7 @@ it('should give 500 if dublicate names',(done)=>{
            .post(`/playlists/${playlistId}/edit`)
            .set('x-auth',token)
            .send({	"playlistName":"favsx"})
-           .expect(500)
+           .expect(400)
            
            .expect((res)=>{
             expect( res.body.message).toBe("you already have a playlist with the same name")  
