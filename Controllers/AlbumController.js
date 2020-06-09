@@ -248,7 +248,10 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
         {
             return res.status(400).send('Please upload at least one track');
         }
-        
+        album.find({ $and: [{ artistId: myartist._id }, { albumName: req.body.AlbumName }] }).then((albumduplicate) => {
+            if (albumduplicate.length !== 0) {  //409 is code for conflict
+                return res.status(409).send("Cannot create 2 albums with the same name (" + req.body.AlbumName + ") for the same artist");
+            }});
         service.newAlbum(myartist._id,req.body.AlbumName,files);
 
         artistService.getUsersFollowingArtists(myartist._id).then((users) => {

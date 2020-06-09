@@ -40,6 +40,7 @@ var artist1 = new artist({
      Adele's first two albums, 19 and 21, earned her critical praise and a level of
       commercial success unsurpassed among her peers.`,
     genres: ["Pop", "R&B"],
+    isActive:true,
     rating: 4,
     imagePath: imgPath3,
     gender: "F",

@@ -2363,7 +2363,95 @@
  * @apiError  500  Internal Server Error
  *
  *
- *////////////////////////////////////////////////////////////////////
+ */
+/**
+ * Create Album
+ * ---------------------
+ *
+ * @api {post} /album/newRelease            Create Album   
+ * @apiName Create Album
+ * @apiGroup Album
+ *
+ * @apiHeader {string} x-auth    (ArtistToken)Only an Artist who has a verified account can add a track
+ *
+ * @apiParam {String}      AlbumName          Album name. (Obligatory) sent as multipart data
+ * @apiParam {String}      genre              each track has only 1 genre. (Obligatory) sent as multipart data
+ * @apiParam {file}        multipleTracks     the audio tracks the artist wants to upload sent as multipart data
+ *
+ * @apiSuccess 201                      [The response of the sucess case is the created track object]
+ *
+ * @apiSuccessExample {JSON} Success-Response:
+ *     HTTP/1.1 201 OK
+ *
+ *[
+ *   {
+ *       "fieldname": "multipleTracks",
+ *       "originalname": "Billie Eilish - bad guy.mp3",
+ *       "encoding": "7bit",
+ *       "mimetype": "audio/mpeg",
+ *       "destination": "./tracks",
+ *       "filename": "Billie Eilish - bad guy--5edfa42c3af51031007bbef1.mp3",
+ *       "path": "tracks\\Billie Eilish - bad guy--5edfa42c3af51031007bbef1.mp3",
+ *       "size": 4685301
+ *   },
+ *   {
+ *       "fieldname": "multipleTracks",
+ *       "originalname": "Billie Eilish - lovely ft. Khalid.mp3",
+ *       "encoding": "7bit",
+ *       "mimetype": "audio/mpeg",
+ *       "destination": "./tracks",
+ *       "filename": "Billie Eilish - lovely ft. Khalid--5edfa42c3af51031007bbef1.mp3",
+ *       "path": "tracks\\Billie Eilish - lovely ft. Khalid--5edfa42c3af51031007bbef1.mp3",
+ *       "size": 6437058
+ *   }
+ *]
+ *
+ *
+ *
+ * @apiError  401                      [Cannot upload the album without auth token]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 401 Unauthorized
+ *     
+ *
+ * @apiError  400                     [Cannot upload the album without album name]
+ * @apiErrorExample {String} Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "Missing AlbumName"
+ *     }
+ *
+ *  @apiError  400                     [Cannot upload the album without album genre]
+ * @apiErrorExample {String} Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "Missing genre"
+ *     }
+ * 
+ * @apiError  400                     [Cannot upload the track without the track (audio) file]
+ * @apiErrorExample {String} Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "Please upload at least one track"
+ *     }
+ * 
+ *  @apiError  400                     [Cannot upload the album with files that are not audio]
+ * @apiErrorExample {String} Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "Please upload audio files"
+ *     }
+ *
+ *
+ * @apiError  409                    [The artist is trying to add a new track with the same name of one of his tracks (the same artist cannot have 2 tracks with the same exact name)]
+ * @apiErrorExample {JSON} Error-Response:
+ *     HTTP/1.1 409 Conflict
+ *     {
+ *       "Cannot create 2 albums with the same name (AlbumName) for the same artist"
+ *     }
+ *
+ *
+ *//////////////////////////////////////////////////////////////
+
 /**
 * Like or Unlike track
  * ---------------------
