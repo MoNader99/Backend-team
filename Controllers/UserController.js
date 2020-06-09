@@ -40,7 +40,7 @@ var smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
         user: "sw.project.verify@gmail.com",
-        pass: "abcd-1234"
+        pass: "12235abbcD"
     }
 });
 
@@ -231,7 +231,8 @@ router.post('/users/loginwithfacebook', AuthenticationServices.CheckFacebookToke
         req.user.generateAuthToken().then((token) => {
             res.header("Access-Control-Allow-Headers", "x-auth");
             res.header("Access-Control-Expose-Headers", "x-auth");
-            res.header('x-auth', token).send();
+console.log("55alas");
+           return res.header('x-auth', token).send();
         }).catch((err) => {
             return res.status(400).send(err.toString());
         });
@@ -585,14 +586,14 @@ router.get('/users/premium', async (req, res) =>
                 console.log(code);
 
                 var host=req.get('host');
-                var link="http://"+req.get('host')+"/users/confirmPremium/?token= "+code;
+                var link="http://"+req.get('host')+"/users/confirmPremium/?token="+code;
                 console.log(link);
                 var mailOptions={
                     to : email,
                     subject : "Please confirm your Premium account",
                     html : "Hello,<br> Please Click on the link to confirm your premium account.<br><a href="+link+">Click here to verify</a>"
                     }
-                //console.log(mailOptions);
+                console.log(mailOptions);
                 smtpTransport.sendMail(mailOptions, function(error, response){
                  if(error)
                  {
@@ -630,7 +631,7 @@ router.get('/users/premium', async (req, res) =>
 
 //CONFIRMATION OF A PREMIUM ACCOUNT
 /**
- * @api {patch} /users/confirmPremium     User is confirmed to be a premium user
+ * @api {get} /users/confirmPremium     User is confirmed to be a premium user
  * @apiName Acceptance of Premium Request
  * @apiGroup Users
  * @apiParam {String} token               the token that was sent in the link snet to the user's email
@@ -661,7 +662,7 @@ router.get('/users/premium', async (req, res) =>
 
 
 
-router.patch('/users/confirmPremium/',async (req,res)=>{
+router.get('/users/confirmPremium/',async (req,res)=>{
      var token=req.query.token;
 try{
     decoded = jwt.verify(token , 'secretkeyforuser');

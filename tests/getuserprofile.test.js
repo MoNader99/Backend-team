@@ -668,7 +668,7 @@ describe('GET /users/confirm/:code', () => {
 
 
 var testAccessToken = '1103945386642812|q3IjOqkmzeCMBy9ettlIZr0XTo8';
-var testInputToken = 'EAAPsCFCfTXwBAHMrTZAYQZANOwnFm1ZCVXKMLLMdfmFURUNEbJ5SV5OobZBSdx9Lb6xrOMNgtuCf048r9aaH9KgHOkAZCRQIToxOjmIOBfj8DUV69BZAeNkHaDwtaYZBaJeM1ZCUBhGfBjO5MaKzF2IKibgJAzsnvqSNdpeAWezJqore5B3qKvvxPuSF0uzeLdym3FOHldNZAfIgpZCZCO9hxmK4qHS95V5sSt3HG2PX7tRrgZDZD';
+var testInputToken = 'EAAPsCFCfTXwBAFMJ9YSi9rdxmEcixxL3gza2xeYf8k7MVCx1TXanyf3v3zCZBnqvdb0qbLBFq1A8zBDcCGX7kx78ReTBijak29IQhDS4DUyNlJCdc9N60ArIr7twYBK21QyAolMZA8p6nFLg6jqpSNmrTKRXbKyZAaOiL05o2bXRIsVK7WA4LF3iJVwHKqeSKPxdVlSjT6PWwDi2IyTFQnwqXRD6ZBSZBIYWxj3niDgZDZD';
 /*var findbyEmail = function () {
     return User.findOne({ 'email': "testuser@gmail.com" }).lean().exec(function (err, user) {
         //console.log(res.end(JSON.stringify(user)));
@@ -962,8 +962,7 @@ describe('POST /users/loginwithfacebook', () => {
 */
 
 })
-=======
->>>>>>> 2c5a67e3423653a840c5777f2926be523b7246d9
+
 
 
     

@@ -309,68 +309,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/albums/homepage/popular",
-    "title": "Get popular Albums for homepage",
-    "name": "GetPopularAlbums",
-    "group": "Album",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "x-auth",
-            "description": "<p>Required token of the user</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "object[]",
-            "optional": false,
-            "field": "albums",
-            "description": "<p>An array of Album objects containing the full details of each  Album</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n{\n     \"albums\":\n[\n   {\n      \"_id\": \"5e89f2caaaa6bd3f481675f5\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675eb\",\n      \"albumName\": \"25\",\n      \"__v\": 0,\n      \"likes\": 88,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n},\n\n  {\n      \"_id\": \"5e89f2caaaa6bd3f481675f6\",\n      \"artistId\": \"5e89f2caaaa6bd3f481675e8\",\n      \"albumName\": \"bla bla\",\n      \"__v\": 0,\n      \"likes\": 100,\n      \"rating\": 5,\n      \"tracks\": [\n          \"5e89f2caaaa6bd3f481675f0\",\n          \"5e89f2caaaa6bd3f481675f1\"\n      ],\n      \"imagePath\": \"default.png\"\n}\n],\n\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "401",
-            "description": "<p>Unauthorized               [authentication failed]</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"message\":\"authenticaton failed\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "./api.js",
-    "groupTitle": "Album"
-  },
-  {
-    "type": "get",
     "url": "/albums/byartist/:artistId",
     "title": "Get Albums by an artist",
     "name": "Get_Albums_by_an_artist",
@@ -634,6 +572,90 @@ define({ "api": [
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 400 Bad Request\n{\n  \"invalid rating value\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "get",
+    "url": "/albums/top",
+    "title": "get albums with rating above average",
+    "name": "get_top_albums",
+    "group": "Album",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>current user token</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json[]",
+            "optional": false,
+            "field": "array",
+            "description": "<p>of albums with rating above average</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  HTTP/1.1 200 OK\n{\n    \"albums\": [\n        {\n            \"_id\": \"5ec1c6309760c939c8b33a52\",\n            \"artistId\": \"5ec1c6309760c939c8b33a23\",\n            \"albumName\": \"A/B\",\n            \"__v\": 0,\n            \"rating\": 1,\n            \"noOfRatings\": 1,\n            \"likes\": 0,\n            \"tracks\": [\n                \"5ec1c6309760c939c8b33a35\",\n                \"5ec1c6309760c939c8b33a36\",\n                \"5ec1c6309760c939c8b33a37\"\n            ],\n            \"imagePath\": \"KaleoAlbum1.jpg\"\n        }\n    ]\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>There are no albums yet</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>empty token</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>invalid token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": " HTTP/1.1 404 Not Found\n{\n 'there are no albums yet'\n }",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 forbidden\n{\n  \"token is empty\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403 unauthorized\n{\n  \"User does not have access or does not exist\"\n}",
           "type": "string"
         }
       ]
@@ -1231,34 +1253,6 @@ define({ "api": [
     "groupTitle": "Artists"
   },
   {
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
-          }
-        ]
-      }
-    },
-    "type": "",
-    "url": "",
-    "version": "0.0.0",
-    "filename": "./doc/main.js",
-    "group": "C:\\Users\\WWW\\Desktop\\swv19\\API\\doc\\main.js",
-    "groupTitle": "C:\\Users\\WWW\\Desktop\\swv19\\API\\doc\\main.js",
-    "name": ""
-  },
-  {
     "type": "get",
     "url": "/album/like/me",
     "title": "Get user's current Liked Albums",
@@ -1440,6 +1434,103 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "./api.js",
     "groupTitle": "Notifications"
+  },
+  {
+    "type": "get",
+    "url": "/playlists/:playlistId/Shuffle",
+    "title": "Shuffle",
+    "name": "Shuffle_Tracks_in_Playlist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>sent as a parameter in the url</p>"
+          }
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user token to shuffle (in header)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n     {\n   \"shuffled\": [\n       \"5ece710a0e8b480730caf1f2\",\n       \"5ece710a0e8b480730caf1f4\",\n       \"5ece710a0e8b480730caf1f0\",\n       \"5ece710a0e8b480730caf1f1\"\n   ]\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized          [authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>Bad Request          [Invalid Playlist ID]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "404",
+            "description": "<p>Not Found          [Playlist not found]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Forbidden          [Empty Token]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Unauthorized\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400   Bad Request\n{\n   \"Inavalid ID\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404   Not Found\n{\n   \"Playlist not found\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403  Forbidden\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Playlist"
   },
   {
     "type": "post",
@@ -3398,6 +3489,79 @@ define({ "api": [
     "groupTitle": "Tracks"
   },
   {
+    "type": "get",
+    "url": "/tracks/top",
+    "title": "Top Tracks",
+    "name": "Top_Tracks",
+    "group": "Tracks",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>user token to shuffle (in header)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n  {\n\"tracks\": [\n    {\n        \"_id\": \"5ece7c0fc937db1128500cb6\",\n        \"trackName\": \"Hello\",\n        \"trackPath\": \"Hello-Adele-seeds.mp3\",\n        \"rating\": 5,\n        \"likes\": 9,\n        \"imagePath\": \"default.jpeg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cb9\",\n        \"trackName\": \"Youm Talat\",\n        \"trackPath\": \"Youm Talat-Amr Diab-seeds.mp3\",\n        \"rating\": 5,\n        \"likes\": 20,\n        \"imagePath\": \"default.jpeg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cb7\",\n        \"trackName\": \"Lose Yourself\",\n        \"trackPath\": \"Lose Yourself-Eminem-seeds.mp3\",\n        \"rating\": 5,\n        \"likes\": 7,\n        \"imagePath\": \"LoseYourselfPicEminem.jpg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cb8\",\n        \"trackName\": \"Tamaly m3ak\",\n        \"trackPath\": \"Tamaly m3ak-Amr Diab-seeds.mp3\",\n        \"rating\": 5,\n        \"likes\": 10,\n        \"imagePath\": \"default.jpeg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cbc\",\n        \"trackName\": \"Broken Bones\",\n        \"trackPath\": \"KALEO Broken Bones [Official Audio].mp3\",\n        \"rating\": 4,\n        \"likes\": 20,\n        \"imagePath\": \"KaleoAlbum1.jpg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cba\",\n        \"trackName\": \"When I'm Gone\",\n        \"trackPath\": \"When I'm Gone-Eminem-seeds.mp3\",\n        \"rating\": 5,\n        \"likes\": 10,\n        \"imagePath\": \"When_I'm_Gone_(Eminem_song).jpg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cbb\",\n        \"trackName\": \"Way Down We Go\",\n        \"trackPath\": \"Way Down We Go.Kaleowith Lyrics ..mp3\",\n        \"rating\": 4,\n        \"likes\": 10,\n        \"imagePath\": \"KaleoWayDownWeGo.jpg\"\n    },\n    {\n        \"_id\": \"5ece7c0fc937db1128500cbd\",\n        \"trackName\": \"I Can't Go On Without You\",\n        \"trackPath\": \"KALEO I Can't Go On Without You [Official Audio].mp3\",\n        \"rating\": 4,\n        \"likes\": 50,\n        \"imagePath\": \"KaleoAlbum1.jpg\"\n    }\n]\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>Unauthorized          [authentication failed]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "403",
+            "description": "<p>Forbidden          [Empty Token]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "500",
+            "description": "<p>Internal Server Error</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"User does not have access or does not exist\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Invalid Token\"\n}",
+          "type": "string"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 403  Forbidden\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
     "type": " get ",
     "url": "/tracks/:trackId/download",
     "title": "download a track (a premium feature)",
@@ -3504,7 +3668,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  {\n      \"genres\": [\n          \"Alternative Rock\",\n          \"Arabic\",\n          \"Blues\",\n          \"Electronic\",\n          \"Hip-Hop\",\n          \"Jazz\",\n          \"Pop\",\n          \"R&B\",\n          \"Rap\",\n          \"Rock\",\n          \"Trap\"\n      ]\n  }",
+          "content": "    HTTP/1.1 200 OK\n{\n  \"genres\": [\n      \"Alternative Rock\",\n      \"Arabic\",\n      \"Blues\",\n      \"Electronic\",\n      \"Hip-Hop\",\n      \"Jazz\",\n      \"Pop\",\n      \"R&B\",\n      \"Rap\",\n      \"Rock\",\n      \"Trap\"\n  ]\n}",
           "type": "JSON"
         }
       ]

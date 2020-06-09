@@ -4,6 +4,7 @@ const{track}=require("../models/track");
 var {playlist} = require("../models/playlists.js");
 var {User} = require("../models/users.js");
 var notificationServices = require("./../Services/NotificationServices");
+var userServices = require("./../Services/UserServices");
 
 const playlistservices = require("./../Services/PlaylistServices");
 const {ObjectID}=require('mongodb');
@@ -312,22 +313,27 @@ router.post('/playlists/:playlistId/like/unlike/me', (req,res)=>{
 
                      playlists.likes = playlists.likes +1;
                      playlists.markModified('likes');
-                     playlists.save();
+                 playlists.save();
                  var arr = [];
                  arr[0] = playlists.userId;
-                 var not2 = new notification({
-                     text: user.userName + " liked your playlist "+playlists.playlistName,
-                     sourceId: user._id,
-                     userType: "user",
-                     date: Date.now(),
-                     shouldBeSentTo: arr
+                 console.log(arr);
+                 userServices.getUsersEndPoint(arr).then((array) => {
+                     console.log("aho");
+                     var not2 = new notification({
+                         text: user.userName + " liked your playlist " + playlists.playlistName,
+                         sourceId: user._id,
+                         userType: "user",
+                         date: Date.now(),
+                         shouldBeSentTo: arr
 
-                 });
-                 not2.save();
-                 var array = [];
-                 array[0] = user.endPoint;
-                 notificationServices.pushNotification(not2.text, array);
-                     res.status(200).json({"message":"liked a playlist"});
+                     });
+                     not2.save();
+                     notificationServices.pushNotification(not2.text, array);
+                     console.log(user._id);
+                     return res.status(200).json({ "message": "liked a playlist" });
+
+                 })
+
                  }
 
                  else{
@@ -362,8 +368,24 @@ router.post('/playlists/:playlistId/like/unlike/me', (req,res)=>{
                         playlists.likes = playlists.likes +1;
                         playlists.markModified('likes');
                         playlists.save();
-             
-                        res.status(200).json({"message":"liked a playlist"});
+                 var arr = [];
+                 arr[0] = playlists.userId;
+                 userServices.getUsersEndPoint(arr).then((array) => {
+                     var not2 = new notification({
+                         text: user.userName + " liked your playlist " + playlists.playlistName,
+                         sourceId: user._id,
+                         userType: "user",
+                         date: Date.now(),
+                         shouldBeSentTo: arr
+
+                     });
+                     not2.save();
+                     notificationServices.pushNotification(not2.text, array);
+                     console.log(user._id);
+                     return res.status(200).json({ "message": "liked a playlist" });
+
+                 })
+                   //s     return res.status(200).json({"message":"liked a playlist"});
                  }
 
 
@@ -535,7 +557,7 @@ router.post('/playlists/:playlistId/edit', (req,res)=>{
 
 
         }).catch((e)=>{
-            return res.status(500).json({"message":"you already have a playlist with the same name"});
+            return res.status(400).json({"message":"you already have a playlist with the same name"});
         })
 
         if(flag2)

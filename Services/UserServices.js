@@ -37,12 +37,44 @@ var GetUserObjectArray = async function (wordtosearch) {
  *@returns {array}  -return array of endpoints of the user
  * 
  */
-var getUsersEndPoint = function (users) {
-    return User.find({ _id: { $in: users } }).then((Users) => {
-        return Users.map(function (value) { return value.endPoint; });
+var getUsersEndPoint = async function (users) {
+    var users = await User.find({ "_id": { $in: users } });
+    /*.then((Users) => {
+        console.log("play");
+        //console.log(Users);*/
+       /* var filtered2 = users.filter(function (el) {
+            console.log(el.endPoint);
+
+            if (el.endPoint !== null) return el;
+        });*/
+    var arr = [];
+    var i = 0;
+    users.forEach(user => {
+        if (user.endPoint.endpoint !== undefined && user.endPoint.endpoint !== null) {
+            console.log(user.endPoint.endpoint);
+            arr[i++] = user.endPoint;
+
+        }
+    }
+    );
+   // return Promise.resolve(users.map(function (value) { if (value.endPoint) return value.endPoint; }));
+    return Promise.resolve(arr);
+
+   /* })*/
+}
+/*var getUsersEndPoint = function (users) {
+     return getUsersByIds(users).then((Users) => {
+        console.log("play");
+         console.log(Users);
+        var filtered2 = Users.filter(function (el) {
+            console.log(el.endPoint);
+
+            if (el.endPoint !== null) return el;
+        });
+         return Promise.resolve(filtered2.map(function (value) { return value.endPoint; }));
 
     })
-}
+}*/
 /**
  * remove the followed user from the array of the users that a user follow
  * @author aya
