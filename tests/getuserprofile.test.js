@@ -1,7 +1,6 @@
 const expect =require('expect');
 const request = require('supertest')
 //local imports
-<<<<<<< HEAD
 var fs = require('fs');
 
 const app=require('./../Index');
@@ -689,7 +688,7 @@ after(function (done) {
         else {
             done(err);
         }
-    }); 
+    });
 });
 
 describe('POST /users/loginwithfacebook', () => {
@@ -744,7 +743,7 @@ describe('POST /users/loginwithfacebook', () => {
 
                    // console.log(nono[0]);
                     //console.log(arr);
-                    User.findOne({ 'email': 'testuser@gmail.com' }).then((user) => { 
+                    User.findOne({ 'email': 'testuser@gmail.com' }).then((user) => {
                         console.log("user");
                         console.log(user);
                         expect(jwt.verify(res.header['x-auth'], 'secretkeyforuser')._id).toBe(user._id.toString());
@@ -962,7 +961,3 @@ describe('POST /users/loginwithfacebook', () => {
 */
 
 })
-
-
-
-    
