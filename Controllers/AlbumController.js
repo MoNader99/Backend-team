@@ -373,6 +373,10 @@ router.get('/albums/top', (req, res) => {
         }
         counter++;
         if (counter == allAlbums.length) {
+          if(total==0)
+          {
+            return res.status(404).send("albums are not rated yet");
+          }
           avgRating=sumOfRatings/total;
           album.find({rating:{$gte:avgRating}}).then((top)=>{
             return res.status(200).send({"albums":top});
