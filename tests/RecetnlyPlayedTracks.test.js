@@ -5,9 +5,8 @@ var { User } = require("./../models/users.js");
 
 describe("Recently Played Tracks", () => {
   it("Should get recenly played tracks", (done) => {
-    User.find({ userName: "hamadaaa" }).then((users) => {
-      users[users.length - 1].save();
-      users[users.length - 1].generateAuthToken().then((token) => {
+    User.findOne({ userName: "hamadaaa12q2" }).then((users) => {
+      users.generateAuthToken().then((token) => {
         request(app)
           .get("/tracks/recentlyplayed")
           .set("x-auth", token)
@@ -30,9 +29,8 @@ describe("Recently Played Tracks", () => {
   });
 
   it("Should return an empty array if the user did not play any songs", (done) => {
-    User.find().then((users) => {
-      users[0].save();
-      users[0].generateAuthToken().then((token) => {
+    User.findOne({ userName: "Aya" }).then((users) => {
+      users.generateAuthToken().then((token) => {
         request(app)
           .get("/tracks/recentlyplayed")
           .set("x-auth", token)
