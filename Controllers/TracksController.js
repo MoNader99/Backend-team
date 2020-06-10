@@ -696,6 +696,39 @@ router.get('/tracks/allgenres', (req, res) => {
     })
 })
 
+////get track statistics
+router.get('/tracks/statistics/:id', (req, res) => {
+    var token = req.header('x-auth');
+    if (!token) {
+        return res.status(403).send('Token is Empty');
+    }
+    if (!req.params.id || !ObjectID.isValid(req.params.id)) {
+        return res.status(400).send("Send a valid track Id");
+    }
+
+    User.findByToken(token).then((user) => {
+        if (!user) {
+            return res.status(401).send('User does not have access or does not exist');
+        }
+
+        track.findById(req.params.id).then((returnedTrack) => {
+            if (!returnedTrack) {
+                return res.status(404).send('track not found');
+            }
+            var resObj={
+              "totalLikes":returnedTrack.likes,
+              "totalListeners":returnedTrack.numberOfTimesPlayed
+            };
+            return res.status(200).send(resObj);
+        })
+
+
+    }).catch((e) => {
+        return res.status(401).send('User does not have access or does not exist');
+    })
+})
+
+
 
 ///////// Rate a track ///////////
 router.post('/tracks/rate/:id/:value', (req, res) => {
@@ -790,7 +823,7 @@ router.get('/tracks/:trackId/download', (req, res) => {
 })
 
 router.get('/tracks/top', (req,res)=>{
-    
+
     var token = req.header('x-auth');
     if(!token)
     {
