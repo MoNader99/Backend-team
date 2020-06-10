@@ -88,5 +88,6 @@ npm run doc
 # Generating API Doc 
 
 ```sh
+cd API
 apidoc -f “api\.js$”
 ```
