@@ -1372,8 +1372,56 @@
  *}
  */
 
+ //get track statistics
+ /**
+ * @api {get} api/tracks/statistics/:id   get track statistics
+ * @apiName Get track statistics
+ * @apiGroup Tracks
+ *
+ * @apiParam {String} id      id of the track to show its statistics
+ *
+ * @apiSuccess  (200) ok
+ * @apiSuccessExample {string} Success-Response:
+ *     HTTP/1.1 200 OK
+ *{
+   "totalLikes": 25,
+   "totalListeners": 100
+ *}
+ * @apiError (403) 'Token is Empty'
+ * @apiError (400) invalid track ID
+ * @apiError (401) User does not have access or does not exist
+ * @apiError (404) track not found
+ * @apiErrorExample {string} Conflict Error-Response:
+ *    HTTP/1.1 400
+ *{
+ *       "Send a valid track Id "
+ *}
 
 
+  //get album statistics
+  /**
+  * @api {get} api/album/statistics/:id   get album statistics
+  * @apiName Get album statistics
+  * @apiGroup Album
+  *
+  * @apiParam {String} id      id of the album to show its statistics
+  *
+  * @apiSuccess  (200) ok
+  * @apiSuccessExample {string} Success-Response:
+  *     HTTP/1.1 200 OK
+  *{
+    "totalLikes": 25,
+    "totalListeners": 100
+  *}
+  * @apiError (403) 'Token is Empty'
+  * @apiError (400) invalid track ID
+  * @apiError (401) User does not have access or does not exist
+  * @apiError (404) album not found
+  * @apiErrorExample {string} Conflict Error-Response:
+  *    HTTP/1.1 400
+  *{
+  *       "Send a valid album Id "
+  *}
 
 
 
@@ -2423,7 +2471,7 @@
  * Create Album
  * ---------------------
  *
- * @api {post} /album/newRelease            Create Album   
+ * @api {post} /album/newRelease            Create Album
  * @apiName Create Album
  * @apiGroup Album
  *
@@ -2466,7 +2514,7 @@
  * @apiError  401                      [Cannot upload the album without auth token]
  * @apiErrorExample {JSON} Error-Response:
  *     HTTP/1.1 401 Unauthorized
- *     
+ *
  *
  * @apiError  400                     [Cannot upload the album without album name]
  * @apiErrorExample {String} Error-Response:
@@ -2481,14 +2529,14 @@
  *     {
  *       "Missing genre"
  *     }
- * 
+ *
  * @apiError  400                     [Cannot upload the track without the track (audio) file]
  * @apiErrorExample {String} Error-Response:
  *     HTTP/1.1 400 Bad Request
  *     {
  *       "Please upload at least one track"
  *     }
- * 
+ *
  *  @apiError  400                     [Cannot upload the album with files that are not audio]
  * @apiErrorExample {String} Error-Response:
  *     HTTP/1.1 400 Bad Request
