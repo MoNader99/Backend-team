@@ -16,7 +16,6 @@ describe('GET /tracks get tracks by genre', () => {
       {
         track.find().then((tracks)=>
         {
-          console.log(tracks[tracks.length-1].genre);
 
             request(app)
             .get(`/tracks/?genre=`+ tracks[tracks.length-1].genre)
