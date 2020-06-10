@@ -36,7 +36,7 @@
   },
   "scripts": {
     "doc": "jsdoc -c jsdoc.json",
-    "test": "nyc mocha tests/downloadTrack.test.js --exit --inspect=0.0.0.0:3000",
+    "test": "nyc mocha tests/Statistics.test.js --exit --inspect=0.0.0.0:3000",
     "test-watch": "nyc nodemon --exec \"npm test\""
   },
   "author": "",
