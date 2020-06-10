@@ -207,6 +207,48 @@ router.post('/album/like/unlike/:id',async (req, res) => {
   })
 });
 
+////get album statistics
+router.get('/album/statistics/:id', async(req, res) => {
+  var token = req.header('x-auth');
+  if (!token) {
+    return res.status(403).send('Token is Empty');
+  }
+  if (!req.params.id || !ObjectID.isValid(req.params.id)) {
+    return res.status(400).send("Send a valid album Id");
+  }
+
+  User.findByToken(token).then((user) => {
+    if (!user) {
+      return res.status(401).send('User does not have access or does not exist');
+    }
+
+    album.findById(req.params.id).then(async(returnedAlbum) => {
+      if (!returnedAlbum) {
+        return res.status(404).send('album not found');
+      }
+
+      track.find({_id:{$in:returnedAlbum.tracks}})
+           .sort({numberOfTimesPlayed : -1})
+           .limit(1)
+           .then((MaxTrack)=>{
+              console.log(MaxTrack[0].numberOfTimesPlayed);
+              var resObj={
+                "totalLikes":returnedAlbum.likes,
+                "totalListeners":MaxTrack[0].numberOfTimesPlayed
+              };
+              return res.status(200).send(resObj);
+
+      })
+
+    })
+
+
+  }).catch((e) => {
+    return res.status(401).send('User does not have access or does not exist');
+  })
+})
+
+
 /////// Get Liked Albums //////////
 router.get('/albums/like/me', (req,res) =>
 {
@@ -235,152 +277,152 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
   const files = req.files;
   await artist.findByToken(token).then((myartist)=>{
 
-        if(!req.body.AlbumName){
-            return res.status(400).send("Missing albumName");
+    if(!req.body.AlbumName){
+      return res.status(400).send("Missing albumName");
+    }
+    if(!req.body.genre){
+      return res.status(400).send("Missing genre");
+    }
+    if(req.fileError){    // the upladed file is not a track
+      return res.status(400).send('Please upload audio files');
+    }
+    if(req.files=="")
+    {
+      return res.status(400).send('Please upload at least one track');
+    }
+    album.find({ $and: [{ artistId: myartist._id }, { albumName: req.body.AlbumName }] }).then((albumduplicate) => {
+      if (albumduplicate.length !== 0) {  //409 is code for conflict
+        return res.status(409).send("Cannot create 2 albums with the same name (" + req.body.AlbumName + ") for the same artist");
+      }});
+      service.newAlbum(myartist._id,req.body.AlbumName,files);
+
+      service.newAlbum(myartist._id,req.body.AlbumName,files);
+
+      artistService.getUsersFollowingArtists(myartist._id).then((users) => {
+        userService.getUsersEndPoint(users).then((endPoints) => {
+          var notificationInstance = new notification({
+            text: myartist.artistName + " released a new Album (" + req.body.AlbumName + ")",
+            sourceId: myartist._id,
+            userType: "artist",
+            shouldBeSentTo: users,
+            date: Date.now()
+
+          });
+          notificationInstance.save();
+          notificationServices.pushNotification(notificationInstance.text, endPoints);
+          res.status(201).send(files);
+
+
+        })
+      })
+
+    }).catch((e) =>
+    {
+      res.status(401).send();
+    })
+
+  });
+
+  ///////// Rate an album ///////////
+  router.post('/album/rate/:id/:value', (req,res) =>
+  {
+    var token = req.header('x-auth');
+    if(!token)
+    {
+      return res.status(403).send('Token is Empty');
+    }
+    if(!ObjectID.isValid(req.params.id))
+    {
+      return res.status(404).send("Invalid id");
+    }
+    User.findByToken(token).then((user) =>
+    {
+      if(!user)
+      {
+        res.status(401).send('User does not have access or does not exist');
+      }
+
+      album.findOne({_id:ObjectID(req.params.id)}).then((ratedAlbum)=>{
+        if (!ratedAlbum){
+          res.status(404).send('Album not found');
         }
-        if(!req.body.genre){
-            return res.status(400).send("Missing genre");
-        }
-        if(req.fileError){    // the upladed file is not a track
-            return res.status(400).send('Please upload audio files');
-        }
-        if(req.files=="")
+        if(req.params.value!=0 &&req.params.value!=1 &&req.params.value!=2 &&req.params.value!=3 &&req.params.value!=4 &&req.params.value!=5)
         {
-            return res.status(400).send('Please upload at least one track');
+          return res.status(400).send("Invalid rating value");
         }
-        album.find({ $and: [{ artistId: myartist._id }, { albumName: req.body.AlbumName }] }).then((albumduplicate) => {
-            if (albumduplicate.length !== 0) {  //409 is code for conflict
-                return res.status(409).send("Cannot create 2 albums with the same name (" + req.body.AlbumName + ") for the same artist");
-            }});
-        service.newAlbum(myartist._id,req.body.AlbumName,files);
-
-    service.newAlbum(myartist._id,req.body.AlbumName,files);
-
-    artistService.getUsersFollowingArtists(myartist._id).then((users) => {
-      userService.getUsersEndPoint(users).then((endPoints) => {
-        var notificationInstance = new notification({
-          text: myartist.artistName + " released a new Album (" + req.body.AlbumName + ")",
-          sourceId: myartist._id,
-          userType: "artist",
-          shouldBeSentTo: users,
-          date: Date.now()
-
+        if(ratedAlbum.noOfRatings==0)
+        {
+          ratedAlbum.rating=req.params.value;
+          ratedAlbum.noOfRatings=1;
+        }
+        else {
+          var value=parseInt(req.params.value);
+          var rating=parseInt(ratedAlbum.rating);
+          var n=parseInt(ratedAlbum.noOfRatings);
+          ratedAlbum.rating=(value+(rating*n))/(n+1);
+          ratedAlbum.noOfRatings=ratedAlbum.noOfRatings+1;
+        }
+        ratedAlbum.save().then(()=>{
+          return res.status(200).send("rating added successfully");
         });
-        notificationInstance.save();
-        notificationServices.pushNotification(notificationInstance.text, endPoints);
-        res.status(201).send(files);
-
 
       })
-    })
-
-  }).catch((e) =>
-  {
-    res.status(401).send();
-  })
-
-});
-
-///////// Rate an album ///////////
-router.post('/album/rate/:id/:value', (req,res) =>
-{
-  var token = req.header('x-auth');
-  if(!token)
-  {
-    return res.status(403).send('Token is Empty');
-  }
-  if(!ObjectID.isValid(req.params.id))
-  {
-    return res.status(404).send("Invalid id");
-  }
-  User.findByToken(token).then((user) =>
-  {
-    if(!user)
+    }).catch((e) =>
     {
       res.status(401).send('User does not have access or does not exist');
-    }
-
-    album.findOne({_id:ObjectID(req.params.id)}).then((ratedAlbum)=>{
-      if (!ratedAlbum){
-        res.status(404).send('Album not found');
-      }
-      if(req.params.value!=0 &&req.params.value!=1 &&req.params.value!=2 &&req.params.value!=3 &&req.params.value!=4 &&req.params.value!=5)
-      {
-        return res.status(400).send("Invalid rating value");
-      }
-      if(ratedAlbum.noOfRatings==0)
-      {
-        ratedAlbum.rating=req.params.value;
-        ratedAlbum.noOfRatings=1;
-      }
-      else {
-        var value=parseInt(req.params.value);
-        var rating=parseInt(ratedAlbum.rating);
-        var n=parseInt(ratedAlbum.noOfRatings);
-        ratedAlbum.rating=(value+(rating*n))/(n+1);
-        ratedAlbum.noOfRatings=ratedAlbum.noOfRatings+1;
-      }
-      ratedAlbum.save().then(()=>{
-        return res.status(200).send("rating added successfully");
-      });
-
     })
-  }).catch((e) =>
-  {
-    res.status(401).send('User does not have access or does not exist');
-  })
-});
+  });
 
-router.get('/albums/top', (req, res) => {
-  var token = req.header('x-auth');
-  if (!token) {
-    return res.status(403).send('Token is Empty');
-  }
-  User.findByToken(token).then((user) => {
-    if (!user) {
-      return res.status(401).send('User does not have access or does not exist');
+  router.get('/albums/top', (req, res) => {
+    var token = req.header('x-auth');
+    if (!token) {
+      return res.status(403).send('Token is Empty');
     }
-    var avgRating=0;
-    //get average rating for albums
-    album.find().then((allAlbums) => {
-      if (allAlbums.length == 0) {
-        return res.status(404).send('there are no albums yet');
+    User.findByToken(token).then((user) => {
+      if (!user) {
+        return res.status(401).send('User does not have access or does not exist');
       }
-      var sumOfRatings = 0;
       var avgRating=0;
-      var counter = 0;
-      var total=0
-      for (let i = 0; i < allAlbums.length; i++) {
-        if(allAlbums[i].rating){
-          sumOfRatings+=parseInt(allAlbums[i].rating);
-          total ++;
+      //get average rating for albums
+      album.find().then((allAlbums) => {
+        if (allAlbums.length == 0) {
+          return res.status(404).send('there are no albums yet');
         }
-        counter++;
-        if (counter == allAlbums.length) {
-          if(total==0)
-          {
-            return res.status(404).send("albums are not rated yet");
+        var sumOfRatings = 0;
+        var avgRating=0;
+        var counter = 0;
+        var total=0
+        for (let i = 0; i < allAlbums.length; i++) {
+          if(allAlbums[i].rating){
+            sumOfRatings+=parseInt(allAlbums[i].rating);
+            total ++;
           }
-          avgRating=sumOfRatings/total;
-          album.find({rating:{$gte:avgRating}}).then((top)=>{
-            return res.status(200).send({"albums":top});
-          })
+          counter++;
+          if (counter == allAlbums.length) {
+            if(total==0)
+            {
+              return res.status(404).send("albums are not rated yet");
+            }
+            avgRating=sumOfRatings/total;
+            album.find({rating:{$gte:avgRating}}).then((top)=>{
+              return res.status(200).send({"albums":top});
+            })
 
+          }
         }
-      }
+      })
+    }).catch((e) => {
+      return res.status(401).send('User does not have access or does not exist');
     })
-  }).catch((e) => {
-    return res.status(401).send('User does not have access or does not exist');
   })
-})
 
 
 
 
-// if(module.parent){
-//     app.listen(3000,()=>{
-//         console.log("Started on port 3000");
-//     });
-// }
+  // if(module.parent){
+  //     app.listen(3000,()=>{
+  //         console.log("Started on port 3000");
+  //     });
+  // }
 
-module.exports= router;
+  module.exports= router;

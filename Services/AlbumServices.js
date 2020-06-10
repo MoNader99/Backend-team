@@ -6,7 +6,7 @@ var{track}=require("./../models/track.js");
 const path = require('path');
 var { GetArtistById } = require("./../Services/ArtistServices");
 var IsAlbumFound = function ( albumid) {
- 
+
 
    return album.findOne({ _id: albumid }).then((Alb) => {
        if (!Alb) return false;
@@ -45,8 +45,27 @@ var GetAlbumObjectArray =function (wordtosearch,Artists) {
 
    // return album.find({ 'albumName': { '$regex': wordtosearch, $options: 'i' }, 'artistId': { $in: Artists.map(function (value) { return value._id.toString() })  } } );
 
-    
+
 }
+
+var GetNoOfListeners=async function(AlbumId){
+  album.findById(AlbumId , 'tracks').then((returnedAlbum) => {
+    if(!returnedAlbum){return -1;}
+    track.find({_id:{$in:returnedAlbum.tracks}})
+         .sort({numberOfTimesPlayed : -1})
+         .limit(1)
+         .then((MaxTrack)=>{
+            console.log(MaxTrack[0].numberOfTimesPlayed);
+            return (MaxTrack[0].numberOfTimesPlayed);
+    })
+  }).catch((e)=>{
+    console.log("error");
+    return -1;
+  });
+
+}
+
+
 /*var getsimplifiedalbum = function (album) {
     id = album._id;
     name = album.albumName;
@@ -61,7 +80,7 @@ var SearchInAlbums =function (wordtosearch,Artists) {
         // return Promise.resolve(albums.map(function (value) { return value._id, value.albumName, value.image, value.artistId  }));
 
         //, albumname: a.albumName,albumimage: a.image,artistid: a.artistId
-        // return Promise.resolve(albums.map(a =>9 { albumid: a._id })); 
+        // return Promise.resolve(albums.map(a =>9 { albumid: a._id }));
         //return Promise.resolve((({ a, c }) => ({ a, c }))(album));
         if (albums.length === 0) return Promise.resolve([]);
       //  return Promise.resolve(albums.forEach(album => { (({ _id, albumName, image, artistId }) => ({ _id, albumName, image, artistId }))(album); }));
@@ -84,8 +103,8 @@ var SearchInAlbums =function (wordtosearch,Artists) {
        // );
        // return Promise.resolve(albums.map(album => getsimplifiedalbum(album)));
        // }).then(()=>{return Promise.resolve(albums)})
-            
-            
+
+
 
     })
        // return Promise.resolve(albums);
@@ -115,7 +134,7 @@ var AddArtistName = async function (albums) {
             // });
 
             //  console.log("hw ada"+album.ArtistName);
-            
+
           //  return { ...album, ...{ ArtistName: ArtistName } };
        console.log(3);
 
@@ -126,7 +145,7 @@ var AddArtistName = async function (albums) {
             //   return Promise.resolve(albums);
             //+5  }
 
-        
+
 
     });
     //console.log(await Promise.all(promises));
@@ -144,7 +163,7 @@ var AddArtistName = async function (albums) {
 //}
 
 async function newAlbum(artistIdSent,albumname,myfiles) {
-    
+
     var i = 0;var tracksArr = [];
     while(myfiles[i])
     {
@@ -153,10 +172,10 @@ async function newAlbum(artistIdSent,albumname,myfiles) {
         {
             tracksArr.push(new track);
             tracksArr[i]=myTrack;
-            
+
         })
         i++;
-        
+
     }
     var albumInstance = new album({
         artistId:artistIdSent,
@@ -176,5 +195,6 @@ module.exports = {
     SearchInAlbums,
     album,
     GetSimplifiedAlbum,
-    newAlbum
+    newAlbum,
+    GetNoOfListeners
 }
