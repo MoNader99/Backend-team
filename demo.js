@@ -49,6 +49,8 @@ var artist1 = new artist({
 artist1.save();
 
 var artist2 = new artist({
+  email: "sh@music.com",
+
     artistName: "Shbokshy",
     about: `Egyptian singer known professionally for nothing at all but still is pleased to be part and an artist in this application.Thank you babes `,
     genres: ["Arabic", "R&B"],
@@ -819,6 +821,9 @@ var album1 = new album({
     albumName: "El Leila",
     imagePath: imgPath9,
     tracks: [track3, track5],
+    rating: 5,
+    noOfRatings: 1
+
 });
 
 album1.save();
@@ -828,8 +833,9 @@ var album2 = new album({
     albumName: "A/B",
     imagePath: imgPath10,
     tracks: [track7, track8, track9],
-});
-
+    rating: 4,
+    noOfRatings: 1
+})
 album2.save();
 
 var album3 = new album({
@@ -837,6 +843,9 @@ var album3 = new album({
     albumName: "Look At Me Now Album",
     imagePath: "LookatmeNow.jpg",
     tracks: [track15, track16],
+    rating: 3,
+    noOfRatings: 1
+
 });
 
 album3.save();
@@ -846,6 +855,9 @@ var album4 = new album({
     albumName: "Trailog",
     imagePath: "hvobalbum.jpg",
     tracks: [track19, track20],
+    rating: 2,
+    noOfRatings: 1
+
 });
 
 album4.save();
@@ -855,6 +867,9 @@ var album5 = new album({
     albumName: "A Night at the Opera",
     imagePath: "BohemianRapsodydownload.jpg",
     tracks: [track22, track23],
+    rating: 1,
+    noOfRatings: 1
+
 });
 
 album5.save();
@@ -1091,4 +1106,3 @@ var not2 = new notification({
 
 });
 not2.save();
-
