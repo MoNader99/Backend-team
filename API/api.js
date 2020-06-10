@@ -1387,7 +1387,7 @@
    "totalLikes": 25,
    "totalListeners": 100
  *}
- * @apiError (403) 'Token is Empty'
+ * @apiError (403) Token is Empty
  * @apiError (400) invalid track ID
  * @apiError (401) User does not have access or does not exist
  * @apiError (404) track not found
@@ -1396,7 +1396,7 @@
  *{
  *       "Send a valid track Id "
  *}
-
+*/
 
   //get album statistics
   /**
@@ -1413,7 +1413,7 @@
     "totalLikes": 25,
     "totalListeners": 100
   *}
-  * @apiError (403) 'Token is Empty'
+  * @apiError (403) Token is Empty
   * @apiError (400) invalid track ID
   * @apiError (401) User does not have access or does not exist
   * @apiError (404) album not found
@@ -1423,7 +1423,7 @@
   *       "Send a valid album Id "
   *}
 
-
+*/
 
 //GET User Profile By ID
  /**

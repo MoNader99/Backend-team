@@ -1,6 +1,131 @@
 define({ "api": [
   {
     "type": "post",
+    "url": "/album/newRelease",
+    "title": "Create Album",
+    "name": "Create_Album",
+    "group": "Album",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "x-auth",
+            "description": "<p>(ArtistToken)Only an Artist who has a verified account can add a track</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "AlbumName",
+            "description": "<p>Album name. (Obligatory) sent as multipart data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "genre",
+            "description": "<p>each track has only 1 genre. (Obligatory) sent as multipart data</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "multipleTracks",
+            "description": "<p>the audio tracks the artist wants to upload sent as multipart data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "201",
+            "description": "<p>[The response of the sucess case is the created track object]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 201 OK\n\n[\n  {\n      \"fieldname\": \"multipleTracks\",\n      \"originalname\": \"Billie Eilish - bad guy.mp3\",\n      \"encoding\": \"7bit\",\n      \"mimetype\": \"audio/mpeg\",\n      \"destination\": \"./tracks\",\n      \"filename\": \"Billie Eilish - bad guy--5edfa42c3af51031007bbef1.mp3\",\n      \"path\": \"tracks\\\\Billie Eilish - bad guy--5edfa42c3af51031007bbef1.mp3\",\n      \"size\": 4685301\n  },\n  {\n      \"fieldname\": \"multipleTracks\",\n      \"originalname\": \"Billie Eilish - lovely ft. Khalid.mp3\",\n      \"encoding\": \"7bit\",\n      \"mimetype\": \"audio/mpeg\",\n      \"destination\": \"./tracks\",\n      \"filename\": \"Billie Eilish - lovely ft. Khalid--5edfa42c3af51031007bbef1.mp3\",\n      \"path\": \"tracks\\\\Billie Eilish - lovely ft. Khalid--5edfa42c3af51031007bbef1.mp3\",\n      \"size\": 6437058\n  }\n]",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "401",
+            "description": "<p>[Cannot upload the album without auth token]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "400",
+            "description": "<p>[Cannot upload the album without album name]</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "409",
+            "description": "<p>[The artist is trying to add a new track with the same name of one of his tracks (the same artist cannot have 2 tracks with the same exact name)]</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 Unauthorized",
+          "type": "JSON"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"Missing AlbumName\"\n}",
+          "type": "String"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"Missing genre\"\n}",
+          "type": "String"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"Please upload at least one track\"\n}",
+          "type": "String"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"Please upload audio files\"\n}",
+          "type": "String"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 409 Conflict\n{\n  \"Cannot create 2 albums with the same name (AlbumName) for the same artist\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "post",
     "url": "api/album/:id/delete",
     "title": "delete album",
     "name": "Delete_album",
@@ -385,6 +510,91 @@ define({ "api": [
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 401   Unauthorized\n{\n   \"Token is Empty\"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Album"
+  },
+  {
+    "type": "get",
+    "url": "api/album/statistics/:id",
+    "title": "get album statistics",
+    "name": "Get_album_statistics",
+    "group": "Album",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the album to show its statistics</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "optional": false,
+            "field": "ok",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n    \"totalLikes\": 25,\n    \"totalListeners\": 100\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "invalid",
+            "description": "<p>track ID</p>"
+          }
+        ],
+        "401": [
+          {
+            "group": "401",
+            "optional": false,
+            "field": "User",
+            "description": "<p>does not have access or does not exist</p>"
+          }
+        ],
+        "403": [
+          {
+            "group": "403",
+            "optional": false,
+            "field": "Token",
+            "description": "<p>is Empty</p>"
+          }
+        ],
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "album",
+            "description": "<p>not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Conflict Error-Response:",
+          "content": "   HTTP/1.1 400\n{\n      \"Send a valid album Id \"\n}",
           "type": "string"
         }
       ]
@@ -3130,6 +3340,91 @@ define({ "api": [
     "groupTitle": "Tracks"
   },
   {
+    "type": "get",
+    "url": "api/tracks/statistics/:id",
+    "title": "get track statistics",
+    "name": "Get_track_statistics",
+    "group": "Tracks",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the track to show its statistics</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "optional": false,
+            "field": "ok",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n{\n   \"totalLikes\": 25,\n   \"totalListeners\": 100\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "400": [
+          {
+            "group": "400",
+            "optional": false,
+            "field": "invalid",
+            "description": "<p>track ID</p>"
+          }
+        ],
+        "401": [
+          {
+            "group": "401",
+            "optional": false,
+            "field": "User",
+            "description": "<p>does not have access or does not exist</p>"
+          }
+        ],
+        "403": [
+          {
+            "group": "403",
+            "optional": false,
+            "field": "Token",
+            "description": "<p>is Empty</p>"
+          }
+        ],
+        "404": [
+          {
+            "group": "404",
+            "optional": false,
+            "field": "track",
+            "description": "<p>not found</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Conflict Error-Response:",
+          "content": "   HTTP/1.1 400\n{\n      \"Send a valid track Id \"\n}",
+          "type": "string"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./api.js",
+    "groupTitle": "Tracks"
+  },
+  {
     "type": "post",
     "url": "track/like/unlike/:id",
     "title": "Like or Unlike track",
@@ -3974,7 +4269,7 @@ define({ "api": [
     "groupTitle": "Users"
   },
   {
-    "type": "patch",
+    "type": "get",
     "url": "/users/confirmPremium",
     "title": "confirmation of premium account [ User is confirmed to be a premium user]",
     "name": "Acceptance_of_Premium_Request",
