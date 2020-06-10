@@ -221,7 +221,7 @@ router.get('/albums/like/me', (req,res) =>
     {
       res.status(401).send('User does not have access or does not exist');
     }
-    res.status(302).send(user.likedTracks);
+    res.status(302).send(user.likedAlbums);
   }).catch((e) =>
   {
     res.status(401).send('User does not have access or does not exist');
@@ -235,7 +235,6 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
   const files = req.files;
   await artist.findByToken(token).then((myartist)=>{
 
-<<<<<<< HEAD
         if(!req.body.AlbumName){
             return res.status(400).send("Missing albumName");
         }
@@ -254,21 +253,6 @@ router.post('/album/newRelease', upload, async (req,res,next) =>
                 return res.status(409).send("Cannot create 2 albums with the same name (" + req.body.AlbumName + ") for the same artist");
             }});
         service.newAlbum(myartist._id,req.body.AlbumName,files);
-=======
-    if(!req.body.AlbumName){
-      return res.status(400).send("Missing albumName");
-    }
-    if(!req.body.genre){
-      return res.status(400).send("Missing genre");
-    }
-    if(req.fileError){    // the upladed file is not a track
-      return res.status(400).send('Please upload audio files');
-    }
-    if(req.files=="")
-    {
-      return res.status(400).send('Please upload at least one track');
-    }
->>>>>>> eb9ca50c550ce62ce97109c8c89faf84cb5647f5
 
     service.newAlbum(myartist._id,req.body.AlbumName,files);
 

@@ -890,7 +890,7 @@ album8.save();
 ////////////////////////////////////////////////
 //CREATING NEW USER INSTANCES AND SAVING THEM
 var user1 = new User({
-    email: "        ayaelsackaan.1999@gmail.com      ",
+    email: "        ronyemam22@gmail.com      ",
     password: "$2b$10$tZ9A05CzdvX9AodV6Q/aZOt/8bIIJT78rN3Ax1txwfkY8MJujc4ZK", //111
     isActive: true,
     userName: "hamadaaa12q2",
